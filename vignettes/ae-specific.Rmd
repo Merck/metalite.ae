@@ -1,0 +1,239 @@
+---
+title: "AE Specification"
+output:
+  rmarkdown::html_vignette
+resource_files:
+   - package_manual.pdf
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{AE Specification}
+---
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%",
+  dev = "ragg_png",
+  dpi = 150
+)
+```
+
+```{r, include=FALSE}
+library(metalite)
+library(metalite.ae)
+```
+
+```{r, include=FALSE}
+library(dplyr)
+library(tidyr)
+```
+
+# Overview
+
+The AE specification analysis is to provide tables to summarize details of adverse events. 
+The development of AE specification analysis contain exported functions 
+
+- `prepare_ae_specific`: prepare analysis raw datasets 
+- `format_ae_specific`: prepare analysis (mock) outdata with proper format
+- `tlf_ae_specific`: transfer (mock) output dataset to RTF table 
+
+We also prepare (optional) additional function to extend the analysis. 
+
+- `extend_ae_specific_inference`: add risk difference inference results based on M&N method.
+- `extend_ae_specific_duration`: add average duration of AE. 
+- `extend_ae_specific_events`: add average number of AE events.
+
+## Analysis Preparation
+
+The `prepare_ae_specific` function is design to be used for multiple purpose. 
+The input of the function is a `meta` objects created from `metalite.ae` package. 
+
+```{r}
+meta <- meta_ae_dummy()
+```
+
+The output of the function is an `outdata` objects contain a list of analysis raw datasets. 
+
+```{r}
+outdata <- prepare_ae_specific(meta, 
+                               population = "apat", 
+                               observation = "wk12", 
+                               parameter = "rel")
+```
+
+```{r}
+outdata
+```
+The output dataset contains commonly used statistics. The variable is indexed by the order of `outdata$group`.
+
+```{r}
+outdata$group
+```
+The row is indexed by the order of `outdata$name`. 
+
+```{r}
+head(data.frame(outdata$order, outdata$name))
+```
+
+
+- `n_pop: participants in population
+
+```{r}
+outdata$n_pop
+```
+
+- `n`: number of subjects with AE
+
+```{r}
+head(outdata$n)
+```
+
+- `prop`: proportion of subjects with AE
+
+```{r}
+head(outdata$prop)
+```
+
+- `diff`: risk difference compared with the `reference_group`. 
+
+```{r}
+head(outdata$diff)
+```
+
+## Format Output 
+
+After we have the raw analysis results, we can use `format_ae_specific` to prepare the outdata 
+to create RTF tables. 
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific() 
+head(tbl$tbl)
+```
+
+We can hide total column
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific(display = c("n", "prop")) 
+head(tbl$tbl)
+```
+
+Adding risk difference
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific(display = c("n", "prop", "diff")) 
+head(tbl$tbl)
+```
+
+Adding 95% confidence interval of M&N method. It requires to use `extend_ae_specific_inference` 
+to perform additional calculation.
+
+```{r}
+tbl <- outdata |>
+  extend_ae_specific_inference() |>
+  format_ae_specific(display = c("n", "prop", "diff", "diff_ci")) 
+head(tbl$tbl)
+```
+
+Adding average duration of AE. It requires to use `extend_ae_specific_duration` 
+to perform additional calculation. 
+
+```{r}
+tbl <- outdata |>
+  extend_ae_specific_duration(duration_var = "ADURN") |>
+  format_ae_specific(display = c("n", "prop", "dur")) 
+head(tbl$tbl)
+```
+
+Adding average number of AE per subject. It requires to use `extend_ae_specific_events` 
+to perform additional calculation. 
+
+```{r}
+tbl <- outdata |>
+  extend_ae_specific_events() |>
+  format_ae_specific(display = c("n", "prop", "events")) 
+head(tbl$tbl)
+```
+
+## Mock Data Preparation 
+
+We can also use `format_ae_specific` to create mock output data.
+
+The purpose of the `mock` argument is not to create a comprehensive mock table template, 
+but a handy way to help user create a mock table that mimic the exact output layout. 
+
+Additional work is required to develop a flexible mock table generation tool 
+(e.g. a dedicated mock table generation package)
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific(mock = TRUE)
+head(tbl$tbl)
+```
+
+## RTF Tables 
+
+By using `tlf_ae_specific`, we can transfer the output from `format_ae_specific` to an RTF table. 
+
+```{r}
+outdata |> 
+  format_ae_specific() |>
+  tlf_ae_specific(medra_version = "24.0", 
+                  source = "Source:  [CDISCpilot: adam-adsl; adae]",
+                  path_outtable = "outtable/ae0specific1.rtf") 
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("outtable/ae0specific1.pdf")
+```
+
+The `tlf_ae_specific` function also provide some commonly used argument to customize the table. 
+
+```{r}
+outdata |> 
+  format_ae_specific() |>
+  tlf_ae_specific(medra_version = "24.0", 
+                  source = "Source:  [CDISCpilot: adam-adsl; adae]",
+                  col_rel_width = c(6, rep(1, 8)),
+                  text_font_size = 8,
+                  orientation = "landscape",
+                  path_outtable = "outtable/ae0specific2.rtf") 
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("outtable/ae0specific2.pdf")
+```
+
+We can also generate the mock table 
+
+```{r}
+outdata |> 
+  format_ae_specific(mock = TRUE) |>
+  tlf_ae_specific(medra_version = "24.0", 
+                  source = "Source:  [CDISCpilot: adam-adsl; adae]",
+                  path_outtable = "outtable/mock_ae0specific1.rtf") 
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("outtable/mock_ae0specific1.pdf")
+```
+
+# Future developement 
+
+## Features 
+
+- cross check the capability in SAS standard macro to identify required features. 
+
+## Technical requirements (For future development)
+
+- Avoiding `%>%`, using `|>` to reduce dependecy of `magrittr`.
+- The functions in the `R/` folder should not depends on `dplyr`, `tidyr` etc.
+
+
+
+
+
+

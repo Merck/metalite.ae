@@ -1,0 +1,180 @@
+#    Copyright (c) 2022 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+#
+#    This file is part of the metalite.ae program.
+#
+#    metalite.ae is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#' Prepare datasets for AE specific analysis
+#'
+#' @param meta a meta data created by `metalite`.
+#' @param population a character value of population term name.
+#' The term name is used as key to link information.
+#' @param observation a character value of observation term name.
+#' The term name is used as key to link information.
+#' @param parameter a character value of parameter term name.
+#' The term name is used as key to link information.
+#' @param components a character vector of components name.
+#' @param reference_group an integer to indicate reference group. Default is 2 if there are 2 groups, otherwise default is 1.
+#'
+#' @import metalite
+#'
+#' @examples
+#' meta <- meta_ae_dummy()
+#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel"), head, 10)
+#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel", digits_prop = 2), head, 20)
+#'
+#' # Allow to extract each components
+#' prepare_ae_specific(meta, "apat", "wk12", "rel", components = NULL)$data
+#' prepare_ae_specific(meta, "apat", "wk12", "rel", components = "soc")$data
+#' prepare_ae_specific(meta, "apat", "wk12", "rel", components = "par")$data
+#' @export
+prepare_ae_specific <- function(meta,
+                                population,
+                                observation,
+                                parameter,
+                                components = c("soc", "par"),
+                                reference_group = NULL) {
+
+  # Obtain variables
+  pop_var <- collect_adam_mapping(meta, population)$var
+  obs_var <- collect_adam_mapping(meta, observation)$var
+  par_var <- collect_adam_mapping(meta, parameter)$var
+  par_soc <- collect_adam_mapping(meta, parameter)$soc
+
+  # Obtain Data
+  pop <- collect_population_record(meta, population, var = pop_var)
+  obs <- collect_observation_record(meta, population, observation, parameter,
+    var = unique(c(obs_var, par_var, par_soc))
+  )
+  # Obtain variable name
+  pop_id <- collect_adam_mapping(meta, population)$id
+  obs_id <- collect_adam_mapping(meta, observation)$id
+
+  pop_group <- collect_adam_mapping(meta, population)$group
+  obs_group <- collect_adam_mapping(meta, observation)$group
+
+  # Ensure group is a factor
+  if (!"factor" %in% class(pop[[pop_group]])) {
+    warning("In population level data, force group variable '", pop_group, "' be a factor")
+    pop[[pop_group]] <- factor(pop[[pop_group]])
+  }
+
+  if (!"factor" %in% class(pop[[pop_group]])) {
+    warning("In observation level data, force group variable '", obs_group, "' be a factor")
+    obs[[obs_group]] <- factor(obs[[obs_group]], levels = levels(pop[[pop_group]]))
+  }
+
+  # Add a total group to display total column
+  if (nrow(pop) == 0) {
+    levels(pop[[pop_group]]) <- c(levels(pop[[pop_group]]), "Total")
+  } else {
+    pop_total <- pop
+    pop_total[[pop_group]] <- "Total"
+    pop <- rbind(pop, pop_total)
+  }
+
+
+  if (nrow(obs) == 0) {
+    levels(obs[[obs_group]]) <- c(levels(obs[[obs_group]]), "Total")
+  } else {
+    obs_total <- obs
+    obs_total[[obs_group]] <- "Total"
+    obs <- rbind(obs, obs_total)
+  }
+
+
+  # Group information
+  u_group <- levels(pop[[pop_group]])
+  n_group <- length(u_group)
+
+  ## Define reference group
+  if (is.null(reference_group)) {
+    reference_group <- ifelse(n_group - 1 == 2, 2, 1)
+  }
+
+  # Number of subjects
+  pop_n <- n_subject(pop[[pop_id]], pop[[pop_group]])
+  obs_n <- n_subject(obs[[obs_id]], obs[[obs_group]])
+  obs_n <- rbind(obs_n, pop_n - obs_n)
+
+  # Define Population section
+  pop_n$name <- "Participants in population"
+  pop_n$order <- 1
+
+  # Define Observation section
+  obs_n$name <- c(
+    "with one or more {tolower(term1)} adverse events {tolower(term2)}",
+    "with no {tolower(term1)} adverse events {tolower(term2)}"
+  )
+  obs_n$name <- vapply(obs_n$name, glue::glue_data, .x = collect_adam_mapping(meta, parameter), FUN.VALUE = character(1))
+  obs_n$name <- gsub("^ *|(?<= ) | *$", "", obs_n$name, perl = TRUE) # remove duplicate space
+
+  obs_n$order <- 1e2 * 1:nrow(obs_n)
+
+  # Define SOC section
+  if ("soc" %in% components & nrow(obs) > 0) {
+    soc_n <- n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]])
+
+    soc_n[[par_soc]] <- soc_n$name
+    soc_n[[par_var]] <- soc_n$name
+    soc_n$order <- 1e3 * 1:nrow(soc_n)
+    soc_n$name <- to_sentence(soc_n$name)
+  } else {
+    soc_n <- NULL
+  }
+
+  # Define AE term section
+  if ("par" %in% components & nrow(obs) > 0) {
+    u_soc <- unique(obs[order(obs[[par_soc]]), c(par_soc, par_var)])
+
+    par_n <- n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]])
+
+    par_n[[par_var]] <- par_n$name
+    par_n <- merge(u_soc, par_n, all.y = TRUE)
+    par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + 1:nrow(par_n)
+    par_n$name <- to_sentence(par_n$name)
+  } else {
+    par_n <- NULL
+  }
+
+  # Create blank row
+  col <- c("name", u_group, "order")
+  blank_row <- data.frame(name = "", matrix(NA, nrow = 1, ncol = n_group), order = 900)
+  names(blank_row) <- names(pop_n[, col])
+
+  # Combine count values
+  tbl <- rbind(pop_n[, col], obs_n[, col], blank_row, par_n[, col], soc_n[, col])
+  tbl <- tbl[order(tbl$order), ]
+
+  # Calculate Proportion
+  tbl_num <- tbl[, u_group]
+  tbl_dom <- matrix(as.numeric(pop_n[, u_group]), ncol = n_group, nrow = nrow(tbl), byrow = TRUE)
+  tbl_rate <- tbl_num / tbl_dom * 100
+  tbl_rate[1, ] <- NA
+  names(tbl_num) <- paste0("n_", 1:n_group)
+  colnames(tbl_rate) <- paste0("prop_", 1:n_group)
+
+  # Calculate risk difference
+  tbl_diff <- tbl_rate - tbl_rate[, reference_group]
+  colnames(tbl_diff) <- paste0("diff_", 1:n_group)
+  tbl_diff <- tbl_diff[-c(reference_group, n_group)]
+
+  # Return value
+  outdata(meta, population, observation, parameter,
+    n = tbl_num, order = tbl$order, group = u_group, reference_group = reference_group,
+    prop = tbl_rate, diff = tbl_diff,
+    n_pop = tbl_num[1, ],
+    name = tbl$name
+  )
+}

@@ -1,0 +1,38 @@
+Package: metalite.ae
+Type: Package
+Title: AE Analysis Using `metalite`
+Version: 0.0.1
+Authors@R: c(
+        person("Yilong", "Zhang", role = c("aut")),
+        person("Nan", "Xiao", email = "nan.xiao1@merck.com", role = c("aut", "cre")),
+        person("Xuan", "Deng", role = c("aut")),
+        person("Ruchitbhai", "Patel", role = c("aut")),
+        person("Madhusudhan", "Ginnaram", role = c("aut")),
+        person("Sarad", "Nepal", role = c("aut")),
+        person("Yujie", "Zhao", role = c("aut")),
+        person("Merck Sharp & Dohme Corp", role = c("cph"))
+       )
+Description: An R package for adverse events analysis using `metalite` data structure.
+Depends: R (>= 4.1.0)
+License: GPL (= 3)
+Imports: 
+    metalite, 
+    r2rtf,
+    glue,
+    DescTools, 
+    dplyr,
+    stats
+Suggests: 
+    testthat (>= 3.0.0),
+    knitr,
+    kableExtra,
+    rmarkdown,
+    covr,
+    readxl,
+    rprojroot,
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)  
+Rmarkdwon: echo = TRUE
+RoxygenNote: 7.1.2
+VignetteBuilder: knitr
+

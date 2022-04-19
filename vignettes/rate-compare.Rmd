@@ -1,0 +1,181 @@
+---
+title: 'Unstratified and Stratified  Miettinen and Nurminen Test'
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+  flexdashboard::flex_dashboard:
+    vertical_layout: fill
+  html_notebook:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: yes
+---
+
+# Overview
+
+Binary outcome is a commonly used endpoint in clinical trials. 
+This page is to illustrate how to conduct the unstratified or stratified analysis 
+with Miettinen and Nurminen method (M&N) descrived in (Miettinen and Nurminen 1985) 
+for risk difference analysis in R. 
+The following statistics can be calculated within the function `rate_compare`: 
+
+- estimated risk difference
+- test statistic
+- confidence interval for the risk difference
+- p-value for risk difference. 
+
+# Statistical Methods
+
+## Unstratified analysis of M&N method
+
+Assume the data includes two independent binomial samples with binary response variables to be
+analyzed/summarized and the data collected in a clinical design without stratification. 
+Also this approach is applicable to the case when the data are collected 
+using a stratified clinical design and 
+the statistician would like to ignore stratification 
+by pooling the data over strata assuming two independent binomial samples. 
+Assume $P_i$ is the proportion of success responses in the test ($i=1$) or control ($i=0$) group.  
+
+### Confidence Interval
+
+The confidence interval is based on the M&N method and given by the roots for $PD=P_1-P_0$ of the equation:  
+
+$$\chi_\alpha^2 = \frac{(\hat{p}_1-\hat{p}_0-PD)^2}{\tilde{V}}$$,  
+
+where $\hat{p}_1$ and $\hat{p}_0$ are the observed values of $P_1$ and $P_0$, respectively; 
+
+- $\chi_\alpha^2$ = the upper cut point of size $\alpha$ from 
+the central chi-square distribution 
+with 1 degree of freedom ($\chi_\alpha^2 = 3.84$ for $95$% confidence interval);  
+
+- $PD$ = the difference between two population proportions ($PD=P_1-P_0$); 
+
+$$\tilde{V}=[\frac{\tilde{p}_1(1-\tilde{p}_1)}{n_1}+
+\frac{\tilde{p}_0(1-\tilde{p}_0)}{n_0}]\frac{n_1+n_0}{n_1+n_0-1}$$; 
+
+- $n_1$ and $n_0$ are the sample sizes for the test and control group, respectively; 
+
+- $\tilde{p}_1$ = maximum likelihood estimate of proportion on test computed as $\tilde{p}_0+PD$;  
+
+- $\tilde{p}_0$ = maximum likelihood estimate of 
+proportion on control under the constraint $\tilde{p}_1-\tilde{p}_0=PD$.  
+
+As stated above the 2-sided $100(1-\alpha)$% CI is given by the roots for $PD=P_1-P_0$. 
+The bisection algorithm is used in the function to obtain the two roots (confidence interval) for $PD$.
+
+### P-value and Z-statistic
+
+The Z-statistic is computed as:  
+
+$$Z_{diff}=\frac{\hat{p}_1-\hat{p}_0+S_0}{\sqrt{\tilde{V}}}$$
+where $\hat{p}_1$ and $\hat{p}_0$ are the observed values 
+for $P_1$ and $P_0$ respectively, $S_0$ is pre-specified proportion difference under the null; 
+
+- $\tilde{p}_1$ = maximum likelihood estimate of proportion on test computed as $\tilde{p}_0+S_0$;  
+
+- $\tilde{p}_0$ = maximum likelihood estimate of proportion on control under the constraint $\tilde{p}_1-\tilde{p}_0=S_0$.  
+
+- For non-inferiority or one-sided equivalence hypothesis with $S_0>0$, 
+the p-value, $Pr(Z\ge Z_{diff}|H_0)$, is computed based on $Z_{diff}$ using the standard normal distribution. 
+- For non-inferiority or one-sided equivalence hypothesis with $S_0<0$, 
+the p-value, $Pr(Z\le Z_{diff}|H_0)$, is computed based on $Z_{diff}$ using the standard normal distribution. 
+- For two-sided supriority test, the p-value $Pr(\chi_{diff}^2\le \chi_1^2|H_0)$, 
+is computed based on $\chi_{diff}^2$ using the chi-square distribution with 1 degree of freedom, 
+where $\chi_{diff}^2=Z_{diff}^2$.
+
+## Stratified analysis of M&N method
+
+Assume the data includes two treatment groups, test and control, and collected based on a stratified design. 
+Within each stratum there are two independent binomial samples 
+with binary response variables to be analyzed/summarized. 
+The parameter of interest is the difference between 
+the population proportions of the test and the control groups. 
+The analysis and summaries need to be performed while adjusting for the stratifying variables.  
+
+### Confidence Interval
+
+The confidence interval is based on the M&N method and given by the roots for $PD=P_1-P_0$ of the equation:  
+
+$$\chi_\alpha^2 = \frac{(\hat{p}_1^*-\hat{p}_0^*-PD)^2}{\sum_{i=1}^I(W_i/\sum_{k=1}^{K}W_k)^2\tilde{V}_i}$$,  
+
+where $\hat{p}_s^* = \sum_{i=1}^I(W_i/\sum_{k=1}^KW_k)\hat{p}_{si}$ for $s=0,1$;  
+
+$$\tilde{V}_i=[\frac{\tilde{p}_{1i}(1-\tilde{p}_{1i})}{n_{1i}}+\frac{\tilde{p}_{0i}(1-\tilde{p}_{0i})}{n_{0i}}]\frac{n_{1i}+n_{0i}}{n_{1i}+n_{0i}-1}$$;  
+
+- $W_i$ is the weight for the $i^{th}$ strata;  
+- $I = K = $ number of strata, $i=k=$ strata;  
+- $n_{1i}$ and $n_{0i}$ are the sample sizes in $i^{th}$ strata for the test and control group, respectively;  
+- $\hat{p}_{1i}$ and $\hat{p}_{0i}$ = observed proportion in $i^{th}$ strata for the test and control, respectively;  
+- $\tilde{p}_{0i}$ and $\tilde{p}_{1i}$ are MLE for $P_{0i}$ and $P_{1i}$, respectively, 
+computed under the constraint $\tilde{p}_{1i}=\tilde{p}_{0i}+PD$.  
+
+Similarly as for unstratified analysis,the 2-sided $100(1-\alpha)$% CI is given by the roots for $PD=P_1-P_0$, 
+and the bisection algorithm is used in the function to obtain the two roots (confidence interval) for $PD$.
+
+### P-value and Z-statistic
+
+The Z-statistic is computed as:  
+
+$$Z_{diff}=\frac{\hat{p}_1^*-\hat{p}^*_0+S_0}{\sqrt{\sum_{i=1}^I(W_i/\sum_{k=1}^{K}W_k)^2\tilde{V}_i}}$$
+where $S_0$ is pre-specified proportion difference under the null;
+
+- $\tilde{p}_{0i}$ and $\tilde{p}_{1i}$ are MLE for $P_{0i}$ and $P_{1i}$, respectively, 
+computed under the constraint $\tilde{p}_{1i}=\tilde{p}_{0i}+S_0$.  
+
+
+The p-value can be calculated as stated above.
+
+# Example
+
+## Load Function
+
+```{r message=FALSE}
+library(survival)
+library(forestly)
+```
+
+## Data Simulation
+
+We simulated a dataset with 2 treatment group for binary output. 
+If stratum is used, we considered 4 stratum. 
+
+```{r}
+ana <- data.frame(
+  treatment = c(rep(0,100),rep(1,100)),
+  response  = c(rep(0,80),rep(1,20),rep(0,40),rep(1,60)),
+  stratum   = c(rep(1:4,12),1,3,3,1,rep(1:4,12),rep(1:4,25))
+)
+
+head(ana)
+```
+
+## Unstratified Analysis
+
+The function computes the risk difference, Z-statistic, p-value given the type of test, 
+and two-sided $100(1-\alpha)$% confidence interval of difference between two rates. 
+
+```{r}
+rate_compare(response~treatment, data = ana)
+```
+
+## Stratified Analysis
+
+The sample size weighting is often used in the clinical trial. 
+Below is the function to conduct stratified MN analysis with sample size weights.
+
+We also support weight in `"equal"` and `"cmh"`. 
+More details can be found in the `rate_compare` documentation. 
+
+```{r}
+rate_compare(formula=response~treatment, strata=stratum, data = ana,
+                     weight="ss")
+```
+
+# Reference
+
+Miettinen, O. and Nurminen, M, \emph{Comparative Analysis of Two Rates}.
+Statistics In Medicine, 4:213-226, 1985.

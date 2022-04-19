@@ -1,0 +1,86 @@
+---
+title: "Introduction to metalite.ae"
+output:
+  rmarkdown::html_vignette
+resource_files:
+   - package_manual.pdf
+   - outtable/*.pdf
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Introduction to metalite.ae}
+---
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  eval = TRUE,
+  comment = "#>",
+  out.width = "100%",
+  dev = "ragg_png",
+  dpi = 150
+)
+```
+
+```{r, include=FALSE}
+manual <-devtools::build_manual(path = ".")
+manual <- basename(grep("--output=", manual$command, value = TRUE))
+file.rename(from = manual, to = "package_manual.pdf")
+```
+
+```{r, include=FALSE}
+library(metalite)
+library(metalite.ae)
+```
+
+# Overview
+
+`metalite.ae` is an R package for standard adverse events analysis including: 
+
+- AE summary 
+- Specific AE analysis 
+- Specific AE subgroup analysis (TODO)
+- AE listing (TODO)
+
+## Workflow 
+
+The general workflow is splited into three parts. 
+
+1. define meta data information using `metalite` package 
+1. prepare outdata using `prepare_xxx` functions
+1. extend outdata using `extend_xxx` functions
+1. format outdata using `format_xxx` functions
+1. create TLFs using `tlf_xxx` functions 
+
+For example, we can create a simple AE summary table as below. 
+
+```{r}
+meta_ae_dummy() |>
+  prepare_ae_summary(population = "apat", 
+                     observation = "wk12", 
+                     parameter = "any;rel;ser") |>
+  
+  format_ae_summary() |>
+  
+  tlf_ae_summary(source = "Source:  [CDISCpilot: adam-adsl; adae]",
+                 path_outtable = "outtable/ae0summary.rtf") 
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("outtable/ae0summary.pdf")
+```
+
+More examples can be found in [ae-summary](ae-summary.html) and [ae-specific](ae-specific.html) pages. 
+
+## Highlighted features
+
+- enable metadata structure 
+- consistent input and output in standard functions
+- streamline mock table generation
+
+
+
+
+
+
+
+

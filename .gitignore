@@ -1,0 +1,15 @@
+inst/doc
+docs
+.Rproj.user
+.Rhistory
+.RData
+.sas7bdat
+.xpt
+.Ruserdata
+.html
+.log
+doc
+Meta
+inst/library/
+library
+ 
