@@ -35,4 +35,4 @@ Roxygen: list(markdown = TRUE)
 Rmarkdwon: echo = TRUE
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
-
+Remotes: merck/metalite
