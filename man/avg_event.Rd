@@ -19,6 +19,6 @@ Average number of events
 \examples{
 library(r2rtf)
 r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
-avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
+metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
+metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 }

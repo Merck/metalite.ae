@@ -33,6 +33,10 @@ The term name is used as key to link information.}
 \item{subgroup_header}{a integer value of column header for subgroup.}
 
 \item{components}{a character vector of components name.}
+
+\item{display_total}{test}
+
+\item{display_subgroup_total}{test}
 }
 \description{
 Prepare datasets for AE specific analysis
