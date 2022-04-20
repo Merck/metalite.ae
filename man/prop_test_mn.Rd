@@ -32,8 +32,9 @@ prop_test_mn(x0, n0, x1, n1, delta = 0, sides = "two.sided", alpha = 0.05)
 }
 \examples{
 
-x0 <- c(1,2); n0 <- c(100, 100);
-x1 <- c(4,5); n1 <- c(100, 100);
+x0 <- c(1, 2)
+n0 <- c(100, 100)
+x1 <- c(4, 5)
+n1 <- c(100, 100)
 prop_test_mn(x0, n0, x1, n1)
-
 }

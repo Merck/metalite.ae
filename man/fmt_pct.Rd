@@ -20,5 +20,4 @@ Format percentage
 }
 \examples{
 fmt_pct(c(1, 1.52, 0.3, 100))
-
 }

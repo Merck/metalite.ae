@@ -53,13 +53,13 @@ Unstratified and Stratified  Miettinen and Nurminen Test.
 treatment <- c(rep("pbo", 100), rep("exp", 100))
 response <- c(rep(0, 80), rep(1, 20), rep(0, 40), rep(1, 60))
 stratum <- c(rep(1:4, 12), 1, 3, 3, 1, rep(1:4, 12), rep(1:4, 25))
-n0 <- sapply(split(treatment[treatment=='pbo'], stratum[treatment=='pbo']), length)
-n1 <- sapply(split(treatment[treatment=='exp'], stratum[treatment=='exp']), length)
-x0 <- sapply(split(response[treatment=='pbo'], stratum[treatment=='pbo']), sum)
-x1 <- sapply(split(response[treatment=='exp'], stratum[treatment=='exp']), sum)
-strata=c("a","b","c","d")
+n0 <- sapply(split(treatment[treatment == "pbo"], stratum[treatment == "pbo"]), length)
+n1 <- sapply(split(treatment[treatment == "exp"], stratum[treatment == "exp"]), length)
+x0 <- sapply(split(response[treatment == "pbo"], stratum[treatment == "pbo"]), sum)
+x1 <- sapply(split(response[treatment == "exp"], stratum[treatment == "exp"]), sum)
+strata <- c("a", "b", "c", "d")
 rate_compare_sum(
-  n0,n1,x0,x1,
+  n0, n1, x0, x1,
   strata,
   delta = 0,
   weight = "ss",

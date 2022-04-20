@@ -47,16 +47,18 @@ Specific Adverse Events Table
 \examples{
 library(r2rtf)
 library(metalite)
-meta <-  meta_ae_dummy()
+meta <- meta_ae_dummy()
 
 meta |>
-  prepare_ae_specific(population = "apat",
-                      observation = "wk12",
-                      parameter = "rel") |>
-  
-  
-  tlf_ae_specific(source = "Source:  [CDISCpilot: adam-adsl; adae]",
-                  medra_version = "24.0",
-                  path_outdata = tempfile(fileext = ".Rdata"),
-                  path_outtable = tempfile(fileext = ".rtf"))
+  prepare_ae_specific(
+    population = "apat",
+    observation = "wk12",
+    parameter = "rel"
+  ) |>
+  tlf_ae_specific(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    medra_version = "24.0",
+    path_outdata = tempfile(fileext = ".Rdata"),
+    path_outtable = tempfile(fileext = ".rtf")
+  )
 }

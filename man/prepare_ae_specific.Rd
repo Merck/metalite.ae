@@ -37,9 +37,8 @@ meta <- meta_ae_dummy()
 lapply(prepare_ae_specific(meta, "apat", "wk12", "rel"), head, 10)
 lapply(prepare_ae_specific(meta, "apat", "wk12", "rel", digits_prop = 2), head, 20)
 
-# Allow to extract each components 
+# Allow to extract each components
 prepare_ae_specific(meta, "apat", "wk12", "rel", components = NULL)$data
 prepare_ae_specific(meta, "apat", "wk12", "rel", components = "soc")$data
 prepare_ae_specific(meta, "apat", "wk12", "rel", components = "par")$data
-
 }

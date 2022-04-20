@@ -24,7 +24,6 @@ The term name is used as key to link information.}
 Prepare datasets for AE specific analysis
 }
 \examples{
-meta <-  meta_ae_dummy()
+meta <- meta_ae_dummy()
 prepare_ae_summary(meta, "apat", "wk12", "any;rel;ser")
-
 }
