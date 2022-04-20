@@ -3,7 +3,6 @@ title: "Introduction to metalite.ae"
 output:
   rmarkdown::html_vignette
 resource_files:
-   - package_manual.pdf
    - outtable/*.pdf
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}

@@ -1,18 +1,10 @@
 ---
-title: 'Unstratified and Stratified  Miettinen and Nurminen Test'
+title: 'Unstratified and Stratified Miettinen and Nurminen Test'
 output:
-  html_document:
-    toc: yes
-    toc_depth: 3
-    toc_float:
-      collapsed: yes
-  flexdashboard::flex_dashboard:
-    vertical_layout: fill
-  html_notebook:
-    toc: yes
-    toc_depth: 3
-    toc_float:
-      collapsed: yes
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Unstratified and Stratified Miettinen and Nurminen Test}
 ---
 
 # Overview
