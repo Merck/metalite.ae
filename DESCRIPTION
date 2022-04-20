@@ -30,6 +30,7 @@ Suggests:
     covr,
     readxl,
     rprojroot,
+    tidyr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)  
 Rmarkdwon: echo = TRUE
