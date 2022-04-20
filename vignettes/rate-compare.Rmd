@@ -126,7 +126,6 @@ The p-value can be calculated as stated above.
 ## Load Function
 
 ```{r message=FALSE}
-library(survival)
 library(metalite.ae)
 ```
 

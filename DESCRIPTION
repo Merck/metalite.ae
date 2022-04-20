@@ -14,7 +14,7 @@ Authors@R: c(
        )
 Description: An R package for adverse events analysis using `metalite` data structure.
 Depends: R (>= 4.1.0)
-License: GPL (= 3)
+License: GPL (>= 3)
 Imports: 
     metalite, 
     r2rtf,

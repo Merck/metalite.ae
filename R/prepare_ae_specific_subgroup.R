@@ -20,7 +20,8 @@
 #' @inheritParams prepare_ae_specific
 #' @param subgroup_var a character value of subgroup variable name in observation data saved in `meta$data_observation`.
 #' @param subgroup_header a integer value of column header for subgroup.
-#'
+#' @param display_total test
+#' @param display_subgroup_total test
 #' @examples
 #' meta <- meta_ae_dummy()
 #' prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
