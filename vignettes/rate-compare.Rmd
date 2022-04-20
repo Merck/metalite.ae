@@ -127,6 +127,7 @@ The p-value can be calculated as stated above.
 
 ```{r message=FALSE}
 library(survival)
+library(metalite.ae)
 ```
 
 ## Data Simulation
