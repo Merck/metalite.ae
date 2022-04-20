@@ -1,0 +1,24 @@
+/* navbar background */
+.bg-light, .navbar-light {
+    background-color: #00857c !important;
+}
+
+/* navbar version number */
+.nav-text.text-muted {
+    color: #d9e7e6 !important;
+}
+
+/* navbar link status */
+.navbar-light .navbar-nav .nav-item>.nav-link:hover {
+    background: #005c55;
+}
+
+.navbar-light .navbar-nav .nav-item.active>.nav-link:hover {
+    color: #fff;
+}
+
+/* footer */
+footer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

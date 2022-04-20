@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 2.0.2
+pkgdown_sha: ~
+articles:
+  ae-specific: ae-specific.html
+  ae-summary: ae-summary.html
+  metalite-ae: metalite-ae.html
+  rate-compare: rate-compare.html
+last_built: 2022-04-20T21:23Z
+
