@@ -46,6 +46,7 @@ reference:
 - title: AE summary 
   contents:
   - "prepare_ae_summary"
+  - "format_ae_summary"
   - "tlf_ae_summary"
 - title: AE subgroup analysis
   contents:
