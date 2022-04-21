@@ -62,8 +62,8 @@ fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
 #' @examples
 #' library(dplyr) # required to run examples
 #' data(iris)
-#' iris %>%
-#'   summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) %>%
+#' iris |>
+#'   summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) |>
 #'   fmt_est(columns = "mean", decimals = 2)
 #' @export
 fmt_est <- function(mean,

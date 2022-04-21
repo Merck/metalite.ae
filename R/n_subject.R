@@ -76,19 +76,19 @@ avg_event <- function(id, group, par = NULL) {
     res <- table(db$id, db$group, db$par)
     res <- data.frame(res)
 
-    tmp <- db %>%
-      count(group, par, id) %>%
-      group_by(group, par) %>%
-      summarise(avg = mean(n, na.rm = TRUE), se = sd(n, na.rm = TRUE) / sqrt(n())) %>%
+    tmp <- db |>
+      count(group, par, id) |>
+      group_by(group, par) |>
+      summarise(avg = mean(n, na.rm = TRUE), se = sd(n, na.rm = TRUE) / sqrt(n())) |>
       tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
-    avg <- tmp %>%
-      select(starts_with("avg")) %>%
+    avg <- tmp |>
+      select(starts_with("avg")) |>
       as.data.frame()
     names(avg) <- u_group
 
-    se <- tmp %>%
-      select(starts_with("se")) %>%
+    se <- tmp |>
+      select(starts_with("se")) |>
       as.data.frame()
     names(se) <- u_group
   }
@@ -115,8 +115,8 @@ avg_duration <- function(id, group, dur, par = NULL) {
 
   if (is.null(par)) {
     db <- data.frame(id = id, group = group, dur = dur)
-    res <- db %>%
-      group_by(group) %>%
+    res <- db |>
+      group_by(group) |>
       summarise(
         avg = mean(dur, na.rm = TRUE),
         se = sd(dur, na.rm = TRUE) / sqrt(n())
@@ -130,21 +130,21 @@ avg_duration <- function(id, group, dur, par = NULL) {
   } else {
     db <- data.frame(id = id, group = group, dur = dur, par = par)
 
-    tmp <- db %>%
-      group_by(group, par) %>%
+    tmp <- db |>
+      group_by(group, par) |>
       summarise(
         avg = mean(dur, na.rm = TRUE),
         se = sd(dur, na.rm = TRUE) / sqrt(n())
-      ) %>%
+      ) |>
       tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
-    avg <- tmp %>%
-      select(starts_with("avg")) %>%
+    avg <- tmp |>
+      select(starts_with("avg")) |>
       as.data.frame()
     names(avg) <- u_group
 
-    se <- tmp %>%
-      select(starts_with("se")) %>%
+    se <- tmp |>
+      select(starts_with("se")) |>
       as.data.frame()
     names(se) <- u_group
   }

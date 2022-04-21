@@ -46,7 +46,7 @@ Decimals will understand the number will be formated as x.x (x.xx)
 \examples{
 library(dplyr) # required to run examples
 data(iris)
-iris \%>\%
-  summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) \%>\%
+iris |>
+  summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) |>
   fmt_est(columns = "mean", decimals = 2)
 }
