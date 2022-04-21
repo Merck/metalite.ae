@@ -75,8 +75,7 @@ prepare_ae_specific_subgroup <- function(meta,
     population = population,
     observation = observation,
     parameter = parameter,
-    components = components,
-    display = display
+    components = components
   )
 
   outdata_subgroup <- lapply(meta_subgroup,
