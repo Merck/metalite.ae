@@ -51,13 +51,21 @@ tlf_ae_specific <- function(outdata,
                             col_rel_width = NULL,
                             text_font_size = 9,
                             orientation = "portrait",
-                            footnotes = c(
-                              "Every participant is counted a single time for each applicable row and column.",
-                              "A system organ class or specific adverse event appears on this report only if its incidence in one or more of the columns meets the incidence criterion in the report title, after rounding.",
-                              "Adverse event terms are from MedDRA Version {medra_version}."
-                            ),
+                            footnotes = NULL,
                             path_outdata = NULL,
                             path_outtable = NULL) {
+  
+  if(is.null(footnotes)){
+    footnotes <- c(
+      "Every participant is counted a single time for each applicable row and column.",
+      paste(
+        "A system organ class or specific adverse event appears on this report only if",
+        "its incidence in one or more of the columns meets the incidence",
+        "criterion in the report title, after rounding."
+      ),
+      "Adverse event terms are from MedDRA Version {medra_version}."
+    )
+  }
   tbl <- outdata$tbl
   group <- outdata$group
   reference_group <- outdata$reference_group

@@ -55,10 +55,10 @@ n_subject <- function(id, group, par = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#'   library(r2rtf)
-#'   r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
-#'   metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-#'   metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
+#' library(r2rtf)
+#' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
+#' metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
+#' metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 #' }
 avg_event <- function(id, group, par = NULL) {
   if ("factor" %in% class(group)) {
