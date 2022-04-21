@@ -81,7 +81,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>            0.1804057            0.2527189            0.2260777 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu">metalite.ae</span><span class="fu">:::</span><span class="fu">avg_event</span><span class="op">(</span><span class="va">r2rtf_adae</span><span class="op">$</span><span class="va">USUBJID</span>, <span class="va">r2rtf_adae</span><span class="op">$</span><span class="va">TRTA</span>, <span class="va">r2rtf_adae</span><span class="op">$</span><span class="va">AEDECOD</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in db %&gt;% count(group, par, id) %&gt;% group_by(group, par) %&gt;% summarise(avg = mean(n,     na.rm = TRUE), se = sd(n, na.rm = TRUE)/sqrt(n())) %&gt;% tidyr::pivot_wider(id_cols = par,     names_from = group, values_from = c("avg", "se")):</span> could not find function "%&gt;%"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in summarise(group_by(count(db, group, par, id), group, par), avg = mean(n,     na.rm = TRUE), se = sd(n, na.rm = TRUE)/sqrt(n())):</span> could not find function "summarise"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
