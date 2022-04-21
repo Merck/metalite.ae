@@ -83,8 +83,7 @@ extend_ae_specific_duration <- function(outdata,
                                         duration_var,
                                         duration_unit = "Day") {
 
-  # duration_var <- "ADURN"
-  # duration_unit <- "Day"
+  meta <- outdata$meta
 
   population <- outdata$population
   observation <- outdata$observation
@@ -186,6 +185,9 @@ extend_ae_specific_duration <- function(outdata,
 #'
 #' @export
 extend_ae_specific_events <- function(outdata) {
+  
+  meta <- outdata$meta
+  
   population <- outdata$population
   observation <- outdata$observation
   parameter <- outdata$parameter
