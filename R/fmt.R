@@ -23,7 +23,7 @@
 #' @param post text after the number
 #'
 #' @examples
-#' fmt_pct(c(1, 1.52, 0.3, 100))
+#' metalite.ae:::fmt_pct(c(1, 1.52, 0.3, 100))
 fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
   x1 <- ifelse(is.na(x), x, formatC(x, digits = digits, format = "f"))
 
@@ -62,9 +62,9 @@ fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
 #' @examples
 #' library(dplyr) # required to run examples
 #' data(iris)
-#' iris |>
-#'   summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) |>
-#'   fmt_est(columns = "mean", decimals = 2)
+#' x <- iris |>
+#'   summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) 
+#' fmt_est(x$mean, x$sd)
 #' @export
 fmt_est <- function(mean,
                     sd = rep(NA, length(mean)),

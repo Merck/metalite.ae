@@ -39,6 +39,7 @@
 #'     observation = "wk12",
 #'     parameter = "rel"
 #'   ) |>
+#'   format_ae_specific() |>
 #'   tlf_ae_specific(
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #'     medra_version = "24.0",

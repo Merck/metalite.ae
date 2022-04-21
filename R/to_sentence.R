@@ -20,7 +20,7 @@
 #' @param x a character vector
 #'
 #' @examples
-#' to_sentence("this is A Example")
+#' metalite.ae:::to_sentence("this is A Example")
 to_sentence <- function(x) {
   gsub("(^[[:alpha:]])", "\\U\\1", tolower(x), perl = TRUE)
 }

@@ -24,8 +24,8 @@
 #' @examples
 #' library(r2rtf)
 #' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
-#' n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-#' n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
+#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
+#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 n_subject <- function(id, group, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))

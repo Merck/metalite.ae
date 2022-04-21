@@ -13,5 +13,5 @@ to_sentence(x)
 To Sentence Style
 }
 \examples{
-to_sentence("this is A Example")
+metalite.ae:::to_sentence("this is A Example")
 }

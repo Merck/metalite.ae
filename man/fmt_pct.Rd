@@ -19,5 +19,5 @@ fmt_pct(x, digits = 1, pre = "(", post = ")")
 Format percentage
 }
 \examples{
-fmt_pct(c(1, 1.52, 0.3, 100))
+metalite.ae:::fmt_pct(c(1, 1.52, 0.3, 100))
 }
