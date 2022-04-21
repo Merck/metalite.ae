@@ -54,6 +54,7 @@ n_subject <- function(id, group, par = NULL) {
 #' @inheritParams n_subject
 #'
 #' @examples
+#' library(r2rtf)
 #' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
 #' metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
 #' metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
