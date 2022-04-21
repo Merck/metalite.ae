@@ -18,9 +18,3 @@ avg_duration(id, group, dur, par = NULL)
 \description{
 Average number of events
 }
-\examples{
-library(r2rtf)
-r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
-avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
-}

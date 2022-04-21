@@ -54,12 +54,9 @@ n_subject <- function(id, group, par = NULL) {
 #' @inheritParams n_subject
 #'
 #' @examples
-#' \dontrun{
-#' library(r2rtf)
 #' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
 #' metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
 #' metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
-#' }
 avg_event <- function(id, group, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))
@@ -103,11 +100,6 @@ avg_event <- function(id, group, par = NULL) {
 #' @inheritParams n_subject
 #' @param dur a numeric vector of AE duration
 #'
-#' @examples
-#' library(r2rtf)
-#' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
-#' avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-#' avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 avg_duration <- function(id, group, dur, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))
