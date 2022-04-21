@@ -21,7 +21,8 @@
 #' @param digits number of digits
 #' @param pre text before the number
 #' @param post text after the number
-#'
+#' @importFrom stats model.response pchisq pnorm qchisq sd
+#' 
 #' @examples
 #' metalite.ae:::fmt_pct(c(1, 1.52, 0.3, 100))
 fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
