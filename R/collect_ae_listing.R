@@ -20,10 +20,20 @@
 #' @param outdata a `outdata` object created by `prepare_ae_specific`
 #' @param display a vector with name of variable used to display on AE listing.
 #'
+#' @import metalite
+#' @examples
+#' library(metalite)
+#' library(metalite.ae)
+#' meta <- meta_ae_dummy()
+#' 
+#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |> 
+#' collect_ae_listing(), head, 10)
+#' 
 #' @export
 
 collect_ae_listing <- function(outdata,
-                               display = c("ASTDY","AESEV","AESER","AEREL","AEACN","AEOUT", 'SITEID','ADURN', 'ADURU')) {
+                               display = c('SEX', 'RACE', 'AGE', "ASTDY","AESEV","AESER", 
+                                           "AEREL","AEACN","AEOUT", 'SITEID','ADURN', 'ADURU')) {
   res <- outdata
   
   obs_group <- collect_adam_mapping(res$meta, res$observation)$group
@@ -31,7 +41,7 @@ collect_ae_listing <- function(outdata,
   par_var <- collect_adam_mapping(res$meta, res$parameter)$var
   
   obs <- collect_observation_record(res$meta, res$population, res$observation, res$parameter,
-                                    var = c('SEX', 'RACE', 'AGE', par_var, obs_id, obs_group, display)
+                                    var = c(par_var, obs_id, obs_group, display)
   )
   
   res$ae_listing <- obs[,!(names(obs) == "SAFFL")]
