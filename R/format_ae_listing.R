@@ -31,7 +31,7 @@ propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
 #' 
 #' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |> 
 #' collect_ae_listing() |>
-#' format_ae_listing(), head, 10)
+#' format_ae_listing(), head, 100)
 #'
 #' @export
 
@@ -95,7 +95,8 @@ format_ae_listing <- function(outdata,
   
   # Duration
   if("ADURN" %in% toupper(names(res)) & "ADURU" %in% toupper(names(res))){
-    res$Duration <- paste(ifelse(is.na(res$ADURN), "", as.character(res$ADURN)) ,propercase(res$ADURU),sep=" ") # AE duration with unit
+    res$Duration <- paste0(paste(ifelse(is.na(res$ADURN), "", as.character(res$ADURN)) ,propercase(res$ADURU),sep=" "),
+                           ifelse(res$ADURN <= 1, "", "s"))# AE duration with unit
     res <- res[,!(names(res) %in% c("ADURN", "ADURU"))]
   }
   
