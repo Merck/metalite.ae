@@ -2,7 +2,6 @@
 #' @param x a character vector to propcase
 #'
 #' @examples
-#' 
 #' propercase("hello world")
 #' 
 propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2)))
