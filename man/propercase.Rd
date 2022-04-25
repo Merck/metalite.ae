@@ -12,8 +12,3 @@ propercase(x)
 \description{
 Function to propcase character variable
 }
-\examples{
-
-propercase("hello world")
-
-}

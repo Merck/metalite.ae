@@ -1,6 +1,7 @@
 #' Function to propcase character variable
 #' @param x a character vector to propcase
 #' 
+#' 
 propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2)))
 
 #    Copyright (c) 2022 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
