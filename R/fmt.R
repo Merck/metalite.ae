@@ -103,7 +103,7 @@ fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
 fmt_pval <- function(p, digits = 3, width = 3 + digits) {
   scale <- 10^(-1 * digits)
   p_scale <- paste0("<", scale)
-  if_else(p < scale, p_scale,
+  dplyr::if_else(p < scale, p_scale,
     formatC(p, digits = digits, format = "f", width = width)
   )
 }

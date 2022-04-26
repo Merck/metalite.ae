@@ -77,18 +77,18 @@ avg_event <- function(id, group, par = NULL) {
     res <- data.frame(res)
 
     tmp <- db |>
-      count(group, par, id) |>
-      group_by(group, par) |>
-      summarise(avg = mean(n, na.rm = TRUE), se = sd(n, na.rm = TRUE) / sqrt(n())) |>
+      dplyr::count(group, par, id) |>
+      dplyr::group_by(group, par) |>
+      dplyr::summarise(avg = mean(n, na.rm = TRUE), se = sd(n, na.rm = TRUE) / sqrt(dplyr::n())) |>
       tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
     avg <- tmp |>
-      select(starts_with("avg")) |>
+      dplyr::select(dplyr::starts_with("avg")) |>
       as.data.frame()
     names(avg) <- u_group
 
     se <- tmp |>
-      select(starts_with("se")) |>
+      dplyr::select(dplyr::starts_with("se")) |>
       as.data.frame()
     names(se) <- u_group
   }
@@ -111,10 +111,10 @@ avg_duration <- function(id, group, dur, par = NULL) {
   if (is.null(par)) {
     db <- data.frame(id = id, group = group, dur = dur)
     res <- db |>
-      group_by(group) |>
-      summarise(
+      dplyr::group_by(group) |>
+      dplyr::summarise(
         avg = mean(dur, na.rm = TRUE),
-        se = sd(dur, na.rm = TRUE) / sqrt(n())
+        se = sd(dur, na.rm = TRUE) / sqrt(dplyr::n())
       )
 
     avg <- res$avg
@@ -126,20 +126,20 @@ avg_duration <- function(id, group, dur, par = NULL) {
     db <- data.frame(id = id, group = group, dur = dur, par = par)
 
     tmp <- db |>
-      group_by(group, par) |>
-      summarise(
+      dplyr::group_by(group, par) |>
+      dplyr::summarise(
         avg = mean(dur, na.rm = TRUE),
         se = sd(dur, na.rm = TRUE) / sqrt(n())
       ) |>
       tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
     avg <- tmp |>
-      select(starts_with("avg")) |>
+      dplyr::select(dplyr::starts_with("avg")) |>
       as.data.frame()
     names(avg) <- u_group
 
     se <- tmp |>
-      select(starts_with("se")) |>
+      dplyr::select(dplyr::starts_with("se")) |>
       as.data.frame()
     names(se) <- u_group
   }
