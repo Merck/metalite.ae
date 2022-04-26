@@ -129,7 +129,7 @@ avg_duration <- function(id, group, dur, par = NULL) {
       dplyr::group_by(group, par) |>
       dplyr::summarise(
         avg = mean(dur, na.rm = TRUE),
-        se = sd(dur, na.rm = TRUE) / sqrt(n())
+        se = sd(dur, na.rm = TRUE) / sqrt(dplyr::n())
       ) |>
       tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
