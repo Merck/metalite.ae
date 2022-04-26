@@ -20,7 +20,6 @@ Imports:
     r2rtf,
     glue,
     DescTools, 
-    dplyr,
     stats
 Suggests: 
     testthat (>= 3.0.0),
@@ -30,6 +29,7 @@ Suggests:
     covr,
     readxl,
     rprojroot,
+    dplyr,
     tidyr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)  

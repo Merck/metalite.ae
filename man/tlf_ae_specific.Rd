@@ -42,6 +42,7 @@ displayed e.g. c(9,20,40).}
 Specific Adverse Events Table
 }
 \examples{
+\dontrun{
 library(r2rtf)
 library(metalite)
 meta <- meta_ae_dummy()
@@ -59,4 +60,5 @@ meta |>
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )
+ }
 }

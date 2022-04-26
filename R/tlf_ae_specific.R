@@ -29,6 +29,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' library(r2rtf)
 #' library(metalite)
 #' meta <- meta_ae_dummy()
@@ -46,6 +47,7 @@
 #'     path_outdata = tempfile(fileext = ".Rdata"),
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
+#'  }
 tlf_ae_specific <- function(outdata,
                             medra_version,
                             source,
