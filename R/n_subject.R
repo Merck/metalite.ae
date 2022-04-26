@@ -79,7 +79,7 @@ avg_event <- function(id, group, par = NULL) {
     tmp <- db |>
       dplyr::count(group, par, id) |>
       dplyr::group_by(group, par) |>
-      dplyr::summarise(avg = mean(n, na.rm = TRUE), se = sd(n, na.rm = TRUE) / sqrt(dplyr::n())) |>
+      dplyr::summarise(avg = mean(.x$n, na.rm = TRUE), se = sd(.x$n, na.rm = TRUE) / sqrt(dplyr::n())) |>
       tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
     avg <- tmp |>
