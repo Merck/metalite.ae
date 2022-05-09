@@ -12,7 +12,6 @@ Authors@R: c(
     person("Merck Sharp & Dohme Corp", role = c("cph"))
     )
 Description: Adverse events analysis using the 'metalite' data structure.
-Depends: R (>= 4.1.0)
 License: GPL-3
 URL: https://merck.github.io/metalite.ae/, https://github.com/Merck/metalite.ae
 BugReports: https://github.com/Merck/metalite.ae/issues
