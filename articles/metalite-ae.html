@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">metalite.ae</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,14 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
 </form>
 
-      <ul class="navbar-nav"></ul>
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Merck/metalite.ae/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 
     
@@ -70,7 +77,7 @@
       <img src="" class="logo" alt=""><h1>Introduction to metalite.ae</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/Merck/metalite.ae/blob/HEAD/vignettes/metalite-ae.Rmd" class="external-link"><code>vignettes/metalite-ae.Rmd</code></a></small>
       <div class="d-none name"><code>metalite-ae.Rmd</code></div>
     </div>
 
@@ -89,38 +96,40 @@
 <div class="section level3">
 <h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
 </h3>
-<p>The general workflow is splited into three parts.</p>
+<p>The general workflow is splitted into three parts.</p>
 <ol style="list-style-type: decimal">
-<li>define meta data information using <code>metalite</code> package</li>
-<li>prepare outdata using <code>prepare_xxx</code> functions</li>
-<li>extend outdata using <code>extend_xxx</code> functions</li>
-<li>format outdata using <code>format_xxx</code> functions</li>
-<li>create TLFs using <code>tlf_xxx</code> functions</li>
+<li>Define meta data information using <code>metalite</code> package</li>
+<li>Prepare outdata using <code>prepare_xxx</code> functions</li>
+<li>Extend outdata using <code>extend_xxx</code> functions</li>
+<li>Format outdata using <code>format_xxx</code> functions</li>
+<li>Create TLFs using <code>tlf_xxx</code> functions</li>
 </ol>
 <p>For example, we can create a simple AE summary table as below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/meta_ae_dummy.html">meta_ae_dummy</a></span><span class="op">(</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span>population <span class="op">=</span> <span class="st">"apat"</span>, 
-                     observation <span class="op">=</span> <span class="st">"wk12"</span>, 
-                     parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span><span class="op">)</span> |&gt;
-  
+  <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="st">"apat"</span>,
+    observation <span class="op">=</span> <span class="st">"wk12"</span>,
+    parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span>
+  <span class="op">)</span> |&gt;
   <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span><span class="op">)</span> |&gt;
-  
-  <span class="fu"><a href="../reference/tlf_ae_summary.html">tlf_ae_summary</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
-                 path_outtable <span class="op">=</span> <span class="st">"outtable/ae0summary.rtf"</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/tlf_ae_summary.html">tlf_ae_summary</a></span><span class="op">(</span>
+    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
+    path_outtable <span class="op">=</span> <span class="st">"outtable/ae0summary.rtf"</span>
+  <span class="op">)</span>
 <span class="co">#&gt; [1] "any"</span>
 <span class="co">#&gt; [1] "rel"</span>
 <span class="co">#&gt; [1] "ser"</span>
 <span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/ae0summary.rtf</span></code></pre></div>
-<embed src="outtable/ae0summary.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>More examples can be found in <a href="ae-summary.html">ae-summary</a> and <a href="ae-specific.html">ae-specific</a> pages.</p>
+<embed src="outtable/ae0summary.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>More examples can be found in <code><a href="../articles/ae-summary.html">vignette("ae-summary")</a></code> and <code><a href="../articles/ae-specific.html">vignette("ae-specific")</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="highlighted-features">Highlighted features<a class="anchor" aria-label="anchor" href="#highlighted-features"></a>
 </h3>
 <ul>
-<li>enable metadata structure</li>
-<li>consistent input and output in standard functions</li>
-<li>streamline mock table generation</li>
+<li>Enable metadata structure</li>
+<li>Consistent input and output in standard functions</li>
+<li>Streamline mock table generation</li>
 </ul>
 </div>
 </div>
@@ -132,7 +141,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+<p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
 </div>
 
 <div class="pkgdown-footer-right">

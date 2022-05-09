@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">metalite.ae</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,14 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
 </form>
 
-      <ul class="navbar-nav"></ul>
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Merck/metalite.ae/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 
     
@@ -70,7 +77,7 @@
       <img src="" class="logo" alt=""><h1>AE Specification</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/Merck/metalite.ae/blob/HEAD/vignettes/ae-specific.Rmd" class="external-link"><code>vignettes/ae-specific.Rmd</code></a></small>
       <div class="d-none name"><code>ae-specific.Rmd</code></div>
     </div>
 
@@ -98,17 +105,18 @@
 <code>extend_ae_specific_events</code>: add average number of AE events.</li>
 </ul>
 <div class="section level3">
-<h3 id="analysis-preparation">Analysis Preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
+<h3 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
 </h3>
 <p>The <code>prepare_ae_specific</code> function is design to be used for multiple purpose. The input of the function is a <code>meta</code> objects created from <code>metalite.ae</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_dummy.html">meta_ae_dummy</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>The output of the function is an <code>outdata</code> objects contain a list of analysis raw datasets.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_specific.html">prepare_ae_specific</a></span><span class="op">(</span><span class="va">meta</span>, 
-                               population <span class="op">=</span> <span class="st">"apat"</span>, 
-                               observation <span class="op">=</span> <span class="st">"wk12"</span>, 
-                               parameter <span class="op">=</span> <span class="st">"rel"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_specific.html">prepare_ae_specific</a></span><span class="op">(</span><span class="va">meta</span>,
+  population <span class="op">=</span> <span class="st">"apat"</span>,
+  observation <span class="op">=</span> <span class="st">"wk12"</span>,
+  parameter <span class="op">=</span> <span class="st">"rel"</span>
+<span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outdata</span>
 <span class="co">#&gt; List of 12</span>
@@ -139,7 +147,8 @@
 <span class="co">#&gt; 5          1000                            Cardiac disorders</span>
 <span class="co">#&gt; 6          1021                          Atrial fibrillation</span></code></pre></div>
 <ul>
-<li>`n_pop: participants in population</li>
+<li>
+<code>n_pop</code>: participants in population</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outdata</span><span class="op">$</span><span class="va">n_pop</span>
@@ -186,12 +195,12 @@
 <span class="co">#&gt; 25   -1.162791   1.218162</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="format-output">Format Output<a class="anchor" aria-label="anchor" href="#format-output"></a>
+<h3 id="format-output">Format output<a class="anchor" aria-label="anchor" href="#format-output"></a>
 </h3>
 <p>After we have the raw analysis results, we can use <code>format_ae_specific</code> to prepare the outdata to create RTF tables.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> |&gt;
-  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span>
 <span class="co">#&gt;                                             name n_1 prop_1 n_2 prop_2 n_3</span>
 <span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span>
@@ -210,7 +219,7 @@
 <p>We can hide total column</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> |&gt;
-  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span><span class="op">)</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span>
 <span class="co">#&gt;                                             name n_1 prop_1 n_2 prop_2 n_3</span>
 <span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span>
@@ -229,7 +238,7 @@
 <p>Adding risk difference</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> |&gt;
-  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span>
 <span class="co">#&gt;                                             name n_1 prop_1 n_2 prop_2 n_3</span>
 <span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span>
@@ -249,7 +258,7 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> |&gt;
   <span class="fu"><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference</a></span><span class="op">(</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span>, <span class="st">"diff_ci"</span><span class="op">)</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span>, <span class="st">"diff_ci"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span>
 <span class="co">#&gt;                                             name n_1 prop_1 n_2 prop_2 n_3</span>
 <span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span>
@@ -269,7 +278,7 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> |&gt;
   <span class="fu"><a href="../reference/extend_ae_specific_duration.html">extend_ae_specific_duration</a></span><span class="op">(</span>duration_var <span class="op">=</span> <span class="st">"ADURN"</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"dur"</span><span class="op">)</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"dur"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span>
 <span class="co">#&gt;                                             name n_1 prop_1        dur_1 n_2</span>
 <span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;           NA  84</span>
@@ -289,7 +298,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> |&gt;
   <span class="fu"><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events</a></span><span class="op">(</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"events"</span><span class="op">)</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"events"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span>
 <span class="co">#&gt;                                             name n_1 prop_1     events_1 n_2</span>
 <span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;           NA  84</span>
@@ -307,7 +316,7 @@
 <span class="co">#&gt; 25   (0.0)   1.7 ( 0.3)   2  (2.4)   1.7 ( 0.3)</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="mock-data-preparation">Mock Data Preparation<a class="anchor" aria-label="anchor" href="#mock-data-preparation"></a>
+<h3 id="mock-data-preparation">Mock data preparation<a class="anchor" aria-label="anchor" href="#mock-data-preparation"></a>
 </h3>
 <p>We can also use <code>format_ae_specific</code> to create mock output data.</p>
 <p>The purpose of the <code>mock</code> argument is not to create a comprehensive mock table template, but a handy way to help user create a mock table that mimic the exact output layout.</p>
@@ -332,15 +341,17 @@
 <span class="co">#&gt; 6  (x.x)    x  (x.x)</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="rtf-tables">RTF Tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>
+<h3 id="rtf-tables">RTF tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>
 </h3>
 <p>By using <code>tlf_ae_specific</code>, we can transfer the output from <code>format_ae_specific</code> to an RTF table.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outdata</span> |&gt; 
+<code class="sourceCode R"><span class="va">outdata</span> |&gt;
   <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="../reference/tlf_ae_specific.html">tlf_ae_specific</a></span><span class="op">(</span>medra_version <span class="op">=</span> <span class="st">"24.0"</span>, 
-                  source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
-                  path_outtable <span class="op">=</span> <span class="st">"outtable/ae0specific1.rtf"</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/tlf_ae_specific.html">tlf_ae_specific</a></span><span class="op">(</span>
+    medra_version <span class="op">=</span> <span class="st">"24.0"</span>,
+    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
+    path_outtable <span class="op">=</span> <span class="st">"outtable/ae0specific1.rtf"</span>
+  <span class="op">)</span>
 <span class="co">#&gt; Warning in matrix(text_rtf, nrow = nrow(text), ncol = ncol(text)): data length</span>
 <span class="co">#&gt; differs from size of matrix: [3 != 1 x 1]</span>
 
@@ -355,14 +366,16 @@
 <span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/ae0specific1.rtf</span></code></pre></div>
 <embed src="outtable/ae0specific1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>The <code>tlf_ae_specific</code> function also provide some commonly used argument to customize the table.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outdata</span> |&gt; 
+<code class="sourceCode R"><span class="va">outdata</span> |&gt;
   <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="../reference/tlf_ae_specific.html">tlf_ae_specific</a></span><span class="op">(</span>medra_version <span class="op">=</span> <span class="st">"24.0"</span>, 
-                  source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
-                  col_rel_width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span>,
-                  text_font_size <span class="op">=</span> <span class="fl">8</span>,
-                  orientation <span class="op">=</span> <span class="st">"landscape"</span>,
-                  path_outtable <span class="op">=</span> <span class="st">"outtable/ae0specific2.rtf"</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/tlf_ae_specific.html">tlf_ae_specific</a></span><span class="op">(</span>
+    medra_version <span class="op">=</span> <span class="st">"24.0"</span>,
+    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
+    col_rel_width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span>,
+    text_font_size <span class="op">=</span> <span class="fl">8</span>,
+    orientation <span class="op">=</span> <span class="st">"landscape"</span>,
+    path_outtable <span class="op">=</span> <span class="st">"outtable/ae0specific2.rtf"</span>
+  <span class="op">)</span>
 <span class="co">#&gt; Warning in matrix(text_rtf, nrow = nrow(text), ncol = ncol(text)): data length</span>
 <span class="co">#&gt; differs from size of matrix: [3 != 1 x 1]</span>
 
@@ -377,11 +390,13 @@
 <span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/ae0specific2.rtf</span></code></pre></div>
 <embed src="outtable/ae0specific2.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>We can also generate the mock table</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outdata</span> |&gt; 
+<code class="sourceCode R"><span class="va">outdata</span> |&gt;
   <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="../reference/tlf_ae_specific.html">tlf_ae_specific</a></span><span class="op">(</span>medra_version <span class="op">=</span> <span class="st">"24.0"</span>, 
-                  source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
-                  path_outtable <span class="op">=</span> <span class="st">"outtable/mock_ae0specific1.rtf"</span><span class="op">)</span> 
+  <span class="fu"><a href="../reference/tlf_ae_specific.html">tlf_ae_specific</a></span><span class="op">(</span>
+    medra_version <span class="op">=</span> <span class="st">"24.0"</span>,
+    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,
+    path_outtable <span class="op">=</span> <span class="st">"outtable/mock_ae0specific1.rtf"</span>
+  <span class="op">)</span>
 <span class="co">#&gt; Warning in matrix(text_rtf, nrow = nrow(text), ncol = ncol(text)): data length</span>
 <span class="co">#&gt; differs from size of matrix: [3 != 1 x 1]</span>
 
@@ -404,14 +419,14 @@
 <h3 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h3>
 <ul>
-<li>cross check the capability in SAS standard macro to identify required features.</li>
+<li>Cross check the capability in SAS standard macro to identify required features.</li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="technical-requirements-for-future-development">Technical requirements (For future development)<a class="anchor" aria-label="anchor" href="#technical-requirements-for-future-development"></a>
+<h3 id="technical-requirements-for-future-development">Technical requirements (for future development)<a class="anchor" aria-label="anchor" href="#technical-requirements-for-future-development"></a>
 </h3>
 <ul>
-<li>Avoiding <code>%&gt;%</code>, using <code>|&gt;</code> to reduce dependecy of <code>magrittr</code>.</li>
+<li>Avoiding <code>%&gt;%</code>, using <code>|&gt;</code> to reduce dependency of <code>magrittr</code>.</li>
 <li>The functions in the <code>R/</code> folder should not depends on <code>dplyr</code>, <code>tidyr</code> etc.</li>
 </ul>
 </div>
@@ -424,7 +439,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+<p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
 </div>
 
 <div class="pkgdown-footer-right">
