@@ -4,9 +4,18 @@
 \name{metalite.ae-package}
 \alias{metalite.ae}
 \alias{metalite.ae-package}
-\title{metalite.ae: AE Analysis Using `metalite`}
+\title{metalite.ae: Adverse Events Analysis Using 'metalite'}
 \description{
-An R package for adverse events analysis using `metalite` data structure.
+Adverse events analysis using the 'metalite' data structure.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://merck.github.io/metalite.ae/}
+  \item \url{https://github.com/Merck/metalite.ae}
+  \item Report bugs at \url{https://github.com/Merck/metalite.ae/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Nan Xiao \email{nan.xiao1@merck.com}

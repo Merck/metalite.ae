@@ -53,11 +53,14 @@ n_subject <- function(id, group, par = NULL) {
 #'
 #' @inheritParams n_subject
 #'
+#' @importFrom dplyr count group_by summarise select starts_with n
+#' @importFrom tidyr pivot_wider
+#'
 #' @examples
-#' #library(r2rtf)
-#' #r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
-#' #metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-#' #metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
+#' # library(r2rtf)
+#' # r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
+#' # metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
+#' # metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 avg_event <- function(id, group, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))
@@ -101,6 +104,7 @@ avg_event <- function(id, group, par = NULL) {
 #' @inheritParams n_subject
 #' @param dur a numeric vector of AE duration
 #'
+#' @importFrom dplyr n
 avg_duration <- function(id, group, dur, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))

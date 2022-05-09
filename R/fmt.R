@@ -22,7 +22,7 @@
 #' @param pre text before the number
 #' @param post text after the number
 #' @importFrom stats model.response pchisq pnorm qchisq sd
-#' 
+#'
 #' @examples
 #' metalite.ae:::fmt_pct(c(1, 1.52, 0.3, 100))
 fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
@@ -34,15 +34,14 @@ fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
 }
 
 #' Format Model Estimator
-#' @description
-#' The Format Model Estimator function format mean sd/se to a format as x.x or x.x (x.xx)
-#' if both mean and sd/se are defined.
 #'
+#' The Format Model Estimator function format mean sd/se to a format as
+#' x.x or x.x (x.xx) if both mean and sd/se are defined.
 #'
-#' The function assume 1 or 2 column.
-#'   If there is only 1 column, only represent mean
-#'   If there are 2 column, represent mean (sd) or mean(se)
-#' Decimals will understand the number will be formated as x.x (x.xx)
+#' The function assumes 1 column or 2 columns.
+#' - If there is only 1 column, only represent mean
+#' - If there are 2 columns, represent mean (sd) or mean(se)
+#' Decimals will understand the number will be formatted as x.x (x.xx)
 #'
 #' @param mean a numeric vector of mean value
 #' @param sd a numeric vector of sd value
@@ -64,8 +63,9 @@ fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
 #' library(dplyr) # required to run examples
 #' data(iris)
 #' x <- iris |>
-#'   summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) 
+#'   summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length))
 #' fmt_est(x$mean, x$sd)
+#'
 #' @export
 fmt_est <- function(mean,
                     sd = rep(NA, length(mean)),
@@ -98,8 +98,10 @@ fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
 #' @param p a numeric vector of p-values
 #' @param digits digits of each column, i.e. format as x.xxx
 #' @param width width of each column
-#' @export
 #'
+#' @importFrom dplyr if_else
+#'
+#' @export
 fmt_pval <- function(p, digits = 3, width = 3 + digits) {
   scale <- 10^(-1 * digits)
   p_scale <- paste0("<", scale)

@@ -24,13 +24,16 @@ fmt_est(
 the same data frame \code{tbl} with additional attributes for page features
 }
 \description{
-The Format Model Estimator function format mean sd/se to a format as x.x or x.x (x.xx)
-if both mean and sd/se are defined.
-
-The function assume 1 or 2 column.
-If there is only 1 column, only represent mean
-If there are 2 column, represent mean (sd) or mean(se)
-Decimals will understand the number will be formated as x.x (x.xx)
+The Format Model Estimator function format mean sd/se to a format as
+x.x or x.x (x.xx) if both mean and sd/se are defined.
+}
+\details{
+The function assumes 1 column or 2 columns.
+\itemize{
+\item If there is only 1 column, only represent mean
+\item If there are 2 columns, represent mean (sd) or mean(se)
+Decimals will understand the number will be formatted as x.x (x.xx)
+}
 }
 \section{Specification}{
 
@@ -47,6 +50,7 @@ Decimals will understand the number will be formated as x.x (x.xx)
 library(dplyr) # required to run examples
 data(iris)
 x <- iris |>
-  summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length)) 
+  summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length))
 fmt_est(x$mean, x$sd)
+
 }
