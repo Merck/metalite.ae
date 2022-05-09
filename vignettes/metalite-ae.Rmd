@@ -9,13 +9,13 @@ vignette: >
   %\VignetteIndexEntry{Introduction to metalite.ae}
 ---
 
-```{r, echo = FALSE, message = FALSE, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  eval = TRUE,
   comment = "#>",
+  collapse = TRUE,
   out.width = "100%",
-  dpi = 150
+  dpi = 150,
+  eval = TRUE
 )
 ```
 
@@ -24,55 +24,49 @@ library(metalite)
 library(metalite.ae)
 ```
 
-# Overview
+## Overview
 
-`metalite.ae` is an R package for standard adverse events analysis including: 
+`metalite.ae` is an R package for standard adverse events analysis including:
 
-- AE summary 
-- Specific AE analysis 
+- AE summary
+- Specific AE analysis
 - Specific AE subgroup analysis (TODO)
 - AE listing (TODO)
 
-## Workflow 
+### Workflow
 
-The general workflow is splited into three parts. 
+The general workflow is splitted into three parts.
 
-1. define meta data information using `metalite` package 
-1. prepare outdata using `prepare_xxx` functions
-1. extend outdata using `extend_xxx` functions
-1. format outdata using `format_xxx` functions
-1. create TLFs using `tlf_xxx` functions 
+1. Define meta data information using `metalite` package
+1. Prepare outdata using `prepare_xxx` functions
+1. Extend outdata using `extend_xxx` functions
+1. Format outdata using `format_xxx` functions
+1. Create TLFs using `tlf_xxx` functions
 
-For example, we can create a simple AE summary table as below. 
+For example, we can create a simple AE summary table as below.
 
 ```{r}
 meta_ae_dummy() |>
-  prepare_ae_summary(population = "apat", 
-                     observation = "wk12", 
-                     parameter = "any;rel;ser") |>
-  
+  prepare_ae_summary(
+    population = "apat",
+    observation = "wk12",
+    parameter = "any;rel;ser"
+  ) |>
   format_ae_summary() |>
-  
-  tlf_ae_summary(source = "Source:  [CDISCpilot: adam-adsl; adae]",
-                 path_outtable = "outtable/ae0summary.rtf") 
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outtable = "outtable/ae0summary.rtf"
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("outtable/ae0summary.pdf")
 ```
 
-More examples can be found in [ae-summary](ae-summary.html) and [ae-specific](ae-specific.html) pages. 
+More examples can be found in `vignette("ae-summary")` and `vignette("ae-specific")`.
 
-## Highlighted features
+### Highlighted features
 
-- enable metadata structure 
-- consistent input and output in standard functions
-- streamline mock table generation
-
-
-
-
-
-
-
-
+- Enable metadata structure
+- Consistent input and output in standard functions
+- Streamline mock table generation

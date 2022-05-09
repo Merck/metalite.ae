@@ -9,13 +9,13 @@ vignette: >
   %\VignetteIndexEntry{AE Summary}
 ---
 
-```{r, echo = FALSE, message = FALSE, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  eval = TRUE,
   comment = "#>",
+  collapse = TRUE,
   out.width = "100%",
-  dpi = 150
+  dpi = 150,
+  eval = TRUE
 )
 ```
 
@@ -24,36 +24,37 @@ library(metalite)
 library(metalite.ae)
 ```
 
-# Overview
+## Overview
 
-The AE summary analysis is to provide tables to summarize adverse events information. 
-The development of AE summary analysis contain exported functions 
+The AE summary analysis is to provide tables to summarize adverse events information.
+The development of AE summary analysis contain exported functions
 
-- `prepare_ae_summary`: prepare analysis raw datasets 
+- `prepare_ae_summary`: prepare analysis raw datasets
 - `format_ae_summary`: prepare analysis (mock) outdata with proper format
-- `tlf_ae_summary`: transfer (mock) output dataset to RTF table 
+- `tlf_ae_summary`: transfer (mock) output dataset to RTF table
 
-We also prepare (optional) additional function to extend the analysis. 
+We also prepare (optional) additional function to extend the analysis.
 
 - **TODO** `extend_ae_specific_inference`: add risk difference inference results based on M&N method.
 
-## Analysis Preparation
+### Analysis preparation
 
-The `prepare_ae_summary` function is design to be used for multiple purpose. 
-The input of the function is a `meta` objects created from `metalite` package. 
+The `prepare_ae_summary` function is design to be used for multiple purpose.
+The input of the function is a `meta` objects created from `metalite` package.
 
 ```{r}
 meta <- meta_ae_dummy()
 ```
 
-The output of the function is an `outdata` objects contain a list of analysis raw datasets. 
-Here parameter is a group of key words available in the `names(meta$parameter)` and seperated by `;`. 
+The output of the function is an `outdata` objects contain a list of analysis raw datasets.
+Here parameter is a group of key words available in the `names(meta$parameter)` and seperated by `;`.
 
 ```{r}
-outdata <- prepare_ae_summary(meta, 
-                              population = "apat", 
-                              observation = "wk12", 
-                              parameter = "any;rel;ser")
+outdata <- prepare_ae_summary(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
 ```
 
 ```{r}
@@ -66,7 +67,7 @@ The output dataset contains commonly used statistics. The variable is indexed by
 outdata$group
 ```
 
-The row is indexed by the order of `outdata$name`. 
+The row is indexed by the order of `outdata$name`.
 
 ```{r}
 head(data.frame(outdata$order, outdata$name))
@@ -90,20 +91,20 @@ head(outdata$n)
 head(outdata$prop)
 ```
 
-- `diff`: risk difference compared with the `reference_group`. 
+- `diff`: risk difference compared with the `reference_group`.
 
 ```{r}
 head(outdata$diff)
 ```
 
-## Format Output 
+### Format output
 
-After we have the raw analysis results, we can use `format_ae_summary` to prepare the outdata 
-to create RTF tables. 
+After we have the raw analysis results, we can use `format_ae_summary` to prepare the outdata
+to create RTF tables.
 
 ```{r}
 tbl <- outdata |>
-  format_ae_summary() 
+  format_ae_summary()
 head(tbl$tbl)
 ```
 
@@ -111,35 +112,36 @@ We can hide total column
 
 ```{r}
 tbl <- outdata |>
-  format_ae_specific(display = c("n", "prop")) 
+  format_ae_specific(display = c("n", "prop"))
 head(tbl$tbl)
 ```
+
 Adding risk difference
 
 ```{r}
 tbl <- outdata |>
-  format_ae_specific(display = c("n", "prop", "diff")) 
+  format_ae_specific(display = c("n", "prop", "diff"))
 head(tbl$tbl)
 ```
 
-Adding 95% confidence interval of M&N method. It requires to use `extend_ae_specific_inference` 
+Adding 95% confidence interval of M&N method. It requires to use `extend_ae_specific_inference`
 to perform additional calculation.
 
 ```{r, eval = FALSE}
 tbl <- outdata |>
   extend_ae_specific_inference() |>
-  format_ae_specific(display = c("n", "prop", "diff", "diff_ci")) 
+  format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
 head(tbl$tbl)
 ```
 
-## Mock Data Preparation 
+### Mock data preparation
 
 We can also use `format_ae_summary` to create mock output data.
 
-The purpose of the `mock` argument is not to create a comprehensive mock table template, 
-but a handy way to help user create a mock table that mimic the exact output layout. 
+The purpose of the `mock` argument is not to create a comprehensive mock table template,
+but a handy way to help user create a mock table that mimic the exact output layout.
 
-Additional work is required to develop a flexible mock table generation tool 
+Additional work is required to develop a flexible mock table generation tool
 (e.g. a dedicated mock table generation package)
 
 ```{r}
@@ -148,66 +150,66 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-## RTF Tables 
+### RTF tables
 
-By using `tlf_ae_summary`, we can transfer the output from `prepare_ae_summary` to an RTF table. 
-
+By using `tlf_ae_summary`, we can transfer the output from `prepare_ae_summary` to an RTF table.
 
 ```{r}
-outdata |> 
+outdata |>
   format_ae_summary() |>
-  tlf_ae_summary(source = "Source:  [CDISCpilot: adam-adsl; adae]",
-                 path_outtable = "outtable/ae0summary1.rtf") 
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outtable = "outtable/ae0summary1.rtf"
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("outtable/ae0summary1.pdf")
 ```
 
-The `tlf_ae_summary` function also provide some commonly used argument to customize the table. 
+The `tlf_ae_summary` function also provide some commonly used argument to customize the table.
 
 ```{r}
-outdata |> 
+outdata |>
   format_ae_summary() |>
-  tlf_ae_summary(source = "Source:  [CDISCpilot: adam-adsl; adae]",
-                 col_rel_width = c(6, rep(1, 8)),
-                 text_font_size = 8,
-                 orientation = "landscape",
-                 path_outtable = "outtable/ae0summary2.rtf") 
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    col_rel_width = c(6, rep(1, 8)),
+    text_font_size = 8,
+    orientation = "landscape",
+    path_outtable = "outtable/ae0summary2.rtf"
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("outtable/ae0summary2.pdf")
 ```
 
-We can also generate the mock table 
+We can also generate the mock table
 
 ```{r}
-outdata |> 
+outdata |>
   format_ae_summary(mock = TRUE) |>
-  tlf_ae_summary(source = "Source:  [CDISCpilot: adam-adsl; adae]",
-                 path_outtable = "outtable/mock_ae0summary1.rtf") 
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outtable = "outtable/mock_ae0summary1.rtf"
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("outtable/mock_ae0summary1.pdf")
 ```
 
-# Future developement 
+## Future developement
 
-## Features 
+### Features
 
-- enable ci and p-value calculation using M&N method. 
-- cross check the capability in SAS standard macro to identify required features. 
-  + "usermanuals\asr0ae0summary\asr0ae0summary-spec.docx"
-  + "usermanuals\asr0ae0summary0analysis\asr0ae0summary0analysis-spec.docx"
-## Technical requirements (For future development)
+- Enable CI and p-value calculation using M&N method.
+- Cross check the capability in SAS standard macro to identify required features.
+  - `usermanuals/asr0ae0summary/asr0ae0summary-spec.docx`
+  - `usermanuals/asr0ae0summary0analysis/asr0ae0summary0analysis-spec.docx`
 
-- Avoiding `|>`, using `|>` to reduce dependecy of `magrittr`.
+### Technical requirements (For future development)
+
+- Avoiding `|>`, using `|>` to reduce dependency of `magrittr`.
 - The functions in the `R/` folder should not depends on `dplyr`, `tidyr` etc.
-
-
-
-
-
-
