@@ -12,7 +12,6 @@ template:
     dropdown-link-hover-color: "#fff"
     dropdown-link-hover-bg: "#00857c"
 
-
 footer:
   structure:
     left: [developed_by, built_with, legal]
@@ -35,50 +34,54 @@ navbar:
       href: news/index.html
 
 reference:
-- title: AE specification 
+- title: AE specification
   contents:
-  - "prepare_ae_specific"
-  - "extend_ae_specific_duration"
-  - "extend_ae_specific_events"
-  - "extend_ae_specific_inference"
-  - "format_ae_specific"
-  - "tlf_ae_specific"
-- title: AE summary 
+    - prepare_ae_specific
+    - extend_ae_specific_duration
+    - extend_ae_specific_events
+    - extend_ae_specific_inference
+    - format_ae_specific
+    - tlf_ae_specific
+    - collect_ae_listing
+    - format_ae_listing
+- title: AE summary
   contents:
-  - "prepare_ae_summary"
-  - "format_ae_summary"
-  - "tlf_ae_summary"
+    - prepare_ae_summary
+    - format_ae_summary
+    - tlf_ae_summary
 - title: AE subgroup analysis
   contents:
-  - "prepare_ae_specific_subgroup"
+    - prepare_ae_specific_subgroup
 - title: Format
   contents:
-  - "fmt_pct"
-  - "fmt_est"
-  - "fmt_ci"
-  - "fmt_pval"
+    - fmt_pct
+    - fmt_est
+    - fmt_ci
+    - fmt_pval
 - title: Utility
   contents:
-  - "n_subject"
-  - "avg_event"
-  - "avg_duration"
-  - "to_sentence"
-- title: Rate Comparison
+    - n_subject
+    - avg_event
+    - avg_duration
+    - to_sentence
+    - propercase
+- title: Rate comparison
   contents:
-  - "rate_compare"
-  - "rate_compare_sum"
-  - "prop_test_mn"
-- title: Dummy Data
+    - rate_compare
+    - rate_compare_sum
+    - prop_test_mn
+- title: Dummy data
   contents:
-  - "meta_ae_dummy"
+    - meta_ae_dummy
+
 articles:
-- title: Get started 
+- title: Get started
   contents:
-  - metalite-ae
-- title: Design 
+    - metalite-ae
+- title: Design
   contents:
-  - ae-specific
-  - ae-summary
+    - ae-specific
+    - ae-summary
 - title: Specification
   contents:
-  - rate-compare
+    - rate-compare
