@@ -24,7 +24,8 @@ Imports:
     glue,
     metalite,
     r2rtf,
-    stats
+    stats,
+    tidyr
 Suggests:
     covr,
     knitr,
@@ -32,8 +33,7 @@ Suggests:
     rmarkdown,
     readxl,
     rprojroot,
-    testthat (>= 3.0.0),
-    tidyr
+    testthat (>= 3.0.0)
 Remotes:
     Merck/metalite
 Rmarkdwon: echo = TRUE
