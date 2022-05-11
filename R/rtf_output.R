@@ -24,11 +24,9 @@ rtf_output <- function(outdata,
   }
 
   if (!is.null(path_outtable)) {
-    try({
       outdata$rtf |>
         r2rtf::rtf_encode() |>
         r2rtf::write_rtf(file = path_outtable)
-    }, silent = TRUE)
     message("The output is saved in", normalizePath(path_outtable))
   }
 
