@@ -36,5 +36,6 @@ Suggests:
     testthat (>= 3.0.0)
 Remotes:
     Merck/metalite
+    Merck/r2rtf
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
