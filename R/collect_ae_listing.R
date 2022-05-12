@@ -40,6 +40,8 @@ collect_ae_listing <- function(outdata,
   obs_id <- collect_adam_mapping(res$meta, res$observation)$id
   par_var <- collect_adam_mapping(res$meta, res$parameter)$var
   
+  res$meta$data_observation <- apply(res$meta$data_observation,2,toupper)
+  
   obs <- collect_observation_record(res$meta, res$population, res$observation, res$parameter,
                                     var = c(par_var, obs_id, obs_group, display)
   )
