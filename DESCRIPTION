@@ -38,3 +38,4 @@ Remotes:
     Merck/metalite
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
+Config/testthat/edition: 3
