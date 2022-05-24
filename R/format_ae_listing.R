@@ -1,9 +1,3 @@
-#' Function to propcase character variable
-#' @param x a character vector to propcase
-#' 
-#' 
-propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2)))
-
 #    Copyright (c) 2022 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
 #
 #    This file is part of the metalite.ae program.
@@ -20,19 +14,25 @@ propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#' Function to propcase character variable
+#' @param x a character vector to propcase
+#'
+#'
+propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2)))
+
 
 #' Format AE listing analysis
 #'
 #' @param outdata a `outdata` object created by `prepare_ae_specific`
 #' @param display_subline whether display subline or not.
-#' 
+#'
 #' @import metalite
 #' @examples
 #' library(metalite)
 #' library(metalite.ae)
 #' meta <- meta_ae_dummy()
-#' 
-#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |> 
+#'
+#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |>
 #' collect_ae_listing() |>
 #' format_ae_listing(), head, 100)
 #'
@@ -41,118 +41,129 @@ propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
 format_ae_listing <- function(outdata,
                               display_subline=FALSE) {
   res <- outdata$ae_listing
-  
+
   obs_group <- collect_adam_mapping(outdata$meta, outdata$observation)$group
   obs_id <- collect_adam_mapping(outdata$meta, outdata$observation)$id
   par_var <- collect_adam_mapping(outdata$meta, outdata$parameter)$var
-  
+
   if(display_subline){
     # Subline
-    # create a subject line with participant's demographic information.         
-    # this is for page_by argument in rtf_body function 
+    # create a subject line with participant's demographic information.
+    # this is for page_by argument in rtf_body function
     res$subline <- paste0("Gender = ",res$SEX,
-                          ", Race = ",res$RACE, 
+                          ", Race = ",res$RACE,
                           ", Age = ",res$AGE, " Years")
-    
+
   }
-  
-  
-  res$Gender <- propercase(res$SEX)
-  res <- res[,!(names(res) == "SEX")]
-  
-  res$Race <- propercase(res$RACE)
-  res <- res[,!(names(res) == "RACE")]
-  
-  res$Age <- propercase(res$AGE)
-  res <- res[,!(names(res) == "AGE")]
-  
-  res$Treatment_Group <- propercase(res[[obs_group]])
-  res <- res[,!(names(res) == obs_group)]
-  
-  
-  # Onset Epoch
-  if("EPOCH" %in% toupper(names(res))){
-    res$EPOCH1 <- propercase(res$EPOCH) # propcase the EPOCH    
-  }
-  
+
+  cols_remove <- c("SEX", "RACE", "AGE", obs_group, par_var, obs_id)
+
   # Site ID
   if("SITEID" %in% toupper(names(res))){
-    res$Site_ID <- propercase(res$SITEID)
-    res <- res[,!(names(res) == "SITEID")]   
+    res$Site_Number <- propercase(res$SITEID)
+    cols_remove <- c(cols_remove, "SITEID")
   }
-  
+
   if("SITENUM" %in% toupper(names(res))){
-    res$Site_ID <- propercase(res$SITENUM)
-    res <- res[,!(names(res) == "SITENUM")]   
+    res$Site_Number <- res$SITENUM
+    cols_remove <- c(cols_remove, "SITENUM")
   }
-  
+
+  # Participant ID
+  res$Participant_ID <- res[[obs_id]]
+
+  res$Gender <- tools::toTitleCase(res$SEX)
+
+  res$Race <- tools::toTitleCase(tolower(res$RACE))
+
+  res$Age <- res$AGE
+  res$Treatment_Group <- res[[obs_group]]
+
+  # Onset Epoch
+  if("EPOCH" %in% toupper(names(res))){
+    res$Onset_Epoch <- tools::toTitleCase(tolower(res$EPOCH)) # propcase the EPOCH
+    cols_remove <- c(cols_remove, "EPOCH")
+  }
+
   # Relative day of onset (ASTDY)
   if("ASTDY" %in% toupper(names(res))){
     res$Relative_Day_of_Onset <- res$ASTDY
-    res <- res[,!(names(res) == "ASTDY")]   
+    cols_remove <- c(cols_remove, "ASTDY")
   }
-  
+
   # Adverse Event
   res$Adverse_Event <- propercase(res[[par_var]])
   res <- res[,!(names(res) == par_var)]
-  
+
   # Duration
   if("ADURN" %in% toupper(names(res)) & "ADURU" %in% toupper(names(res))){
-    res$Duration <- paste0(paste(ifelse(is.na(res$ADURN), "", as.character(res$ADURN)) ,propercase(res$ADURU),sep=" "),
+    res$Duration <- paste0(paste(ifelse(is.na(res$ADURN), "", as.character(res$ADURN)) ,tools::toTitleCase(tolower(res$ADURU)),sep=" "),
                            ifelse(res$ADURN <= 1, "", "s"))# AE duration with unit
-    res <- res[,!(names(res) %in% c("ADURN", "ADURU"))]
+
+    for(i in 1:length(res$Duration)){
+      if(is.na(res$ADURN[i])){
+        res$Duration[i] <- ifelse(charmatch(toupper(res$AEOUT[i]), 'RECOVERING/RESOLVING')>0 |
+                                    charmatch(toupper(res$AEOUT[i]), 'NOT RECOVERED/NOT RESOLVED')>0, 'Continuing', 'Unknown')
+      }
+    }
+    cols_remove <- c(cols_remove, "ADURN", "ADURU")
   }
-  
-  # Serious
-  if("AESER" %in% toupper(names(res))){
-    res$Intensity <- propercase(res$AESER)
-    res <- res[,!(names(res) == "AESER")]
-  }
-  
+
   # Intensity
   if("AESEV" %in% toupper(names(res))){
     res$Serious <- propercase(res$AESEV)
-    res <- res[,!(names(res) == "AESEV")]
+    cols_remove <- c(cols_remove, "AESEV")
   }
-  
+
+  # Serious
+  if("AESER" %in% toupper(names(res))){
+    res$Intensity <- propercase(res$AESER)
+    cols_remove <- c(cols_remove, "AESER")
+  }
+
   # AE related
-  if("AEREL" %in% toupper(names(res))){  
+  if("AEREL" %in% toupper(names(res))){
     res$Related <- ifelse(res$AEREL == 'RELATED', "Y", ifelse(
-      res$AEREL == 'NOT RELATED', "N", propercase(res$AEREL)
+      res$AEREL == 'NOT RELATED', "N",  tools::toTitleCase(tolower(res$AEREL))
     ))
-    
-    res <- res[,!(names(res) == "AEREL")]
+
+    cols_remove <- c(cols_remove, "AEREL")
   }
-  
+
   # Action taken
   if("AEACN" %in% toupper(names(res))){
-    res$Action_Taken <- ifelse(
-      res$AEACN == 'DOSE NOT CHANGED', 'None', ifelse(
-        res$AEACN =='DOSE REDUCED', 'Reduced', ifelse(
-          res$AEACN =='DRUG INTERRUPTED', 'Interrupted',ifelse(
-            res$AEACN =='DOSE INCREASED', 'Increased',ifelse(
-              res$AEACN =='NOT APPLICABLE', 'N/A', ifelse(
-                res$AEACN =='UNKNOWN', 'Unknown', propercase(res$AEACN)))))))
-    
-    res <- res[,!(names(res) == "AEACN")]
+
+    for(i in 1:length(res$AEACN)){
+      res$Action_Taken[i] <- switch(res$AEACN[i],
+                                    'DOSE NOT CHANGED' = 'None',
+                                    'DOSE REDUCED'='Reduced',
+                                    'DRUG INTERRUPTED'='Interrupted',
+                                    'DOSE INCREASED'= 'Increased',
+                                    'NOT APPLICABLE'= 'N/A',
+                                    'UNKNOWN'= 'Unknown',
+                                    tools::toTitleCase(tolower(res$AEACN[i]))
+      )
+    }
+
+    cols_remove <- c(cols_remove, "AEACN")
   }
-  
-  
+
   # Outcome
   if("AEOUT" %in% toupper(names(res))){
-    res$Outcome <- ifelse(
-      res$AEOUT == 'RECOVERED/RESOLVED' , 'Resolved', ifelse(
-        res$AEOUT == 'RECOVERING/RESOLVING', 'Resolving', ifelse(
-          res$AEOUT =='RECOVERED/RESOLVED WITH SEQUELAE', 'Sequelae', ifelse(
-            res$AEOUT =='NOT RECOVERED/NOT RESOLVED', 'Not Resolved',ifelse(
-              res$AEOUT %in% c('FATAL', 'UNKNOWN') , propercase(res$AEOUT), propercase(res$AEOUT))))))
-    
-    res <- res[,!(names(res) == "AEOUT")]
+    for(i in 1:length(res$AEOUT)){
+      res$Outcome[i] <- switch(res$AEOUT[i],
+                               "RECOVERED/RESOLVED" = 'Resolved',
+                               'RECOVERING/RESOLVING'='Resolving',
+                               'RECOVERED/RESOLVED WITH SEQUELAE'='Sequelae',
+                               'NOT RECOVERED/NOT RESOLVED'= 'Not Resolved',
+                               tools::toTitleCase(tolower(res$AEOUT[i]))
+      )
+    }
+    cols_remove <- c(cols_remove, "AEOUT")
   }
-  
-  
-  outdata$ae_listing <- res
-  
+
+  outdata$ae_listing <- res[,!(colnames(res) %in% cols_remove)]
+
   outdata
 }
 
