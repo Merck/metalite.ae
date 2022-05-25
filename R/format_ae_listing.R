@@ -14,6 +14,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #' Function to propcase character variable
 #' @param x a character vector to propcase
 #'
@@ -29,7 +30,6 @@ propercase <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
 #' @import metalite
 #' @examples
 #' library(metalite)
-#' library(metalite.ae)
 #' meta <- meta_ae_dummy()
 #'
 #' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |>
@@ -97,8 +97,7 @@ format_ae_listing <- function(outdata,
 
   # Duration
   if("ADURN" %in% toupper(names(res)) & "ADURU" %in% toupper(names(res))){
-    res$Duration <- paste0(paste(ifelse(is.na(res$ADURN), "", as.character(res$ADURN)) ,tools::toTitleCase(tolower(res$ADURU)),sep=" "),
-                           ifelse(res$ADURN <= 1, "", "s"))# AE duration with unit
+    res$Duration <- paste(ifelse(is.na(res$ADURN), "", as.character(res$ADURN)) ,tools::toTitleCase(tolower(res$ADURU)),sep=" ")# AE duration with unit
 
     for(i in 1:length(res$Duration)){
       if(is.na(res$ADURN[i])){
@@ -128,6 +127,14 @@ format_ae_listing <- function(outdata,
     ))
 
     cols_remove <- c(cols_remove, "AEREL")
+  }
+
+  if("AREL" %in% toupper(names(res))){
+    res$Related <- ifelse(res$AREL == 'RELATED', "Y", ifelse(
+      res$AREL == 'NOT RELATED', "N",  tools::toTitleCase(tolower(res$AREL))
+    ))
+
+    cols_remove <- c(cols_remove, "AREL")
   }
 
   # Action taken
@@ -162,7 +169,49 @@ format_ae_listing <- function(outdata,
     cols_remove <- c(cols_remove, "AEOUT")
   }
 
-  outdata$ae_listing <- res[,!(colnames(res) %in% cols_remove)]
+  # Total Dose on Day of AE Onset
+  if("AEDOSDUR" %in% toupper(names(res))){
+    res$ymd <- substring(res$AEDOSDUR, unlist(gregexpr("/P", res$AEDOSDUR)) +2)
+
+    res$Total_Dose_on_Day_of_AE_Onset <- ""
+    for (i in 1:length(res$AEDOSDUR)){
+
+      if(unlist(gregexpr("Y", res$ymd[i])) >0 ){
+        val_year <- substring(res$ymd[i],1, unlist(gregexpr("Y", res$ymd[i]))-1)
+        if(as.numeric(val_year) !=1){
+          res$Total_Dose_on_Day_of_AE_Onset[i] <- paste0(res$Total_Dose_on_Day_of_AE_Onset[i], val_year, " years")
+        }else{
+          res$Total_Dose_on_Day_of_AE_Onset[i] <- paste0(res$Total_Dose_on_Day_of_AE_Onset[i],  "1 year")
+        }
+
+        res$ymd[i] <- substring(res$ymd[i], unlist(gregexpr("Y", res$ymd[i]))+1)
+      }
+      if(unlist(gregexpr("M", res$ymd[i])) >0 ){
+        val_month <- substring(res$ymd[i],1, unlist(gregexpr("M", res$ymd[i]))-1)
+
+        if(as.numeric(val_month) !=1){
+          res$Total_Dose_on_Day_of_AE_Onset[i] <- paste0(res$Total_Dose_on_Day_of_AE_Onset[i]," ", val_month, " months")
+        }else{
+          res$Total_Dose_on_Day_of_AE_Onset[i] <- paste0(res$Total_Dose_on_Day_of_AE_Onset[i],  " 1 month")
+        }
+
+        res$ymd[i] <- substring(res$ymd[i], unlist(gregexpr("M", res$ymd[i]))+1)
+      }
+      if(unlist(gregexpr("D", res$ymd[i])) >0 ){
+        val_day <- substring(res$ymd[i],1, unlist(gregexpr("D", res$ymd[i]))-1)
+
+        if(as.numeric(val_day) !=1){
+          res$Total_Dose_on_Day_of_AE_Onset[i] <- paste0(res$Total_Dose_on_Day_of_AE_Onset[i]," ", val_day, " days")
+        }else{
+          res$Total_Dose_on_Day_of_AE_Onset[i] <- paste0(res$Total_Dose_on_Day_of_AE_Onset[i],  " 1 day")
+        }
+      }
+    }
+    res <- res[,!(names(res) == "ymd"), drop = FALSE]
+    cols_remove <- c(cols_remove, "AEDOSDUR")
+  }
+
+  outdata$ae_listing <- res[,!(colnames(res) %in% cols_remove), drop = FALSE]
 
   outdata
 }
