@@ -31,7 +31,7 @@
 #' @export
 
 collect_ae_listing <- function(outdata,
-                               display = c("USUBJID", "SEX", "RACE", "AGE", "ASTDY","AESEV","AESER",
+                               display = c("SEX", "RACE", "AGE", "ASTDY","AESEV","AESER",
                                            "AEREL","AEACN","AEOUT", "SITEID","ADURN", "ADURU")) {
 
   obs_group <- collect_adam_mapping(outdata$meta, outdata$observation)$group
