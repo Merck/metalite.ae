@@ -123,7 +123,7 @@ format_ae_listing <- function(outdata,
   # AE related
   if("AEREL" %in% toupper(names(res))){
     res$Related <- ifelse(res$AEREL == 'RELATED', "Y", ifelse(
-      res$AEREL == 'NOT RELATED', "N",  tools::toTitleCase(tolower(res$AEREL))
+      toupper(res$AEREL) == 'NOT RELATED', "N",  tools::toTitleCase(tolower(res$AEREL))
     ))
 
     cols_remove <- c(cols_remove, "AEREL")
@@ -131,7 +131,7 @@ format_ae_listing <- function(outdata,
 
   if("AREL" %in% toupper(names(res))){
     res$Related <- ifelse(res$AREL == 'RELATED', "Y", ifelse(
-      res$AREL == 'NOT RELATED', "N",  tools::toTitleCase(tolower(res$AREL))
+      toupper(res$AREL) == 'NOT RELATED', "N",  tools::toTitleCase(tolower(res$AREL))
     ))
 
     cols_remove <- c(cols_remove, "AREL")
