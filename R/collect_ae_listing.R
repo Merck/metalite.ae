@@ -23,27 +23,25 @@
 #' @import metalite
 #' @examples
 #' library(metalite)
-#' library(metalite.ae)
 #' meta <- meta_ae_dummy()
-#' 
-#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |> 
+#'
+#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |>
 #' collect_ae_listing(), head, 10)
-#' 
+#'
 #' @export
 
 collect_ae_listing <- function(outdata,
-                               display = c('SEX', 'RACE', 'AGE', "ASTDY","AESEV","AESER", 
-                                           "AEREL","AEACN","AEOUT", 'SITEID','ADURN', 'ADURU')) {
-  res <- outdata
-  
-  obs_group <- collect_adam_mapping(res$meta, res$observation)$group
-  obs_id <- collect_adam_mapping(res$meta, res$observation)$id
-  par_var <- collect_adam_mapping(res$meta, res$parameter)$var
-  
-  obs <- collect_observation_record(res$meta, res$population, res$observation, res$parameter,
+                               display = c("SEX", "RACE", "AGE", "ASTDY","AESEV","AESER",
+                                           "AEREL","AEACN","AEOUT", "SITEID","ADURN", "ADURU")) {
+
+  obs_group <- collect_adam_mapping(outdata$meta, outdata$observation)$group
+  obs_id <- collect_adam_mapping(outdata$meta, outdata$observation)$id
+  par_var <- collect_adam_mapping(outdata$meta, outdata$parameter)$var
+
+  obs <- collect_observation_record(outdata$meta, outdata$population, outdata$observation, outdata$parameter,
                                     var = c(par_var, obs_id, obs_group, display)
   )
-  
-  res$ae_listing <- obs[,!(names(obs) == "SAFFL")]
-  res
+
+  outdata$ae_listing <- obs[,c(par_var, obs_id, obs_group, display)]
+  outdata
 }
