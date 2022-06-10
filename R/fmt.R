@@ -89,7 +89,7 @@ fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
   .lower <- formatC(lower, digits = digits, format = "f", width = width)
   .upper <- formatC(upper, digits = digits, format = "f", width = width)
 
-  res <- ifelse(is.na(lower), NA, paste0("(", .lower, ", ", .upper, ")"))
+  ifelse(is.na(lower), NA, paste0("(", .lower, ", ", .upper, ")"))
 }
 
 
