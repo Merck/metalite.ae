@@ -69,7 +69,7 @@ prepare_ae_specific <- function(meta,
     pop[[pop_group]] <- factor(pop[[pop_group]])
   }
 
-  if (!"factor" %in% class(pop[[pop_group]])) {
+  if (!"factor" %in% class(obs[[obs_group]])) {
     warning("In observation level data, force group variable '", obs_group, "' be a factor")
     obs[[obs_group]] <- factor(obs[[obs_group]], levels = levels(pop[[pop_group]]))
   }
@@ -174,6 +174,7 @@ prepare_ae_specific <- function(meta,
     n = tbl_num, order = tbl$order, group = u_group, reference_group = reference_group,
     prop = tbl_rate, diff = tbl_diff,
     n_pop = tbl_num[1, ],
-    name = tbl$name
+    name = tbl$name,
+    components = components
   )
 }

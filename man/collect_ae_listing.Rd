@@ -20,10 +20,9 @@ Add inference information for AE listing analysis
 }
 \examples{
 library(metalite)
-library(metalite.ae)
 meta <- meta_ae_dummy()
 
-lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |> 
+lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |>
 collect_ae_listing(), head, 10)
 
 }
