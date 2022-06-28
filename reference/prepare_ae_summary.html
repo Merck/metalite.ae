@@ -60,30 +60,39 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">prepare_ae_summary</span><span class="op">(</span><span class="va">meta</span>, <span class="va">population</span>, <span class="va">observation</span>, <span class="va">parameter</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepare_ae_summary</span><span class="op">(</span><span class="va">meta</span>, <span class="va">population</span>, <span class="va">observation</span>, <span class="va">parameter</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>meta</dt>
 <dd><p>a meta data created by <code>metalite</code>.</p></dd>
+
+
 <dt>population</dt>
 <dd><p>a character value of population term name.
 The term name is used as key to link information.</p></dd>
+
+
 <dt>observation</dt>
 <dd><p>a character value of observation term name.
 The term name is used as key to link information.</p></dd>
+
+
 <dt>parameter</dt>
 <dd><p>a character value of parameter term name.
 The term name is used as key to link information.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional parameters transfer to <code>prepare_ae_specific</code></p></dd>
+
 </dl></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_dummy.html">meta_ae_dummy</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">prepare_ae_summary</span><span class="op">(</span><span class="va">meta</span>, <span class="st">"apat"</span>, <span class="st">"wk12"</span>, <span class="st">"any;rel;ser"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_dummy.html">meta_ae_dummy</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">prepare_ae_summary</span><span class="op">(</span><span class="va">meta</span>, <span class="st">"apat"</span>, <span class="st">"wk12"</span>, <span class="st">"any;rel;ser"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "any"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "rel"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ser"</span>
@@ -92,14 +101,14 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ population     : chr "apat"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ observation    : chr "wk12"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ parameter      : chr "any;rel;ser"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	4 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:4] 1 100 200 300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	5 obs. of  4 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:5] 1 100 200 300 400</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	4 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	4 obs. of  2 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	5 obs. of  4 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	5 obs. of  2 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ n_pop          :'data.frame':	1 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:4] "Participants in population" "with one or more adverse events" "with drug-related{^a} adverse events" "with serious adverse events"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -107,7 +116,7 @@ The term name is used as key to link information.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+  <p></p><p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
 </div>
 
 <div class="pkgdown-footer-right">

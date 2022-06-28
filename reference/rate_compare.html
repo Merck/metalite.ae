@@ -63,17 +63,17 @@ Details can be found in the <code>vignettes/rate_compare.Rmd</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rate_compare</span><span class="op">(</span>
-  <span class="va">formula</span>,
-  <span class="va">strata</span>,
-  <span class="va">data</span>,
-  delta <span class="op">=</span> <span class="fl">0</span>,
-  weight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ss"</span>, <span class="st">"equal"</span>, <span class="st">"cmh"</span><span class="op">)</span>,
-  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"one.sided"</span>, <span class="st">"two.sided"</span><span class="op">)</span>,
-  bisection <span class="op">=</span> <span class="fl">100</span>,
-  eps <span class="op">=</span> <span class="fl">1e-06</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rate_compare</span><span class="op">(</span></span>
+<span>  <span class="va">formula</span>,</span>
+<span>  <span class="va">strata</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  delta <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  weight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ss"</span>, <span class="st">"equal"</span>, <span class="st">"cmh"</span><span class="op">)</span>,</span>
+<span>  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"one.sided"</span>, <span class="st">"two.sided"</span><span class="op">)</span>,</span>
+<span>  bisection <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  eps <span class="op">=</span> <span class="fl">1e-06</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,30 +82,47 @@ Details can be found in the <code>vignettes/rate_compare.Rmd</code>.</p>
 <dd><p>a symbolic description of the model to be fitted,
 which has the form <code>y ~ x</code>. Here <code>y</code> is the numeric vector with values of 0 or 1, and
 <code>x</code> is the group information.</p></dd>
+
+
 <dt>strata</dt>
 <dd><p>an optional vector of weights to be used in the analysis.
 If not specified, unstratified MN analysis is used.
 If specified, stratified MN analysis is conducted.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>an optional data frame, list or environment containing the variables in the model.
 If not found in data, the variables are taken from <code>environment (formula)</code>,
 typically the environment from which <code>rate_compare</code> is called.</p></dd>
+
+
 <dt>delta</dt>
 <dd><p>a numeric value to set the difference of two group under the null.</p></dd>
+
+
 <dt>weight</dt>
 <dd><p>weighting schema used in stratified MN method. Default is "ss".</p><ul><li><p><code>"equal"</code> for equal weighting,</p></li>
 <li><p><code>"ss"</code> for sample size weighting,</p></li>
 <li><p><code>"cmh"</code> for Cochran Mantel-Haenszel's weights.</p></li>
 </ul></dd>
+
+
 <dt>test</dt>
 <dd><p>a character string specifying the side of p-value,
 must be one of <code>"one.sided"</code>, or <code>"two.sided"</code>.</p></dd>
+
+
 <dt>bisection</dt>
 <dd><p>the number of sections in the interval used in Bisection Method. Default is 100.</p></dd>
+
+
 <dt>eps</dt>
 <dd><p>the level of precision. Default is eps=1e-06.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p>pre-defined alpha level for two-sided confidence interval.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -114,19 +131,19 @@ must be one of <code>"one.sided"</code>, or <code>"two.sided"</code>.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## To conduct the stratified MN analysis with sample size weights:</span></span>
-<span class="r-in"><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"pbo"</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"exp"</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">stratum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">12</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">12</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">rate_compare</span><span class="op">(</span></span>
-<span class="r-in">  formula <span class="op">=</span> <span class="va">response</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">treatment</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pbo"</span>, <span class="st">"exp"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  strata <span class="op">=</span> <span class="va">stratum</span>,</span>
-<span class="r-in">  delta <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  weight <span class="op">=</span> <span class="st">"ss"</span>,</span>
-<span class="r-in">  test <span class="op">=</span> <span class="st">"one.sided"</span>,</span>
-<span class="r-in">  alpha <span class="op">=</span> <span class="fl">0.05</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## To conduct the stratified MN analysis with sample size weights:</span></span></span>
+<span class="r-in"><span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"pbo"</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"exp"</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stratum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">12</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">12</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">rate_compare</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  formula <span class="op">=</span> <span class="va">response</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">treatment</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pbo"</span>, <span class="st">"exp"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  strata <span class="op">=</span> <span class="va">stratum</span>,</span></span>
+<span class="r-in"><span>  delta <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  weight <span class="op">=</span> <span class="st">"ss"</span>,</span></span>
+<span class="r-in"><span>  test <span class="op">=</span> <span class="st">"one.sided"</span>,</span></span>
+<span class="r-in"><span>  alpha <span class="op">=</span> <span class="fl">0.05</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         est  z_score            p     lower     upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.3998397 5.712797 5.556727e-09 0.2684383 0.5172779</span>
 </code></pre></div>
@@ -136,7 +153,7 @@ must be one of <code>"one.sided"</code>, or <code>"two.sided"</code>.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
+  <p></p><p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5. <br>Copyright © Merck Sharp &amp; Dohme Corp., a subsidiary of Merck &amp; Co., Inc., Kenilworth, NJ, USA.</p>
 </div>
 
 <div class="pkgdown-footer-right">
