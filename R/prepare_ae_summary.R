@@ -74,7 +74,7 @@ if("any" %in% parameters){
   #combine records with original other parameters and sort df
   rbind1 <- function(df1, df2){
     df1 <- rbind(df1, df2)
-    df1 <- data1[order(as.numeric(row.names(df1))),]
+    df1 <- df1[order(as.numeric(row.names(df1))),]
     df1
   }
   
