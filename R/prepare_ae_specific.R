@@ -174,6 +174,7 @@ prepare_ae_specific <- function(meta,
     n = tbl_num, order = tbl$order, group = u_group, reference_group = reference_group,
     prop = tbl_rate, diff = tbl_diff,
     n_pop = tbl_num[1, ],
-    name = tbl$name
+    name = tbl$name,
+    components = components
   )
 }
