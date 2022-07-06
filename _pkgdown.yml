@@ -69,7 +69,6 @@ reference:
   contents:
     - rate_compare
     - rate_compare_sum
-    - prop_test_mn
 - title: Dummy data
   contents:
     - meta_ae_dummy

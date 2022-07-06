@@ -38,7 +38,7 @@
 #' x1 <- c(4, 5)
 #' n1 <- c(100, 100)
 #' prop_test_mn(x0, n0, x1, n1)
-#' @export
+
 prop_test_mn <- function(x0, n0, x1, n1,
                          delta = 0,
                          sides = "two.sided",
