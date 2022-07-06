@@ -23,3 +23,6 @@
 ^data-raw$
 ^LICENSE\.md$
 ^\.github$
+^metalite.ae\.Rcheck$
+^metalite.ae.*\.tar\.gz$
+^metalite.ae.*\.tgz$

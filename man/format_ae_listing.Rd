@@ -16,10 +16,9 @@ Format AE listing analysis
 }
 \examples{
 library(metalite)
-library(metalite.ae)
 meta <- meta_ae_dummy()
 
-lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |> 
+lapply(prepare_ae_specific(meta, "apat", "wk12", "rel") |>
 collect_ae_listing() |>
 format_ae_listing(), head, 100)
 

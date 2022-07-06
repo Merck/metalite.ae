@@ -1,4 +1,4 @@
-#    Copyright (c) 2022 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
 #
 #    This file is part of the metalite.ae program.
 #
@@ -20,30 +20,42 @@
 #' @param id a character vector of subject id
 #' @param group a factor vector of group name
 #' @param par a character vector of parameter name
+#' @param use_na a character value for whether to include NA values in the table. Refer `useNA` argument in `table` function for more details.
 #'
 #' @examples
 #' library(r2rtf)
 #' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
+#' r2rtf_adae$SEX[1:5] <- NA
 #' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
-n_subject <- function(id, group, par = NULL) {
+#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX)
+#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX, use_na = "always")
+n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")) {
+
+  use_na <- match.arg(use_na)
+
   if ("factor" %in% class(group)) {
-    u_group <- as.character(levels(group))
+    u_group <- c(as.character(levels(group)), "Missing")
   } else {
     stop("n_subject: group variable must be a factor")
   }
 
   if (is.null(par)) {
     db <- data.frame(id = id, group = group)
-    res <- table(unique(db)[["group"]])
+    res <- table(unique(db)[["group"]], useNA = use_na)
+
+    n_row <- nrow(res)
     res <- data.frame(t(as.vector(res)))
-    names(res) <- c(u_group)
+    names(res) <- c(u_group[1:n_row])
   } else {
     db <- data.frame(id = id, group = group, par = par)
-    res <- table(unique(db)[, c("group", "par")])
+    res <- table(unique(db)[, c("group", "par")], useNA = use_na)
     name <- colnames(res)
-    res <- data.frame(name = name, matrix(res, ncol = length(u_group), byrow = TRUE))
-    names(res) <- c("name", u_group)
+    name[is.na(name)] <- "Missing"
+
+    n_row <- nrow(res)
+    n_col <- ncol(res)
+    res <- data.frame(name = name[1:n_col], matrix(res, ncol = n_row, byrow = TRUE))
+    names(res) <- c("name", u_group[1:n_row])
   }
 
   res
