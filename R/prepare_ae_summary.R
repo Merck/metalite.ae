@@ -1,4 +1,4 @@
-#    Copyright (c) 2022 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
 #
 #    This file is part of the metalite.ae program.
 #
@@ -58,7 +58,37 @@ prepare_ae_summary <- function(meta,
   pop_name <- res[[1]]$name[1]
   name <- unlist(lapply(parameters, function(x) collect_adam_mapping(meta, x)$summ_row))
 
-  outdata(meta, population, observation, parameter,
+#Extract the data for 'with no ae' row only when parameter 'any' is provided.
+if("any" %in% parameters){
+
+  names(res) <- parameters
+
+  #extract the values for 'with no ae' row.
+  noevnt_num  <- res$any$n[3,]
+  noevnt_prop <- res$any$prop[3,]
+  noevnt_diff <- res$any$diff[3,]
+  noevnt_ci   <- res$any$ci[3,]
+  noevnt_p    <- res$any$p[3,]
+  noevnt_name <- res$any$name[3]
+
+  #combine records with original other parameters and sort df
+  rbind1 <- function(df1, df2){
+    df1 <- rbind(df1, df2)
+    df1 <- df1[order(as.numeric(row.names(df1))),]
+    df1
+  }
+
+  tbl_num  <- rbind1 (tbl_num, noevnt_num)
+  tbl_prop <- rbind1(tbl_prop, noevnt_prop)
+  tbl_diff <- rbind(tbl_diff, noevnt_diff)
+  tbl_ci   <- rbind(tbl_ci, noevnt_ci)
+  tbl_p    <- rbind(tbl_p, noevnt_p)
+  name     <- append(name, noevnt_name, 1)
+
+  names(res) <- NULL
+}
+
+  metalite:::outdata(meta, population, observation, parameter,
     n = rbind(n_pop, tbl_num),
     order = c(1, 1:nrow(tbl_num) * 100),
     group = res[[1]]$group,

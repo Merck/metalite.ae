@@ -4,7 +4,7 @@
 \alias{n_subject}
 \title{Count number of unique subjects}
 \usage{
-n_subject(id, group, par = NULL)
+n_subject(id, group, par = NULL, use_na = c("ifany", "no", "always"))
 }
 \arguments{
 \item{id}{a character vector of subject id}
@@ -12,6 +12,8 @@ n_subject(id, group, par = NULL)
 \item{group}{a factor vector of group name}
 
 \item{par}{a character vector of parameter name}
+
+\item{use_na}{a character value for whether to include NA values in the table. Refer \code{useNA} argument in \code{table} function for more details.}
 }
 \description{
 Count number of unique subjects
@@ -19,6 +21,8 @@ Count number of unique subjects
 \examples{
 library(r2rtf)
 r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
+r2rtf_adae$SEX[1:5] <- NA
 metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
+metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX)
+metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX, use_na = "always")
 }
