@@ -1,4 +1,4 @@
-#    Copyright (c) 2022 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
 #
 #    This file is part of the metalite.ae program.
 #
@@ -89,7 +89,7 @@ fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
   .lower <- formatC(lower, digits = digits, format = "f", width = width)
   .upper <- formatC(upper, digits = digits, format = "f", width = width)
 
-  res <- ifelse(is.na(lower), NA, paste0("(", .lower, ", ", .upper, ")"))
+  ifelse(is.na(lower), NA, paste0("(", .lower, ", ", .upper, ")"))
 }
 
 
