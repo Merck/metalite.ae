@@ -149,6 +149,11 @@ x <- prepare_ae_summary(
   parameter = sum_par
 )
 
+
+test_that("output from prepare_ae_summary is a list", {
+  expect_true("outdata" %in% class(x))
+})
+
 xx <- tibble(cbind(x$name, x$n)) %>% mutate(x = row_number())
 xxp <-x$prop %>% mutate(x = row_number())
 
@@ -635,5 +640,8 @@ test_that("Parameter 'DRUG WITHDRAWN and Serious and Drug-related' count", {
   expect_equal(xx %>% filter(x == 12) %>% select(-c("x$name", x)), res_ae12 %>% select(-c(ITTFL)))
 })
 
+test_that("the reference group output of prepare_ae_summary match 1",{
+  expect_equal(x$reference_group, 1)
+})
 
-fin_ae <- rbind( res_ae2)
+#fin_ae <- rbind( res_ae2)
