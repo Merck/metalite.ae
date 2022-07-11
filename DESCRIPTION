@@ -25,7 +25,8 @@ Imports:
     metalite,
     r2rtf,
     stats,
-    tidyr
+    tidyr,
+    haven
 Suggests:
     covr,
     knitr,
