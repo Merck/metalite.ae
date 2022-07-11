@@ -42,7 +42,6 @@ plan <- plan(
 
 adsl$TRT01P <- factor(adsl$TRT01P, levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"))
 adsl$TRT01A <- factor(adsl$TRT01A, levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"))
-# adae$TRT01P <- factor(adae$TRT01P, levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"))
 adae$TRT01A <- factor(adae$TRT01A, levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"))
 
 meta <- meta_adam(
@@ -73,7 +72,7 @@ meta <- meta %>% define_observation(
   label = "Treatment emergent"
 )
 
-meta <- meta %>%
+meta_dummy <- meta %>%
   define_parameter(name = "any") %>%
   define_parameter(
     name = "rel",
@@ -127,19 +126,19 @@ meta <- meta %>%
   )
 
 
-meta <- meta %>%
+meta_dummy <- meta_dummy %>%
   define_analysis(
     name = "ae_summary",
     title = "Adverse Event Summary"
   )
 
 
-meta <- meta %>% meta_build()
+meta_dummy <- meta_dummy %>% meta_build()
 
-meta$plan <- meta$plan %>%
+meta_dummy$plan <- meta_dummy$plan %>%
   mutate(output_report = spec_filename(meta))
 
-test_meta <- meta
+test_meta <- meta_dummy
 # usethis::use_data(test_meta, overwrite = TRUE)
 
 x <- prepare_ae_summary(
@@ -149,39 +148,44 @@ x <- prepare_ae_summary(
   parameter = sum_par
 )
 
-
 test_that("output from prepare_ae_summary is a list", {
   expect_true("outdata" %in% class(x))
 })
 
 xx <- tibble(cbind(x$name, x$n)) %>% mutate(x = row_number())
-xxp <-x$prop %>% mutate(x = row_number())
+xxp <- x$prop %>% mutate(x = row_number())
+xxpd <- x$diff %>% mutate(x = row_number())
+
+rownames(xxp) <- NULL
+rownames(xxpd) <- NULL
 
 adsl_tot <- adsl %>% mutate(TRT01AN = 99) # add total rows into calculation
 adsl_tot <- rbind(adsl, adsl_tot)
 
 res_tot <- adsl_tot %>%
   group_by(TRT01AN, ITTFL) %>%
-  summarise(n = n_distinct(USUBJID), .groups = 'drop')
+  summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-res_tot1 <- res_tot %>% mutate(z=n) %>% select(-c(n))
+res_tot1 <- res_tot %>%
+  mutate(z = n) %>%
+  select(-c(n))
+
+test_that("Parameter matching", {
+  expect_equal(x$parameter, sum_par)
+})
 
 
-test_that("population count", {
+test_that("Group matching", {
+  expect_equal(x$group, c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total"))
+})
 
+test_that("refernece_group matching", {
+  expect_equal(levels(adsl$TRT01A)[x$reference_group], "Placebo")
+})
+
+test_that("Participants in population", {
   res <- res_tot %>%
     mutate(x = paste0("n_", row_number()))
-
-  # res_total <- adsl_tot %>%
-  #   group_by(TRT01A, ITTFL) %>%
-  #   summarise(tot = n_distinct(USUBJID)) #total within each grp
-
-
-  # res <- res %>%
-  #   left_join(res_total, by = "TRT01A", "ITTFL") %>%
-  #   mutate(pct = formatC(100*n/tot, digits = 0, format = "f", flag = "0")) #calculate pct
-  #
-  # dum_pct <- formatC(0,digits = decimal, format = "f", flag = "0")
 
   res1 <- res %>%
     pivot_wider(
@@ -191,14 +195,20 @@ test_that("population count", {
       values_fill = list(n = 0)
     )
 
+
   expect_equal(xx %>% filter(x == 1) %>% select(-c("x$name", x)), res1 %>% select(-c(ITTFL)))
+
+  # population count
   expect_equal(xx %>% filter(x == 1) %>% select(-c("x$name", x)), tibble(x$n_pop))
+
+  # name matches
+  expect_equal(x$name[1], "Participants in population")
 })
 
-test_that("Parameter 'any' count", {
+test_that("with one or more adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -206,14 +216,18 @@ test_that("Parameter 'any' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae <- full_join(res_ae,res_tot1, by = c("TRT01AN", "ITTFL")) %>%
-    mutate(pct = formatC(100*n/z, digits = 13, format = "f", flag = "0"))
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
 
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()),
-           prop=paste0("prop_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae2 <- res_ae %>%
     pivot_wider(
@@ -228,17 +242,30 @@ test_that("Parameter 'any' count", {
       id_cols = "ITTFL",
       names_from = "prop",
       values_from = pct,
-      values_fill = list(n = 0)
+      values_fill = list(pct = 0)
     )
+
+  res_diff2 <- res_prop2 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+  # n count
   expect_equal(xx %>% filter(x == 2) %>% select(-c("x$name", x)), res_ae2 %>% select(-c(ITTFL)))
-  expect_equal(xxp %>% filter(x == 2) %>% select(-c("x$name", x)), res_prop2 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 2) %>% select(-c(x)), data.frame(res_prop2) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 2) %>% select(-c(x)), data.frame(res_diff2) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[2], "with one or more adverse events")
 })
 
-
-test_that("Parameter 'drug-related' count", {
+test_that("with drug-related adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -246,7 +273,7 @@ test_that("Parameter 'drug-related' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AEREL) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   if (!"RELATED" %in% res_ae$AEREL) {
     res_ae <- res_ae %>%
@@ -255,8 +282,17 @@ test_that("Parameter 'drug-related' count", {
       mutate(AEREL = "RELATED", n = 0)
   }
 
+
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae3 <- res_ae %>%
     pivot_wider(
@@ -266,15 +302,39 @@ test_that("Parameter 'drug-related' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop3 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff3 <- res_prop3 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+
+  # n count
+
   expect_equal(xx %>% filter(x == 3) %>% select(-c("x$name", x)), res_ae3 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 3) %>% select(-c(x)), data.frame(res_prop3) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 3) %>% select(-c(x)), data.frame(res_diff3) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[3], "with drug-related{^a} adverse events")
 })
 
 
 
-test_that("Parameter 'non-serious' count", {
+test_that("non-serious adverse events count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y" & AESER != "Y" | AESER == "")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -282,10 +342,18 @@ test_that("Parameter 'non-serious' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
+
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
 
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae4 <- res_ae %>%
     pivot_wider(
@@ -295,14 +363,37 @@ test_that("Parameter 'non-serious' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop4 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff4 <- res_prop4 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+
+  # n count
   expect_equal(xx %>% filter(x == 4) %>% select(-c("x$name", x)), res_ae4 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 4) %>% select(-c(x)), data.frame(res_prop4) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 4) %>% select(-c(x)), data.frame(res_diff4) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[4], "with non-serious adverse events")
 })
 
 
-test_that("Parameter 'serious' count", {
+test_that("serious adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -310,7 +401,7 @@ test_that("Parameter 'serious' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AESER) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     select(TRT01AN, ITTFL) %>%
@@ -320,14 +411,22 @@ test_that("Parameter 'serious' count", {
   res_ae <- res_ae %>% subset(AESER == "Y")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AESER")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AESER")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae5 <- res_ae %>%
     pivot_wider(
@@ -337,14 +436,36 @@ test_that("Parameter 'serious' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop5 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff5 <- res_prop5 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+  # n count
   expect_equal(xx %>% filter(x == 5) %>% select(-c("x$name", x)), res_ae5 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 5) %>% select(-c(x)), data.frame(res_prop5) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 5) %>% select(-c(x)), data.frame(res_diff5) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[5], "with serious adverse events")
 })
 
 
-test_that("Parameter 'serious and drug-related' count", {
+test_that("serious drug-related adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -352,7 +473,7 @@ test_that("Parameter 'serious and drug-related' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AESER, AEREL) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     ungroup() %>%
@@ -363,14 +484,22 @@ test_that("Parameter 'serious and drug-related' count", {
   res_ae <- res_ae %>% subset(AESER == "Y" & AEREL == "RELATED")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AESER", "AEREL")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AESER", "AEREL")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae6 <- res_ae %>%
     pivot_wider(
@@ -380,14 +509,37 @@ test_that("Parameter 'serious and drug-related' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop6 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff6 <- res_prop6 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+
+  # n count
   expect_equal(xx %>% filter(x == 6) %>% select(-c("x$name", x)), res_ae6 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 6) %>% select(-c(x)), data.frame(res_prop6) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 6) %>% select(-c(x)), data.frame(res_diff6) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[6], "with serious drug-related adverse events")
 })
 
 
-test_that("Parameter 'death' count", {
+test_that("death count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -395,7 +547,7 @@ test_that("Parameter 'death' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AESDTH) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     ungroup() %>%
@@ -406,14 +558,22 @@ test_that("Parameter 'death' count", {
   res_ae <- res_ae %>% subset(AESDTH == "Y")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AESDTH")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AESDTH")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae7 <- res_ae %>%
     pivot_wider(
@@ -423,14 +583,38 @@ test_that("Parameter 'death' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop7 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff7 <- res_prop7 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+
+
+  # n count
   expect_equal(xx %>% filter(x == 7) %>% select(-c("x$name", x)), res_ae7 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 7) %>% select(-c(x)), data.frame(res_prop7) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 7) %>% select(-c(x)), data.frame(res_diff7) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[7], "who died")
 })
 
 
-test_that("Parameter 'death and drug-related' count", {
+test_that("died due to drug-related adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -438,7 +622,7 @@ test_that("Parameter 'death and drug-related' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AESDTH, AEREL) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     ungroup() %>%
@@ -449,14 +633,22 @@ test_that("Parameter 'death and drug-related' count", {
   res_ae <- res_ae %>% subset(AESDTH == "Y" & AEREL == "RELATED")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AESDTH", "AEREL")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AESDTH", "AEREL")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae8 <- res_ae %>%
     pivot_wider(
@@ -466,13 +658,35 @@ test_that("Parameter 'death and drug-related' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop8 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff8 <- res_prop8 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+  # n count
   expect_equal(xx %>% filter(x == 8) %>% select(-c("x$name", x)), res_ae8 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 8) %>% select(-c(x)), data.frame(res_prop8) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 8) %>% select(-c(x)), data.frame(res_diff8) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[8], "who died due to a drug-related adverse event")
 })
 
-test_that("Parameter 'DRUG WITHDRAWN' count", {
+test_that("discontinued due to an adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -480,7 +694,7 @@ test_that("Parameter 'DRUG WITHDRAWN' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AEACN) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     ungroup() %>%
@@ -491,14 +705,22 @@ test_that("Parameter 'DRUG WITHDRAWN' count", {
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AEACN")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AEACN")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae9 <- res_ae %>%
     pivot_wider(
@@ -508,14 +730,36 @@ test_that("Parameter 'DRUG WITHDRAWN' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop9 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff9 <- res_prop9 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+  # n count
   expect_equal(xx %>% filter(x == 9) %>% select(-c("x$name", x)), res_ae9 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 9) %>% select(-c(x)), data.frame(res_prop9) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 9) %>% select(-c(x)), data.frame(res_diff9) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[9], "discontinued any drug due to an adverse events")
 })
 
 
-test_that("Parameter 'DRUG WITHDRAWN and Drug-related' count", {
+test_that("discontinued due to drug-related adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -523,7 +767,7 @@ test_that("Parameter 'DRUG WITHDRAWN and Drug-related' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AEACN, AEREL) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     ungroup() %>%
@@ -534,14 +778,22 @@ test_that("Parameter 'DRUG WITHDRAWN and Drug-related' count", {
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN" & AEREL == "RELATED")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AEACN", "AEREL")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AEACN", "AEREL")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae10 <- res_ae %>%
     pivot_wider(
@@ -551,15 +803,37 @@ test_that("Parameter 'DRUG WITHDRAWN and Drug-related' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop10 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff10 <- res_prop10 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+
+  # n count
   expect_equal(xx %>% filter(x == 10) %>% select(-c("x$name", x)), res_ae10 %>% select(-c(ITTFL)))
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 10) %>% select(-c(x)), data.frame(res_prop10) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 10) %>% select(-c(x)), data.frame(res_diff10) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[10], "discontinued any drug due to a drug-related adverse events")
 })
 
 
-
-test_that("Parameter 'DRUG WITHDRAWN and Serious' count", {
+test_that("discontinued due to serious adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -567,7 +841,7 @@ test_that("Parameter 'DRUG WITHDRAWN and Serious' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AEACN, AESER) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     ungroup() %>%
@@ -578,14 +852,22 @@ test_that("Parameter 'DRUG WITHDRAWN and Serious' count", {
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN" & AESER == "Y")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AEACN", "AESER")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AEACN", "AESER")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae11 <- res_ae %>%
     pivot_wider(
@@ -595,13 +877,36 @@ test_that("Parameter 'DRUG WITHDRAWN and Serious' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop11 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff11 <- res_prop11 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+  # n count
   expect_equal(xx %>% filter(x == 11) %>% select(-c("x$name", x)), res_ae11 %>% select(-c(ITTFL)))
+
+
+  # proportion count
+  expect_equal(xxp %>% filter(x == 11) %>% select(-c(x)), data.frame(res_prop11) %>% select(-c(ITTFL)))
+
+  # diff count
+  expect_equal(xxpd %>% filter(x == 11) %>% select(-c(x)), data.frame(res_diff11) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[11], "discontinued any drug due to a serious adverse event")
 })
 
-test_that("Parameter 'DRUG WITHDRAWN and Serious and Drug-related' count", {
+test_that("discontinued due to serious drug-related adverse event count", {
   adae_itt <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
-    adae,
-    by = "USUBJID"
+                        adae,
+                        by = "USUBJID"
   ) %>% subset(ITTFL == "Y" & TRTEMFL == "Y")
 
   adae_tot <- adae_itt %>% mutate(TRT01AN = 99) # add total rows into calculation
@@ -609,7 +914,7 @@ test_that("Parameter 'DRUG WITHDRAWN and Serious and Drug-related' count", {
 
   res_ae <- adae_tot %>%
     group_by(TRT01AN, ITTFL, AEACN, AESER, AEREL) %>%
-    summarise(n = n_distinct(USUBJID), .groups = 'drop')
+    summarise(n = n_distinct(USUBJID), .groups = "drop")
 
   res_ae_dummy <- res_ae %>%
     select(TRT01AN, ITTFL) %>%
@@ -619,15 +924,22 @@ test_that("Parameter 'DRUG WITHDRAWN and Serious and Drug-related' count", {
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN" & AESER == "Y" & AEREL == "RELATED")
 
   res_ae <- left_join(res_ae_dummy,
-    res_ae,
-    by = c("TRT01AN", "ITTFL", "AEACN", "AESER", "AEREL")
+                      res_ae,
+                      by = c("TRT01AN", "ITTFL", "AEACN", "AESER", "AEREL")
   ) %>% select(-c(t))
 
   res_ae[is.na(res_ae)] <- 0
 
+  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) %>%
+    mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
+
+  res_ae$pct <- as.numeric(res_ae$pct)
+
   res_ae <- res_ae %>%
-    ungroup() %>%
-    mutate(x = paste0("n_", row_number()))
+    mutate(
+      x = paste0("n_", row_number()),
+      prop = paste0("prop_", row_number())
+    )
 
   res_ae12 <- res_ae %>%
     pivot_wider(
@@ -637,11 +949,27 @@ test_that("Parameter 'DRUG WITHDRAWN and Serious and Drug-related' count", {
       values_fill = list(n = 0)
     )
 
+  res_prop12 <- res_ae %>%
+    pivot_wider(
+      id_cols = "ITTFL",
+      names_from = "prop",
+      values_from = pct,
+      values_fill = list(pct = 0)
+    )
+
+  res_diff12 <- res_prop12 %>% mutate(
+    diff_2 = as.numeric(prop_2) - as.numeric(prop_1),
+    diff_3 = as.numeric(prop_3) - as.numeric(prop_1)
+  )
+  # n count
   expect_equal(xx %>% filter(x == 12) %>% select(-c("x$name", x)), res_ae12 %>% select(-c(ITTFL)))
-})
 
-test_that("the reference group output of prepare_ae_summary match 1",{
-  expect_equal(x$reference_group, 1)
-})
+  # proportion count
+  expect_equal(xxp %>% filter(x == 12) %>% select(-c(x)), data.frame(res_prop12) %>% select(-c(ITTFL)))
 
-#fin_ae <- rbind( res_ae2)
+  # diff count
+  expect_equal(xxpd %>% filter(x == 12) %>% select(-c(x)), data.frame(res_diff12) %>% select(c(diff_2, diff_3)))
+
+  # name matches
+  expect_equal(x$name[12], "discontinued any drug due to a serious drug-related adverse event")
+})
