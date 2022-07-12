@@ -1,4 +1,4 @@
-devtools::load_all()
+
 library(metalite.ae)
 library(metalite)
 library(haven)
