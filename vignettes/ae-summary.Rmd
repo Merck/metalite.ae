@@ -26,8 +26,8 @@ library(metalite.ae)
 
 ## Overview
 
-The AE summary analysis is to provide tables to summarize adverse events information.
-The development of AE summary analysis contain exported functions
+The AE summary analysis provides tables to summarize adverse events information.
+The development of AE summary analysis contains exported functions:
 
 - `prepare_ae_summary`: prepare analysis raw datasets
 - `format_ae_summary`: prepare analysis (mock) outdata with proper format
@@ -39,15 +39,15 @@ We also prepare (optional) additional function to extend the analysis.
 
 ### Analysis preparation
 
-The `prepare_ae_summary` function is design to be used for multiple purpose.
+The `prepare_ae_summary` function is design to be used for multiple purposes.
 The input of the function is a `meta` objects created from `metalite` package.
 
 ```{r}
 meta <- meta_ae_dummy()
 ```
 
-The output of the function is an `outdata` objects contain a list of analysis raw datasets.
-Here parameter is a group of key words available in the `names(meta$parameter)` and seperated by `;`.
+The output of the function is an `outdata` object that contain a list of analysis raw datasets.
+The parameter is a group of key words available in the `names(meta$parameter)` and seperated by `;`.
 
 ```{r}
 outdata <- prepare_ae_summary(meta,
@@ -73,7 +73,7 @@ The row is indexed by the order of `outdata$name`.
 head(data.frame(outdata$order, outdata$name))
 ```
 
-- `n_pop: participants in population
+- `n_pop`: participants in population
 
 ```{r}
 outdata$n_pop
@@ -108,7 +108,7 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-We can hide total column
+We can choose which measurement to display
 
 ```{r}
 tbl <- outdata |>
@@ -116,7 +116,7 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-Adding risk difference
+We can add risk difference
 
 ```{r}
 tbl <- outdata |>
@@ -124,7 +124,7 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-Adding 95% confidence interval of M&N method. It requires to use `extend_ae_specific_inference`
+We can add 95% confidence interval of M&N method. It requires `extend_ae_specific_inference`
 to perform additional calculation.
 
 ```{r, eval = FALSE}
@@ -139,7 +139,7 @@ head(tbl$tbl)
 We can also use `format_ae_summary` to create mock output data.
 
 The purpose of the `mock` argument is not to create a comprehensive mock table template,
-but a handy way to help user create a mock table that mimic the exact output layout.
+but a handy way to help user create a mock table that mimics the exact output layout.
 
 Additional work is required to develop a flexible mock table generation tool
 (e.g. a dedicated mock table generation package)
@@ -212,4 +212,4 @@ knitr::include_graphics("outtable/mock_ae0summary1.pdf")
 ### Technical requirements (For future development)
 
 - Avoiding `|>`, using `|>` to reduce dependency of `magrittr`.
-- The functions in the `R/` folder should not depends on `dplyr`, `tidyr` etc.
+- The functions in the `R/` folder should not depend on `dplyr`, `tidyr` etc.
