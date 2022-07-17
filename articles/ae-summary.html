@@ -87,7 +87,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The AE summary analysis is to provide tables to summarize adverse events information. The development of AE summary analysis contain exported functions</p>
+<p>The AE summary analysis provides tables to summarize adverse events information. The development of AE summary analysis contains exported functions:</p>
 <ul>
 <li>
 <code>prepare_ae_summary</code>: prepare analysis raw datasets</li>
@@ -104,10 +104,10 @@
 <div class="section level3">
 <h3 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
 </h3>
-<p>The <code>prepare_ae_summary</code> function is design to be used for multiple purpose. The input of the function is a <code>meta</code> objects created from <code>metalite</code> package.</p>
+<p>The <code>prepare_ae_summary</code> function is design to be used for multiple purposes. The input of the function is a <code>meta</code> objects created from <code>metalite</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_dummy.html">meta_ae_dummy</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The output of the function is an <code>outdata</code> objects contain a list of analysis raw datasets. Here parameter is a group of key words available in the <code>names(meta$parameter)</code> and seperated by <code>;</code>.</p>
+<p>The output of the function is an <code>outdata</code> object that contain a list of analysis raw datasets. The parameter is a group of key words available in the <code>names(meta$parameter)</code> and seperated by <code>;</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span><span class="va">meta</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
@@ -146,7 +146,8 @@
 <span><span class="co">#&gt; 4           300 with drug-related{^a} adverse events</span></span>
 <span><span class="co">#&gt; 5           400          with serious adverse events</span></span></code></pre></div>
 <ul>
-<li>`n_pop: participants in population</li>
+<li>
+<code>n_pop</code>: participants in population</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span><span class="op">$</span><span class="va">n_pop</span></span>
@@ -209,7 +210,7 @@
 <span><span class="co">#&gt; 3  (11.4)</span></span>
 <span><span class="co">#&gt; 21 (73.6)</span></span>
 <span><span class="co">#&gt; 22  (1.2)</span></span></code></pre></div>
-<p>We can hide total column</p>
+<p>We can choose which measurement to display</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span><span class="op">)</span><span class="op">)</span></span>
@@ -220,7 +221,7 @@
 <span><span class="co">#&gt; 3                with no adverse events  17 (19.8)   7  (8.3)   5  (6.0)</span></span>
 <span><span class="co">#&gt; 21 with drug-related{^a} adverse events  44 (51.2)  73 (86.9)  70 (83.3)</span></span>
 <span><span class="co">#&gt; 22          with serious adverse events   0  (0.0)   1  (1.2)   2  (2.4)</span></span></code></pre></div>
-<p>Adding risk difference</p>
+<p>We can add risk difference</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">)</span></span>
@@ -237,7 +238,7 @@
 <span><span class="co">#&gt; 3    32.2</span></span>
 <span><span class="co">#&gt; 21    2.4</span></span>
 <span><span class="co">#&gt; 22  -13.8</span></span></code></pre></div>
-<p>Adding 95% confidence interval of M&amp;N method. It requires to use <code>extend_ae_specific_inference</code> to perform additional calculation.</p>
+<p>We can add 95% confidence interval of M&amp;N method. It requires <code>extend_ae_specific_inference</code> to perform additional calculation.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -248,7 +249,7 @@
 <h3 id="mock-data-preparation">Mock data preparation<a class="anchor" aria-label="anchor" href="#mock-data-preparation"></a>
 </h3>
 <p>We can also use <code>format_ae_summary</code> to create mock output data.</p>
-<p>The purpose of the <code>mock</code> argument is not to create a comprehensive mock table template, but a handy way to help user create a mock table that mimic the exact output layout.</p>
+<p>The purpose of the <code>mock</code> argument is not to create a comprehensive mock table template, but a handy way to help user create a mock table that mimics the exact output layout.</p>
 <p>Additional work is required to develop a flexible mock table generation tool (e.g. a dedicated mock table generation package)</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
@@ -324,7 +325,7 @@
 </h3>
 <ul>
 <li>Avoiding <code>|&gt;</code>, using <code>|&gt;</code> to reduce dependency of <code>magrittr</code>.</li>
-<li>The functions in the <code>R/</code> folder should not depends on <code>dplyr</code>, <code>tidyr</code> etc.</li>
+<li>The functions in the <code>R/</code> folder should not depend on <code>dplyr</code>, <code>tidyr</code> etc.</li>
 </ul>
 </div>
 </div>
