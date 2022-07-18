@@ -159,12 +159,12 @@ outdata |>
   format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    path_outtable = "outtable/ae0summary1.rtf"
+    path_outtable = "./outtable/ae0summary1.rtf"
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0summary1.pdf")
+knitr::include_graphics("./outtable/ae0summary1.pdf")
 ```
 
 The `tlf_ae_summary` function also provide some commonly used argument to customize the table.
@@ -177,12 +177,12 @@ outdata |>
     col_rel_width = c(6, rep(1, 8)),
     text_font_size = 8,
     orientation = "landscape",
-    path_outtable = "outtable/ae0summary2.rtf"
+    path_outtable = "./outtable/ae0summary2.rtf"
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0summary2.pdf")
+knitr::include_graphics("./outtable/ae0summary2.pdf")
 ```
 
 We can also generate the mock table
@@ -192,12 +192,12 @@ outdata |>
   format_ae_summary(mock = TRUE) |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    path_outtable = "outtable/mock_ae0summary1.rtf"
+    path_outtable = "./outtable/mock_ae0summary1.rtf"
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/mock_ae0summary1.pdf")
+knitr::include_graphics("./outtable/mock_ae0summary1.pdf")
 ```
 
 ## Future developement
