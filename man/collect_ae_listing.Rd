@@ -6,8 +6,8 @@
 \usage{
 collect_ae_listing(
   outdata,
-  display = c("SEX", "RACE", "AGE", "ASTDY", "AESEV", "AESER", "AEREL", "AEACN",
-    "AEOUT", "SITEID", "ADURN", "ADURU")
+  display = c("SEX", "RACE", "AGE", "ASTDY", "AESEV", "AESER", "AEREL", "AEACN", "AEOUT",
+    "SITEID", "ADURN", "ADURU")
 )
 }
 \arguments{
