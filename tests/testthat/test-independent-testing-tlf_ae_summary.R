@@ -7,7 +7,7 @@ outdata <- prepare_ae_summary(meta,
                               parameter = "any;rel;ser"
 )
 
-path_rtf <- tempfile(fileext = '.rtf')
+path_rtf <- file.path(tempdir(), "tlf_ae_summary.rtf")
 path_rdata <- tempfile(fileext = '.Rdata')
 
 tbl <- outdata |>
