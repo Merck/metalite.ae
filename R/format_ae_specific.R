@@ -43,11 +43,13 @@ format_ae_specific <- function(outdata,
                                digits_events = c(1, 1),
                                mock = FALSE) {
   display <- tolower(display)
-
   display <- match.arg(display,
-    c("n", "prop", "total", "diff", "diff_ci", "p", "dur", "mean", "events"),
+    c("n", "prop", "total", "diff", "diff_ci", "diff_p", "dur", "events"),
     several.ok = TRUE
   )
+
+  # Add "n"
+  display <- unique(c("n", display))
 
   # Report Missing columns
   display_col <- setdiff(
@@ -95,6 +97,11 @@ format_ae_specific <- function(outdata,
   }
 
   if ("diff_ci" %in% display) {
+
+    if(is.null(outdata$ci_lower)){
+      stop("Please use extend_ae_specific_inference() to get the calculation of ci!")
+    }
+
     ci <- outdata$ci_lower * NA
     names(ci) <- gsub("lower", "ci", names(ci))
     for (i in 1:ncol(outdata$ci_lower)) {
@@ -106,11 +113,21 @@ format_ae_specific <- function(outdata,
   }
 
   if ("diff_p" %in% display) {
+
+    if(is.null(outdata$p)){
+      stop("Please use extend_ae_specific_inference() to get the calculation of p-values!")
+    }
+
     p <- apply(outdata$p, 2, fmt_pval, digits = digits_p)
     tbl[["diff_p"]] <- p
   }
 
   if ("dur" %in% display) {
+
+    if(is.null(outdata$dur)){
+      stop("Please use extend_ae_specific_duration() to get the calculation of duration!")
+    }
+
     dur <- outdata$dur * NA
     for (i in 1:ncol(outdata$dur)) {
       m <- outdata$dur[[i]]
@@ -121,6 +138,11 @@ format_ae_specific <- function(outdata,
   }
 
   if ("events" %in% display) {
+
+    if(is.null(outdata$events)){
+      stop("Please use extend_ae_specific_events() to get the calculation of events!")
+    }
+
     events <- outdata$events * NA
     for (i in 1:ncol(outdata$events)) {
       m <- outdata$events[[i]]
@@ -147,7 +169,7 @@ format_ae_specific <- function(outdata,
   names(between_tbl) <- NULL
   between_tbl <- do.call(cbind, between_tbl)
 
-  # Create Restuls
+  # Create Results
   if (is.null(between_tbl)) {
     res <- within_tbl
   } else {
