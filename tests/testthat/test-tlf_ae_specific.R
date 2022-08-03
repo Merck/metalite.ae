@@ -12,7 +12,7 @@ path_rdata <- tempfile(fileext = '.Rdata')
 tbl <- outdata |>
   format_ae_specific() |>
   tlf_ae_specific(
-    #medra_version = "24.0",
+    medra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     path_outdata =  path_rdata,
     path_outtable =  path_rtf
