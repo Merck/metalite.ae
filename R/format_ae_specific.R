@@ -49,9 +49,7 @@ format_ae_specific <- function(outdata,
   )
 
   # Add "n"
-  if(!"n" %in% display){
-    display <- unique(c("n", display))
-  }
+  display <- unique(c("n", display))
 
   # Report Missing columns
   display_col <- setdiff(
