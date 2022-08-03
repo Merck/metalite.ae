@@ -1,4 +1,5 @@
 library(metalite)
+pdf(NULL)
 
 meta <- meta_ae_dummy()
 outdata <- prepare_ae_specific(meta,
