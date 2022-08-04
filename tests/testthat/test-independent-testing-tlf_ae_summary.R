@@ -19,5 +19,5 @@ tbl <- outdata |>
   )
 
 test_that("aesummary.rtf file output", {
-  expect_snapshot_file(path_rtf)
+  expect_snapshot(tbl)
 })
