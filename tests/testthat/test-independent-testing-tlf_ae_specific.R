@@ -19,5 +19,5 @@ tbl <- outdata |>
   )
 
 test_that("ae0specific1.rtf file output", {
-  expect_snapshot_file(path_rtf)
+  expect_snapshot(tbl)
 })
