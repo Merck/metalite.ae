@@ -1,0 +1,289 @@
+---
+title: "ae-listing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ae-listing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(metalite.ae)
+library(metalite)
+```
+
+```{r}
+adae <- r2rtf::r2rtf_adae
+adsl <- r2rtf::r2rtf_adsl
+```
+
+## Overview
+
+### Data Manipulation
+
+#### Example for AE related
+
+```{r}
+adae$related <- ifelse(adae$AEREL == 'RELATED', "Y", ifelse(
+      toupper(adae$AEREL) == 'NOT RELATED', "N",  tools::toTitleCase(tolower(adae$AEREL))
+    ))
+head(adae$related)
+```
+
+#### Example for outcome
+
+```{r}
+for(i in 1:length(adae$AEOUT)){
+adae$outcome <-  switch(adae$AEOUT[i],
+                        "RECOVERED/RESOLVED" = 'Resolved',
+                        'RECOVERING/RESOLVING'='Resolving',
+                        'RECOVERED/RESOLVED WITH SEQUELAE'='Sequelae',
+                        'NOT RECOVERED/NOT RESOLVED'= 'Not Resolved',
+                        tools::toTitleCase(tolower(adae$AEOUT[i]))
+      )
+}
+```
+
+#### Example for duration
+
+```{r}
+
+adae$duration <- paste(ifelse(is.na(adae$ADURN), "", as.character(adae$ADURN)) ,tools::toTitleCase(tolower(adae$ADURU)),sep=" ")# AE duration with unit
+
+    for(i in 1:length(adae$duration)){
+      if(is.na(adae$ADURN[i])){
+        adae$duration[i] <- ifelse(charmatch(toupper(adae$AEOUT[i]), 'RECOVERING/RESOLVING')>0 |
+                                    charmatch(toupper(adae$AEOUT[i]), 'NOT RECOVERED/NOT RESOLVED')>0, 'Continuing', 'Unknown')
+      }
+    }
+
+```
+
+#### Example for subline
+
+```{r}
+adae$subline <- paste0(
+      "Subject ID = ", adae$USUBJID,
+      ", Gender = ", adae$SEX,
+      ", Race = ", adae$RACE,
+      ", AGE = ", adae$AGE, " Years",
+      ", TRT = ", adae$TRTA
+    )
+```
+
+### Analysis preparation
+
+```{r}
+meta_ae_listing <- function() {
+  adsl$TRTA <- adsl$TRT01A
+  adsl$TRTA <- factor(adsl$TRTA,
+    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+    labels = c("Placebo", "Low Dose", "High Dose")
+  )
+
+  adae$TRTA <- factor(adae$TRTA,
+    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+    labels = c("Placebo", "Low Dose", "High Dose")
+  )
+
+  plan <- plan(
+      analysis = "ae_listing", population = "apat",
+      observation = c("wk12", "wk24"), parameter = c("any",  "rel")
+    ) 
+
+  meta_adam(
+    population = adsl,
+    observation = adae
+  ) |>
+    define_plan(plan = plan) |>
+    define_population(
+      name = "apat",
+      group = "TRTA",
+      subset = quote(SAFFL == "Y")
+    ) |>
+    define_observation(
+      name = "wk12",
+      group = "TRTA",
+      subset = quote(SAFFL == "Y"),
+      label = "Weeks 0 to 12",
+      rel_day = "ASTDY"
+    ) |>
+    define_observation(
+      name = "wk24",
+      group = "TRTA",
+      subset = quote(AOCC01FL == "Y"), # just for demo, another flag shall be used.
+      label = "Weeks 0 to 24",
+      rel_day = "ASTDY"
+    ) |>
+    define_parameter(
+      name = "rel",
+      subset = quote(AEREL %in% c("POSSIBLE", "PROBABLE"))
+    ) |>
+    define_analysis(
+      name="ae_listing",
+      var_name = c("USUBJID", "ASTDY", "AEDECOD", "duration", "AESEV", "AESER", "related", "outcome"),
+      subline = "subline",
+      subline_by = NULL,
+      group_by = c("USUBJID", "ASTDY"),
+      page_by = c("TRTA", "subline")
+    ) |>
+    meta_build()
+}
+```
+
+### prepare_ae_listing
+
+```{r}
+
+prepare_ae_listing <- function(meta,
+                               population,
+                               observation,
+                               parameter) {
+  mapping <- collect_adam_mapping(meta, "ae_listing")
+  var_name <- eval(mapping$var_name)
+  subline <- eval(mapping$subline)
+  subline_by <- eval(mapping$subline_by)
+  group_by <- eval(mapping$group_by)
+  page_by <- eval(mapping$page_by)
+  
+  var_names <- c(var_name, subline, subline_by, group_by, page_by)
+  
+  res <- collect_observation_record(meta, population, observation, parameter,
+                                    var = var_names)
+  
+  # TODO: Extract label from dataframe
+  # attr(res$USUBJID, "label")
+  # attr(res$ASTDY, "label")
+  
+  res <- res[names(res) %in% var_names]
+  
+  # Return value
+  outdata(meta, population, observation, parameter,
+          n = NULL,order=NULL, group = NULL, reference_group=NULL,
+          # ae_var = par_var, rel_day_var = rel_day_var,
+          # id_var = id_var, group_var = obs_group,
+          tbl = res
+  )
+}
+```
+
+### create rtf
+
+```{r}
+tlf_ae_listing <- function(outdata,
+                           footnotes = NULL,
+                           source = NULL,
+                           col_rel_width = NULL,
+                           text_font_size = 9,
+                           orientation = "landscape",
+                           path_outdata = NULL,
+                           path_outtable = NULL) {
+  
+  res <- outdata$tbl
+  
+  mapping <- collect_adam_mapping(outdata$meta, "ae_listing")
+  var_name <- eval(mapping$var_name)
+  subline <- eval(mapping$subline)
+  subline_by <- eval(mapping$subline_by)
+  group_by <- eval(mapping$group_by)
+  page_by <- eval(mapping$page_by)
+  ae_var <- collect_adam_mapping(outdata$meta, outdata$parameter)$var
+
+  # Define title
+  title <- collect_title(outdata$meta, outdata$population, outdata$observation, outdata$parameter, analysis = "ae_listing")
+  
+  res <- as.data.frame(res)
+  res <- res[do.call(what = order, args = res[,c(page_by, group_by, ae_var)]), ]
+  
+  # Relative width
+  n_col <- ncol(res)
+  if (is.null(col_rel_width)) {
+    rel_width <- rep(1,n_col)
+  } else {
+    rel_width <- col_rel_width
+  }
+  
+  rel_width1 <- c()
+  for(i in 1:n_col){
+    if(names(res)[i] %in% var_name){
+      rel_width1 <- c(rel_width1, col_rel_width[i])
+    }
+  }
+  
+  # Text justification
+  text_justification <- c()
+  for(i in 1:n_col){
+    if(i == 1){
+      text_justification <- c(text_justification, "l")
+    }else if(names(res)[i] %in% var_name){
+      text_justification <- c(text_justification, "c")
+    }else{
+      text_justification <- c(text_justification, "l")
+    }
+  }
+  
+  # Text format
+  text_format <- c()
+  for(i in 1:n_col){
+    if(names(res)[i] %in% var_name){
+      text_format <- c(text_format, "")
+    }else if(names(res)[i] %in% subline){
+      text_format <- c(text_format, "")
+    }else{
+      text_format <- c(text_format, "b")
+    }
+  }
+  
+  # Define column header
+  colheader_display <-  names(res)[!names(res) %in% page_by]
+    
+  colheader <-  paste(colheader_display, collapse = " | ")
+  colheader <- gsub("_", " ", colheader)
+  
+  # Using r2rtf
+
+  outdata$rtf <- res |>
+  rtf_page(orientation =  orientation) |>
+  rtf_title(title)  |>
+  rtf_colheader(colheader,
+                col_rel_width = rel_width1,
+                text_font_size = text_font_size) |>
+  rtf_body(
+           col_rel_width = rel_width,
+           text_justification = text_justification,
+           text_format = text_format,
+           # border_top = c(rep("", 6), "single","single"), 
+           # border_bottom = c(rep("", 6), "single","single"),
+           # border_left = c(rep(c("single"), 11) ),
+           page_by=page_by,
+           group_by=group_by,
+           text_font_size = text_font_size
+  ) 
+
+  if (!is.null(footnotes)) {
+    outdata$rtf <- outdata$rtf |>
+      r2rtf::rtf_footnote(footnotes,
+        text_font_size = text_font_size
+      )
+  }
+
+  if (!is.null(source)) {
+    outdata$rtf <- outdata$rtf |>
+      r2rtf::rtf_source(source,
+        text_font_size = text_font_size
+      )
+  }
+  
+  # prepare output
+  rtf_output(outdata, path_outdata, path_outtable)
+}
+
+prepare_ae_listing(meta, "apat", "wk12", "rel") |> tlf_ae_listing(path_outtable ="ae_listing.rtf", path_outdata ="ae_listing.rdata")
+```
