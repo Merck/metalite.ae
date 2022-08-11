@@ -44,8 +44,8 @@ format_ae_specific <- function(outdata,
                                mock = FALSE) {
   display <- tolower(display)
   display <- match.arg(display,
-    c("n", "prop", "total", "diff", "diff_ci", "diff_p", "dur", "events"),
-    several.ok = TRUE
+                       c("n", "prop", "total", "diff", "diff_ci", "diff_p", "dur", "events"),
+                       several.ok = TRUE
   )
 
   # Add "n"
@@ -68,30 +68,23 @@ format_ae_specific <- function(outdata,
 
   # Define total column
   display_total <- "total" %in% display
-  index_total <- ncol(outdata$n)
+  index_total <- if (display_total) {1:ncol(outdata$n)} else {1:(ncol(outdata$n)-1)}
+
 
   # Create output
   tbl <- list()
-  if ("n" %in% display) {
-    if (display_total) {
-      n <- outdata$n
-    } else {
-      n <- outdata$n[, -index_total]
-    }
-    tbl[["n"]] <- n
-  }
+
+  # n
+  tbl[["n"]] <- outdata$n[, index_total]
 
   if ("prop" %in% display) {
-    if (display_total) {
-      prop <- outdata$prop
-    } else {
-      prop <- outdata$prop[, -index_total]
-    }
+    prop <- outdata$prop[, index_total]
     prop <- apply(prop, 2, fmt_pct, digits = digits_prop, pre = "(", post = ")")
     tbl[["prop"]] <- prop
   }
 
   if ("diff" %in% display) {
+    # diff <- outdata$diff[, index_total]
     diff <- apply(outdata$diff, 2, fmt_est, digits = digits_prop)
     tbl[["diff"]] <- diff
   }
@@ -128,8 +121,8 @@ format_ae_specific <- function(outdata,
       stop("Please use extend_ae_specific_duration() to get the calculation of duration!")
     }
 
-    dur <- outdata$dur * NA
-    for (i in 1:ncol(outdata$dur)) {
+    dur <- outdata$dur[, index_total] * NA
+    for (i in 1:ncol(outdata$dur[, index_total])) {
       m <- outdata$dur[[i]]
       se <- outdata$dur_se[[i]]
       dur[, i] <- fmt_est(m, se, digits = digits_dur)
@@ -143,8 +136,8 @@ format_ae_specific <- function(outdata,
       stop("Please use extend_ae_specific_events() to get the calculation of events!")
     }
 
-    events <- outdata$events * NA
-    for (i in 1:ncol(outdata$events)) {
+    events <- outdata$events[, index_total] * NA
+    for (i in 1:ncol(outdata$events[, index_total])) {
       m <- outdata$events[[i]]
       se <- outdata$events_se[[i]]
       events[, i] <- fmt_est(m, se, digits = digits_dur)
@@ -160,14 +153,19 @@ format_ae_specific <- function(outdata,
   n_within <- length(within_tbl)
   n_group <- ncol(tbl[["n"]])
   within_tbl <- do.call(cbind, within_tbl)
-  within_tbl <- within_tbl[, as.vector(matrix(1:(n_group * n_within), ncol = n_group, byrow = TRUE))]
+  within_tbl <- within_tbl[, as.vector(matrix(1:(n_group * n_within),
+                                              ncol = n_group, byrow = TRUE))]
 
   # Arrange Between Group information
   between_var <- names(tbl)[names(tbl) %in% c("diff", "diff_ci", "diff_p")]
   between_tbl <- tbl[between_var]
+  n_between <- length(between_tbl)
+  n_group_btw <- n_group - 1 - display_total # Always groups - 1 - total col
 
   names(between_tbl) <- NULL
   between_tbl <- do.call(cbind, between_tbl)
+  between_tbl <- between_tbl[, as.vector(matrix(1:(n_group_btw * n_between),
+                                                    ncol = n_group_btw, byrow = TRUE))]
 
   # Create Results
   if (is.null(between_tbl)) {
