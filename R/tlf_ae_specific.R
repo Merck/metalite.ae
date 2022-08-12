@@ -47,15 +47,16 @@
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_specific <- function(outdata,
-                            medra_version,
-                            source,
-                            col_rel_width = NULL,
-                            text_font_size = 9,
-                            orientation = "portrait",
-                            footnotes = NULL,
-                            path_outdata = NULL,
-                            path_outtable = NULL) {
-  
+  medra_version,
+  source,
+  col_rel_width = NULL,
+  text_font_size = 9,
+  orientation = "portrait",
+  footnotes = NULL,
+  title = NULL,
+  path_outdata = NULL,
+  path_outtable = NULL) {
+
   if(is.null(footnotes)){
     footnotes <- c(
       "Every participant is counted a single time for each applicable row and column.",
@@ -67,6 +68,7 @@ tlf_ae_specific <- function(outdata,
       "Adverse event terms are from MedDRA Version {medra_version}."
     )
   }
+
   tbl <- outdata$tbl
   group <- outdata$group
   reference_group <- outdata$reference_group
@@ -75,16 +77,39 @@ tlf_ae_specific <- function(outdata,
   n_col <- ncol(tbl)
 
   # Define title
-  title <- collect_title(outdata$meta, outdata$population, outdata$observation, outdata$parameter, analysis = "ae_specific")
-  footnotes <- vapply(footnotes, glue::glue_data,
+  if(is.null(title)){
+    title <- collect_title(outdata$meta,
+      outdata$population,
+      outdata$observation,
+      outdata$parameter,
+      analysis = "ae_specific")
+  }
+
+ footnotes <- vapply(footnotes, glue::glue_data,
     .x = list(medra_version = medra_version), FUN.VALUE = character(1)
   )
   names(footnotes) <- NULL
 
   # Define column header
+
+  col_tbl <- strsplit(names(tbl), "_") |>
+    unlist() %>%
+    {.[. %in% c("n", "prop", "dur", "events")]} %>%
+    unique()
+
+  colhead_tmp <- paste(
+    sapply(X = col_tbl,
+      FUN = switch,
+      "n" = "n",
+      "prop" = "(%)",
+      "dur" = "Mean duration (SE)",
+      "events" = "Mean Events per Participant (SE)"
+    ),
+    collapse = " | ")
+
   colheader_n <- c(
     paste0(" | ", paste(group, collapse = " | ")),
-    paste0(" | ", paste(rep("n | (%)", n_group), collapse = " | "))
+    paste0(" | ", paste(rep(colhead_tmp, n_group), collapse = " | "))
   )
 
   # TODO: add logic for CI and p-value with multipel groups following WMA mock up table.
@@ -99,22 +124,34 @@ tlf_ae_specific <- function(outdata,
   # Relative width
 
   if (is.null(col_rel_width)) {
-    rel_width <- c(3, rep(1, 2 * n_group))
+    rel_width <- c(3, rep(1, length(col_tbl) * n_group))
   } else {
     rel_width <- col_rel_width
   }
+
 
   n_col <- length(rel_width)
 
   rel_width1 <- c(
     rel_width[1],
-    tapply(rel_width[2:(n_group * 2 + 1)], c(rep(1:n_group, each = 2)), sum),
-    rel_width[-(1:(n_group * 2 + 1))]
+    tapply(rel_width[2:(n_group * length(col_tbl) + 1)],
+      c(rep(1:n_group, each = length(col_tbl))), sum),
+    rel_width[-(1:(n_group * length(col_tbl) + 1))]
   )
 
-  # Column boarder
+  # Column border
+  colborder_within <- sapply(X = col_tbl,
+    FUN = switch,
+    "n" = "single",
+    "prop" = "",
+    "dur" = "single",
+    "events" = "single",
+    USE.NAMES = FALSE
+  )
+
   border_top <- c("", rep("single", n_col - 1))
-  border_left <- c("single", rep(c("single", ""), n_group), rep("single", n_col - n_group * 2 - 1))
+  border_left <- c("single",
+    rep(colborder_within, n_group))
 
 
   # Using order number to customize row format

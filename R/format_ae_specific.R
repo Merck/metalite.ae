@@ -70,6 +70,8 @@ format_ae_specific <- function(outdata,
   display_total <- "total" %in% display
   index_total <- if (display_total) {1:ncol(outdata$n)} else {1:(ncol(outdata$n)-1)}
 
+  # Drop total column from outdata if it's not requested.
+  outdata$group <- outdata$group[index_total]
 
   # Create output
   tbl <- list()
