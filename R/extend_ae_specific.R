@@ -67,6 +67,7 @@ extend_ae_specific_inference <- function(outdata,
 
   res$ci_lower <- ci_lower
   res$ci_upper <- ci_upper
+  res$ci_level <- ci
   res$p <- p
 
   res
@@ -185,9 +186,9 @@ extend_ae_specific_duration <- function(outdata,
 #'
 #' @export
 extend_ae_specific_events <- function(outdata) {
-  
+
   meta <- outdata$meta
-  
+
   population <- outdata$population
   observation <- outdata$observation
   parameter <- outdata$parameter
