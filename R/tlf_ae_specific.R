@@ -23,8 +23,9 @@
 #' @inheritParams r2rtf::rtf_page
 #' @inheritParams r2rtf::rtf_body
 #' @param footnotes a character vector of table footnotes
-#' @param path_outdata a character string of the outdata path.
-#' @param path_outtable a character string of the outtable path.
+#' @param title a character vector of table titles
+#' @param path_outdata a character string of the outdata path
+#' @param path_outtable a character string of the outtable path
 #'
 #' @export
 #'
