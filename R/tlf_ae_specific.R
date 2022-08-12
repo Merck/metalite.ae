@@ -48,17 +48,16 @@
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_specific <- function(outdata,
-  medra_version,
-  source,
-  col_rel_width = NULL,
-  text_font_size = 9,
-  orientation = "portrait",
-  footnotes = NULL,
-  title = NULL,
-  path_outdata = NULL,
-  path_outtable = NULL) {
-
-  if(is.null(footnotes)){
+                            medra_version,
+                            source,
+                            col_rel_width = NULL,
+                            text_font_size = 9,
+                            orientation = "portrait",
+                            footnotes = NULL,
+                            title = NULL,
+                            path_outdata = NULL,
+                            path_outtable = NULL) {
+  if (is.null(footnotes)) {
     footnotes <- c(
       "Every participant is counted a single time for each applicable row and column.",
       paste(
@@ -81,19 +80,22 @@ tlf_ae_specific <- function(outdata,
   n_col <- ncol(tbl)
 
   if (!is.null(col_rel_width) & !n_col == length(col_rel_width)) {
-    stop("col_rel_width must have the same length (has ",
+    stop(
+      "col_rel_width must have the same length (has ",
       length(col_rel_width),
       ") as as outdata$tbl has number of columns (has ",
-      n_col, ").")
+      n_col, ")."
+    )
   }
 
   # Define title
-  if(is.null(title)){
+  if (is.null(title)) {
     title <- collect_title(outdata$meta,
       outdata$population,
       outdata$observation,
       outdata$parameter,
-      analysis = "ae_specific")
+      analysis = "ae_specific"
+    )
   }
 
   footnotes <- vapply(footnotes, glue::glue_data,
@@ -109,21 +111,25 @@ tlf_ae_specific <- function(outdata,
     unique()
 
   colhead_within <- paste(
-    sapply(X = col_tbl_within,
+    sapply(
+      X = col_tbl_within,
       FUN = switch,
       "n" = "n",
       "prop" = "(%)",
       "dur" = "Mean Duration (SE)",
       "events" = "Mean Events per Participant (SE)"
     ),
-    collapse = " | ")
+    collapse = " | "
+  )
 
   colhead_1_within <- paste(group, collapse = " | ")
 
   colhead_2_within <- paste(rep(colhead_within, n_group),
-      collapse = " | ")
+    collapse = " | "
+  )
 
-  colborder_within <- sapply(X = col_tbl_within,
+  colborder_within <- sapply(
+    X = col_tbl_within,
     FUN = switch,
     "n" = "single",
     "prop" = "",
@@ -134,9 +140,11 @@ tlf_ae_specific <- function(outdata,
 
   rwidth_2_within <- rep(1, length(col_tbl_within) * n_group)
 
-  rwidth_1_within <- tapply(rwidth_2_within,
+  rwidth_1_within <- tapply(
+    rwidth_2_within,
     c(rep(1:n_group, each = length(col_tbl_within))),
-    sum)
+    sum
+  )
 
   colborder_within <- rep(colborder_within, n_group)
 
@@ -149,22 +157,27 @@ tlf_ae_specific <- function(outdata,
 
   if (length(col_tbl_between) > 0) {
     colhead_between <- paste(
-      sapply(X = col_tbl_between,
+      sapply(
+        X = col_tbl_between,
         FUN = switch,
         "diff" = "Estimate",
         "ci" = paste0("(", outdata$ci_level * 100, "% CI)"),
         "p" = "p-value",
       ),
-      collapse = " | ")
+      collapse = " | "
+    )
 
     colhead_1_between <- paste("Difference in %",
       outdata$group[between_total[-reference_group]],
       "vs.",
-      outdata$group[reference], collapse = " | ")
+      outdata$group[reference],
+      collapse = " | "
+    )
 
     colhead_2_between <- paste(rep(colhead_between, n_comparisons), collapse = " | ")
 
-    colborder_between <- sapply(X = col_tbl_between,
+    colborder_between <- sapply(
+      X = col_tbl_between,
       FUN = switch,
       "diff" = "single",
       "ci" = "",
@@ -174,25 +187,26 @@ tlf_ae_specific <- function(outdata,
 
     rwidth_2_between <- rep(1, length(col_tbl_between) * n_comparisons)
 
-    rwidth_1_between <- tapply(rwidth_2_between,
+    rwidth_1_between <- tapply(
+      rwidth_2_between,
       c(rep(1:n_comparisons, each = length(col_tbl_between))),
-      sum)
+      sum
+    )
 
     colborder_between <- rep(colborder_between, n_comparisons)
-
   } else {
     colhead_between <- colhead_1_between <- colhead_2_between <- NULL
     rwidth_1_between <- rwidth_2_between <- colborder_between <- NULL
   }
 
-# Column headers
+  # Column headers
 
   colheader <- c(
     paste0(" | ", paste0(c(colhead_1_within, colhead_1_between), collapse = " | ")),
     paste0(" | ", paste0(c(colhead_2_within, colhead_2_between), collapse = " | "))
   )
 
-# Relative width
+  # Relative width
 
   if (is.null(col_rel_width)) {
     rwidth_2 <- c(3, rwidth_2_within, rwidth_2_between)
@@ -200,17 +214,25 @@ tlf_ae_specific <- function(outdata,
   } else {
     rwidth_2 <- col_rel_width
 
-    rw_1_recalc_w <- tapply(col_rel_width[2:(n_group * length(col_tbl_within) + 1)],
-      c(rep(1:n_group, each = length(col_tbl_within))), sum)
+    rw_1_recalc_w <- tapply(
+      col_rel_width[2:(n_group * length(col_tbl_within) + 1)],
+      c(rep(1:n_group, each = length(col_tbl_within))), sum
+    )
 
     rw_1_recalc_b <- if (length(col_tbl_between) > 0) {
-      tapply(col_rel_width[(n_group * length(col_tbl_within) + 2):n_col],
-        c(rep(1:n_comparisons, each = length(col_tbl_between))), sum)
-    } else NULL
+      tapply(
+        col_rel_width[(n_group * length(col_tbl_within) + 2):n_col],
+        c(rep(1:n_comparisons, each = length(col_tbl_between))), sum
+      )
+    } else {
+      NULL
+    }
 
-    rwidth_1 <- c(rwidth_2[1],
+    rwidth_1 <- c(
+      rwidth_2[1],
       rw_1_recalc_w,
-      rw_1_recalc_b)
+      rw_1_recalc_b
+    )
   }
 
   if (sum(rwidth_1) != sum(rwidth_2)) stop("width calculation broke, contact developer")
@@ -221,6 +243,7 @@ tlf_ae_specific <- function(outdata,
   border_left <- c("single", colborder_within, colborder_between)
 
   # Using order number to customize row format
+
   text_justification <- c("l", rep("c", n_col - 1))
 
   if (length(outdata$components) == 2) {
