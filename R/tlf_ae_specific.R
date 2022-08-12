@@ -94,8 +94,8 @@ tlf_ae_specific <- function(outdata,
   # Define column header
 
   col_tbl <- strsplit(names(tbl), "_") |>
-    unlist() %>%
-    {.[. %in% c("n", "prop", "dur", "events")]} %>%
+    unlist() |>
+    function(X){X[X %in% c("n", "prop", "dur", "events")]} |>
     unique()
 
   colhead_tmp <- paste(
