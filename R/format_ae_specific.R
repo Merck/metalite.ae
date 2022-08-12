@@ -68,7 +68,7 @@ format_ae_specific <- function(outdata,
 
   # Define total column
   display_total <- "total" %in% display
-  index_total <- if (display_total) {1:ncol(outdata$n)} else {1:(ncol(outdata$n)-1)}
+  index_total <- seq(ncol(outdata$n) - (! display_total) )
 
   # Drop total column from outdata if it's not requested.
   outdata$group <- outdata$group[index_total]
