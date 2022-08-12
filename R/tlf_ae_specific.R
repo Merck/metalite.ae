@@ -73,7 +73,10 @@ tlf_ae_specific <- function(outdata,
   tbl <- outdata$tbl
   group <- outdata$group
   reference_group <- outdata$reference_group
+  display_total <- "Total" %in% group
   n_group <- length(outdata$group)
+  between_total <- seq(n_group - (display_total))
+  n_comparisons <- length(between_total) - 1
   n_row <- nrow(tbl)
   n_col <- ncol(tbl)
 
@@ -86,46 +89,61 @@ tlf_ae_specific <- function(outdata,
       analysis = "ae_specific")
   }
 
- footnotes <- vapply(footnotes, glue::glue_data,
+  footnotes <- vapply(footnotes, glue::glue_data,
     .x = list(medra_version = medra_version), FUN.VALUE = character(1)
   )
   names(footnotes) <- NULL
 
   # Define column header
 
-  col_tbl <- strsplit(names(tbl), "_") |>
+  col_tbl_within <- strsplit(names(tbl), "_") |>
     unlist() |>
     (\(list) list[list %in% c("n", "prop", "dur", "events")])() |>
     unique()
 
-  colhead_tmp <- paste(
-    sapply(X = col_tbl,
+  colhead_within <- paste(
+    sapply(X = col_tbl_within,
       FUN = switch,
       "n" = "n",
       "prop" = "(%)",
-      "dur" = "Mean duration (SE)",
+      "dur" = "Mean Duration (SE)",
       "events" = "Mean Events per Participant (SE)"
     ),
     collapse = " | ")
 
+  col_tbl_between <- strsplit(names(tbl), "_") |>
+    unlist() |>
+    (\(list) list[list %in% c("diff", "ci", "p")])() |>
+    unique()
+
+  colhead_between <- paste(
+    sapply(X = col_tbl_between,
+      FUN = switch,
+      "diff" = "Estimate",
+      "ci" = paste0("(", outdata$ci_level * 100, "% CI)"),
+      "p" = "p-value",
+    ),
+    collapse = " | ")
+
   colheader_n <- c(
-    paste0(" | ", paste(group, collapse = " | ")),
-    paste0(" | ", paste(rep(colhead_tmp, n_group), collapse = " | "))
+    paste0(" | ",
+      paste(group, collapse = " | "), " | ",
+      paste("Difference in %",
+        outdata$group[between_total[-reference_group]],
+        "vs.",
+        outdata$group[reference], collapse = " | ")),
+    paste0(" | ", paste(rep(colhead_within, n_group), collapse = " | "),
+      " | ", paste(rep(colhead_between, n_comparisons), collapse = " | "))
   )
-
-  # TODO: add logic for CI and p-value with multipel groups following WMA mock up table.
-  # colheader_ci <- c(paste("Difference in % vs", group[reference_group]),
-  # "Estimate (95% CI)")
-
-  # colheader_p <- c("", "p-value")
-  # colheader <- paste(colheader_n, colheader_ci, colheader_p, sep = " | ")
 
   colheader <- colheader_n
 
   # Relative width
 
   if (is.null(col_rel_width)) {
-    rel_width <- c(3, rep(1, length(col_tbl) * n_group))
+    rel_width <- c(3,
+      rep(1, length(col_tbl_within) * n_group),
+      rep(2, length(col_tbl_between) * n_comparisons))
   } else {
     rel_width <- col_rel_width
   }
@@ -135,13 +153,16 @@ tlf_ae_specific <- function(outdata,
 
   rel_width1 <- c(
     rel_width[1],
-    tapply(rel_width[2:(n_group * length(col_tbl) + 1)],
-      c(rep(1:n_group, each = length(col_tbl))), sum),
-    rel_width[-(1:(n_group * length(col_tbl) + 1))]
+    tapply(rel_width[2:(n_group * length(col_tbl_within) + 1)],
+      c(rep(1:n_group, each = length(col_tbl_within))), sum),
+    tapply(rel_width[(n_group * length(col_tbl_within) + 2):n_col],
+      c(rep(1:n_comparisons, each = length(col_tbl_between))), sum)
   )
 
+  if (sum(rel_width) != sum(rel_width1)) stop("width calculation broke")
+
   # Column border
-  colborder_within <- sapply(X = col_tbl,
+  colborder_within <- sapply(X = col_tbl_within,
     FUN = switch,
     "n" = "single",
     "prop" = "",
@@ -150,9 +171,18 @@ tlf_ae_specific <- function(outdata,
     USE.NAMES = FALSE
   )
 
+  colborder_between <- sapply(X = col_tbl_between,
+    FUN = switch,
+    "diff" = "single",
+    "ci" = "",
+    "p" = "single",
+    USE.NAMES = FALSE
+  )
+
   border_top <- c("", rep("single", n_col - 1))
   border_left <- c("single",
-    rep(colborder_within, n_group))
+    rep(colborder_within, n_group),
+    rep(colborder_between, n_comparisons))
 
 
   # Using order number to customize row format
