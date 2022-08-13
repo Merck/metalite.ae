@@ -169,7 +169,8 @@ test_that("rtf output: events, dur, n, and prop w/o total", {
   tbl <- outdata |>
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
-    format_ae_specific(display = c("events", "dur", "n", "prop")) |>
+    format_ae_specific(display = c("events", "dur", "n", "prop"),
+      mock = TRUE) |>
     tlf_ae_specific(
       medra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
@@ -187,7 +188,8 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
   tbl <- outdata |>
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
-    format_ae_specific(display = c("events", "dur", "n", "prop", "total")) |>
+    format_ae_specific(display = c("events", "dur", "n", "prop", "total"),
+      mock = TRUE) |>
     tlf_ae_specific(
       medra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
@@ -208,7 +210,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/o total", {
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(display = c("events", "dur", "n", "prop",
-      "diff", "diff_p", "diff_ci")) |>
+      "diff", "diff_p", "diff_ci"), mock = TRUE) |>
     tlf_ae_specific(
       medra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
@@ -228,7 +230,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(display = c("events", "dur", "n", "prop", "total",
-      "diff", "diff_p", "diff_ci")) |>
+      "diff", "diff_p", "diff_ci"), mock = TRUE) |>
     tlf_ae_specific(
       medra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
@@ -282,7 +284,7 @@ test_that("relative width 'works'", {
 
   expect_error({
   tbl <- outdata |>
-    format_ae_specific(display = c("n", "prop")) |>
+    format_ae_specific(display = c("n", "prop"), mock = TRUE) |>
     tlf_ae_specific(
       medra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
@@ -295,7 +297,7 @@ test_that("relative width 'works'", {
 
   expect_message({
     tbl <- outdata |>
-      format_ae_specific(display = c("n", "prop")) |>
+      format_ae_specific(display = c("n", "prop"), mock = TRUE) |>
       tlf_ae_specific(
         medra_version = "24.0",
         source = "Source:  [CDISCpilot: adam-adsl; adae]",
