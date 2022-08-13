@@ -170,7 +170,7 @@ tlf_ae_specific <- function(outdata,
     colhead_1_between <- paste("Difference in %",
       outdata$group[between_total[-reference_group]],
       "vs.",
-      outdata$group[reference],
+      outdata$group[reference_group],
       collapse = " | "
     )
 
