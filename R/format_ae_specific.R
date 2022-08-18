@@ -124,7 +124,7 @@ format_ae_specific <- function(outdata,
     }
 
     dur <- outdata$dur[, index_total] * NA
-    for (i in 1:ncol(outdata$dur[, index_total])) {
+    for (i in seq(index_total)) {
       m <- outdata$dur[[i]]
       se <- outdata$dur_se[[i]]
       dur[, i] <- fmt_est(m, se, digits = digits_dur)
@@ -139,7 +139,7 @@ format_ae_specific <- function(outdata,
     }
 
     events <- outdata$events[, index_total] * NA
-    for (i in 1:ncol(outdata$events[, index_total])) {
+    for (i in seq(index_total)) {
       m <- outdata$events[[i]]
       se <- outdata$events_se[[i]]
       events[, i] <- fmt_est(m, se, digits = digits_dur)

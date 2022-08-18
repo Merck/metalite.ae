@@ -111,8 +111,9 @@ tlf_ae_specific <- function(outdata,
     unique()
 
   colhead_within <- paste(
-    sapply(
+    vapply(
       X = col_tbl_within,
+      FUN.VALUE = "character",
       FUN = switch,
       "n" = "n",
       "prop" = "(%)",
@@ -128,8 +129,9 @@ tlf_ae_specific <- function(outdata,
     collapse = " | "
   )
 
-  colborder_within <- sapply(
+  colborder_within <- vapply(
     X = col_tbl_within,
+    FUN.VALUE = "character",
     FUN = switch,
     "n" = "single",
     "prop" = "",
@@ -157,8 +159,9 @@ tlf_ae_specific <- function(outdata,
 
   if (length(col_tbl_between) > 0) {
     colhead_between <- paste(
-      sapply(
+      vapply(
         X = col_tbl_between,
+        FUN.VALUE = "character",
         FUN = switch,
         "diff" = "Estimate",
         "ci" = paste0("(", outdata$ci_level * 100, "% CI)"),
@@ -176,8 +179,9 @@ tlf_ae_specific <- function(outdata,
 
     colhead_2_between <- paste(rep(colhead_between, n_comparisons), collapse = " | ")
 
-    colborder_between <- sapply(
+    colborder_between <- vapply(
       X = col_tbl_between,
+      FUN.VALUE = "character",
       FUN = switch,
       "diff" = "single",
       "ci" = "",
