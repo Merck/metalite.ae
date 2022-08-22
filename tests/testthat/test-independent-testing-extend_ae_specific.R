@@ -28,9 +28,11 @@ test_that("specific_inference throws error when !(0 >= ci >= 1)", {
   expect_silent(extend_ae_specific_inference(test, ci = .95))
 })
 
-test_that("specific_inference ci same as SAS", {
-  ae_sp_inf_98 <- extend_ae_specific_inference(test, ci = .98)
-})
+test_that("specific_inference ci gives correct list entries", {
+  expect_silent(ae_spec_inf <- extend_ae_specific_inference(test, ci = .98))
+
+  expect_true(all(c("ci_lower", "ci_upper", "p") %in% names(ae_spec_inf)))
+  })
 
 # extend_ae_specific_duration:
 # Throw errors when duration_var is not a string and of length == 1
@@ -55,16 +57,18 @@ test_that("specific_duration: duration_var must be string", {
   regexp = "does not exist in outdata"
   )
 
-  expect_silent(extend_ae_specific_duration(test,
+  expect_silent(ae_spec_dur <- extend_ae_specific_duration(test,
     duration_var = "ADURN"
   ))
+
+  expect_true(all(c("dur", "dur_se") %in% names(ae_spec_dur)))
 })
 
 # extend_ae_specific_events:
 # The average number of events matches that from SAS
 
-test_that("specific_events: average number of events same as SAS", {
-  expect_silent(extend_ae_specific_events(test))
+test_that("specific_events: average number of events gives correct list entries", {
+  expect_silent(ae_spec_event <- extend_ae_specific_events(test))
 
-  ae_sp_ev <- extend_ae_specific_events(test)
+  expect_true(all(c("events", "events_se") %in% names(ae_spec_event)))
 })
