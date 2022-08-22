@@ -18,21 +18,18 @@ test_that("specific_inference throws error when !(0 >= ci >= 1)", {
   )
 
   expect_error(extend_ae_specific_inference(test, ci = "error"),
-    regex = "ci must be a single numeric."
+    regex = "Please choose a number 0 >= ci >= 1."
   )
 
   expect_error(extend_ae_specific_inference(test, ci = c(.1, .4)),
-    regex = "ci must be a single numeric."
+    regex = "Please choose a number 0 >= ci >= 1."
   )
 
-  expect_silent(extend_ae_specific_inference(test, ci = .95))
-})
-
-test_that("specific_inference ci gives correct list entries", {
-  expect_silent(ae_spec_inf <- extend_ae_specific_inference(test, ci = .98))
+  expect_silent(ae_spec_inf <- extend_ae_specific_inference(test, ci = .95))
 
   expect_true(all(c("ci_lower", "ci_upper", "p") %in% names(ae_spec_inf)))
-  })
+})
+
 
 # extend_ae_specific_duration:
 # Throw errors when duration_var is not a string and of length == 1
