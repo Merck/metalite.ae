@@ -31,9 +31,9 @@ displayed e.g. c(9,20,40).}
 
 \item{footnotes}{a character vector of table footnotes}
 
-\item{path_outdata}{a character string of the outdata path.}
+\item{path_outdata}{a character string of the outdata path}
 
-\item{path_outtable}{a character string of the outtable path.}
+\item{path_outtable}{a character string of the outtable path}
 }
 \description{
 AE summary table

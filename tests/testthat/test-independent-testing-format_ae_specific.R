@@ -53,7 +53,7 @@ test_that("When display contains n and prop then the total column disappear", {
 })
 
 
-test_that("When display contains n,prop and diff then one has additional column ", {
+test_that("When display contains n, prop and diff then one has additional column ", {
 
   dis <- c("n", "prop", "diff")
   test1 <- format_ae_specific(
@@ -94,24 +94,71 @@ test_that("When display contains n,prop and diff then one has additional column 
   expect_equal(npropdiff, vardif)
 })
 
-test_that("When display contains n,prop and diff_ci then one has an additional confidence interval column ", {
+test_that("When display contains n, prop and diff_ci then one has an additional confidence interval column ", {
 disp <- c("n", "prop", "diff_ci")
 
 tbl <- test |>
   extend_ae_specific_inference() |>
   format_ae_specific(display = disp)
 
-expect_true(all(c("n_1",  "prop_1", "n_2",  "prop_2" , "n_3" ,  "prop_3" , "ci_2" ,  "ci_3" ) %in% names(tbl$tbl[-1])))
+expect_equal(c("name",
+                  "n_1", "prop_1",
+                  "n_2", "prop_2",
+                  "n_3", "prop_3",
+                  "ci_2", "ci_3"),
+             names(tbl$tbl))
 })
 
-test_that("When display contains n,prop and dur then one has an additional confidence interval column ", {
+test_that("Between and Within are properly ordered when total is specified", {
+  disp <- c("n", "prop", "dur", "events", "diff", "diff_ci", "diff_p", "total")
+
+  tbl <- test |>
+    extend_ae_specific_duration(duration_var = "ADURN") |>
+    extend_ae_specific_events() |>
+    extend_ae_specific_inference() |>
+    format_ae_specific(display = disp)
+
+  expect_equal(c("name",
+                 "n_1", "prop_1", "dur_1", "events_1",
+                 "n_2", "prop_2", "dur_2", "events_2",
+                 "n_3", "prop_3", "dur_3", "events_3",
+                 "n_4", "prop_4", "dur_4", "events_4",
+                 "diff_2", "ci_2", "p_2",
+                 "diff_3", "ci_3", "p_3"),
+               names(tbl$tbl))
+})
+
+test_that("Between and Within are properly ordered when total is not specified", {
+  disp <- c("n", "prop", "dur", "events", "diff", "diff_ci", "diff_p")
+
+  tbl <- test |>
+    extend_ae_specific_duration(duration_var = "ADURN") |>
+    extend_ae_specific_events() |>
+    extend_ae_specific_inference() |>
+    format_ae_specific(display = disp)
+
+  expect_equal(c("name",
+                 "n_1", "prop_1", "dur_1", "events_1",
+                 "n_2", "prop_2", "dur_2", "events_2",
+                 "n_3", "prop_3", "dur_3", "events_3",
+                 "diff_2", "ci_2", "p_2",
+                 "diff_3", "ci_3", "p_3"),
+               names(tbl$tbl))
+})
+
+
+test_that("When display contains n, prop and dur then one has an additional duration column ", {
   disp <- c("n", "prop", "dur")
 
    tbl <- test |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(display = disp)
 
-  expect_true(all(c("n_1",  "prop_1", "dur_1", "n_2",  "prop_2" , "dur_2", "n_3" ,  "prop_3" , "dur_3") %in% names(tbl$tbl[-1])))
+  expect_equal(c("name",
+                 "n_1", "prop_1", "dur_1",
+                 "n_2", "prop_2", "dur_2",
+                 "n_3", "prop_3", "dur_3"),
+               names(tbl$tbl))
 })
 
 
@@ -122,15 +169,23 @@ test_that("When display contains n,prop and dur then one has an additional colum
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(display = disp)
 
-  expect_true(all(c("n_1",  "prop_1", "dur_1", "n_2",  "prop_2" , "dur_2", "n_3" ,  "prop_3" , "dur_3") %in% names(tbl$tbl[-1])))
+  expect_equal(c("name",
+                 "n_1", "prop_1", "dur_1",
+                 "n_2", "prop_2", "dur_2",
+                 "n_3", "prop_3", "dur_3"),
+               names(tbl$tbl))
 })
 
 
-test_that("When display contains n,prop and events then one has an additional column on the average number of AE ", {
+test_that("When display contains n, prop and events then one has an additional column on the average number of AE ", {
   disp <- c("n", "prop", "events")
   tbl <- test |>
     extend_ae_specific_events() |>
     format_ae_specific(display = disp)
 
-  expect_true(all(c("n_1",  "prop_1", "events_1", "n_2",  "prop_2" , "events_2", "n_3" ,  "prop_3" , "events_3") %in% names(tbl$tbl[-1])))
+  expect_equal(c("name",
+                 "n_1", "prop_1", "events_1",
+                 "n_2", "prop_2", "events_2",
+                 "n_3", "prop_3", "events_3"),
+               names(tbl$tbl))
 })
