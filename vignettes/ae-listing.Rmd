@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(metalite.ae)
 library(metalite)
+library(r2rtf)
+devtools::load_all()
 ```
 
 ```{r}
@@ -28,7 +30,7 @@ adsl <- r2rtf::r2rtf_adsl
 
 ### Data Manipulation
 
-#### Example for AE related
+#### Sample code for AE related
 
 ```{r}
 adae$related <- ifelse(adae$AEREL == 'RELATED', "Y", ifelse(
@@ -37,7 +39,7 @@ adae$related <- ifelse(adae$AEREL == 'RELATED', "Y", ifelse(
 head(adae$related)
 ```
 
-#### Example for outcome
+#### Sample code for outcome
 
 ```{r}
 for(i in 1:length(adae$AEOUT)){
@@ -51,7 +53,7 @@ adae$outcome <-  switch(adae$AEOUT[i],
 }
 ```
 
-#### Example for duration
+#### Sample code for duration
 
 ```{r}
 
@@ -66,7 +68,7 @@ adae$duration <- paste(ifelse(is.na(adae$ADURN), "", as.character(adae$ADURN)) ,
 
 ```
 
-#### Example for subline
+#### Sample code for subline
 
 ```{r}
 adae$subline <- paste0(
@@ -76,6 +78,15 @@ adae$subline <- paste0(
       ", AGE = ", adae$AGE, " Years",
       ", TRT = ", adae$TRTA
     )
+```
+
+### Customize variable label as the column header of AE listing 
+
+```{r}
+adae <- assign_label(adae, 
+                     var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD"), 
+                     label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event") )
+
 ```
 
 ### Analysis preparation
@@ -95,7 +106,7 @@ meta_ae_listing <- function() {
 
   plan <- plan(
       analysis = "ae_listing", population = "apat",
-      observation = c("wk12", "wk24"), parameter = c("any",  "rel")
+      observation = c("wk12", "wk24"), parameter = c("any",  "rel", "ser")
     ) 
 
   meta_adam(
@@ -126,6 +137,10 @@ meta_ae_listing <- function() {
       name = "rel",
       subset = quote(AEREL %in% c("POSSIBLE", "PROBABLE"))
     ) |>
+    define_parameter(
+      name = "ser",
+      subset = quote(AESER == "Y")
+    ) |>
     define_analysis(
       name="ae_listing",
       var_name = c("USUBJID", "ASTDY", "AEDECOD", "duration", "AESEV", "AESER", "related", "outcome"),
@@ -138,152 +153,9 @@ meta_ae_listing <- function() {
 }
 ```
 
-### prepare_ae_listing
-
 ```{r}
-
-prepare_ae_listing <- function(meta,
-                               population,
-                               observation,
-                               parameter) {
-  mapping <- collect_adam_mapping(meta, "ae_listing")
-  var_name <- eval(mapping$var_name)
-  subline <- eval(mapping$subline)
-  subline_by <- eval(mapping$subline_by)
-  group_by <- eval(mapping$group_by)
-  page_by <- eval(mapping$page_by)
-  
-  var_names <- c(var_name, subline, subline_by, group_by, page_by)
-  
-  res <- collect_observation_record(meta, population, observation, parameter,
-                                    var = var_names)
-  
-  # TODO: Extract label from dataframe
-  # attr(res$USUBJID, "label")
-  # attr(res$ASTDY, "label")
-  
-  res <- res[names(res) %in% var_names]
-  
-  # Return value
-  outdata(meta, population, observation, parameter,
-          n = NULL,order=NULL, group = NULL, reference_group=NULL,
-          # ae_var = par_var, rel_day_var = rel_day_var,
-          # id_var = id_var, group_var = obs_group,
-          tbl = res
-  )
-}
-```
-
-### create rtf
-
-```{r}
-tlf_ae_listing <- function(outdata,
-                           footnotes = NULL,
-                           source = NULL,
-                           col_rel_width = NULL,
-                           text_font_size = 9,
-                           orientation = "landscape",
-                           path_outdata = NULL,
-                           path_outtable = NULL) {
-  
-  res <- outdata$tbl
-  
-  mapping <- collect_adam_mapping(outdata$meta, "ae_listing")
-  var_name <- eval(mapping$var_name)
-  subline <- eval(mapping$subline)
-  subline_by <- eval(mapping$subline_by)
-  group_by <- eval(mapping$group_by)
-  page_by <- eval(mapping$page_by)
-  ae_var <- collect_adam_mapping(outdata$meta, outdata$parameter)$var
-
-  # Define title
-  title <- collect_title(outdata$meta, outdata$population, outdata$observation, outdata$parameter, analysis = "ae_listing")
-  
-  res <- as.data.frame(res)
-  res <- res[do.call(what = order, args = res[,c(page_by, group_by, ae_var)]), ]
-  
-  # Relative width
-  n_col <- ncol(res)
-  if (is.null(col_rel_width)) {
-    rel_width <- rep(1,n_col)
-  } else {
-    rel_width <- col_rel_width
-  }
-  
-  rel_width1 <- c()
-  for(i in 1:n_col){
-    if(names(res)[i] %in% var_name){
-      rel_width1 <- c(rel_width1, col_rel_width[i])
-    }
-  }
-  
-  # Text justification
-  text_justification <- c()
-  for(i in 1:n_col){
-    if(i == 1){
-      text_justification <- c(text_justification, "l")
-    }else if(names(res)[i] %in% var_name){
-      text_justification <- c(text_justification, "c")
-    }else{
-      text_justification <- c(text_justification, "l")
-    }
-  }
-  
-  # Text format
-  text_format <- c()
-  for(i in 1:n_col){
-    if(names(res)[i] %in% var_name){
-      text_format <- c(text_format, "")
-    }else if(names(res)[i] %in% subline){
-      text_format <- c(text_format, "")
-    }else{
-      text_format <- c(text_format, "b")
-    }
-  }
-  
-  # Define column header
-  colheader_display <-  names(res)[!names(res) %in% page_by]
-    
-  colheader <-  paste(colheader_display, collapse = " | ")
-  colheader <- gsub("_", " ", colheader)
-  
-  # Using r2rtf
-
-  outdata$rtf <- res |>
-  rtf_page(orientation =  orientation) |>
-  rtf_title(title)  |>
-  rtf_colheader(colheader,
-                col_rel_width = rel_width1,
-                text_font_size = text_font_size) |>
-  rtf_body(
-           col_rel_width = rel_width,
-           text_justification = text_justification,
-           text_format = text_format,
-           # border_top = c(rep("", 6), "single","single"), 
-           # border_bottom = c(rep("", 6), "single","single"),
-           # border_left = c(rep(c("single"), 11) ),
-           page_by=page_by,
-           group_by=group_by,
-           text_font_size = text_font_size
-  ) 
-
-  if (!is.null(footnotes)) {
-    outdata$rtf <- outdata$rtf |>
-      r2rtf::rtf_footnote(footnotes,
-        text_font_size = text_font_size
-      )
-  }
-
-  if (!is.null(source)) {
-    outdata$rtf <- outdata$rtf |>
-      r2rtf::rtf_source(source,
-        text_font_size = text_font_size
-      )
-  }
-  
-  # prepare output
-  rtf_output(outdata, path_outdata, path_outtable)
-}
-
-prepare_ae_listing(meta, "apat", "wk12", "rel") |> tlf_ae_listing(path_outtable ="ae_listing.rtf", path_outdata ="ae_listing.rdata")
+meta <- meta_ae_listing()
+prepare_ae_listing(meta, "apat", "wk12", "ser") |> 
+tlf_ae_listing(path_outtable ="outtable/ae_listing.rtf", 
+               path_outdata="outtable/ae_listing.rdata")
 ```
