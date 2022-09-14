@@ -10,6 +10,7 @@ Authors@R: c(
     person("Sarad", "Nepal", role = c("aut")),
     person("Yujie", "Zhao", role = c("aut")),
     person("Brian", "Lang", role = c("aut")),
+    person("Benjamin", "Wang", role = c("aut")),
     person("Merck Sharp & Dohme Corp", role = c("cph"))
     )
 Description: Adverse events analysis using the 'metalite' data structure.
