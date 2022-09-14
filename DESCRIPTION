@@ -9,6 +9,7 @@ Authors@R: c(
     person("Madhusudhan", "Ginnaram", role = c("aut")),
     person("Sarad", "Nepal", role = c("aut")),
     person("Yujie", "Zhao", role = c("aut")),
+    person("Brian", "Lang", role = c("aut")),
     person("Merck Sharp & Dohme Corp", role = c("cph"))
     )
 Description: Adverse events analysis using the 'metalite' data structure.
@@ -25,7 +26,8 @@ Imports:
     metalite,
     r2rtf,
     stats,
-    tidyr
+    tidyr,
+    haven
 Suggests:
     covr,
     knitr,
@@ -37,5 +39,5 @@ Suggests:
 Remotes:
     Merck/metalite
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Config/testthat/edition: 3

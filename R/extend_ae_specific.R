@@ -1,4 +1,4 @@
-#    Copyright (c) 2022 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
 #
 #    This file is part of the metalite.ae program.
 #
@@ -67,6 +67,7 @@ extend_ae_specific_inference <- function(outdata,
 
   res$ci_lower <- ci_lower
   res$ci_upper <- ci_upper
+  res$ci_level <- ci
   res$p <- p
 
   res
@@ -185,9 +186,9 @@ extend_ae_specific_duration <- function(outdata,
 #'
 #' @export
 extend_ae_specific_events <- function(outdata) {
-  
+
   meta <- outdata$meta
-  
+
   population <- outdata$population
   observation <- outdata$observation
   parameter <- outdata$parameter

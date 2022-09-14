@@ -12,6 +12,7 @@ tlf_ae_specific(
   text_font_size = 9,
   orientation = "portrait",
   footnotes = NULL,
+  title = NULL,
   path_outdata = NULL,
   path_outtable = NULL
 )
@@ -34,9 +35,11 @@ displayed e.g. c(9,20,40).}
 
 \item{footnotes}{a character vector of table footnotes}
 
-\item{path_outdata}{a character string of the outdata path.}
+\item{title}{a character vector of table titles}
 
-\item{path_outtable}{a character string of the outtable path.}
+\item{path_outdata}{a character string of the outdata path}
+
+\item{path_outtable}{a character string of the outtable path}
 }
 \description{
 Specific Adverse Events Table
