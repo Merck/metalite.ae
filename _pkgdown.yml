@@ -42,8 +42,8 @@ reference:
     - extend_ae_specific_inference
     - format_ae_specific
     - tlf_ae_specific
-    - collect_ae_listing
-    - format_ae_listing
+    - prepare_ae_listing
+    - tlf_ae_listing
 - title: AE summary
   contents:
     - prepare_ae_summary
