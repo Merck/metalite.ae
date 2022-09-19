@@ -64,7 +64,6 @@ reference:
     - avg_event
     - avg_duration
     - to_sentence
-    - propercase
 - title: Rate comparison
   contents:
     - rate_compare
