@@ -37,9 +37,6 @@
     <loc>/reference/avg_event.html</loc>
   </url>
   <url>
-    <loc>/reference/collect_ae_listing.html</loc>
-  </url>
-  <url>
     <loc>/reference/extend_ae_specific_duration.html</loc>
   </url>
   <url>
@@ -61,9 +58,6 @@
     <loc>/reference/fmt_pval.html</loc>
   </url>
   <url>
-    <loc>/reference/format_ae_listing.html</loc>
-  </url>
-  <url>
     <loc>/reference/format_ae_specific.html</loc>
   </url>
   <url>
@@ -82,6 +76,9 @@
     <loc>/reference/n_subject.html</loc>
   </url>
   <url>
+    <loc>/reference/prepare_ae_listing.html</loc>
+  </url>
+  <url>
     <loc>/reference/prepare_ae_specific.html</loc>
   </url>
   <url>
@@ -91,13 +88,13 @@
     <loc>/reference/prepare_ae_summary.html</loc>
   </url>
   <url>
-    <loc>/reference/propercase.html</loc>
-  </url>
-  <url>
     <loc>/reference/rate_compare.html</loc>
   </url>
   <url>
     <loc>/reference/rate_compare_sum.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tlf_ae_listing.html</loc>
   </url>
   <url>
     <loc>/reference/tlf_ae_specific.html</loc>
