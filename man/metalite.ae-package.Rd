@@ -28,6 +28,8 @@ Authors:
   \item Madhusudhan Ginnaram
   \item Sarad Nepal
   \item Yujie Zhao
+  \item Brian Lang
+  \item Benjamin Wang
 }
 
 Other contributors:
