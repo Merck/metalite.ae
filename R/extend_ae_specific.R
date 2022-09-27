@@ -25,6 +25,10 @@ extend_ae_specific_inference <- function(outdata,
                                          ci = 0.95) {
   res <- outdata
 
+  if (!(is.numeric(ci) && length(ci) == 1 && (0 <= ci & ci <= 1))){
+    stop("ci is", ci,". Please choose a number 0 >= ci >= 1.")
+  }
+
   n_row <- nrow(res$n)
   ref <- res$reference_group
   grp <- (1:length(res$group))[-c(ref, length(res$group))]
@@ -85,6 +89,16 @@ extend_ae_specific_duration <- function(outdata,
                                         duration_unit = "Day") {
 
   meta <- outdata$meta
+
+  if (!((length(duration_var) == 1) && is.character(duration_var))){
+    stop("duration_var is ", duration_var, ". duration_var must be a string")
+  }
+
+  if (!(duration_var %in% names(outdata$meta$data_observation))){
+    stop(duration_var, "does not exist in outdata")
+  }
+
+
 
   population <- outdata$population
   observation <- outdata$observation
