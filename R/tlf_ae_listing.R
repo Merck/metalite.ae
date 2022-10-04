@@ -28,8 +28,17 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' }
+#' library(r2rtf)
+#' library(metalite)
+#'
+#' meta <- meta_ae_listing_dummy()
+#' prepare_ae_listing(meta, "apat", "wk12", "ser") |>
+#'   tlf_ae_listing(
+#'     footnotes = "footnote1",
+#'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     path_outdata = tempfile(fileext = ".Rdata"),
+#'     path_outtable = tempfile(fileext = ".rtf")
+#'   )
 
 tlf_ae_listing <- function(outdata,
                            footnotes = NULL,
@@ -79,6 +88,8 @@ tlf_ae_listing <- function(outdata,
       text_justification <- c(text_justification, "l")
     }else if(names(res)[i] %in% var_name){
       text_justification <- c(text_justification, "c")
+    }else if(names(res)[i] %in% subline_by){
+      text_justification <- c(text_justification, "l")
     }else{
       text_justification <- c(text_justification, "l")
     }
@@ -97,7 +108,7 @@ tlf_ae_listing <- function(outdata,
   }
 
   # Define column header
-  colheader_display <-  col_name[!names(res) %in% page_by]
+  colheader_display <-  col_name[!names(res) %in% c(page_by, subline_by)]
 
   colheader <-  paste(colheader_display, collapse = " | ")
   colheader <- gsub("_", " ", colheader)
@@ -119,6 +130,7 @@ tlf_ae_listing <- function(outdata,
       # border_left = c(rep(c("single"), 11) ),
       page_by=page_by,
       group_by=group_by,
+      subline_by = subline_by,
       text_font_size = text_font_size
     )
 
