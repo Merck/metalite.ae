@@ -28,8 +28,8 @@
 #' @import metalite
 #'
 #' @examples
-#' \dontrun{
-#' }
+#' meta <- meta_ae_listing_dummy()
+#' lapply(prepare_ae_listing(meta, "apat", "wk12", "ser") , head, 10)
 #' @export
 
 prepare_ae_listing <- function(meta,

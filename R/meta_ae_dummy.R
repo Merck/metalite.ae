@@ -86,3 +86,60 @@ meta_ae_dummy <- function() {
     ) |>
     meta_build()
 }
+
+meta_ae_listing_dummy <- function() {
+  adsl <- r2rtf::r2rtf_adsl
+  adsl$TRTA <- adsl$TRT01A
+  adsl$TRTA <- factor(adsl$TRTA,
+                      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+                      labels = c("Placebo", "Low Dose", "High Dose")
+  )
+
+  adae <- r2rtf::r2rtf_adae
+  adae$TRTA <- factor(adae$TRTA,
+                      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+                      labels = c("Placebo", "Low Dose", "High Dose")
+  )
+
+  adae$AGE <- paste0("Age = ", adae$AGE)
+
+  plan <- plan(
+    analysis = "ae_listing", population = "apat",
+    observation = "wk12", parameter = c("any",  "rel", "ser")
+  )
+
+  meta_adam(
+    population = adsl,
+    observation = adae
+  ) |>
+    define_plan(plan = plan) |>
+    define_population(
+      name = "apat",
+      group = "TRTA",
+      subset = quote(SAFFL == "Y")
+    ) |>
+    define_observation(
+      name = "wk12",
+      group = "TRTA",
+      subset = quote(SAFFL == "Y"),
+      label = "Weeks 0 to 12",
+      rel_day = "ASTDY"
+    ) |>
+    define_parameter(
+      name = "rel",
+      subset = quote(AEREL %in% c("POSSIBLE", "PROBABLE"))
+    ) |>
+    define_parameter(
+      name = "ser",
+      subset = quote(AESER == "Y")
+    ) |>
+    define_analysis(
+      name="ae_listing",
+      var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
+      subline = "AGE",
+      subline_by = NULL,
+      group_by = c("USUBJID", "ASTDY"),
+      page_by = c("TRTA", "AGE")
+    ) |>
+    meta_build()
+}
