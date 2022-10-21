@@ -1,0 +1,28 @@
+library(metalite)
+library(metalite.ae)
+library(r2rtf)
+
+x <- meta_ae_listing_dummy()
+
+lapply(prepare_ae_listing(x, "apat", "wk12", "ser") , head, 10)
+outdata <- prepare_ae_listing(x,
+                              population = "apat",
+                              observation = "wk12",
+                              parameter = "rel")
+
+path_rtf <- file.path(tempdir(), "ednp_ae0listing.rtf")
+path_rdata <- tempfile(fileext = '.Rdata')
+
+
+
+tbl <- outdata |>
+  tlf_ae_listing(
+    footnotes = "footnote1",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outdata =  path_rdata,
+    path_outtable =  path_rtf
+  )
+
+test_that("rtf output: ae listing", {
+  testthat::expect_snapshot(tbl)
+})
