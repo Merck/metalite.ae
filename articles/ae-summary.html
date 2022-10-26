@@ -87,27 +87,38 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The AE summary analysis provides tables to summarize adverse events information. The development of AE summary analysis contains exported functions:</p>
+<p>The AE summary analysis provides tables to summarize adverse events
+information. The development of AE summary analysis contains exported
+functions:</p>
 <ul>
 <li>
 <code>prepare_ae_summary</code>: prepare analysis raw datasets</li>
 <li>
-<code>format_ae_summary</code>: prepare analysis (mock) outdata with proper format</li>
+<code>format_ae_summary</code>: prepare analysis (mock) outdata with
+proper format</li>
 <li>
-<code>tlf_ae_summary</code>: transfer (mock) output dataset to RTF table</li>
+<code>tlf_ae_summary</code>: transfer (mock) output dataset to RTF
+table</li>
 </ul>
-<p>We also prepare (optional) additional function to extend the analysis.</p>
+<p>We also prepare (optional) additional function to extend the
+analysis.</p>
 <ul>
 <li>
-<strong>TODO</strong> <code>extend_ae_specific_inference</code>: add risk difference inference results based on M&amp;N method.</li>
+<strong>TODO</strong> <code>extend_ae_specific_inference</code>: add
+risk difference inference results based on M&amp;N method.</li>
 </ul>
 <div class="section level3">
 <h3 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
 </h3>
-<p>The <code>prepare_ae_summary</code> function is design to be used for multiple purposes. The input of the function is a <code>meta</code> objects created from <code>metalite</code> package.</p>
+<p>The <code>prepare_ae_summary</code> function is design to be used for
+multiple purposes. The input of the function is a <code>meta</code>
+objects created from <code>metalite</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_dummy.html">meta_ae_dummy</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The output of the function is an <code>outdata</code> object that contain a list of analysis raw datasets. The parameter is a group of key words available in the <code>names(meta$parameter)</code> and seperated by <code>;</code>.</p>
+<p>The output of the function is an <code>outdata</code> object that
+contain a list of analysis raw datasets. The parameter is a group of key
+words available in the <code>names(meta$parameter)</code> and seperated
+by <code>;</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span><span class="va">meta</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
@@ -132,7 +143,8 @@
 <span><span class="co">#&gt;  $ diff           :'data.frame': 5 obs. of  2 variables:</span></span>
 <span><span class="co">#&gt;  $ n_pop          :'data.frame': 1 obs. of  4 variables:</span></span>
 <span><span class="co">#&gt;  $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...</span></span></code></pre></div>
-<p>The output dataset contains commonly used statistics. The variable is indexed by the order of <code>outdata$group</code>.</p>
+<p>The output dataset contains commonly used statistics. The variable is
+indexed by the order of <code>outdata$group</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span><span class="op">$</span><span class="va">group</span></span>
 <span><span class="co">#&gt; [1] "Placebo"   "Low Dose"  "High Dose" "Total"</span></span></code></pre></div>
@@ -179,7 +191,8 @@
 <span><span class="co">#&gt; 22  0.00000  1.190476  2.380952  1.181102</span></span></code></pre></div>
 <ul>
 <li>
-<code>diff</code>: risk difference compared with the <code>reference_group</code>.</li>
+<code>diff</code>: risk difference compared with the
+<code>reference_group</code>.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outdata</span><span class="op">$</span><span class="va">diff</span><span class="op">)</span></span>
@@ -193,7 +206,9 @@
 <div class="section level3">
 <h3 id="format-output">Format output<a class="anchor" aria-label="anchor" href="#format-output"></a>
 </h3>
-<p>After we have the raw analysis results, we can use <code>format_ae_summary</code> to prepare the outdata to create RTF tables.</p>
+<p>After we have the raw analysis results, we can use
+<code>format_ae_summary</code> to prepare the outdata to create RTF
+tables.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -238,7 +253,9 @@
 <span><span class="co">#&gt; 3    32.2</span></span>
 <span><span class="co">#&gt; 21    2.4</span></span>
 <span><span class="co">#&gt; 22  -13.8</span></span></code></pre></div>
-<p>We can add 95% confidence interval of M&amp;N method. It requires <code>extend_ae_specific_inference</code> to perform additional calculation.</p>
+<p>We can add 95% confidence interval of M&amp;N method. It requires
+<code>extend_ae_specific_inference</code> to perform additional
+calculation.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -248,9 +265,13 @@
 <div class="section level3">
 <h3 id="mock-data-preparation">Mock data preparation<a class="anchor" aria-label="anchor" href="#mock-data-preparation"></a>
 </h3>
-<p>We can also use <code>format_ae_summary</code> to create mock output data.</p>
-<p>The purpose of the <code>mock</code> argument is not to create a comprehensive mock table template, but a handy way to help user create a mock table that mimics the exact output layout.</p>
-<p>Additional work is required to develop a flexible mock table generation tool (e.g. a dedicated mock table generation package)</p>
+<p>We can also use <code>format_ae_summary</code> to create mock output
+data.</p>
+<p>The purpose of the <code>mock</code> argument is not to create a
+comprehensive mock table template, but a handy way to help user create a
+mock table that mimics the exact output layout.</p>
+<p>Additional work is required to develop a flexible mock table
+generation tool (e.g. a dedicated mock table generation package)</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -271,7 +292,8 @@
 <div class="section level3">
 <h3 id="rtf-tables">RTF tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>
 </h3>
-<p>By using <code>tlf_ae_summary</code>, we can transfer the output from <code>prepare_ae_summary</code> to an RTF table.</p>
+<p>By using <code>tlf_ae_summary</code>, we can transfer the output from
+<code>prepare_ae_summary</code> to an RTF table.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -280,7 +302,8 @@
 <span>    path_outtable <span class="op">=</span> <span class="st">"./outtable/ae0summary1.rtf"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/ae0summary1.rtf</span></span></code></pre></div>
-<embed src="./outtable/ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>The <code>tlf_ae_summary</code> function also provide some commonly used argument to customize the table.</p>
+<embed src="./outtable/ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>The <code>tlf_ae_summary</code> function also provide some commonly
+used argument to customize the table.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -312,7 +335,8 @@
 </h3>
 <ul>
 <li>Enable CI and p-value calculation using M&amp;N method.</li>
-<li>Cross check the capability in SAS standard macro to identify required features.
+<li>Cross check the capability in SAS standard macro to identify
+required features.
 <ul>
 <li><code>usermanuals/asr0ae0summary/asr0ae0summary-spec.docx</code></li>
 <li><code>usermanuals/asr0ae0summary0analysis/asr0ae0summary0analysis-spec.docx</code></li>
@@ -324,8 +348,10 @@
 <h3 id="technical-requirements-for-future-development">Technical requirements (For future development)<a class="anchor" aria-label="anchor" href="#technical-requirements-for-future-development"></a>
 </h3>
 <ul>
-<li>Avoiding <code>|&gt;</code>, using <code>|&gt;</code> to reduce dependency of <code>magrittr</code>.</li>
-<li>The functions in the <code>R/</code> folder should not depend on <code>dplyr</code>, <code>tidyr</code> etc.</li>
+<li>Avoiding <code>|&gt;</code>, using <code>|&gt;</code> to reduce
+dependency of <code>magrittr</code>.</li>
+<li>The functions in the <code>R/</code> folder should not depend on
+<code>dplyr</code>, <code>tidyr</code> etc.</li>
 </ul>
 </div>
 </div>
