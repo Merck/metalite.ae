@@ -4,7 +4,7 @@ library(r2rtf)
 
 x <- meta_ae_listing_dummy()
 
-lapply(prepare_ae_listing(x, "apat", "wk12", "ser") , head, 10)
+
 outdata <- prepare_ae_listing(x,
                               population = "apat",
                               observation = "wk12",
