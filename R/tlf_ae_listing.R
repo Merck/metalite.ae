@@ -100,7 +100,7 @@ tlf_ae_listing <- function(outdata,
   for(i in 1:n_col){
     if(names(res)[i] %in% var_name){
       text_format <- c(text_format, "")
-    }else if(names(res)[i] %in% subline){
+    }else if(names(res)[i] %in% page_by[2:length(page_by)]){
       text_format <- c(text_format, "")
     }else{
       text_format <- c(text_format, "b")
