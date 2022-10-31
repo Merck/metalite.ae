@@ -32,7 +32,7 @@
 #' library(metalite)
 #'
 #' meta <- meta_ae_listing_dummy()
-#' prepare_ae_listing(meta, "apat", "wk12", "ser") |>
+#' prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
 #'   tlf_ae_listing(
 #'     footnotes = "footnote1",
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
