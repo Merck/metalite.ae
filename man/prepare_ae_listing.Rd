@@ -9,6 +9,8 @@ prepare_ae_listing(meta, analysis, population, observation, parameter)
 \arguments{
 \item{meta}{a meta data created by \code{metalite}.}
 
+\item{analysis}{analysis name from \code{meta}}
+
 \item{population}{a character value of population term name.
 The term name is used as key to link information.}
 
@@ -17,8 +19,6 @@ The term name is used as key to link information.}
 
 \item{parameter}{a character value of parameter term name.
 The term name is used as key to link information.}
-
-\item{name}{analysis name from \code{meta}}
 }
 \description{
 Prepare datasets for AE specific analysis
