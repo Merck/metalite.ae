@@ -89,6 +89,13 @@ meta_ae_dummy <- function() {
     meta_build()
 }
 
+
+#' Create a dummy `meta_adam` object for AE listing
+#'
+#' This function is only for illustration purpose.
+#' `r2rtf` and `magrittr` packages are required.
+#'
+#' @export
 meta_ae_listing_dummy <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A

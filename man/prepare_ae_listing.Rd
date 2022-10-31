@@ -17,6 +17,8 @@ The term name is used as key to link information.}
 
 \item{parameter}{a character value of parameter term name.
 The term name is used as key to link information.}
+
+\item{name}{analysis name from \code{meta}}
 }
 \description{
 Prepare datasets for AE specific analysis
