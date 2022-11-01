@@ -35,6 +35,8 @@ meta_ae_dummy <- function() {
     labels = c("Placebo", "Low Dose", "High Dose")
   )
 
+
+
   plan <- plan(
     analysis = "ae_summary", population = "apat",
     observation = c("wk12", "wk24"), parameter = "any;rel;ser"
@@ -87,6 +89,13 @@ meta_ae_dummy <- function() {
     meta_build()
 }
 
+
+#' Create a dummy `meta_adam` object for AE listing
+#'
+#' This function is only for illustration purpose.
+#' `r2rtf` and `magrittr` packages are required.
+#'
+#' @export
 meta_ae_listing_dummy <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
@@ -101,7 +110,7 @@ meta_ae_listing_dummy <- function() {
                       labels = c("Placebo", "Low Dose", "High Dose")
   )
 
-  adae$AGE <- paste0("Age = ", adae$AGE)
+  adae$subline <- paste0("Age=", adae$AGE, ", ID=", adae$USUBJID, ", Gender=", adae$SEX)
 
   plan <- plan(
     analysis = "ae_listing", population = "apat",
@@ -134,12 +143,11 @@ meta_ae_listing_dummy <- function() {
       subset = quote(AESER == "Y")
     ) |>
     define_analysis(
-      name="ae_listing",
+      name = "ae_listing",
       var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
-      subline = "AGE",
       subline_by = NULL,
       group_by = c("USUBJID", "ASTDY"),
-      page_by = c("TRTA", "AGE")
+      page_by = c("TRTA", "subline")
     ) |>
     meta_build()
 }

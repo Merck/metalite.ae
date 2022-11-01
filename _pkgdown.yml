@@ -71,6 +71,7 @@ reference:
 - title: Dummy data
   contents:
     - meta_ae_dummy
+    - meta_ae_listing_dummy
 
 articles:
 - title: Get started
@@ -80,6 +81,7 @@ articles:
   contents:
     - ae-specific
     - ae-summary
+    - ae-listing
 - title: Specification
   contents:
     - rate-compare

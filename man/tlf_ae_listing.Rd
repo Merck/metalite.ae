@@ -39,6 +39,15 @@ displayed e.g. c(9,20,40).}
 Specific Adverse Events Table
 }
 \examples{
-\dontrun{
-}
+library(r2rtf)
+library(metalite)
+
+meta <- meta_ae_listing_dummy()
+prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
+  tlf_ae_listing(
+    footnotes = "footnote1",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outdata = tempfile(fileext = ".Rdata"),
+    path_outtable = tempfile(fileext = ".rtf")
+  )
 }

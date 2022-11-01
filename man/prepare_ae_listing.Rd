@@ -4,10 +4,12 @@
 \alias{prepare_ae_listing}
 \title{Prepare datasets for AE specific analysis}
 \usage{
-prepare_ae_listing(meta, population, observation, parameter)
+prepare_ae_listing(meta, analysis, population, observation, parameter)
 }
 \arguments{
 \item{meta}{a meta data created by \code{metalite}.}
+
+\item{analysis}{analysis name from \code{meta}}
 
 \item{population}{a character value of population term name.
 The term name is used as key to link information.}
@@ -22,6 +24,6 @@ The term name is used as key to link information.}
 Prepare datasets for AE specific analysis
 }
 \examples{
-\dontrun{
-}
+meta <- meta_ae_listing_dummy()
+lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") , head, 10)
 }

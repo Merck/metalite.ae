@@ -18,6 +18,7 @@
 #' Prepare datasets for AE specific analysis
 #'
 #' @param meta a meta data created by `metalite`.
+#' @param analysis analysis name from `meta`
 #' @param population a character value of population term name.
 #' The term name is used as key to link information.
 #' @param observation a character value of observation term name.
@@ -29,14 +30,15 @@
 #'
 #' @examples
 #' meta <- meta_ae_listing_dummy()
-#' lapply(prepare_ae_listing(meta, "apat", "wk12", "ser") , head, 10)
+#' lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") , head, 10)
 #' @export
 
 prepare_ae_listing <- function(meta,
+                               analysis,
                                population,
                                observation,
                                parameter) {
-  mapping <- collect_adam_mapping(meta, "ae_listing")
+  mapping <- collect_adam_mapping(meta, analysis)
   var_name <- eval(mapping$var_name)
   subline <- eval(mapping$subline)
   subline_by <- eval(mapping$subline_by)
@@ -50,8 +52,12 @@ prepare_ae_listing <- function(meta,
 
   res <- res[names(res) %in% var_names]
 
+  # Sort res dataframe by order of var_names
+  res  <- res[,unique(var_names)]
+
   # Extract label from data frame as column name of listing
   col_name <- get_label(res)
+
 
   # Return value
   outdata(meta, population, observation, parameter,

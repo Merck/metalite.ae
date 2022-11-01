@@ -74,7 +74,7 @@ listing_ae <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with a
 )
 
 test_that("Its class is 'outdata'", {
-  output <- prepare_ae_listing(meta_ae_listing_dummy(), "apat", "wk12", "ser")
+  output <- prepare_ae_listing(meta_ae_listing_dummy(), "ae_listing", "apat", "wk12", "ser")
   expect_equal(class(output), "outdata")
   expect_equal(length(output), 10)
   expect_equal(names(output), c("meta", "population", "observation", "parameter", "n", "order", "group", "reference_group", "col_name", "tbl"))
@@ -84,18 +84,18 @@ test_that("Its class is 'outdata'", {
   expect_equal(output$order, NULL)
   expect_equal(output$group, NULL)
   expect_equal(output$reference_group, NULL)
-  expect_equal(names(output$col_name), c("USUBJID", "TRTA", "AEDECOD", "AESER", "ASTDY", "ADURN", "AESEV", "AEREL", "AEOUT", "subline"))
+  expect_equal(names(output$col_name), c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
 })
 
 
 test_that("Checking Serious AE records at WK12", {
-  d <- prepare_ae_listing(meta_ae_listing_dummy(), "apat", "wk12", "ser")
+  d <- prepare_ae_listing(meta_ae_listing_dummy(), "ae_listing", "apat", "wk12", "ser")
   prod_tbl <- d$tbl
   rownames(prod_tbl) <- NULL
 
 listi <- listing_ae  %>%
     filter(SAFFL == "Y" & AESER == "Y") %>%
-    select(c("USUBJID", "TRTA", "AEDECOD", "AESER", "ASTDY", "ADURN", "AESEV", "AEREL", "AEOUT", "subline"))
+    select(c("USUBJID", "ASTDY", "AEDECOD",  "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
 
   rownames(listi) <- NULL
   attr(listi$TRTA, "label") <- "TRTA"
@@ -112,13 +112,14 @@ listi <- listing_ae  %>%
 })
 
 test_that("Checking AE related records at WK12", {
-  d <- prepare_ae_listing(meta_ae_listing_dummy(), "apat", "wk12", "rel")
+  d <- prepare_ae_listing(meta_ae_listing_dummy(), "ae_listing", "apat", "wk12", "rel")
   prod_tbl <- d$tbl
   rownames(prod_tbl) <- NULL
 
 
   listi <- listing_ae  %>%
-    filter(SAFFL == "Y" & AEREL %in% c("POSSIBLE", "PROBABLE")) %>% select(c("USUBJID", "TRTA", "AEDECOD", "AEREL", "ASTDY", "ADURN", "AESEV", "AESER", "AEOUT", "subline"))
+    filter(SAFFL == "Y" & AEREL %in% c("POSSIBLE", "PROBABLE")) %>%
+    select(c("USUBJID", "ASTDY", "AEDECOD",  "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
 
   rownames(listi) <- NULL
   attr(listi$TRTA, "label") <- "TRTA"
