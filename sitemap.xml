@@ -7,6 +7,9 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
+    <loc>/articles/ae-listing.html</loc>
+  </url>
+  <url>
     <loc>/articles/ae-specific.html</loc>
   </url>
   <url>
@@ -68,6 +71,9 @@
   </url>
   <url>
     <loc>/reference/meta_ae_dummy.html</loc>
+  </url>
+  <url>
+    <loc>/reference/meta_ae_listing_dummy.html</loc>
   </url>
   <url>
     <loc>/reference/metalite.ae-package.html</loc>
