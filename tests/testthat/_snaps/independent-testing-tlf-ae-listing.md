@@ -12,7 +12,7 @@
        $ order          : NULL
        $ group          : NULL
        $ reference_group: NULL
-       $ col_name       : Named chr [1:10] "Unique Subject Identifier" "TRTA" "Dictionary-Derived Term" "Causality" ...
+       $ col_name       : Named chr [1:10] "Unique Subject Identifier" "Analysis Start Relative Day" "Dictionary-Derived Term" "AE Duration (N)" ...
        $ tbl            :'data.frame':	704 obs. of  10 variables:
        $ rtf            :Classes 'rtf_text', 'rtf_border' and 'data.frame':	704 obs. of  10 variables:
 

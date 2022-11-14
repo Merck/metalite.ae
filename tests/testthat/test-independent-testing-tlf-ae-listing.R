@@ -6,6 +6,7 @@ x <- meta_ae_listing_dummy()
 
 
 outdata <- prepare_ae_listing(x,
+                              analysis = "ae_listing",
                               population = "apat",
                               observation = "wk12",
                               parameter = "rel")
