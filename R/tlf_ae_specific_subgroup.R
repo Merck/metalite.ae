@@ -1,0 +1,207 @@
+tlf_ae_specific_subgroup <- function(outdata,
+                                     medra_version,
+                                     source,
+                                     col_rel_width = NULL,
+                                     text_font_size = 9,
+                                     orientation = "landscape",
+                                     footnotes = NULL,
+                                     title = NULL,
+                                     path_outdata = NULL,
+                                     path_outtable = NULL) {
+
+  if (is.null(footnotes)) {
+    footnotes <- c(
+      "Every participant is counted a single time for each applicable row and column.",
+      paste(
+        "A system organ class or specific adverse event appears on this report only if",
+        "its incidence in one or more of the columns meets the incidence",
+        "criterion in the report title, after rounding."
+      ),
+      "Adverse event terms are from MedDRA Version {medra_version}."
+    )
+  }
+
+  footnotes <- vapply(footnotes, glue::glue_data,
+                      .x = list(medra_version = medra_version), FUN.VALUE = character(1)
+  )
+  names(footnotes) <- NULL
+
+  out_all <- outdata$out_all
+  tbl <- outdata$tbl
+  tgroup <- outdata$group
+  sgroup <- outdata$subgroup
+  if(outdata$display_subgroup_total){sgroup <- c(sgroup, "Total")}
+  n_sgroup <- length(sgroup)
+  n_tgroup <- length(outdata$group)
+  n_row <- nrow(outdata$tbl)
+  n_col <- ncol(outdata$tbl)
+
+  if (!is.null(col_rel_width) & !n_col == length(col_rel_width)) {
+    stop(
+      "col_rel_width must have the same length (has ",
+      length(col_rel_width),
+      ") as as outdata$tbl has number of columns (has ",
+      n_col, ")."
+    )
+  }
+
+  # Define title
+  if (is.null(title)) {
+    title <- collect_title(outdata$meta,
+                           outdata$population,
+                           outdata$observation,
+                           outdata$parameter,
+                           analysis = "ae_specific"
+    )
+  }
+
+ col_tbl_within <- outdata$display
+
+  col_tbl_within <- col_tbl_within|>
+    (\(list) list[list %in% c("n", "prop", "dur", "events")])() |>
+    unique()
+
+  colhead_within <- paste(
+    vapply(
+      X = col_tbl_within,
+      FUN.VALUE = "character",
+      FUN = switch,
+      "n" = "n",
+      "prop" = "(%)",
+      "dur" = "Mean Duration (SE)",
+      "events" = "Mean Events per Participant (SE)"
+    ),
+    collapse = " | "
+  )
+
+  colhead_1_within <- paste(sgroup, collapse = " |")
+  colhead_2_within <- paste(rep(tgroup, n_sgroup), collapse = " | ")
+  colhead_3_within <- paste(rep(colhead_within, n_sgroup * n_tgroup), collapse = " | ")
+
+  colborder_within <- vapply(
+    X = col_tbl_within,
+    FUN.VALUE = "character",
+    FUN = switch,
+    "n" = "single",
+    "prop" = "",
+    "dur" = "single",
+    "events" = "single",
+    USE.NAMES = FALSE
+  )
+
+  rwidth_3_within <- rep(1, length(col_tbl_within) * n_sgroup * n_tgroup)
+
+  rwidth_2_within <- tapply(
+    rwidth_3_within,
+    c(rep(1:(n_sgroup * n_tgroup), each = length(col_tbl_within))),
+    sum
+  )
+  names(rwidth_2_within) <- NULL
+
+  rwidth_1_within <- tapply(
+    rwidth_3_within,
+    c(rep(1:n_sgroup , each = length(col_tbl_within)*n_tgroup)),
+    sum
+  )
+  names(rwidth_1_within) <- NULL
+
+
+  colborder_within <- rep(colborder_within, n_sgroup * n_tgroup)
+
+# Column headers
+
+colheader <- c(
+  paste0(" | ", colhead_1_within),
+  paste0(" | ", colhead_2_within),
+  paste0(" | ", colhead_3_within)
+)
+
+# Relative width
+
+if (is.null(col_rel_width)) {
+  rwidth_1 <- c(3, rwidth_1_within)
+  rwidth_2 <- c(3, rwidth_2_within)
+  rwidth_3 <- c(3, rwidth_3_within)
+
+} else {
+  rwidth_2 <- col_rel_width
+
+  rw_1_recalc_w <- tapply(
+    col_rel_width[2:(n_group * length(col_tbl_within) + 1)],
+    c(rep(1:n_group, each = length(col_tbl_within))), sum
+  )
+
+  rw_1_recalc_b <- if (length(col_tbl_between) > 0) {
+    tapply(
+      col_rel_width[(n_group * length(col_tbl_within) + 2):n_col],
+      c(rep(1:n_comparisons, each = length(col_tbl_between))), sum
+    )
+  } else {
+    NULL
+  }
+
+  rwidth_1 <- c(
+    rwidth_2[1],
+    rw_1_recalc_w,
+    rw_1_recalc_b
+  )
+}
+
+if ((sum(rwidth_1) != sum(rwidth_2)) | (sum(rwidth_1) != sum(rwidth_3))) stop("width calculation broke, contact developer")
+
+# Column border
+border_top2 <- c("", rep("single", n_sgroup*n_tgroup ))
+border_top3 <- c("", rep("single", n_sgroup*n_tgroup*2))
+
+border_left2 <- c("single", rep("single",n_sgroup*n_tgroup ))
+border_left3 <- c("single", colborder_within)
+
+# Using order number to customize row format
+
+text_justification <- c("l", rep("c", n_sgroup*n_tgroup*2))
+
+if (length(outdata$components) == 2) {
+  text_format <- ifelse(tbl$order %% 1000 == 0, "b", "")
+} else {
+  text_format <- ""
+}
+
+ncolmat <- n_col - 1
+text_format <- matrix(text_format, nrow = n_row, ncol = ncolmat)
+
+text_indent <- matrix(0, nrow = n_row, ncol = ncolmat)
+text_indent[, 1] <- ifelse(tbl$order %% 1000 == 0 | tbl$order == 1, 0, 100)
+
+# Using r2rtf
+tbl1<- tbl[ names(tbl) != "order"]
+
+outdata$rtf <- tbl1  |>
+  r2rtf::rtf_page(orientation = orientation) |>
+  r2rtf::rtf_title(title) |>
+  r2rtf::rtf_colheader(colheader = colheader[1], col_rel_width = rwidth_1, text_font_size = text_font_size) |>
+  r2rtf::rtf_colheader(colheader = colheader[2], border_top = border_top2, border_left = border_left2,
+                       col_rel_width = rwidth_2, text_font_size = text_font_size) |>
+  r2rtf::rtf_colheader(colheader = colheader[3], border_top = border_top3, border_left = border_left3,
+                       col_rel_width = rwidth_3, text_font_size = text_font_size) |>
+  r2rtf::rtf_body(col_rel_width = rwidth_3, border_left = border_left3, text_justification = text_justification,
+                  text_indent_first = text_indent, text_indent_left = text_indent, text_format = text_format,
+                  text_font_size = text_font_size)
+
+if (!is.null(footnotes)) {
+  outdata$rtf <- outdata$rtf |>
+    r2rtf::rtf_footnote(footnotes,
+                        text_font_size = text_font_size
+    )
+  }
+
+if (!is.null(source)) {
+  outdata$rtf <- outdata$rtf |>
+    r2rtf::rtf_source(source,
+                      text_font_size = text_font_size
+    )
+  }
+
+# prepare output
+rtf_output(outdata, path_outdata, path_outtable)
+
+}

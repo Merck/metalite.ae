@@ -19,9 +19,8 @@
 #'
 #' @inheritParams prepare_ae_specific
 #' @param subgroup_var a character value of subgroup variable name in observation data saved in `meta$data_observation`.
-#' @param subgroup_header a integer value of column header for subgroup.
-#' @param display_total test
-#' @param display_subgroup_total test
+#' @param column_hierarchy a character value for type of subgroup analysis.
+#' @param display_subgroup_total a logical Value to display total column for subgroup analysis.
 #' @examples
 #' #meta <- meta_ae_dummy()
 #' #prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
@@ -31,18 +30,17 @@ prepare_ae_specific_subgroup <- function(meta,
                                          observation,
                                          parameter,
                                          subgroup_var,
-                                         subgroup_header = 1,
+                                         column_hierarchy = "trt_within_sub",
                                          components = c("soc", "par"),
-                                         display_total = TRUE,
                                          display_subgroup_total = TRUE) {
-  stop("this function is still under development")
 
-  if (!subgroup_header %in% c(1, 2)) {
-    stop("subgroup_header can only have value 1 or 2")
+  if (!column_hierarchy %in% c("trt_within_sub", "sub_within_trt")) {
+    stop("column_hierarchy can only have value trt_within_sub or sub_within_trt")
   }
 
-  display <- c("n", "prop")
-  if (display_total) display <- c(display, "total")
+  if (column_hierarchy ==  "sub_within_trt") {
+    stop("Currently the function only supports subgroup analysis for trt_within_sub")
+  }
 
   meta_original <- meta
 
@@ -57,8 +55,6 @@ prepare_ae_specific_subgroup <- function(meta,
   par_var <- collect_adam_mapping(meta, parameter)$var
   par_soc <- collect_adam_mapping(meta, parameter)$soc
 
-
-
   # Convert variable to factor
   meta$data_observation[[par_var]] <- factor(as.character(meta$data_observation[[par_var]]),
     levels = sort(unique(meta$data_observation[[par_var]]))
@@ -68,8 +64,7 @@ prepare_ae_specific_subgroup <- function(meta,
     levels = sort(unique(meta$data_observation[[par_soc]]))
   )
 
-
-  meta_subgroup <- metalite::meta_split(meta, subgroup_var)
+  meta_subgroup <- metalite::meta_split(meta, toupper(subgroup_var))
 
   outdata_all <- prepare_ae_specific(meta,
     population = population,
@@ -78,58 +73,35 @@ prepare_ae_specific_subgroup <- function(meta,
     components = components
   )
 
+# Currently Total column analysis is supported for trt_within_sub.
+# Need programming for Total column for sub_within_trt.
+
   outdata_subgroup <- lapply(meta_subgroup,
     prepare_ae_specific,
     population = population,
     observation = observation,
     parameter = parameter,
-    components = components,
-    display = display
+    components = components
   )
 
-  # update variable name
-  for (i in 1:length(outdata_subgroup)) {
-    names(outdata_subgroup[[i]]$data)[-1] <- paste0(names(outdata_subgroup[[i]]$data)[-1], "_", letters[i])
-    names(outdata_subgroup[[i]]$n) <- paste0(names(outdata_subgroup[[i]]$n), "_", letters[i])
-    names(outdata_subgroup[[i]]$prop) <- paste0(names(outdata_subgroup[[i]]$prop), "_", letters[i])
-  }
+#Current output for subgroup analysis is supported for trt_within_sub.
+#output of subgroup analysis needs restructing for sub_within_trt.
+  out_all <- outdata_subgroup
+  out_all$Total <- outdata_all
 
-  # combine data
-  data <- outdata_subgroup[[1]]$data
-  n <- outdata_subgroup[[1]]$n
-  prop <- outdata_subgroup[[1]]$prop
+group <-  outdata_subgroup[[1]]$group
+group <- group[! group %in% "Total"]
 
-  for (i in 2:length(outdata_subgroup)) {
-    data <- data.frame(data, outdata_subgroup[[i]]$data[, -1])
-    n <- data.frame(n, outdata_subgroup[[i]]$n)
-    prop <- data.frame(prop, outdata_subgroup[[i]]$prop)
-  }
-
-
-  if (subgroup_header == 2) {
-    x <- names(data)
-    x[1] <- "a"
-    x <- gsub("prop", "n", x)
-    data <- data[, order(x)]
-    n <- n[, order(names(n))]
-    prop <- prop[, order(names(prop))]
-  }
-
-
-  outdata <- list(
-    data = data,
-    order = outdata_all[[1]]$order,
-    n = n,
-    prop = prop,
+outdata <- list(
     components = outdata_subgroup[[1]]$components,
-    group = outdata_subgroup[[1]]$group,
+    group = group,
     subgroup = tools::toTitleCase(tolower(names(outdata_subgroup))),
-    display_total = display_total,
     display_subgroup_total = display_subgroup_total,
     meta = meta_original,
     population = population,
     observation = observation,
-    parameter = parameter
+    parameter = parameter,
+    out_all = out_all
   )
 
   outdata
