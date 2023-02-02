@@ -24,6 +24,6 @@ The term name is used as key to link information.}
 Prepare datasets for AE specific analysis
 }
 \examples{
-meta <- meta_ae_listing_dummy()
+meta <- meta_ae_listing_example()
 lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") , head, 10)
 }

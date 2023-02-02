@@ -1,4 +1,5 @@
-test <- prepare_ae_specific(meta_dummy(),
+test <- prepare_ae_specific(
+  meta_example(),
   population = "apat",
   observation = "wk12",
   parameter = "any"

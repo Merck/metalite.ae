@@ -29,7 +29,7 @@
 #' @import metalite
 #'
 #' @examples
-#' meta <- meta_ae_listing_dummy()
+#' meta <- meta_ae_listing_example()
 #' lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") , head, 10)
 #' @export
 

@@ -2,7 +2,7 @@
 title: "AE Listing"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ae-listing}
+  %\VignetteIndexEntry{AE Listing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

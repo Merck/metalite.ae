@@ -15,13 +15,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Create a dummy `meta_adam` object
+#' Create an example `meta_adam` object
 #'
 #' This function is only for illustration purpose.
-#' `r2rtf` and `magrittr` packages are required.
+#' r2rtf and magrittr are required.
 #'
 #' @export
-meta_ae_dummy <- function() {
+meta_ae_example <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
   adsl$TRTA <- factor(adsl$TRTA,
@@ -90,13 +90,13 @@ meta_ae_dummy <- function() {
 }
 
 
-#' Create a dummy `meta_adam` object for AE listing
+#' Create an example `meta_adam` object for AE listing
 #'
 #' This function is only for illustration purpose.
-#' `r2rtf` and `magrittr` packages are required.
+#' r2rtf and magrittr are required.
 #'
 #' @export
-meta_ae_listing_dummy <- function() {
+meta_ae_listing_example <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
   adsl$TRTA <- factor(adsl$TRTA,
