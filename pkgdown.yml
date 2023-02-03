@@ -7,5 +7,8 @@ articles:
   ae-summary: ae-summary.html
   metalite-ae: metalite-ae.html
   rate-compare: rate-compare.html
-last_built: 2023-02-03T15:31Z
+last_built: 2023-02-03T16:35Z
+urls:
+  reference: https://merck.github.io/metalite.ae/reference
+  article: https://merck.github.io/metalite.ae/articles
 
