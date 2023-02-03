@@ -1,21 +1,20 @@
-# test_that("multiplication works", {
-# est plan:
+# Test plan
+#
+# The output is a list.
+# Test each component:
+# - `population`: match the expectation.
+# - `parameter`: match the expectation.
+# - `n`: match that from SAS
+#   (take r2rtf::r2rtf_adsl and r2rtf::r2rtf_adae as an example).
+# - `order`: match the expectation.
+# - `group`: match the expectation.
+# - `reference_group`: match the expectation.
+# - `prop`: match that from SAS
+#   (take r2rtf::r2rtf_adsl and r2rtf::r2rtf_adae as an example).
+# - `diff`: match that from SAS
+#   (take r2rtf::r2rtf_adsl and r2rtf::r2rtf_adae as an example).
+# - `name`: match the expectation.
 
-#  The output is a list
-# Test each component
-# population: match the expectation
-# parameter: match the expectation
-# n: match that from SAS (take r2rtf::r2rtf_adsl and r2rtf::r2rtf_adae as an example)
-# order: match the expectation
-# group: match the expectation
-# reference_group: match the expectation
-# prop: match that from SAS (take r2rtf::r2rtf_adsl and r2rtf::r2rtf_adae as an example)
-# diff: match that from SAS (take r2rtf::r2rtf_adsl and r2rtf::r2rtf_adae as an example)
-# name: match the expectation
-# })
-
-
-# devtools::load_all()
 library(metalite.ae)
 library(metalite)
 library(haven)
@@ -72,7 +71,7 @@ meta <- meta %>% define_observation(
   label = "Treatment emergent"
 )
 
-meta_dummy <- meta %>%
+meta_example <- meta %>%
   define_parameter(name = "any") %>%
   define_parameter(
     name = "rel",
@@ -126,19 +125,19 @@ meta_dummy <- meta %>%
   )
 
 
-meta_dummy <- meta_dummy %>%
+meta_example <- meta_example %>%
   define_analysis(
     name = "ae_summary",
     title = "Adverse Event Summary"
   )
 
 
-meta_dummy <- meta_dummy %>% meta_build()
+meta_example <- meta_example %>% meta_build()
 
-meta_dummy$plan <- meta_dummy$plan %>%
+meta_example$plan <- meta_example$plan %>%
   mutate(output_report = spec_filename(meta))
 
-test_meta <- meta_dummy
+test_meta <- meta_example
 # usethis::use_data(test_meta, overwrite = TRUE)
 
 x <- prepare_ae_summary(
@@ -467,14 +466,14 @@ test_that("serious adverse event count", {
     group_by(TRT01AN, ITTFL, AESER) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
     mutate(AESER = "Y", t = as.integer(0))
 
   res_ae <- res_ae %>% subset(AESER == "Y")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AESER")
   ) %>% select(-c(t))
@@ -539,7 +538,7 @@ test_that("serious drug-related adverse event count", {
     group_by(TRT01AN, ITTFL, AESER, AEREL) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     ungroup() %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
@@ -547,7 +546,7 @@ test_that("serious drug-related adverse event count", {
 
   res_ae <- res_ae %>% subset(AESER == "Y" & AEREL == "RELATED")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AESER", "AEREL")
   ) %>% select(-c(t))
@@ -613,7 +612,7 @@ test_that("death count", {
     group_by(TRT01AN, ITTFL, AESDTH) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     ungroup() %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
@@ -621,7 +620,7 @@ test_that("death count", {
 
   res_ae <- res_ae %>% subset(AESDTH == "Y")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AESDTH")
   ) %>% select(-c(t))
@@ -688,7 +687,7 @@ test_that("died due to drug-related adverse event count", {
     group_by(TRT01AN, ITTFL, AESDTH, AEREL) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     ungroup() %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
@@ -696,7 +695,7 @@ test_that("died due to drug-related adverse event count", {
 
   res_ae <- res_ae %>% subset(AESDTH == "Y" & AEREL == "RELATED")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AESDTH", "AEREL")
   ) %>% select(-c(t))
@@ -760,7 +759,7 @@ test_that("discontinued due to an adverse event count", {
     group_by(TRT01AN, ITTFL, AEACN) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     ungroup() %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
@@ -768,7 +767,7 @@ test_that("discontinued due to an adverse event count", {
 
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AEACN")
   ) %>% select(-c(t))
@@ -833,7 +832,7 @@ test_that("discontinued due to drug-related adverse event count", {
     group_by(TRT01AN, ITTFL, AEACN, AEREL) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     ungroup() %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
@@ -841,7 +840,7 @@ test_that("discontinued due to drug-related adverse event count", {
 
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN" & AEREL == "RELATED")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AEACN", "AEREL")
   ) %>% select(-c(t))
@@ -907,7 +906,7 @@ test_that("discontinued due to serious adverse event count", {
     group_by(TRT01AN, ITTFL, AEACN, AESER) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     ungroup() %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
@@ -915,7 +914,7 @@ test_that("discontinued due to serious adverse event count", {
 
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN" & AESER == "Y")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AEACN", "AESER")
   ) %>% select(-c(t))
@@ -980,14 +979,14 @@ test_that("discontinued due to serious drug-related adverse event count", {
     group_by(TRT01AN, ITTFL, AEACN, AESER, AEREL) %>%
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae_dummy <- res_ae %>%
+  res_ae_example <- res_ae %>%
     select(TRT01AN, ITTFL) %>%
     distinct() %>%
     mutate(AEACN = "DRUG WITHDRAWN", AESER = "Y", AEREL = "RELATED", t = as.integer(0))
 
   res_ae <- res_ae %>% subset(toupper(AEACN) == "DRUG WITHDRAWN" & AESER == "Y" & AEREL == "RELATED")
 
-  res_ae <- left_join(res_ae_dummy,
+  res_ae <- left_join(res_ae_example,
                       res_ae,
                       by = c("TRT01AN", "ITTFL", "AEACN", "AESER", "AEREL")
   ) %>% select(-c(t))

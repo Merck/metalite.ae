@@ -46,7 +46,7 @@ The general workflow is splitted into three parts.
 For example, we can create a simple AE summary table as below.
 
 ```{r}
-meta_ae_dummy() |>
+meta_ae_example() |>
   prepare_ae_summary(
     population = "apat",
     observation = "wk12",

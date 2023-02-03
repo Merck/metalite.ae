@@ -49,7 +49,7 @@ The `prepare_ae_specific` function is design to be used for multiple purpose.
 The input of the function is a `meta` objects created from `metalite.ae` package.
 
 ```{r}
-meta <- meta_ae_dummy()
+meta <- meta_ae_example()
 ```
 
 The output of the function is an `outdata` objects contain a list of analysis raw datasets.

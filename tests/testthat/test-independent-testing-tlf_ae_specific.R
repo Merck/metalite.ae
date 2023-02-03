@@ -1,6 +1,6 @@
 library(metalite)
 
-meta <- meta_ae_dummy()
+meta <- meta_ae_example()
 outdata <- prepare_ae_specific(meta,
                                population = "apat",
                                observation = "wk12",

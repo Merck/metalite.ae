@@ -1,9 +1,9 @@
-test  <- prepare_ae_specific(meta_dummy(),
-                             population = 'apat',
-                             observation = 'wk12',
-                             parameter = 'any')
-
-
+test <- prepare_ae_specific(
+  meta_example(),
+  population = 'apat',
+  observation = 'wk12',
+  parameter = 'any'
+)
 
 test_that("When Mock is True masked value should have value of xx, x", {
 

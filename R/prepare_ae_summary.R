@@ -22,7 +22,7 @@
 #'
 #'
 #' @examples
-#' meta <- meta_ae_dummy()
+#' meta <- meta_ae_example()
 #' prepare_ae_summary(meta, "apat", "wk12", "any;rel;ser")
 #' @export
 prepare_ae_summary <- function(meta,

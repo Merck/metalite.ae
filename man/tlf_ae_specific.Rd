@@ -47,7 +47,7 @@ Specific Adverse Events Table
 \examples{
 library(r2rtf)
 library(metalite)
-meta <- meta_ae_dummy()
+meta <- meta_ae_example()
 
 meta |>
   prepare_ae_specific(
