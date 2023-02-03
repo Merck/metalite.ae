@@ -1,5 +1,7 @@
 destination: docs
 
+url: https://merck.github.io/metalite.ae/
+
 template:
   bootstrap: 5
   bslib:
