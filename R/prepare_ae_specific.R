@@ -30,7 +30,7 @@
 #' @import metalite
 #'
 #' @examples
-#' meta <- meta_ae_dummy()
+#' meta <- meta_ae_example()
 #' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel"), head, 10)
 #'
 #' # Allow to extract each components

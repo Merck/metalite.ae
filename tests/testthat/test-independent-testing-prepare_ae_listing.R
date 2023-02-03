@@ -24,9 +24,9 @@ remo_label <- function(a) {
   return(a)
 }
 
-#creating dummy listing
+# Creating example listing
 
-meta_ae_listing_dummy <- function() {
+meta_ae_listing_example <- function() {
   plan <- plan(
     analysis = "ae_listing", population = "apat",
     observation = "wk12", parameter = c("any", "rel", "ser")
@@ -74,7 +74,7 @@ listing_ae <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with a
 )
 
 test_that("Its class is 'outdata'", {
-  output <- prepare_ae_listing(meta_ae_listing_dummy(), "ae_listing", "apat", "wk12", "ser")
+  output <- prepare_ae_listing(meta_ae_listing_example(), "ae_listing", "apat", "wk12", "ser")
   expect_equal(class(output), "outdata")
   expect_equal(length(output), 10)
   expect_equal(names(output), c("meta", "population", "observation", "parameter", "n", "order", "group", "reference_group", "col_name", "tbl"))
@@ -89,7 +89,7 @@ test_that("Its class is 'outdata'", {
 
 
 test_that("Checking Serious AE records at WK12", {
-  d <- prepare_ae_listing(meta_ae_listing_dummy(), "ae_listing", "apat", "wk12", "ser")
+  d <- prepare_ae_listing(meta_ae_listing_example(), "ae_listing", "apat", "wk12", "ser")
   prod_tbl <- d$tbl
   rownames(prod_tbl) <- NULL
 
@@ -112,7 +112,7 @@ listi <- listing_ae  %>%
 })
 
 test_that("Checking AE related records at WK12", {
-  d <- prepare_ae_listing(meta_ae_listing_dummy(), "ae_listing", "apat", "wk12", "rel")
+  d <- prepare_ae_listing(meta_ae_listing_example(), "ae_listing", "apat", "wk12", "rel")
   prod_tbl <- d$tbl
   rownames(prod_tbl) <- NULL
 

@@ -2,19 +2,18 @@ library(metalite)
 library(metalite.ae)
 library(r2rtf)
 
-x <- meta_ae_listing_dummy()
+x <- meta_ae_listing_example()
 
-
-outdata <- prepare_ae_listing(x,
-                              analysis = "ae_listing",
-                              population = "apat",
-                              observation = "wk12",
-                              parameter = "rel")
+outdata <- prepare_ae_listing(
+  x,
+  analysis = "ae_listing",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
 
 path_rtf <- file.path(tempdir(), "ednp_ae0listing.rtf")
 path_rdata <- tempfile(fileext = '.Rdata')
-
-
 
 tbl <- outdata |>
   tlf_ae_listing(

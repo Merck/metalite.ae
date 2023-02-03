@@ -70,10 +70,10 @@ reference:
   contents:
     - rate_compare
     - rate_compare_sum
-- title: Dummy data
+- title: Example data
   contents:
-    - meta_ae_dummy
-    - meta_ae_listing_dummy
+    - meta_ae_example
+    - meta_ae_listing_example
 
 articles:
 - title: Get started

@@ -23,8 +23,8 @@
 #' @param display_total test
 #' @param display_subgroup_total test
 #' @examples
-#' #meta <- meta_ae_dummy()
-#' #prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
+#' # meta <- meta_ae_example()
+#' # prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
 #' @export
 prepare_ae_specific_subgroup <- function(meta,
                                          population,

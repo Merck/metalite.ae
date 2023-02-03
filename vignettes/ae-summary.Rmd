@@ -43,7 +43,7 @@ The `prepare_ae_summary` function is design to be used for multiple purposes.
 The input of the function is a `meta` objects created from `metalite` package.
 
 ```{r}
-meta <- meta_ae_dummy()
+meta <- meta_ae_example()
 ```
 
 The output of the function is an `outdata` object that contain a list of analysis raw datasets.
