@@ -88,7 +88,7 @@ if("any" %in% parameters){
   names(res) <- NULL
 }
 
-  metalite:::outdata(meta, population, observation, parameter,
+  metalite::outdata(meta, population, observation, parameter,
     n = rbind(n_pop, tbl_num),
     order = c(1, 1:nrow(tbl_num) * 100),
     group = res[[1]]$group,
