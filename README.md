@@ -1,4 +1,4 @@
-# metalite.ae 
+# metalite.ae
 
 <!-- badges: start -->
 
@@ -11,21 +11,21 @@
 
 ## Overview
 
-`metalite.ae` is an R package for standard adverse events analysis including: 
+metalite.ae is an R package for standard adverse events analysis, including:
 
-- AE summary 
-- Specific AE analysis 
+- AE summary.
+- Specific AE analysis.
 
-## Workflow 
+## Workflow
 
-The general workflow is splited into three parts. 
+The general workflow is split into three parts.
 
-1. define meta data information using `metalite` package 
-1. prepare outdata using `prepare_xxx` functions 
-1. create TLFs using `tlf_xxx` functions 
+1. Define meta data information using the metalite package.
+1. Prepare outdata using `prepare_*()` functions.
+1. Create TLFs using `tlf_*()` functions.
 
 ## Highlighted features
 
-- enable meta data structure 
-- consistent input and output in standard functions
-- streamline mock table generation
+- Enables metadata structure.
+- Consistent input and output in standard functions.
+- Streamlines mock table generation.
