@@ -26,22 +26,22 @@ library(metalite.ae)
 
 ## Overview
 
-`metalite.ae` is an R package for standard adverse events analysis including:
+metalite.ae is an R package for standard adverse events analysis, including:
 
-- AE summary
-- Specific AE analysis
-- Specific AE subgroup analysis (TODO)
-- AE listing (TODO)
+- AE summary.
+- Specific AE analysis.
+- Specific AE subgroup analysis (TODO).
+- AE listing (TODO).
 
 ### Workflow
 
-The general workflow is splitted into three parts.
+The general workflow is split into three parts.
 
-1. Define meta data information using `metalite` package
-1. Prepare outdata using `prepare_xxx` functions
-1. Extend outdata using `extend_xxx` functions
-1. Format outdata using `format_xxx` functions
-1. Create TLFs using `tlf_xxx` functions
+1. Define metadata information using the metalite package.
+1. Prepare outdata using `prepare_*()` functions.
+1. Extend outdata using `extend_*()` functions.
+1. Format outdata using `format_*()` functions.
+1. Create TLFs using `tlf_*()` functions.
 
 For example, we can create a simple AE summary table as below.
 
@@ -67,6 +67,6 @@ More examples can be found in `vignette("ae-summary")` and `vignette("ae-specifi
 
 ### Highlighted features
 
-- Enable metadata structure
-- Consistent input and output in standard functions
-- Streamline mock table generation
+- Enables metadata structure.
+- Consistent input and output in standard functions.
+- Streamlines mock table generation.
