@@ -21,15 +21,14 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
-    DescTools,
     dplyr,
     glue,
     metalite,
     r2rtf,
     stats,
-    tidyr,
-    haven
+    tidyr
 Suggests:
+    DescTools,
     covr,
     knitr,
     kableExtra,

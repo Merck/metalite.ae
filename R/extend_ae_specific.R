@@ -37,6 +37,8 @@ extend_ae_specific_inference <- function(outdata,
   ci_upper <- list()
   p <- list()
 
+  bind_rows2 <- utils::getFromNamespace("bind_rows2", ns = "metalite")
+
   for (iter in 1:length(grp)) {
     index <- grp[iter]
     x0 <- res$n[[ref]]
@@ -54,7 +56,7 @@ extend_ae_specific_inference <- function(outdata,
         n1 = n1[i], alpha = 1 - ci
       )
     }
-    tmp <- metalite:::bind_rows2(tmp)
+    tmp <- bind_rows2(tmp)
     ci_lower[[iter]] <- tmp$lower
     ci_upper[[iter]] <- tmp$upper
     p[[iter]] <- tmp$p

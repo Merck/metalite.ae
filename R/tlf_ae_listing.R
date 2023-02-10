@@ -116,12 +116,12 @@ tlf_ae_listing <- function(outdata,
   # Using r2rtf
 
   outdata$rtf <- res |>
-    rtf_page(orientation =  orientation) |>
-    rtf_title(title)  |>
-    rtf_colheader(colheader,
+    r2rtf::rtf_page(orientation =  orientation) |>
+    r2rtf::rtf_title(title)  |>
+    r2rtf::rtf_colheader(colheader,
                   col_rel_width = rel_width1,
                   text_font_size = text_font_size) |>
-    rtf_body(
+    r2rtf::rtf_body(
       col_rel_width = rel_width,
       text_justification = text_justification,
       text_format = text_format,
