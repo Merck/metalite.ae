@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Nan Xiao \email{nan.xiao1@merck.com}
+\strong{Maintainer}: Yujie Zhao \email{yujie.zhao@merck.com}
 
 Authors:
 \itemize{
@@ -27,9 +27,9 @@ Authors:
   \item Ruchitbhai Patel
   \item Madhusudhan Ginnaram
   \item Sarad Nepal
-  \item Yujie Zhao
   \item Brian Lang
   \item Benjamin Wang
+  \item Nan Xiao
 }
 
 Other contributors:
