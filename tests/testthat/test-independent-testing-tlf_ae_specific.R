@@ -15,7 +15,7 @@ outdata <- prepare_ae_specific(meta,
 #   tbl <- outdata |>
 #     format_ae_specific() |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -31,7 +31,7 @@ outdata <- prepare_ae_specific(meta,
 #   tbl <- outdata |>
 #     format_ae_specific(display = c("n", "prop")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -47,7 +47,7 @@ outdata <- prepare_ae_specific(meta,
 #   tbl <- outdata |>
 #     format_ae_specific(display = c("n")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -65,7 +65,7 @@ outdata <- prepare_ae_specific(meta,
 #     extend_ae_specific_events() |>
 #     format_ae_specific(display = c("events", "n", "prop", "total")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -82,7 +82,7 @@ outdata <- prepare_ae_specific(meta,
 #     extend_ae_specific_events() |>
 #     format_ae_specific(display = c("events", "n", "prop")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -101,7 +101,7 @@ outdata <- prepare_ae_specific(meta,
 #     extend_ae_specific_duration(duration_var = "ADURN") |>
 #     format_ae_specific(display = c("events", "dur", "n", "prop")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -119,7 +119,7 @@ outdata <- prepare_ae_specific(meta,
 #     extend_ae_specific_duration(duration_var = "ADURN") |>
 #     format_ae_specific(display = c("events", "dur", "n", "prop", "total")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -136,7 +136,7 @@ outdata <- prepare_ae_specific(meta,
 #     extend_ae_specific_events() |>
 #     format_ae_specific(display = c("events", "n", "prop", "total")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -153,7 +153,7 @@ outdata <- prepare_ae_specific(meta,
 #     extend_ae_specific_events() |>
 #     format_ae_specific(display = c("events", "n", "prop")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -175,7 +175,7 @@ test_that("rtf output: events, dur, n, and prop w/o total", {
       mock = TRUE
     ) |>
     tlf_ae_specific(
-      medra_version = "24.0",
+      meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
       path_outdata = path_rdata,
       path_outtable = path_rtf
@@ -196,7 +196,7 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
       mock = TRUE
     ) |>
     tlf_ae_specific(
-      medra_version = "24.0",
+      meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
       path_outdata = path_rdata,
       path_outtable = path_rtf
@@ -219,7 +219,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/o total", {
       "diff", "diff_p", "diff_ci"
     ), mock = TRUE) |>
     tlf_ae_specific(
-      medra_version = "24.0",
+      meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
       path_outdata = path_rdata,
       path_outtable = path_rtf
@@ -241,7 +241,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
       "diff", "diff_p", "diff_ci"
     ), mock = TRUE) |>
     tlf_ae_specific(
-      medra_version = "24.0",
+      meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
       path_outdata = path_rdata,
       path_outtable = path_rtf
@@ -260,7 +260,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
 #     format_ae_specific(display = c("n", "prop", "total",
 #       "diff", "diff_p", "diff_ci")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -278,7 +278,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
 #     format_ae_specific(display = c("n", "prop", "total",
 #       "diff", "diff_p", "diff_ci")) |>
 #     tlf_ae_specific(
-#       medra_version = "24.0",
+#       meddra_version = "24.0",
 #       source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #       path_outdata =  path_rdata,
 #       path_outtable =  path_rtf
@@ -296,7 +296,7 @@ test_that("relative width 'works'", {
       tbl <- outdata |>
         format_ae_specific(display = c("n", "prop"), mock = TRUE) |>
         tlf_ae_specific(
-          medra_version = "24.0",
+          meddra_version = "24.0",
           source = "Source:  [CDISCpilot: adam-adsl; adae]",
           path_outdata = path_rdata,
           path_outtable = path_rtf,
@@ -311,7 +311,7 @@ test_that("relative width 'works'", {
       tbl <- outdata |>
         format_ae_specific(display = c("n", "prop"), mock = TRUE) |>
         tlf_ae_specific(
-          medra_version = "24.0",
+          meddra_version = "24.0",
           source = "Source:  [CDISCpilot: adam-adsl; adae]",
           path_outdata = path_rdata,
           path_outtable = path_rtf,

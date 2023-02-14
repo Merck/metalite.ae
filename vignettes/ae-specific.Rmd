@@ -183,7 +183,7 @@ By using `tlf_ae_specific`, we can transfer the output from `format_ae_specific`
 outdata |>
   format_ae_specific() |>
   tlf_ae_specific(
-    medra_version = "24.0",
+    meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     path_outtable = "outtable/ae0specific1.rtf"
   )
@@ -199,7 +199,7 @@ The `tlf_ae_specific` function also provide some commonly used argument to custo
 outdata |>
   format_ae_specific() |>
   tlf_ae_specific(
-    medra_version = "24.0",
+    meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     col_rel_width = c(6, rep(1, 8)),
     text_font_size = 8,
@@ -218,7 +218,7 @@ We can also generate the mock table
 outdata |>
   format_ae_specific(mock = TRUE) |>
   tlf_ae_specific(
-    medra_version = "24.0",
+    meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     path_outtable = "outtable/mock_ae0specific1.rtf"
   )

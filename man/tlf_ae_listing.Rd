@@ -16,11 +16,11 @@ tlf_ae_listing(
 )
 }
 \arguments{
-\item{outdata}{a outdata list created from \code{prepare_ae_listing}}
+\item{outdata}{A outdata list created by \code{\link[=prepare_ae_listing]{prepare_ae_listing()}}.}
 
-\item{footnotes}{a character vector of table footnotes}
+\item{footnotes}{A character vector of table footnotes.}
 
-\item{source}{a character value of the data source}
+\item{source}{A character value of the data source.}
 
 \item{col_rel_width}{Column relative width in a vector e.g. c(2,1,1) refers to 2:1:1.
 Default is NULL for equal column width.}
@@ -31,9 +31,9 @@ displayed e.g. c(9,20,40).}
 
 \item{orientation}{Orientation in 'portrait' or 'landscape'.}
 
-\item{path_outdata}{a character string of the outdata path}
+\item{path_outdata}{A character string of the outdata path.}
 
-\item{path_outtable}{a character string of the outtable path}
+\item{path_outtable}{A character string of the outtable path.}
 }
 \value{
 To be added.

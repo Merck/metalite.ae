@@ -6,7 +6,7 @@
 \usage{
 tlf_ae_specific(
   outdata,
-  medra_version,
+  meddra_version,
   source,
   col_rel_width = NULL,
   text_font_size = 9,
@@ -18,11 +18,12 @@ tlf_ae_specific(
 )
 }
 \arguments{
-\item{outdata}{a outdata list created from \code{prepare_ae_specific}}
+\item{outdata}{A outdata list created from \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{medra_version}{a character value of the MedDRA Version for this dataset}
+\item{meddra_version}{A character value of the MedDRA version
+for this dataset.}
 
-\item{source}{a character value of the data source}
+\item{source}{A character value of the data source.}
 
 \item{col_rel_width}{Column relative width in a vector e.g. c(2,1,1) refers to 2:1:1.
 Default is NULL for equal column width.}
@@ -33,13 +34,13 @@ displayed e.g. c(9,20,40).}
 
 \item{orientation}{Orientation in 'portrait' or 'landscape'.}
 
-\item{footnotes}{a character vector of table footnotes}
+\item{footnotes}{A character vector of table footnotes.}
 
-\item{title}{a character vector of table titles}
+\item{title}{A character vector of table titles.}
 
-\item{path_outdata}{a character string of the outdata path}
+\item{path_outdata}{A character string of the outdata path.}
 
-\item{path_outtable}{a character string of the outtable path}
+\item{path_outtable}{A character string of the outtable path.}
 }
 \value{
 To be added.
@@ -59,7 +60,7 @@ meta |>
   format_ae_specific() |>
   tlf_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    medra_version = "24.0",
+    meddra_version = "24.0",
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )

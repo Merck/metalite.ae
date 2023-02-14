@@ -18,14 +18,14 @@
 
 #' Prepare datasets for AE specific analysis
 #'
-#' @param meta a meta data created by `metalite`.
-#' @param analysis analysis name from `meta`
-#' @param population a character value of population term name.
-#' The term name is used as key to link information.
-#' @param observation a character value of observation term name.
-#' The term name is used as key to link information.
-#' @param parameter a character value of parameter term name.
-#' The term name is used as key to link information.
+#' @param meta A metadata object created by metalite.
+#' @param analysis Analysis name from `meta`.
+#' @param population A character value of population term name.
+#'   The term name is used as key to link information.
+#' @param observation A character value of observation term name.
+#'   The term name is used as key to link information.
+#' @param parameter A character value of parameter term name.
+#'   The term name is used as key to link information.
 #'
 #' @return To be added.
 #'

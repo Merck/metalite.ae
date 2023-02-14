@@ -89,7 +89,7 @@ fmt_est <- function(mean,
 #' Format confidence interval
 #'
 #' @param lower A numeric value of lower value of CI.
-#' @param upper A numeric value of lower value of CI.
+#' @param upper A numeric value of upper value of CI.
 #' @param digits Digits of each column, i.e., format as (x.x, x.x).
 #' @param width Width of each column.
 #'
