@@ -13,5 +13,5 @@ test_that("There is 1 population: apat", {
 })
 
 test_that("The output is a list", {
-  expect_type(meta, 'list')
+  expect_type(meta, "list")
 })

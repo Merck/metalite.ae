@@ -1,14 +1,15 @@
 library(metalite)
 
 meta <- meta_ae_example()
-outdata <- prepare_ae_summary(meta,
-                              population = "apat",
-                              observation = "wk12",
-                              parameter = "any;rel;ser"
+outdata <- prepare_ae_summary(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
 )
 
 path_rtf <- file.path(tempdir(), "tlf_ae_summary.rtf")
-path_rdata <- tempfile(fileext = '.Rdata')
+path_rdata <- tempfile(fileext = ".Rdata")
 
 tbl <- outdata |>
   format_ae_summary() |>

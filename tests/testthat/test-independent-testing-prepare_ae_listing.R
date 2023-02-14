@@ -68,9 +68,10 @@ meta_ae_listing_example <- function() {
     meta_build()
 }
 
-listing_ae <- full_join(adsl %>% select(USUBJID, TRT01AN, ITTFL), # merge with adsl
-                   adae,
-                   by = "USUBJID"
+listing_ae <- full_join(
+  adsl |> select(USUBJID, TRT01AN, ITTFL), # Merge with adsl
+  adae,
+  by = "USUBJID"
 )
 
 test_that("Its class is 'outdata'", {
@@ -93,9 +94,9 @@ test_that("Checking Serious AE records at WK12", {
   prod_tbl <- d$tbl
   rownames(prod_tbl) <- NULL
 
-listi <- listing_ae  %>%
-    filter(SAFFL == "Y" & AESER == "Y") %>%
-    select(c("USUBJID", "ASTDY", "AEDECOD",  "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
+  listi <- listing_ae |>
+    filter(SAFFL == "Y" & AESER == "Y") |>
+    select(c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
 
   rownames(listi) <- NULL
   attr(listi$TRTA, "label") <- "TRTA"
@@ -117,9 +118,9 @@ test_that("Checking AE related records at WK12", {
   rownames(prod_tbl) <- NULL
 
 
-  listi <- listing_ae  %>%
-    filter(SAFFL == "Y" & AEREL %in% c("POSSIBLE", "PROBABLE")) %>%
-    select(c("USUBJID", "ASTDY", "AEDECOD",  "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
+  listi <- listing_ae |>
+    filter(SAFFL == "Y" & AEREL %in% c("POSSIBLE", "PROBABLE")) |>
+    select(c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
 
   rownames(listi) <- NULL
   attr(listi$TRTA, "label") <- "TRTA"
