@@ -9,7 +9,7 @@ fmt_ci(lower, upper, digits = 2, width = 3 + digits)
 \arguments{
 \item{lower}{A numeric value of lower value of CI.}
 
-\item{upper}{A numeric value of lower value of CI.}
+\item{upper}{A numeric value of upper value of CI.}
 
 \item{digits}{Digits of each column, i.e., format as (x.x, x.x).}
 

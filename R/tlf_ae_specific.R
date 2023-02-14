@@ -18,15 +18,16 @@
 
 #' Specific adverse events table
 #'
-#' @param outdata a outdata list created from `prepare_ae_specific`
-#' @param medra_version a character value of the MedDRA Version for this dataset
-#' @param source a character value of the data source
+#' @param outdata A outdata list created from [prepare_ae_specific()].
+#' @param meddra_version A character value of the MedDRA version
+#'   for this dataset.
+#' @param source A character value of the data source.
 #' @inheritParams r2rtf::rtf_page
 #' @inheritParams r2rtf::rtf_body
-#' @param footnotes a character vector of table footnotes
-#' @param title a character vector of table titles
-#' @param path_outdata a character string of the outdata path
-#' @param path_outtable a character string of the outtable path
+#' @param footnotes A character vector of table footnotes.
+#' @param title A character vector of table titles.
+#' @param path_outdata A character string of the outdata path.
+#' @param path_outtable A character string of the outtable path.
 #'
 #' @return To be added.
 #'
@@ -44,12 +45,12 @@
 #'   format_ae_specific() |>
 #'   tlf_ae_specific(
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-#'     medra_version = "24.0",
+#'     meddra_version = "24.0",
 #'     path_outdata = tempfile(fileext = ".Rdata"),
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_specific <- function(outdata,
-                            medra_version,
+                            meddra_version,
                             source,
                             col_rel_width = NULL,
                             text_font_size = 9,
@@ -66,7 +67,7 @@ tlf_ae_specific <- function(outdata,
         "its incidence in one or more of the columns meets the incidence",
         "criterion in the report title, after rounding."
       ),
-      "Adverse event terms are from MedDRA Version {medra_version}."
+      "Adverse event terms are from MedDRA Version {meddra_version}."
     )
   }
 
@@ -100,7 +101,7 @@ tlf_ae_specific <- function(outdata,
   }
 
   footnotes <- vapply(footnotes, glue::glue_data,
-    .x = list(medra_version = medra_version), FUN.VALUE = character(1)
+    .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
   )
   names(footnotes) <- NULL
 

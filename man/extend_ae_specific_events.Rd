@@ -7,7 +7,7 @@
 extend_ae_specific_events(outdata)
 }
 \arguments{
-\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}}
+\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 }
 \value{
 To be added.

@@ -17,7 +17,7 @@ metalite.ae is an R package for standard adverse events analysis, including:
 
 The general workflow is split into three parts.
 
-1. Define meta data information using the metalite package.
+1. Define metadata information using the metalite package.
 1. Prepare outdata using `prepare_*()` functions.
 1. Create TLFs using `tlf_*()` functions.
 

@@ -205,7 +205,7 @@ extend_ae_specific_duration <- function(outdata,
 
 #' Add average number of events information for AE specific analysis
 #'
-#' @param outdata A `outdata` object created by [prepare_ae_specific()]
+#' @param outdata A `outdata` object created by [prepare_ae_specific()].
 #'
 #' @return To be added.
 #'
