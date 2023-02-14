@@ -1,12 +1,12 @@
 ---
 title: "AE Specification"
-output:
-  rmarkdown::html_vignette
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AE Specification}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 resource_files:
    - package_manual.pdf
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{AE Specification}
 ---
 
 ```{r, include=FALSE}
@@ -228,13 +228,8 @@ outdata |>
 knitr::include_graphics("outtable/mock_ae0specific1.pdf")
 ```
 
-## Future developement
+## Future development
 
 ### Features
 
 - Cross check the capability in SAS standard macro to identify required features.
-
-### Technical requirements (for future development)
-
-- Avoiding `%>%`, using `|>` to reduce dependency of `magrittr`.
-- The functions in the `R/` folder should not depends on `dplyr`, `tidyr` etc.

@@ -1,12 +1,12 @@
 ---
 title: "Introduction to metalite.ae"
-output:
-  rmarkdown::html_vignette
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to metalite.ae}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 resource_files:
    - outtable/*.pdf
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Introduction to metalite.ae}
 ---
 
 ```{r, include=FALSE}

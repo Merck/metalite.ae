@@ -56,7 +56,7 @@ head(adae$related)
 In this code chunk, we provide a solution to generate a `outcome` variable in `adae` used to display AE outcome details in listings. 
 
 ```{r}
-for (i in 1:length(adae$AEOUT)) {
+for (i in seq_along(adae$AEOUT)) {
   adae$outcome <- switch(adae$AEOUT[i],
     "RECOVERED/RESOLVED" = "Resolved",
     "RECOVERING/RESOLVING" = "Resolving",
@@ -74,7 +74,7 @@ This example we attempt to illustrate how to generate a column for `Action Taken
 ```{r}
 adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN) # raw data is all blank for 'AEACN', change to 'DOSE NOT CHANGED' for better illustration
 
-for (i in 1:length(adae$AEACN)) {
+for (i in seq_along(adae$AEACN)) {
   adae$action_taken[i] <- switch(adae$AEACN[i],
     "DOSE NOT CHANGED" = "None",
     "DOSE REDUCED" = "Reduced",
@@ -94,7 +94,7 @@ Example to create column for adverse event duration.
 ```{r}
 adae$duration <- paste(ifelse(is.na(adae$ADURN), "", as.character(adae$ADURN)), tools::toTitleCase(tolower(adae$ADURU)), sep = " ") # AE duration with unit
 
-for (i in 1:length(adae$duration)) {
+for (i in seq_along(adae$duration)) {
   if (is.na(adae$ADURN[i])) {
     adae$duration[i] <- ifelse(charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
       charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0, "Continuing", "Unknown")
@@ -230,10 +230,12 @@ head(tbl$col_name)
 By using `tlf_ae_listing`, we can transfer the output from `prepare_ae_listing` to an RTF table.
 
 ```{r}
-footnote <- c("Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED",
- "Action Taken: Discontinued = DRUG WITHDRAWN, Interrupted = DRUG INTERRUPTED, Reduced = DOSE REDUCED, Increased = DOSE INCREASED, None = DOSE NOT CHANGED, N/A = NOT APPLICABLE.",
- "Outcome: Resolved = RECOVERED/RESOLVED, Resolving = RECOVERING/RESOLVING, Sequelae = RECOVERED/RESOLVED WITH SEQUELAE, Not resolved = NOT RECOVERED/NOT RESOLVED.",
- "Adverse event terms are from MedDRA Version 25.0.")
+footnote <- c(
+  "Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED",
+  "Action Taken: Discontinued = DRUG WITHDRAWN, Interrupted = DRUG INTERRUPTED, Reduced = DOSE REDUCED, Increased = DOSE INCREASED, None = DOSE NOT CHANGED, N/A = NOT APPLICABLE.",
+  "Outcome: Resolved = RECOVERED/RESOLVED, Resolving = RECOVERING/RESOLVING, Sequelae = RECOVERED/RESOLVED WITH SEQUELAE, Not resolved = NOT RECOVERED/NOT RESOLVED.",
+  "Adverse event terms are from MedDRA Version 25.0."
+)
 ```
 
 ```{r}

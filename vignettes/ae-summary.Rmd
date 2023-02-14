@@ -1,12 +1,12 @@
 ---
 title: "AE Summary"
-output:
-  rmarkdown::html_vignette
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AE Summary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 resource_files:
    - package_manual.pdf
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{AE Summary}
 ---
 
 ```{r, include=FALSE}
@@ -47,7 +47,7 @@ meta <- meta_ae_example()
 ```
 
 The output of the function is an `outdata` object that contain a list of analysis raw datasets.
-The parameter is a group of key words available in the `names(meta$parameter)` and seperated by `;`.
+The parameter is a group of key words available in the `names(meta$parameter)` and separated by `;`.
 
 ```{r}
 outdata <- prepare_ae_summary(meta,
@@ -200,7 +200,7 @@ outdata |>
 knitr::include_graphics("./outtable/mock_ae0summary1.pdf")
 ```
 
-## Future developement
+## Future development
 
 ### Features
 
@@ -208,8 +208,3 @@ knitr::include_graphics("./outtable/mock_ae0summary1.pdf")
 - Cross check the capability in SAS standard macro to identify required features.
   - `usermanuals/asr0ae0summary/asr0ae0summary-spec.docx`
   - `usermanuals/asr0ae0summary0analysis/asr0ae0summary0analysis-spec.docx`
-
-### Technical requirements (For future development)
-
-- Avoiding `|>`, using `|>` to reduce dependency of `magrittr`.
-- The functions in the `R/` folder should not depend on `dplyr`, `tidyr` etc.
