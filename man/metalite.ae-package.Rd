@@ -6,6 +6,8 @@
 \alias{metalite.ae-package}
 \title{metalite.ae: Adverse Events Analysis Using 'metalite'}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Adverse events analysis using the 'metalite' data structure.
 }
 \seealso{

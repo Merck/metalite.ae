@@ -1,4 +1,4 @@
-# metalite.ae
+# metalite.ae <img src="man/figures/logo.png" align="right" width="120" />
 
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/Merck/metalite.ae/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Merck/metalite.ae?branch=main)
