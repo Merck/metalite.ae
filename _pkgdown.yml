@@ -60,12 +60,6 @@ reference:
     - fmt_est
     - fmt_ci
     - fmt_pval
-- title: Utility
-  contents:
-    - n_subject
-    - avg_event
-    - avg_duration
-    - to_sentence
 - title: Rate comparison
   contents:
     - rate_compare
