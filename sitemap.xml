@@ -34,12 +34,6 @@
     <loc>https://merck.github.io/metalite.ae/news/index.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/metalite.ae/reference/avg_duration.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/avg_event.html</loc>
-  </url>
-  <url>
     <loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_duration.html</loc>
   </url>
   <url>
@@ -79,9 +73,6 @@
     <loc>https://merck.github.io/metalite.ae/reference/metalite.ae-package.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/metalite.ae/reference/n_subject.html</loc>
-  </url>
-  <url>
     <loc>https://merck.github.io/metalite.ae/reference/prepare_ae_listing.html</loc>
   </url>
   <url>
@@ -107,8 +98,5 @@
   </url>
   <url>
     <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_summary.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/to_sentence.html</loc>
   </url>
 </urlset>

@@ -89,14 +89,13 @@
 </h2>
 <p>Binary outcome is a commonly used endpoint in clinical trials. This
 page is to illustrate how to conduct the unstratified or stratified
-analysis with Miettinen and Nurminen method (M&amp;N) descrived in
-(Miettinen and Nurminen 1985) for risk difference analysis in R. The
-following statistics can be calculated within the function
-<code>rate_compare</code>:</p>
+analysis with the Miettinen and Nurminen (M&amp;N) method <span class="citation">(Miettinen and Nurminen 1985)</span> for risk
+difference analysis in R. The following statistics can be calculated
+with the function <code><a href="../reference/rate_compare.html">rate_compare()</a></code>:</p>
 <ul>
-<li>Estimated risk difference</li>
-<li>Test statistic</li>
-<li>Confidence interval for the risk difference</li>
+<li>Estimated risk difference.</li>
+<li>Test statistic.</li>
+<li>Confidence interval for the risk difference.</li>
 <li>p-value for risk difference.</li>
 </ul>
 </div>
@@ -132,8 +131,8 @@ central chi-square distribution with 1 degree of freedom (<span class="math inli
 <li><p><span class="math inline">\(PD\)</span> = the difference between
 two population proportions (<span class="math inline">\(PD=P_1-P_0\)</span>);</p></li>
 </ul>
-<p><span class="math display">\[\tilde{V}=[\frac{\tilde{p}_1(1-\tilde{p}_1)}{n_1}+
-\frac{\tilde{p}_0(1-\tilde{p}_0)}{n_0}]\frac{n_1+n_0}{n_1+n_0-1}\]</span>;</p>
+<p><span class="math display">\[\tilde{V}=\bigg[\frac{\tilde{p}_1(1-\tilde{p}_1)}{n_1}+
+\frac{\tilde{p}_0(1-\tilde{p}_0)}{n_0}\bigg]\frac{n_1+n_0}{n_1+n_0-1}\]</span>;</p>
 <ul>
 <li><p><span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_0\)</span> are the sample sizes for the test and
 control group, respectively;</p></li>
@@ -151,7 +150,7 @@ interval) for <span class="math inline">\(PD\)</span>.</p>
 <h4 id="p-value-and-z-statistic">p-value and Z-statistic<a class="anchor" aria-label="anchor" href="#p-value-and-z-statistic"></a>
 </h4>
 <p>The Z-statistic is computed as:</p>
-<p><span class="math display">\[Z_{diff}=\frac{\hat{p}_1-\hat{p}_0+S_0}{\sqrt{\tilde{V}}}\]</span>
+<p><span class="math display">\[Z_\text{diff}=\frac{\hat{p}_1-\hat{p}_0+S_0}{\sqrt{\tilde{V}}}\]</span>
 where <span class="math inline">\(\hat{p}_1\)</span> and <span class="math inline">\(\hat{p}_0\)</span> are the observed values for
 <span class="math inline">\(P_1\)</span> and <span class="math inline">\(P_0\)</span> respectively, <span class="math inline">\(S_0\)</span> is pre-specified proportion
 difference under the null;</p>
@@ -161,16 +160,16 @@ likelihood estimate of proportion on test computed as <span class="math inline">
 <li><p><span class="math inline">\(\tilde{p}_0\)</span> = maximum
 likelihood estimate of proportion on control under the constraint <span class="math inline">\(\tilde{p}_1-\tilde{p}_0=S_0\)</span>.</p></li>
 <li><p>For non-inferiority or one-sided equivalence hypothesis with
-<span class="math inline">\(S_0&gt;0\)</span>, the p-value, <span class="math inline">\(Pr(Z\ge Z_{diff}|H_0)\)</span>, is computed based
-on <span class="math inline">\(Z_{diff}\)</span> using the standard
-normal distribution.</p></li>
+<span class="math inline">\(S_0&gt;0\)</span>, the p-value, <span class="math inline">\(\Pr(Z \geq Z_\text{diff} \, | \, H_0)\)</span>, is
+computed based on <span class="math inline">\(Z_\text{diff}\)</span>
+using the standard normal distribution.</p></li>
 <li><p>For non-inferiority or one-sided equivalence hypothesis with
-<span class="math inline">\(S_0&lt;0\)</span>, the p-value, <span class="math inline">\(Pr(Z\le Z_{diff}|H_0)\)</span>, is computed based
-on <span class="math inline">\(Z_{diff}\)</span> using the standard
-normal distribution.</p></li>
-<li><p>For two-sided supriority test, the p-value <span class="math inline">\(Pr(\chi_{diff}^2\le \chi_1^2|H_0)\)</span>, is
-computed based on <span class="math inline">\(\chi_{diff}^2\)</span>
-using the chi-square distribution with 1 degree of freedom, where <span class="math inline">\(\chi_{diff}^2=Z_{diff}^2\)</span>.</p></li>
+<span class="math inline">\(S_0&lt;0\)</span>, the p-value, <span class="math inline">\(\Pr(Z \leq Z_\text{diff} \, | \, H_0)\)</span>, is
+computed based on <span class="math inline">\(Z_\text{diff}\)</span>
+using the standard normal distribution.</p></li>
+<li><p>For two-sided superiority test, the p-value <span class="math inline">\(\Pr(\chi_\text{diff}^2 \leq \chi_1^2 \, | \,
+H_0)\)</span>, is computed based on <span class="math inline">\(\chi_\text{diff}^2\)</span> using the chi-square
+distribution with 1 degree of freedom, where <span class="math inline">\(\chi_\text{diff}^2=Z_\text{diff}^2\)</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -193,39 +192,40 @@ equation:</p>
 <p><span class="math display">\[\chi_\alpha^2 =
 \frac{(\hat{p}_1^*-\hat{p}_0^*-PD)^2}{\sum_{i=1}^I(W_i/\sum_{k=1}^{K}W_k)^2\tilde{V}_i}\]</span>,</p>
 <p>where <span class="math inline">\(\hat{p}_s^* =
-\sum_{i=1}^I(W_i/\sum_{k=1}^KW_k)\hat{p}_{si}\)</span> for <span class="math inline">\(s=0,1\)</span>;</p>
-<p><span class="math display">\[\tilde{V}_i=[\frac{\tilde{p}_{1i}(1-\tilde{p}_{1i})}{n_{1i}}+\frac{\tilde{p}_{0i}(1-\tilde{p}_{0i})}{n_{0i}}]\frac{n_{1i}+n_{0i}}{n_{1i}+n_{0i}-1}\]</span>;</p>
+\sum_{i=1}^I(W_i/\sum_{k=1}^KW_k)\hat{p}_{s i}\)</span> for <span class="math inline">\(s = 0, 1\)</span>;</p>
+<p><span class="math display">\[\tilde{V}_i=\bigg[\frac{\tilde{p}_{1i}(1-\tilde{p}_{1i})}{n_{1i}}+\frac{\tilde{p}_{0i}(1-\tilde{p}_{0i})}{n_{0i}}\bigg]\frac{n_{1i}+n_{0i}}{n_{1i}+n_{0i}-1}\]</span>;</p>
 <ul>
 <li>
-<span class="math inline">\(W_i\)</span> is the weight for the <span class="math inline">\(i^{th}\)</span> strata;</li>
+<span class="math inline">\(W_i\)</span> is the weight for the <span class="math inline">\(i\)</span>-th strata;</li>
 <li>$I = K = $ number of strata, <span class="math inline">\(i=k=\)</span> strata;</li>
 <li>
-<span class="math inline">\(n_{1i}\)</span> and <span class="math inline">\(n_{0i}\)</span> are the sample sizes in <span class="math inline">\(i^{th}\)</span> strata for the test and control
+<span class="math inline">\(n_{1i}\)</span> and <span class="math inline">\(n_{0i}\)</span> are the sample sizes in <span class="math inline">\(i\)</span>-th strata for the test and control
 group, respectively;</li>
 <li>
 <span class="math inline">\(\hat{p}_{1i}\)</span> and <span class="math inline">\(\hat{p}_{0i}\)</span> = observed proportion in
-<span class="math inline">\(i^{th}\)</span> strata for the test and
+<span class="math inline">\(i\)</span>-th strata for the test and
 control, respectively;</li>
 <li>
 <span class="math inline">\(\tilde{p}_{0i}\)</span> and <span class="math inline">\(\tilde{p}_{1i}\)</span> are MLE for <span class="math inline">\(P_{0i}\)</span> and <span class="math inline">\(P_{1i}\)</span>, respectively, computed under the
 constraint <span class="math inline">\(\tilde{p}_{1i}=\tilde{p}_{0i}+PD\)</span>.</li>
 </ul>
-<p>Similarly as for unstratified analysis,the 2-sided <span class="math inline">\(100(1-\alpha)\)</span>% CI is given by the roots
-for <span class="math inline">\(PD=P_1-P_0\)</span>, and the bisection
-algorithm is used in the function to obtain the two roots (confidence
-interval) for <span class="math inline">\(PD\)</span>.</p>
+<p>Similarly as for unstratified analysis,the 2-sided <span class="math inline">\(100(1 - \alpha)\)</span>% CI is given by the roots
+for <span class="math inline">\(PD = P_1 - P_0\)</span>, and the
+bisection algorithm is used in the function to obtain the two roots
+(confidence interval) for <span class="math inline">\(PD\)</span>.</p>
 </div>
 <div class="section level4">
 <h4 id="p-value-and-z-statistic-1">p-value and Z-statistic<a class="anchor" aria-label="anchor" href="#p-value-and-z-statistic-1"></a>
 </h4>
 <p>The Z-statistic is computed as:</p>
-<p><span class="math display">\[Z_{diff}=\frac{\hat{p}_1^*-\hat{p}^*_0+S_0}{\sqrt{\sum_{i=1}^I(W_i/\sum_{k=1}^{K}W_k)^2\tilde{V}_i}}\]</span>
+<p><span class="math display">\[Z_\text{diff}=\frac{\hat{p}_1^*-\hat{p}^*_0+S_0}{\sqrt{\sum_{i=1}^I(W_i/\sum_{k=1}^{K}W_k)^2\tilde{V}_i}}\]</span>
 where <span class="math inline">\(S_0\)</span> is pre-specified
 proportion difference under the null;</p>
 <ul>
 <li>
 <span class="math inline">\(\tilde{p}_{0i}\)</span> and <span class="math inline">\(\tilde{p}_{1i}\)</span> are MLE for <span class="math inline">\(P_{0i}\)</span> and <span class="math inline">\(P_{1i}\)</span>, respectively, computed under the
-constraint <span class="math inline">\(\tilde{p}_{1i}=\tilde{p}_{0i}+S_0\)</span>.</li>
+constraint <span class="math inline">\(\tilde{p}_{1i} = \tilde{p}_{0i} +
+S_0\)</span>.</li>
 </ul>
 <p>The p-value can be calculated as stated above.</p>
 </div>
@@ -265,8 +265,9 @@ stratum is used, we considered 4 stratum.</p>
 <h3 id="unstratified-analysis">Unstratified analysis<a class="anchor" aria-label="anchor" href="#unstratified-analysis"></a>
 </h3>
 <p>The function computes the risk difference, Z-statistic, p-value given
-the type of test, and two-sided <span class="math inline">\(100(1-\alpha)\)</span>% confidence interval of
-difference between two rates.</p>
+the type of test, and two-sided <span class="math inline">\(100(1 -
+\alpha)\)</span>% confidence interval of difference between two
+rates.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/rate_compare.html">rate_compare</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">treatment</span>, data <span class="op">=</span> <span class="va">ana</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   est  z_score            p    lower     upper</span></span>
@@ -290,11 +291,15 @@ weights.</p>
 <span><span class="co">#&gt; 1 0.3998397 5.712797 5.556727e-09 0.2684383 0.5172779</span></span></code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>Miettinen, O. and Nurminen, M, . Statistics in Medicine, 4:213–226,
-1985.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-miettinen1985comparative" class="csl-entry">
+Miettinen, Olli, and Markku Nurminen. 1985. <span>“Comparative Analysis
+of Two Rates.”</span> <em>Statistics in Medicine</em> 4 (2): 213–26.
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -304,7 +309,7 @@ weights.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao, Brian Lang, Benjamin Wang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2022 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+<p>Developed by Yilong Zhang, Yujie Zhao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Brian Lang, Benjamin Wang, Nan Xiao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2022 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

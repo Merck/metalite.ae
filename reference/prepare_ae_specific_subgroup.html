@@ -76,34 +76,35 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>meta</dt>
-<dd><p>a meta data created by <code>metalite</code>.</p></dd>
+<dd><p>A metadata object created by metalite.</p></dd>
 
 
 <dt>population</dt>
-<dd><p>a character value of population term name.
+<dd><p>A character value of population term name.
 The term name is used as key to link information.</p></dd>
 
 
 <dt>observation</dt>
-<dd><p>a character value of observation term name.
+<dd><p>A character value of observation term name.
 The term name is used as key to link information.</p></dd>
 
 
 <dt>parameter</dt>
-<dd><p>a character value of parameter term name.
+<dd><p>A character value of parameter term name.
 The term name is used as key to link information.</p></dd>
 
 
 <dt>subgroup_var</dt>
-<dd><p>a character value of subgroup variable name in observation data saved in <code>meta$data_observation</code>.</p></dd>
+<dd><p>A character value of subgroup variable name in
+observation data saved in <code>meta$data_observation</code>.</p></dd>
 
 
 <dt>subgroup_header</dt>
-<dd><p>a integer value of column header for subgroup.</p></dd>
+<dd><p>An integer value of column header for subgroup.</p></dd>
 
 
 <dt>components</dt>
-<dd><p>a character vector of components name.</p></dd>
+<dd><p>A character vector of components name.</p></dd>
 
 
 <dt>display_total</dt>
@@ -114,11 +115,23 @@ The term name is used as key to link information.</p></dd>
 <dd><p>test</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>To be added.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># meta &lt;- meta_ae_example()</span></span></span>
-<span class="r-in"><span><span class="co"># prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data</span></span></span>
+<span class="r-in"><span><span class="co"># prepare_ae_specific_subgroup(</span></span></span>
+<span class="r-in"><span><span class="co">#   meta,</span></span></span>
+<span class="r-in"><span><span class="co">#   population = "apat",</span></span></span>
+<span class="r-in"><span><span class="co">#   observation = "wk12",</span></span></span>
+<span class="r-in"><span><span class="co">#   parameter = "rel",</span></span></span>
+<span class="r-in"><span><span class="co">#   subgroup_var = "RACE"</span></span></span>
+<span class="r-in"><span><span class="co"># )$data</span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -127,7 +140,7 @@ The term name is used as key to link information.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Yilong Zhang, Nan Xiao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Yujie Zhao, Brian Lang, Benjamin Wang. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2022 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Yilong Zhang, Yujie Zhao, Xuan Deng, Ruchitbhai Patel, Madhusudhan Ginnaram, Sarad Nepal, Brian Lang, Benjamin Wang, Nan Xiao. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2022 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
