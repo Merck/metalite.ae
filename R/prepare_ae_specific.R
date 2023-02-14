@@ -18,17 +18,22 @@
 
 #' Prepare datasets for AE specific analysis
 #'
-#' @param meta a meta data created by `metalite`.
-#' @param population a character value of population term name.
-#' The term name is used as key to link information.
-#' @param observation a character value of observation term name.
-#' The term name is used as key to link information.
-#' @param parameter a character value of parameter term name.
-#' The term name is used as key to link information.
-#' @param components a character vector of components name.
-#' @param reference_group an integer to indicate reference group. Default is 2 if there are 2 groups, otherwise default is 1.
+#' @param meta A metadata object created by metalite.
+#' @param population A character value of population term name.
+#'   The term name is used as key to link information.
+#' @param observation A character value of observation term name.
+#'   The term name is used as key to link information.
+#' @param parameter A character value of parameter term name.
+#'   The term name is used as key to link information.
+#' @param components A character vector of components name.
+#' @param reference_group An integer to indicate reference group.
+#'   Default is 2 if there are 2 groups, otherwise, the default is 1.
+#'
+#' @return To be added.
 #'
 #' @import metalite
+#'
+#' @export
 #'
 #' @examples
 #' meta <- meta_ae_example()
@@ -38,14 +43,12 @@
 #' prepare_ae_specific(meta, "apat", "wk12", "rel", components = NULL)$data
 #' prepare_ae_specific(meta, "apat", "wk12", "rel", components = "soc")$data
 #' prepare_ae_specific(meta, "apat", "wk12", "rel", components = "par")$data
-#' @export
 prepare_ae_specific <- function(meta,
                                 population,
                                 observation,
                                 parameter,
                                 components = c("soc", "par"),
                                 reference_group = NULL) {
-
   # Obtain variables
   pop_var <- collect_adam_mapping(meta, population)$var
   obs_var <- collect_adam_mapping(meta, observation)$var
@@ -93,12 +96,11 @@ prepare_ae_specific <- function(meta,
     obs <- rbind(obs, obs_total)
   }
 
-
   # Group information
   u_group <- levels(pop[[pop_group]])
   n_group <- length(u_group)
 
-  ## Define reference group
+  # Define reference group
   if (is.null(reference_group)) {
     reference_group <- ifelse(n_group - 1 == 2, 2, 1)
   }
@@ -118,31 +120,32 @@ prepare_ae_specific <- function(meta,
     "with no {tolower(term1)} adverse events {tolower(term2)}"
   )
   obs_n$name <- vapply(obs_n$name, glue::glue_data, .x = collect_adam_mapping(meta, parameter), FUN.VALUE = character(1))
-  obs_n$name <- gsub("^ *|(?<= ) | *$", "", obs_n$name, perl = TRUE) # remove duplicate space
+  # Remove duplicate space
+  obs_n$name <- gsub("^ *|(?<= ) | *$", "", obs_n$name, perl = TRUE)
 
-  obs_n$order <- 1e2 * 1:nrow(obs_n)
+  obs_n$order <- 1e2 * seq_len(nrow(obs_n))
 
   # Define SOC section
-  if ("soc" %in% components & nrow(obs) > 0) {
+  if ("soc" %in% components && nrow(obs) > 0) {
     soc_n <- n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]])
 
     soc_n[[par_soc]] <- soc_n$name
     soc_n[[par_var]] <- soc_n$name
-    soc_n$order <- 1e3 * 1:nrow(soc_n)
+    soc_n$order <- 1e3 * seq_len(nrow(soc_n))
     soc_n$name <- to_sentence(soc_n$name)
   } else {
     soc_n <- NULL
   }
 
   # Define AE term section
-  if ("par" %in% components & nrow(obs) > 0) {
+  if ("par" %in% components && nrow(obs) > 0) {
     u_soc <- unique(obs[order(obs[[par_soc]]), c(par_soc, par_var)])
 
     par_n <- n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]])
 
     par_n[[par_var]] <- par_n$name
     par_n <- merge(u_soc, par_n, all.y = TRUE)
-    par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + 1:nrow(par_n)
+    par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
     par_n$name <- to_sentence(par_n$name)
   } else {
     par_n <- NULL

@@ -7,17 +7,20 @@
 fmt_pct(x, digits = 1, pre = "(", post = ")")
 }
 \arguments{
-\item{x}{a numeric vector}
+\item{x}{A numeric vector.}
 
-\item{digits}{number of digits}
+\item{digits}{Number of digits.}
 
-\item{pre}{text before the number}
+\item{pre}{Text before the number.}
 
-\item{post}{text after the number}
+\item{post}{Text after the number.}
+}
+\value{
+To be added.
 }
 \description{
 Format percentage
 }
 \examples{
-metalite.ae:::fmt_pct(c(1, 1.52, 0.3, 100))
+fmt_pct(c(1, 1.52, 0.3, 100))
 }

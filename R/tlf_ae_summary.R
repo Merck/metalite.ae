@@ -20,7 +20,12 @@
 #'
 #' @inheritParams tlf_ae_specific
 #'
+#' @return To be added.
+#'
 #' @export
+#'
+#' @examples
+#' # To be added
 tlf_ae_summary <- function(outdata,
                            source,
                            col_rel_width = NULL,
@@ -63,7 +68,6 @@ tlf_ae_summary <- function(outdata,
   colheader <- colheader_n
 
   # Relative width
-
   if (is.null(col_rel_width)) {
     rel_width <- c(3, rep(1, 2 * n_group))
   } else {
@@ -82,7 +86,6 @@ tlf_ae_summary <- function(outdata,
   border_top <- c("", rep("single", n_col - 1))
   border_left <- c("single", rep(c("single", ""), n_group), rep("single", n_col - n_group * 2 - 1))
 
-
   # Using order number to customize row format
   text_justification <- c("l", rep("c", n_col - 1))
 
@@ -92,8 +95,7 @@ tlf_ae_summary <- function(outdata,
   text_indent <- matrix(0, nrow = n_row, ncol = n_col)
   text_indent[, 1] <- ifelse(outdata$order == 1, 0, 100)
 
-  # Using r2rtf
-
+  # Use r2rtf
   outdata$rtf <- tbl |>
     r2rtf::rtf_page(orientation = orientation) |>
     r2rtf::rtf_title(title) |>
@@ -133,6 +135,6 @@ tlf_ae_summary <- function(outdata,
       )
   }
 
-  # prepare output
+  # Prepare output
   rtf_output(outdata, path_outdata, path_outtable)
 }

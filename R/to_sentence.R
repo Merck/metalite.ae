@@ -16,12 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' To Sentence Style
+#' Convert to sentence case
 #'
-#' @param x a character vector
+#' @param x A character vector.
+#'
+#' @noRd
 #'
 #' @examples
-#' metalite.ae:::to_sentence("this is A Example")
+#' metalite.ae:::to_sentence("this is An Example")
 to_sentence <- function(x) {
   gsub("(^[[:alpha:]])", "\\U\\1", tolower(x), perl = TRUE)
 }

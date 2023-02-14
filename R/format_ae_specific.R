@@ -19,22 +19,30 @@
 #' Format AE specific analysis
 #'
 #' @inheritParams extend_ae_specific_inference
-#' @param digits_prop a numeric value of number of digits for proportion value.
-#' @param digits_ci a numeric value of number of digits for confidence interval
-#' @param digits_p a numeric value of number of digits for p-value .
-#' @param digits_dur a numeric value of number of digits for average duration of AE
-#' @param digits_events a numeric value of number of digits for average of number of AE per subjects.
-#' @param display a character vector of measurement to be displayed.
-#'  - `n`: number of subjects with AE.
-#'  - `prop`: proportion of subjects with AE.
-#'  - `total`: total columns
-#'  - `diff`: risk difference
-#'  - `diff_ci`: 95% confidence interval of risk difference using M&N method
-#'  - `diff_p`: p-value of risk difference using M&N method
-#'  - `dur`: average of AE duration
-#'  - `events`: average number of AE per subject
-#' @param mock a boolean value to display mock table
+#' @param digits_prop A numeric value of number of digits for proportion value.
+#' @param digits_ci A numeric value of number of digits for confidence interval.
+#' @param digits_p A numeric value of number of digits for p-value.
+#' @param digits_dur A numeric value of number of digits for average
+#'   duration of AE.
+#' @param digits_events A numeric value of number of digits for average of
+#'   number of AE per subjects.
+#' @param display A character vector of measurement to be displayed:
+#'   - `n`: Number of subjects with AE.
+#'   - `prop`: Proportion of subjects with AE.
+#'   - `total`: Total columns.
+#'   - `diff`: Risk difference.
+#'   - `diff_ci`: 95% confidence interval of risk difference using M&N method.
+#'   - `diff_p`: p-value of risk difference using M&N method.
+#'   - `dur`: Average of AE duration.
+#'   - `events`: Average number of AE per subject.
+#' @param mock A boolean value to display mock table.
+#'
+#' @return To be added.
+#'
 #' @export
+#'
+#' @examples
+#' # To be added
 format_ae_specific <- function(outdata,
                                display = c("n", "prop", "total"),
                                digits_prop = 1,
@@ -45,8 +53,8 @@ format_ae_specific <- function(outdata,
                                mock = FALSE) {
   display <- tolower(display)
   display <- match.arg(display,
-                       c("n", "prop", "total", "diff", "diff_ci", "diff_p", "dur", "events"),
-                       several.ok = TRUE
+    c("n", "prop", "total", "diff", "diff_ci", "diff_p", "dur", "events"),
+    several.ok = TRUE
   )
 
   # Add "n"
@@ -69,7 +77,7 @@ format_ae_specific <- function(outdata,
 
   # Define total column
   display_total <- "total" %in% display
-  index_total <- seq(ncol(outdata$n) - (! display_total) )
+  index_total <- seq(ncol(outdata$n) - (!display_total))
 
   # Drop total column from outdata if it's not requested.
   outdata$group <- outdata$group[index_total]
@@ -93,14 +101,13 @@ format_ae_specific <- function(outdata,
   }
 
   if ("diff_ci" %in% display) {
-
-    if(is.null(outdata$ci_lower)){
+    if (is.null(outdata$ci_lower)) {
       stop("Please use extend_ae_specific_inference() to get the calculation of ci!")
     }
 
     ci <- outdata$ci_lower * NA
     names(ci) <- gsub("lower", "ci", names(ci))
-    for (i in 1:ncol(outdata$ci_lower)) {
+    for (i in seq_len(ncol(outdata$ci_lower))) {
       lower <- outdata$ci_lower[[i]]
       upper <- outdata$ci_upper[[i]]
       ci[, i] <- fmt_ci(lower, upper, digits = digits_ci)
@@ -109,8 +116,7 @@ format_ae_specific <- function(outdata,
   }
 
   if ("diff_p" %in% display) {
-
-    if(is.null(outdata$p)){
+    if (is.null(outdata$p)) {
       stop("Please use extend_ae_specific_inference() to get the calculation of p-values!")
     }
 
@@ -119,8 +125,7 @@ format_ae_specific <- function(outdata,
   }
 
   if ("dur" %in% display) {
-
-    if(is.null(outdata$dur)){
+    if (is.null(outdata$dur)) {
       stop("Please use extend_ae_specific_duration() to get the calculation of duration!")
     }
 
@@ -134,8 +139,7 @@ format_ae_specific <- function(outdata,
   }
 
   if ("events" %in% display) {
-
-    if(is.null(outdata$events)){
+    if (is.null(outdata$events)) {
       stop("Please use extend_ae_specific_events() to get the calculation of events!")
     }
 
@@ -157,7 +161,8 @@ format_ae_specific <- function(outdata,
   n_group <- ncol(tbl[["n"]])
   within_tbl <- do.call(cbind, within_tbl)
   within_tbl <- within_tbl[, as.vector(matrix(1:(n_group * n_within),
-                                              ncol = n_group, byrow = TRUE))]
+    ncol = n_group, byrow = TRUE
+  ))]
 
   # Arrange Between Group information
   between_var <- names(tbl)[names(tbl) %in% c("diff", "diff_ci", "diff_p")]
@@ -168,7 +173,8 @@ format_ae_specific <- function(outdata,
   names(between_tbl) <- NULL
   between_tbl <- do.call(cbind, between_tbl)
   between_tbl <- between_tbl[, as.vector(matrix(1:(n_group_btw * n_between),
-                                                    ncol = n_group_btw, byrow = TRUE))]
+    ncol = n_group_btw, byrow = TRUE
+  ))]
 
   # Create Results
   if (is.null(between_tbl)) {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fmt.R
 \name{fmt_est}
 \alias{fmt_est}
-\title{Format Model Estimator}
+\title{Format model estimator}
 \usage{
 fmt_est(
   mean,
@@ -12,27 +12,27 @@ fmt_est(
 )
 }
 \arguments{
-\item{mean}{a numeric vector of mean value}
+\item{mean}{A numeric vector of mean value.}
 
-\item{sd}{a numeric vector of sd value}
+\item{sd}{A numeric vector of sd value.}
 
-\item{digits}{digits of each column, i.e. format as x.x (x.xx)}
+\item{digits}{Digits of each column, i.e., format as x.x (x.xx).}
 
-\item{width}{width of each column}
+\item{width}{Width of each column.}
 }
 \value{
-the same data frame \code{tbl} with additional attributes for page features
+The same data frame with additional attributes for page features.
 }
 \description{
-The Format Model Estimator function format mean sd/se to a format as
-x.x or x.x (x.xx) if both mean and sd/se are defined.
+Formats mean sd/se to a format as x.x or x.x (x.xx) if both
+mean and sd/sd are defined.
 }
 \details{
-The function assumes 1 column or 2 columns.
+The function assumes 1 column or 2 columns:
 \itemize{
-\item If there is only 1 column, only represent mean
-\item If there are 2 columns, represent mean (sd) or mean(se)
-Decimals will understand the number will be formatted as x.x (x.xx)
+\item If there is only 1 column, only represent mean.
+\item If there are 2 columns, represent mean (sd) or mean(se).
+Decimals will understand the number will be formatted as x.x (x.xx).
 }
 }
 \section{Specification}{
@@ -47,10 +47,13 @@ Decimals will understand the number will be formatted as x.x (x.xx)
 }
 
 \examples{
-library(dplyr) # required to run examples
-data(iris)
-x <- iris |>
-  summarise(mean = mean(Petal.Length), n = n(), sd = sd(Petal.Length))
-fmt_est(x$mean, x$sd)
+library(dplyr)
 
+x <- datasets::iris |>
+  summarise(
+    mean = mean(Petal.Length),
+    n = n(),
+    sd = sd(Petal.Length)
+  )
+fmt_est(x$mean, x$sd)
 }

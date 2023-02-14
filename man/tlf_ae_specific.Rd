@@ -2,7 +2,7 @@
 % Please edit documentation in R/tlf_ae_specific.R
 \name{tlf_ae_specific}
 \alias{tlf_ae_specific}
-\title{Specific Adverse Events Table}
+\title{Specific adverse events table}
 \usage{
 tlf_ae_specific(
   outdata,
@@ -41,12 +41,13 @@ displayed e.g. c(9,20,40).}
 
 \item{path_outtable}{a character string of the outtable path}
 }
+\value{
+To be added.
+}
 \description{
-Specific Adverse Events Table
+Specific adverse events table
 }
 \examples{
-library(r2rtf)
-library(metalite)
 meta <- meta_ae_example()
 
 meta |>

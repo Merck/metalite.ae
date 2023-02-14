@@ -7,23 +7,31 @@
 prepare_ae_summary(meta, population, observation, parameter, ...)
 }
 \arguments{
-\item{meta}{a meta data created by \code{metalite}.}
+\item{meta}{A metadata object created by metalite.}
 
-\item{population}{a character value of population term name.
+\item{population}{A character value of population term name.
 The term name is used as key to link information.}
 
-\item{observation}{a character value of observation term name.
+\item{observation}{A character value of observation term name.
 The term name is used as key to link information.}
 
-\item{parameter}{a character value of parameter term name.
+\item{parameter}{A character value of parameter term name.
 The term name is used as key to link information.}
 
-\item{...}{additional parameters transfer to \code{prepare_ae_specific}}
+\item{...}{Additional arguments passed to \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+}
+\value{
+To be added.
 }
 \description{
 Prepare datasets for AE specific analysis
 }
 \examples{
 meta <- meta_ae_example()
-prepare_ae_summary(meta, "apat", "wk12", "any;rel;ser")
+prepare_ae_summary(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
 }

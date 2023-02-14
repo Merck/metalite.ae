@@ -7,10 +7,16 @@
 extend_ae_specific_inference(outdata, ci = 0.95)
 }
 \arguments{
-\item{outdata}{a \code{outdata} object created by \code{prepare_ae_specific}}
+\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{ci}{a numeric value for the percentile of confidence interval.}
+\item{ci}{A numeric value for the percentile of confidence interval.}
+}
+\value{
+To be added.
 }
 \description{
 Add inference information for AE specific analysis
+}
+\examples{
+# To be added
 }

@@ -19,13 +19,20 @@
 #' Prepare datasets for AE specific analysis
 #'
 #' @inheritParams prepare_ae_specific
-#' @param ... additional parameters transfer to `prepare_ae_specific`
+#' @param ... Additional arguments passed to [prepare_ae_specific()].
 #'
+#' @return To be added.
+#'
+#' @export
 #'
 #' @examples
 #' meta <- meta_ae_example()
-#' prepare_ae_summary(meta, "apat", "wk12", "any;rel;ser")
-#' @export
+#' prepare_ae_summary(
+#'   meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "any;rel;ser"
+#' )
 prepare_ae_summary <- function(meta,
                                population,
                                observation,
@@ -59,39 +66,38 @@ prepare_ae_summary <- function(meta,
   pop_name <- res[[1]]$name[1]
   name <- unlist(lapply(parameters, function(x) collect_adam_mapping(meta, x)$summ_row))
 
-#Extract the data for 'with no ae' row only when parameter 'any' is provided.
-if("any" %in% parameters){
+  # Extract the data for 'with no ae' row only when parameter 'any' is provided.
+  if ("any" %in% parameters) {
+    names(res) <- parameters
 
-  names(res) <- parameters
+    # Extract the values for 'with no ae' row.
+    noevnt_num <- res$any$n[3, ]
+    noevnt_prop <- res$any$prop[3, ]
+    noevnt_diff <- res$any$diff[3, ]
+    noevnt_ci <- res$any$ci[3, ]
+    noevnt_p <- res$any$p[3, ]
+    noevnt_name <- res$any$name[3]
 
-  #extract the values for 'with no ae' row.
-  noevnt_num  <- res$any$n[3,]
-  noevnt_prop <- res$any$prop[3,]
-  noevnt_diff <- res$any$diff[3,]
-  noevnt_ci   <- res$any$ci[3,]
-  noevnt_p    <- res$any$p[3,]
-  noevnt_name <- res$any$name[3]
+    # Combine records with original other parameters and sort df
+    rbind1 <- function(df1, df2) {
+      df1 <- rbind(df1, df2)
+      df1 <- df1[order(as.numeric(row.names(df1))), ]
+      df1
+    }
 
-  #combine records with original other parameters and sort df
-  rbind1 <- function(df1, df2){
-    df1 <- rbind(df1, df2)
-    df1 <- df1[order(as.numeric(row.names(df1))),]
-    df1
+    tbl_num <- rbind1(tbl_num, noevnt_num)
+    tbl_prop <- rbind1(tbl_prop, noevnt_prop)
+    tbl_diff <- rbind(tbl_diff, noevnt_diff)
+    tbl_ci <- rbind(tbl_ci, noevnt_ci)
+    tbl_p <- rbind(tbl_p, noevnt_p)
+    name <- append(name, noevnt_name, 1)
+
+    names(res) <- NULL
   }
-
-  tbl_num  <- rbind1 (tbl_num, noevnt_num)
-  tbl_prop <- rbind1(tbl_prop, noevnt_prop)
-  tbl_diff <- rbind(tbl_diff, noevnt_diff)
-  tbl_ci   <- rbind(tbl_ci, noevnt_ci)
-  tbl_p    <- rbind(tbl_p, noevnt_p)
-  name     <- append(name, noevnt_name, 1)
-
-  names(res) <- NULL
-}
 
   metalite::outdata(meta, population, observation, parameter,
     n = rbind(n_pop, tbl_num),
-    order = c(1, 1:nrow(tbl_num) * 100),
+    order = c(1, seq_len(nrow(tbl_num)) * 100),
     group = res[[1]]$group,
     reference_group = res[[1]]$reference_group,
     prop = rbind(pop_prop, tbl_prop),
@@ -104,5 +110,11 @@ if("any" %in% parameters){
 #' Format AE summary analysis
 #'
 #' @inheritParams format_ae_specific
+#'
+#' @return To be added.
+#'
 #' @export
+#'
+#' @examples
+#' # To be added
 format_ae_summary <- format_ae_specific

@@ -18,20 +18,24 @@
 
 #' Count number of unique subjects
 #'
-#' @param id a character vector of subject id
-#' @param group a factor vector of group name
-#' @param par a character vector of parameter name
-#' @param use_na a character value for whether to include NA values in the table. Refer `useNA` argument in `table` function for more details.
+#' @param id A character vector of subject ID.
+#' @param group A factor vector of group name.
+#' @param par A character vector of parameter name.
+#' @param use_na A character value for whether to include `NA` values
+#'   in the table. See the `useNA` argument in [base::table()] for details.
+#'
+#' @noRd
 #'
 #' @examples
 #' library(r2rtf)
+#'
 #' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
 #' r2rtf_adae$SEX[1:5] <- NA
+#'
 #' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
 #' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX)
 #' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX, use_na = "always")
 n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")) {
-
   use_na <- match.arg(use_na)
 
   if ("factor" %in% class(group)) {
@@ -68,10 +72,15 @@ n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")
 #'
 #' @importFrom dplyr count group_by summarise select starts_with n
 #' @importFrom tidyr pivot_wider
+#' @importFrom stats sd
+#'
+#' @noRd
 #'
 #' @examples
 #' # library(r2rtf)
+#' #
 #' # r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
+#' #
 #' # metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
 #' # metalite.ae:::avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 avg_event <- function(id, group, par = NULL) {
@@ -115,9 +124,12 @@ avg_event <- function(id, group, par = NULL) {
 #' Average number of events
 #'
 #' @inheritParams n_subject
-#' @param dur a numeric vector of AE duration
+#' @param dur A numeric vector of AE duration.
 #'
 #' @importFrom dplyr n
+#' @importFrom stats sd
+#'
+#' @noRd
 avg_duration <- function(id, group, dur, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))

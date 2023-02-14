@@ -7,8 +7,14 @@
 extend_ae_specific_events(outdata)
 }
 \arguments{
-\item{outdata}{a \code{outdata} object created by \code{prepare_ae_specific}}
+\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}}
+}
+\value{
+To be added.
 }
 \description{
 Add average number of events information for AE specific analysis
+}
+\examples{
+# To be added
 }

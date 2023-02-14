@@ -2,19 +2,25 @@
 % Please edit documentation in R/fmt.R
 \name{fmt_ci}
 \alias{fmt_ci}
-\title{Format Confidence Interval}
+\title{Format confidence interval}
 \usage{
 fmt_ci(lower, upper, digits = 2, width = 3 + digits)
 }
 \arguments{
-\item{lower}{a numeric value of lower value of CI}
+\item{lower}{A numeric value of lower value of CI.}
 
-\item{upper}{a numeric value of lower value of CI}
+\item{upper}{A numeric value of lower value of CI.}
 
-\item{digits}{digits of each column, i.e. format as (x.x, x.x)}
+\item{digits}{Digits of each column, i.e., format as (x.x, x.x).}
 
-\item{width}{width of each column}
+\item{width}{Width of each column.}
+}
+\value{
+To be added.
 }
 \description{
-Format Confidence Interval
+Format confidence interval
+}
+\examples{
+# To be added
 }

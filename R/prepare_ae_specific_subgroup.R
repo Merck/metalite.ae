@@ -19,14 +19,25 @@
 #' Prepare datasets for AE specific analysis
 #'
 #' @inheritParams prepare_ae_specific
-#' @param subgroup_var a character value of subgroup variable name in observation data saved in `meta$data_observation`.
-#' @param subgroup_header a integer value of column header for subgroup.
+#' @param subgroup_var A character value of subgroup variable name in
+#'   observation data saved in `meta$data_observation`.
+#' @param subgroup_header An integer value of column header for subgroup.
 #' @param display_total test
 #' @param display_subgroup_total test
+#'
+#' @return To be added.
+#'
+#' @export
+#'
 #' @examples
 #' # meta <- meta_ae_example()
-#' # prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
-#' @export
+#' # prepare_ae_specific_subgroup(
+#' #   meta,
+#' #   population = "apat",
+#' #   observation = "wk12",
+#' #   parameter = "rel",
+#' #   subgroup_var = "RACE"
+#' # )$data
 prepare_ae_specific_subgroup <- function(meta,
                                          population,
                                          observation,
@@ -58,8 +69,6 @@ prepare_ae_specific_subgroup <- function(meta,
   par_var <- collect_adam_mapping(meta, parameter)$var
   par_soc <- collect_adam_mapping(meta, parameter)$soc
 
-
-
   # Convert variable to factor
   meta$data_observation[[par_var]] <- factor(as.character(meta$data_observation[[par_var]]),
     levels = sort(unique(meta$data_observation[[par_var]]))
@@ -68,7 +77,6 @@ prepare_ae_specific_subgroup <- function(meta,
   meta$data_observation[[par_soc]] <- factor(as.character(meta$data_observation[[par_soc]]),
     levels = sort(unique(meta$data_observation[[par_soc]]))
   )
-
 
   meta_subgroup <- metalite::meta_split(meta, subgroup_var)
 
@@ -88,14 +96,14 @@ prepare_ae_specific_subgroup <- function(meta,
     display = display
   )
 
-  # update variable name
-  for (i in 1:length(outdata_subgroup)) {
+  # Update variable name
+  for (i in seq_along(outdata_subgroup)) {
     names(outdata_subgroup[[i]]$data)[-1] <- paste0(names(outdata_subgroup[[i]]$data)[-1], "_", letters[i])
     names(outdata_subgroup[[i]]$n) <- paste0(names(outdata_subgroup[[i]]$n), "_", letters[i])
     names(outdata_subgroup[[i]]$prop) <- paste0(names(outdata_subgroup[[i]]$prop), "_", letters[i])
   }
 
-  # combine data
+  # Combine data
   data <- outdata_subgroup[[1]]$data
   n <- outdata_subgroup[[1]]$n
   prop <- outdata_subgroup[[1]]$prop
@@ -106,7 +114,6 @@ prepare_ae_specific_subgroup <- function(meta,
     prop <- data.frame(prop, outdata_subgroup[[i]]$prop)
   }
 
-
   if (subgroup_header == 2) {
     x <- names(data)
     x[1] <- "a"
@@ -115,7 +122,6 @@ prepare_ae_specific_subgroup <- function(meta,
     n <- n[, order(names(n))]
     prop <- prop[, order(names(prop))]
   }
-
 
   outdata <- list(
     data = data,

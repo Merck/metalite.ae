@@ -2,7 +2,8 @@
 % Please edit documentation in R/rate_compare_sum.R
 \name{rate_compare_sum}
 \alias{rate_compare_sum}
-\title{Unstratified and Stratified  Miettinen and Nurminen Test in Aggregate Data level}
+\title{Unstratified and stratified Miettinen and Nurminen test in
+aggregate data level}
 \usage{
 rate_compare_sum(
   n0,
@@ -19,37 +20,50 @@ rate_compare_sum(
 )
 }
 \arguments{
-\item{n0, n1}{the sample size in the control group and experimental group, separately. The length should be the same as the length for \code{x0/x1} and \code{strata}.}
+\item{n0, n1}{The sample size in the control group and experimental group,
+separately. The length should be the same as the length for
+\code{x0/x1} and \code{strata}.}
 
-\item{x0, x1}{the number of events in the control group and experimental group, separately. The length should be the same as the length for \code{n0/n1} and \code{strata}.}
+\item{x0, x1}{The number of events in the control group and
+experimental group, separately. The length should be the same
+as the length for \code{n0/n1} and \code{strata}.}
 
-\item{strata}{a vector of stratum indication to be used in the analysis. If \code{NULL} or the length of unique values of \code{strata} equals to 1, it is unstratified MN analysis. Otherwise,
-it is stratified MN analysis. The length of \code{strata} should be the same as the length for \code{x0/x1} and \code{n0/n1}.}
+\item{strata}{A vector of stratum indication to be used in the analysis.
+If \code{NULL} or the length of unique values of \code{strata} equals to 1,
+it is unstratified MN analysis. Otherwise, it is stratified MN analysis.
+The length of \code{strata} should be the same as the length for
+\code{x0/x1} and \code{n0/n1}.}
 
-\item{delta}{a numeric value to set the difference of two group under the null.}
+\item{delta}{A numeric value to set the difference of two groups
+under the null.}
 
-\item{weight}{weighting schema used in stratified MN method. Default is "ss".
+\item{weight}{Weighting schema used in stratified MN method.
+Default is \code{"ss"}:
 \itemize{
-\item \code{"equal"} for equal weighting,
-\item \code{"ss"} for sample size weighting,
-\item \code{"cmh"} for Cochran Mantel-Haenszel's weights.
+\item \code{"equal"} for equal weighting.
+\item \code{"ss"} for sample size weighting.
+\item \code{"cmh"} for Cochran-Mantel-Haenszel's weights.
 }}
 
-\item{test}{a character string specifying the side of p-value,
+\item{test}{A character string specifying the side of p-value,
 must be one of \code{"one.sided"}, or \code{"two.sided"}.}
 
-\item{bisection}{the number of sections in the interval used in Bisection Method. Default is 100.}
+\item{bisection}{The number of sections in the interval used in
+bisection method. Default is 100.}
 
-\item{eps}{the level of precision. Default is eps=1e-06.}
+\item{eps}{The level of precision. Default is 1e-06.}
 
-\item{alpha}{pre-defined alpha level for two-sided confidence interval.}
+\item{alpha}{Pre-defined alpha level for two-sided confidence interval.}
+}
+\value{
+To be added.
 }
 \description{
-Unstratified and Stratified  Miettinen and Nurminen Test.
+Unstratified and stratified Miettinen and Nurminen test in
+aggregate data level
 }
 \examples{
-
-## To conduct the stratified MN analysis with sample size weights:
+# Conduct the stratified MN analysis with sample size weights
 treatment <- c(rep("pbo", 100), rep("exp", 100))
 response <- c(rep(0, 80), rep(1, 20), rep(0, 40), rep(1, 60))
 stratum <- c(rep(1:4, 12), 1, 3, 3, 1, rep(1:4, 12), rep(1:4, 25))
@@ -68,5 +82,6 @@ rate_compare_sum(
 )
 }
 \references{
-Miettinen, O. and Nurminen, M, \emph{Comparative Analysis of Two Rates}. Statistics in Medicine, 4:213-226, 1985.
+Miettinen, O. and Nurminen, M, Comparative Analysis of Two Rates.
+\emph{Statistics in Medicine}, 4(2):213--226, 1985.
 }

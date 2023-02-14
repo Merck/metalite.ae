@@ -18,21 +18,25 @@
 
 #' Add inference information for AE specific analysis
 #'
-#' @param outdata a `outdata` object created by `prepare_ae_specific`
-#' @param ci a numeric value for the percentile of confidence interval.
+#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#' @param ci A numeric value for the percentile of confidence interval.
+#'
+#' @return To be added.
 #'
 #' @export
-extend_ae_specific_inference <- function(outdata,
-                                         ci = 0.95) {
+#'
+#' @examples
+#' # To be added
+extend_ae_specific_inference <- function(outdata, ci = 0.95) {
   res <- outdata
 
-  if (!(is.numeric(ci) && length(ci) == 1 && (0 <= ci & ci <= 1))){
-    stop("ci is", ci,". Please choose a number 0 >= ci >= 1.")
+  if (!(is.numeric(ci) && length(ci) == 1 && (0 <= ci && ci <= 1))) {
+    stop("ci is", ci, ". Please choose a number 0 >= ci >= 1.")
   }
 
   n_row <- nrow(res$n)
   ref <- res$reference_group
-  grp <- (1:length(res$group))[-c(ref, length(res$group))]
+  grp <- (seq_along(res$group))[-c(ref, length(res$group))]
 
   ci_lower <- list()
   ci_upper <- list()
@@ -40,7 +44,7 @@ extend_ae_specific_inference <- function(outdata,
 
   bind_rows2 <- utils::getFromNamespace("bind_rows2", ns = "metalite")
 
-  for (iter in 1:length(grp)) {
+  for (iter in seq_along(grp)) {
     index <- grp[iter]
     x0 <- res$n[[ref]]
     x1 <- res$n[[index]]
@@ -49,7 +53,7 @@ extend_ae_specific_inference <- function(outdata,
 
     # Calculate confidence interval
     tmp <- list()
-    for (i in 1:length(x0)) {
+    for (i in seq_along(x0)) {
       tmp[[i]] <- rate_compare_sum(
         x0 = x0[i],
         x1 = x1[i],
@@ -82,26 +86,28 @@ extend_ae_specific_inference <- function(outdata,
 
 #' Add average duration information for AE specific analysis
 #'
-#' @param outdata a `outdata` object created by `prepare_ae_specific`
-#' @param duration_var a character value of variable name for AE duration.
-#' @param duration_unit a character value of AE duration unit.
+#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#' @param duration_var A character value of variable name for AE duration.
+#' @param duration_unit A character value of AE duration unit.
+#'
+#' @return To be added.
 #'
 #' @export
+#'
+#' @examples
+#' # To be added
 extend_ae_specific_duration <- function(outdata,
                                         duration_var,
                                         duration_unit = "Day") {
-
   meta <- outdata$meta
 
-  if (!((length(duration_var) == 1) && is.character(duration_var))){
+  if (!((length(duration_var) == 1) && is.character(duration_var))) {
     stop("duration_var is ", duration_var, ". duration_var must be a string")
   }
 
-  if (!(duration_var %in% names(outdata$meta$data_observation))){
+  if (!(duration_var %in% names(outdata$meta$data_observation))) {
     stop(duration_var, "does not exist in outdata")
   }
-
-
 
   population <- outdata$population
   observation <- outdata$observation
@@ -186,10 +192,10 @@ extend_ae_specific_duration <- function(outdata,
   index <- c(index, blank_order)
 
   avg <- rbind(avg, blank_row)[order(index), ]
-  names(avg) <- paste0("dur_", 1:ncol(avg))
+  names(avg) <- paste0("dur_", seq_len(ncol(avg)))
 
   se <- rbind(se, blank_row)[order(index), ]
-  names(se) <- paste0("dur_se", 1:ncol(se))
+  names(se) <- paste0("dur_se", seq_len(ncol(se)))
 
   outdata$dur <- avg
   outdata$dur_se <- se
@@ -199,11 +205,15 @@ extend_ae_specific_duration <- function(outdata,
 
 #' Add average number of events information for AE specific analysis
 #'
-#' @param outdata a `outdata` object created by `prepare_ae_specific`
+#' @param outdata A `outdata` object created by [prepare_ae_specific()]
+#'
+#' @return To be added.
 #'
 #' @export
+#'
+#' @examples
+#' # To be added
 extend_ae_specific_events <- function(outdata) {
-
   meta <- outdata$meta
 
   population <- outdata$population
@@ -288,10 +298,10 @@ extend_ae_specific_events <- function(outdata) {
   index <- c(index, blank_order)
 
   avg <- rbind(avg, blank_row)[order(index), ]
-  names(avg) <- paste0("events_", 1:ncol(avg))
+  names(avg) <- paste0("events_", seq_len(ncol(avg)))
 
   se <- rbind(se, blank_row)[order(index), ]
-  names(se) <- paste0("events_se", 1:ncol(se))
+  names(se) <- paste0("events_se", seq_len(ncol(se)))
 
   outdata$events <- avg
   outdata$events_se <- se

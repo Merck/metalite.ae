@@ -19,9 +19,14 @@
 #' Create an example `meta_adam` object
 #'
 #' This function is only for illustration purpose.
-#' r2rtf and magrittr are required.
+#' r2rtf is required.
+#'
+#' @return To be added.
 #'
 #' @export
+#'
+#' @examples
+#' # To be added
 meta_ae_example <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
@@ -35,8 +40,6 @@ meta_ae_example <- function() {
     levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
     labels = c("Placebo", "Low Dose", "High Dose")
   )
-
-
 
   plan <- plan(
     analysis = "ae_summary", population = "apat",
@@ -67,7 +70,7 @@ meta_ae_example <- function() {
     define_observation(
       name = "wk24",
       group = "TRTA",
-      subset = quote(AOCC01FL == "Y"), # just for demo, another flag shall be used.
+      subset = quote(AOCC01FL == "Y"), # Just for demo, another flag should be used
       label = "Weeks 0 to 24"
     ) |>
     define_parameter(
@@ -90,32 +93,36 @@ meta_ae_example <- function() {
     meta_build()
 }
 
-
 #' Create an example `meta_adam` object for AE listing
 #'
 #' This function is only for illustration purpose.
-#' r2rtf and magrittr are required.
+#' r2rtf is required.
+#'
+#' @return To be added.
 #'
 #' @export
+#'
+#' @examples
+#' # To be added
 meta_ae_listing_example <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
   adsl$TRTA <- factor(adsl$TRTA,
-                      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-                      labels = c("Placebo", "Low Dose", "High Dose")
+    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+    labels = c("Placebo", "Low Dose", "High Dose")
   )
 
   adae <- r2rtf::r2rtf_adae
   adae$TRTA <- factor(adae$TRTA,
-                      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-                      labels = c("Placebo", "Low Dose", "High Dose")
+    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+    labels = c("Placebo", "Low Dose", "High Dose")
   )
 
   adae$subline <- paste0("Age=", adae$AGE, ", ID=", adae$USUBJID, ", Gender=", adae$SEX)
 
   plan <- plan(
     analysis = "ae_listing", population = "apat",
-    observation = "wk12", parameter = c("any",  "rel", "ser")
+    observation = "wk12", parameter = c("any", "rel", "ser")
   )
 
   meta_adam(

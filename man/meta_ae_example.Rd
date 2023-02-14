@@ -6,7 +6,13 @@
 \usage{
 meta_ae_example()
 }
+\value{
+To be added.
+}
 \description{
 This function is only for illustration purpose.
-r2rtf and magrittr are required.
+r2rtf is required.
+}
+\examples{
+# To be added
 }

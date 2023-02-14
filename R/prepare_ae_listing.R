@@ -27,13 +27,15 @@
 #' @param parameter a character value of parameter term name.
 #' The term name is used as key to link information.
 #'
+#' @return To be added.
+#'
 #' @import metalite
+#'
+#' @export
 #'
 #' @examples
 #' meta <- meta_ae_listing_example()
-#' lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") , head, 10)
-#' @export
-
+#' lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"), head, 10)
 prepare_ae_listing <- function(meta,
                                analysis,
                                population,
@@ -49,20 +51,20 @@ prepare_ae_listing <- function(meta,
   var_names <- c(var_name, subline, subline_by, group_by, page_by)
 
   res <- collect_observation_record(meta, population, observation, parameter,
-                                    var = var_names)
+    var = var_names
+  )
 
   res <- res[names(res) %in% var_names]
 
-  # Sort res dataframe by order of var_names
-  res  <- res[,unique(var_names)]
+  # Sort res data frame by order of var_names
+  res <- res[, unique(var_names)]
 
   # Extract label from data frame as column name of listing
   col_name <- get_label(res)
 
-
   # Return value
   outdata(meta, population, observation, parameter,
-          n = NULL,order=NULL, group = NULL, reference_group=NULL,
-          col_name = col_name, tbl = res
+    n = NULL, order = NULL, group = NULL, reference_group = NULL,
+    col_name = col_name, tbl = res
   )
 }

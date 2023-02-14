@@ -7,12 +7,18 @@
 extend_ae_specific_duration(outdata, duration_var, duration_unit = "Day")
 }
 \arguments{
-\item{outdata}{a \code{outdata} object created by \code{prepare_ae_specific}}
+\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{duration_var}{a character value of variable name for AE duration.}
+\item{duration_var}{A character value of variable name for AE duration.}
 
-\item{duration_unit}{a character value of AE duration unit.}
+\item{duration_unit}{A character value of AE duration unit.}
+}
+\value{
+To be added.
 }
 \description{
 Add average duration information for AE specific analysis
+}
+\examples{
+# To be added
 }

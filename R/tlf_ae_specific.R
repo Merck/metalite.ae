@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Specific Adverse Events Table
+#' Specific adverse events table
 #'
 #' @param outdata a outdata list created from `prepare_ae_specific`
 #' @param medra_version a character value of the MedDRA Version for this dataset
@@ -28,11 +28,11 @@
 #' @param path_outdata a character string of the outdata path
 #' @param path_outtable a character string of the outtable path
 #'
+#' @return To be added.
+#'
 #' @export
 #'
 #' @examples
-#' library(r2rtf)
-#' library(metalite)
 #' meta <- meta_ae_example()
 #'
 #' meta |>
@@ -80,7 +80,7 @@ tlf_ae_specific <- function(outdata,
   n_row <- nrow(tbl)
   n_col <- ncol(tbl)
 
-  if (!is.null(col_rel_width) & !n_col == length(col_rel_width)) {
+  if (!is.null(col_rel_width) && !(n_col == length(col_rel_width))) {
     stop(
       "col_rel_width must have the same length (has ",
       length(col_rel_width),
@@ -104,8 +104,7 @@ tlf_ae_specific <- function(outdata,
   )
   names(footnotes) <- NULL
 
-  # within (group statistics)
-
+  # Within (group statistics)
   col_tbl_within <- strsplit(names(tbl), "_") |>
     unlist() |>
     (\(list) list[list %in% c("n", "prop", "dur", "events")])() |>
@@ -151,8 +150,7 @@ tlf_ae_specific <- function(outdata,
 
   colborder_within <- rep(colborder_within, n_group)
 
-  # between (comparison statistics)
-
+  # Between (comparison statistics)
   col_tbl_between <- strsplit(names(tbl), "_") |>
     unlist() |>
     (\(list) list[list %in% c("diff", "ci", "p")])() |>
@@ -205,14 +203,12 @@ tlf_ae_specific <- function(outdata,
   }
 
   # Column headers
-
   colheader <- c(
     paste0(" | ", paste0(c(colhead_1_within, colhead_1_between), collapse = " | ")),
     paste0(" | ", paste0(c(colhead_2_within, colhead_2_between), collapse = " | "))
   )
 
   # Relative width
-
   if (is.null(col_rel_width)) {
     rwidth_2 <- c(3, rwidth_2_within, rwidth_2_between)
     rwidth_1 <- c(3, rwidth_1_within, rwidth_1_between)
@@ -243,12 +239,10 @@ tlf_ae_specific <- function(outdata,
   if (sum(rwidth_1) != sum(rwidth_2)) stop("width calculation broke, contact developer")
 
   # Column border
-
   border_top <- c("", rep("single", n_col - 1))
   border_left <- c("single", colborder_within, colborder_between)
 
-  # Using order number to customize row format
-
+  # Use order number to customize row format
   text_justification <- c("l", rep("c", n_col - 1))
 
   if (length(outdata$components) == 2) {
@@ -261,8 +255,7 @@ tlf_ae_specific <- function(outdata,
   text_indent <- matrix(0, nrow = n_row, ncol = n_col)
   text_indent[, 1] <- ifelse(outdata$order %% 1000 == 0 | outdata$order == 1, 0, 100)
 
-  # Using r2rtf
-
+  # Use r2rtf
   outdata$rtf <- tbl |>
     r2rtf::rtf_page(orientation = orientation) |>
     r2rtf::rtf_title(title) |>
@@ -302,7 +295,6 @@ tlf_ae_specific <- function(outdata,
       )
   }
 
-
-  # prepare output
+  # Prepare output
   rtf_output(outdata, path_outdata, path_outtable)
 }

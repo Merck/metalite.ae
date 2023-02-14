@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' @noRd
 to_mock <- function(df, mask = "x", n = 20) {
   if (is.null(df)) {
     return(df)
