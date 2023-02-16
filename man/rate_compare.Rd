@@ -52,7 +52,7 @@ bisection method. Default is 100.}
 \item{alpha}{Pre-defined alpha level for two-sided confidence interval.}
 }
 \value{
-To be added.
+A dataframe with statistics.
 }
 \description{
 Unstratified and stratified  Miettinen and Nurminen test.

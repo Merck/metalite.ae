@@ -29,7 +29,7 @@
 #' @param reference_group An integer to indicate reference group.
 #'   Default is 2 if there are 2 groups, otherwise, the default is 1.
 #'
-#' @return To be added.
+#' @return An objects contain a list of analysis raw datasets.
 #'
 #' @import metalite
 #'

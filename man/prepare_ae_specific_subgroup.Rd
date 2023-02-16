@@ -40,7 +40,7 @@ observation data saved in \code{meta$data_observation}.}
 \item{display_subgroup_total}{test}
 }
 \value{
-To be added.
+An objects contain a list of analysis raw datasets.
 }
 \description{
 Prepare datasets for AE specific analysis

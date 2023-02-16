@@ -21,7 +21,7 @@ The term name is used as key to link information.}
 \item{...}{Additional arguments passed to \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 }
 \value{
-To be added.
+An objects contain a list of analysis raw datasets.
 }
 \description{
 Prepare datasets for AE specific analysis

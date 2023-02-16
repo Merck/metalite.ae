@@ -43,7 +43,7 @@ displayed e.g. c(9,20,40).}
 \item{path_outtable}{A character string of the outtable path.}
 }
 \value{
-To be added.
+RTF file and source dataset for AE specific.
 }
 \description{
 Specific adverse events table

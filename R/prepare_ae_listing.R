@@ -27,7 +27,7 @@
 #' @param parameter A character value of parameter term name.
 #'   The term name is used as key to link information.
 #'
-#' @return To be added.
+#' @return An objects contain a list of analysis raw datasets.
 #'
 #' @import metalite
 #'

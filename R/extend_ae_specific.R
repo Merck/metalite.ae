@@ -21,12 +21,20 @@
 #' @param outdata A `outdata` object created by [prepare_ae_specific()].
 #' @param ci A numeric value for the percentile of confidence interval.
 #'
-#' @return To be added.
+#' @return An objects contain a list of analysis raw datasets.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' meta <- meta_ae_example()
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_inference() |>
+#'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
+#' head(tbl$tbl)
 extend_ae_specific_inference <- function(outdata, ci = 0.95) {
   res <- outdata
 
@@ -90,12 +98,20 @@ extend_ae_specific_inference <- function(outdata, ci = 0.95) {
 #' @param duration_var A character value of variable name for AE duration.
 #' @param duration_unit A character value of AE duration unit.
 #'
-#' @return To be added.
+#' @return An objects contain a list of analysis raw datasets.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' meta <- meta_ae_example()
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_duration(duration_var = "ADURN") |>
+#'   format_ae_specific(display = c("n", "prop", "dur"))
+#' head(tbl$tbl)
 extend_ae_specific_duration <- function(outdata,
                                         duration_var,
                                         duration_unit = "Day") {
@@ -207,12 +223,20 @@ extend_ae_specific_duration <- function(outdata,
 #'
 #' @param outdata A `outdata` object created by [prepare_ae_specific()].
 #'
-#' @return To be added.
+#' @return An objects contain a list of analysis raw datasets.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' meta <- meta_ae_example()
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#' extend_ae_specific_events() |>
+#' format_ae_specific(display = c("n", "prop", "events"))
+#' head(tbl$tbl)
 extend_ae_specific_events <- function(outdata) {
   meta <- outdata$meta
 

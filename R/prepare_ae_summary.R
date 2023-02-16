@@ -21,7 +21,7 @@
 #' @inheritParams prepare_ae_specific
 #' @param ... Additional arguments passed to [prepare_ae_specific()].
 #'
-#' @return To be added.
+#' @return An objects contain a list of analysis raw datasets.
 #'
 #' @export
 #'
@@ -111,10 +111,18 @@ prepare_ae_summary <- function(meta,
 #'
 #' @inheritParams format_ae_specific
 #'
-#' @return To be added.
+#' @return An objects contain a list of analysis raw datasets.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' meta <- meta_ae_example()
+#' outdata <- prepare_ae_summary(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "any;rel;ser"
+#' )
+#' tbl <- outdata |>
+#'   format_ae_summary()
+#' head(tbl$tbl)
 format_ae_summary <- format_ae_specific

@@ -45,11 +45,19 @@ number of AE per subjects.}
 \item{mock}{A boolean value to display mock table.}
 }
 \value{
-To be added.
+An objects contain a list of analysis raw datasets.
 }
 \description{
 Format AE summary analysis
 }
 \examples{
-# To be added
+meta <- meta_ae_example()
+outdata <- prepare_ae_summary(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+tbl <- outdata |>
+  format_ae_summary()
+head(tbl$tbl)
 }

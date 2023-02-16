@@ -14,11 +14,11 @@ fmt_pval(p, digits = 3, width = 3 + digits)
 \item{width}{Width of each column.}
 }
 \value{
-To be added.
+A numeric vector with exppected format.
 }
 \description{
 Format p-value
 }
 \examples{
-# To be added
+fmt_pval(0.1234)
 }

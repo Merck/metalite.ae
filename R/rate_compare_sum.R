@@ -44,7 +44,7 @@
 #' @param eps The level of precision. Default is 1e-06.
 #' @param alpha Pre-defined alpha level for two-sided confidence interval.
 #'
-#' @return To be added.
+#' @return A dataframe with statistics.
 #'
 #' @references
 #' Miettinen, O. and Nurminen, M, Comparative Analysis of Two Rates.

@@ -10,11 +10,19 @@ extend_ae_specific_events(outdata)
 \item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 }
 \value{
-To be added.
+An objects contain a list of analysis raw datasets.
 }
 \description{
 Add average number of events information for AE specific analysis
 }
 \examples{
-# To be added
+meta <- meta_ae_example()
+tbl <- prepare_ae_specific(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+extend_ae_specific_events() |>
+format_ae_specific(display = c("n", "prop", "events"))
+head(tbl$tbl)
 }

@@ -16,11 +16,11 @@ fmt_ci(lower, upper, digits = 2, width = 3 + digits)
 \item{width}{Width of each column.}
 }
 \value{
-To be added.
+A numeric vector with exppected format.
 }
 \description{
 Format confidence interval
 }
 \examples{
-# To be added
+fmt_ci(0.2356, 0.3871)
 }
