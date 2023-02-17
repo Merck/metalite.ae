@@ -45,7 +45,7 @@ number of AE per subjects.}
 \item{mock}{A boolean value to display mock table.}
 }
 \value{
-An objects contain a list of analysis raw datasets.
+A list of analysis raw datasets.
 }
 \description{
 Format AE summary analysis

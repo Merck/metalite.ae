@@ -14,7 +14,7 @@ fmt_pval(p, digits = 3, width = 3 + digits)
 \item{width}{Width of each column.}
 }
 \value{
-A numeric vector with exppected format.
+A numeric vector with the expected format.
 }
 \description{
 Format p-value

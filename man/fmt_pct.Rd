@@ -16,7 +16,7 @@ fmt_pct(x, digits = 1, pre = "(", post = ")")
 \item{post}{Text after the number.}
 }
 \value{
-A numeric vector with exppected format.
+A numeric vector with the expected format.
 }
 \description{
 Format percentage

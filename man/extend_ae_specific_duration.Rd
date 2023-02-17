@@ -14,7 +14,7 @@ extend_ae_specific_duration(outdata, duration_var, duration_unit = "Day")
 \item{duration_unit}{A character value of AE duration unit.}
 }
 \value{
-An objects contain a list of analysis raw datasets.
+A list of analysis raw datasets.
 }
 \description{
 Add average duration information for AE specific analysis

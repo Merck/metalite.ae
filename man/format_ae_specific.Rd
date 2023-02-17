@@ -45,7 +45,7 @@ number of AE per subjects.}
 \item{mock}{A boolean value to display mock table.}
 }
 \value{
-An objects contain a list of analysis raw datasets.
+A list of analysis raw datasets.
 }
 \description{
 Format AE specific analysis
@@ -61,12 +61,12 @@ outdata <- prepare_ae_specific(meta,
 
 # Basic example
 tbl <- outdata |>
-format_ae_specific()
+  format_ae_specific()
 head(tbl$tbl)
 
 # Display different measurements
 tbl <- outdata |>
-extend_ae_specific_events() |>
-format_ae_specific(display = c("n", "prop", "events"))
+  extend_ae_specific_events() |>
+  format_ae_specific(display = c("n", "prop", "events"))
 head(tbl$tbl)
 }

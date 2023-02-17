@@ -21,7 +21,7 @@
 #' @param outdata A `outdata` object created by [prepare_ae_specific()].
 #' @param ci A numeric value for the percentile of confidence interval.
 #'
-#' @return An objects contain a list of analysis raw datasets.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
@@ -98,7 +98,7 @@ extend_ae_specific_inference <- function(outdata, ci = 0.95) {
 #' @param duration_var A character value of variable name for AE duration.
 #' @param duration_unit A character value of AE duration unit.
 #'
-#' @return An objects contain a list of analysis raw datasets.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
@@ -223,7 +223,7 @@ extend_ae_specific_duration <- function(outdata,
 #'
 #' @param outdata A `outdata` object created by [prepare_ae_specific()].
 #'
-#' @return An objects contain a list of analysis raw datasets.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
@@ -234,8 +234,8 @@ extend_ae_specific_duration <- function(outdata,
 #'   observation = "wk12",
 #'   parameter = "rel"
 #' ) |>
-#' extend_ae_specific_events() |>
-#' format_ae_specific(display = c("n", "prop", "events"))
+#'   extend_ae_specific_events() |>
+#'   format_ae_specific(display = c("n", "prop", "events"))
 #' head(tbl$tbl)
 extend_ae_specific_events <- function(outdata) {
   meta <- outdata$meta

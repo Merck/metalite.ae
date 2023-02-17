@@ -21,7 +21,7 @@
 #' @inheritParams prepare_ae_specific
 #' @param ... Additional arguments passed to [prepare_ae_specific()].
 #'
-#' @return An objects contain a list of analysis raw datasets.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
@@ -111,7 +111,7 @@ prepare_ae_summary <- function(meta,
 #'
 #' @inheritParams format_ae_specific
 #'
-#' @return An objects contain a list of analysis raw datasets.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'

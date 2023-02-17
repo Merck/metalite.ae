@@ -37,7 +37,7 @@
 #'   - `events`: Average number of AE per subject.
 #' @param mock A boolean value to display mock table.
 #'
-#' @return An objects contain a list of analysis raw datasets.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
@@ -52,13 +52,13 @@
 #'
 #' # Basic example
 #' tbl <- outdata |>
-#' format_ae_specific()
+#'   format_ae_specific()
 #' head(tbl$tbl)
 #'
 #' # Display different measurements
 #' tbl <- outdata |>
-#' extend_ae_specific_events() |>
-#' format_ae_specific(display = c("n", "prop", "events"))
+#'   extend_ae_specific_events() |>
+#'   format_ae_specific(display = c("n", "prop", "events"))
 #' head(tbl$tbl)
 format_ae_specific <- function(outdata,
                                display = c("n", "prop", "total"),

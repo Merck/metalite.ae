@@ -21,7 +21,7 @@ The term name is used as key to link information.}
 The term name is used as key to link information.}
 }
 \value{
-An objects contain a list of analysis raw datasets.
+A list of analysis raw datasets.
 }
 \description{
 Prepare datasets for AE specific analysis

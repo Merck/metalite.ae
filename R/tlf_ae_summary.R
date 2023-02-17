@@ -32,11 +32,12 @@
 #'   parameter = "any;rel;ser"
 #' )
 #' outdata |>
-#'   format_ae_summary()|>
+#'   format_ae_summary() |>
 #'   tlf_ae_summary(
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #'     path_outdata = tempfile(fileext = ".Rdata"),
-#'     path_outtable = tempfile(fileext = ".rtf"))
+#'     path_outtable = tempfile(fileext = ".rtf")
+#'   )
 tlf_ae_summary <- function(outdata,
                            source,
                            col_rel_width = NULL,

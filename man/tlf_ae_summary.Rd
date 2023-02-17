@@ -49,9 +49,10 @@ outdata <- prepare_ae_summary(meta,
   parameter = "any;rel;ser"
 )
 outdata |>
-  format_ae_summary()|>
+  format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     path_outdata = tempfile(fileext = ".Rdata"),
-    path_outtable = tempfile(fileext = ".rtf"))
+    path_outtable = tempfile(fileext = ".rtf")
+  )
 }

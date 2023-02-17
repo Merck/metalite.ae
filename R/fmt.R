@@ -23,7 +23,7 @@
 #' @param pre Text before the number.
 #' @param post Text after the number.
 #'
-#' @return A numeric vector with exppected format.
+#' @return A numeric vector with the expected format.
 #'
 #' @export
 #'
@@ -93,7 +93,7 @@ fmt_est <- function(mean,
 #' @param digits Digits of each column, i.e., format as (x.x, x.x).
 #' @param width Width of each column.
 #'
-#' @return A numeric vector with exppected format.
+#' @return A numeric vector with the expected format.
 #'
 #' @export
 #'
@@ -112,7 +112,7 @@ fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
 #' @param digits Digits of each column, i.e., format as x.xxx.
 #' @param width Width of each column.
 #'
-#' @return A numeric vector with exppected format.
+#' @return A numeric vector with the expected format.
 #'
 #' @importFrom dplyr if_else
 #'

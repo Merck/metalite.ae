@@ -12,7 +12,7 @@ extend_ae_specific_inference(outdata, ci = 0.95)
 \item{ci}{A numeric value for the percentile of confidence interval.}
 }
 \value{
-An objects contain a list of analysis raw datasets.
+A list of analysis raw datasets.
 }
 \description{
 Add inference information for AE specific analysis
