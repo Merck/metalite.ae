@@ -25,7 +25,7 @@
 #' @param display_total test
 #' @param display_subgroup_total test
 #'
-#' @return To be added.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'

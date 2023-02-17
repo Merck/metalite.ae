@@ -7,12 +7,12 @@
 meta_ae_listing_example()
 }
 \value{
-To be added.
+A metadata object.
 }
 \description{
 This function is only for illustration purpose.
 r2rtf is required.
 }
 \examples{
-# To be added
+meta_ae_listing_example()
 }

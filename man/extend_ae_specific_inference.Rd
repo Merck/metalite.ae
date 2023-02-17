@@ -12,11 +12,19 @@ extend_ae_specific_inference(outdata, ci = 0.95)
 \item{ci}{A numeric value for the percentile of confidence interval.}
 }
 \value{
-To be added.
+A list of analysis raw datasets.
 }
 \description{
 Add inference information for AE specific analysis
 }
 \examples{
-# To be added
+meta <- meta_ae_example()
+tbl <- prepare_ae_specific(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  extend_ae_specific_inference() |>
+  format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
+head(tbl$tbl)
 }

@@ -23,7 +23,7 @@
 #' @param pre Text before the number.
 #' @param post Text after the number.
 #'
-#' @return To be added.
+#' @return A numeric vector with the expected format.
 #'
 #' @export
 #'
@@ -93,12 +93,12 @@ fmt_est <- function(mean,
 #' @param digits Digits of each column, i.e., format as (x.x, x.x).
 #' @param width Width of each column.
 #'
-#' @return To be added.
+#' @return A numeric vector with the expected format.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' fmt_ci(0.2356, 0.3871)
 fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
   .lower <- formatC(lower, digits = digits, format = "f", width = width)
   .upper <- formatC(upper, digits = digits, format = "f", width = width)
@@ -112,14 +112,14 @@ fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
 #' @param digits Digits of each column, i.e., format as x.xxx.
 #' @param width Width of each column.
 #'
-#' @return To be added.
+#' @return A numeric vector with the expected format.
 #'
 #' @importFrom dplyr if_else
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' fmt_pval(0.1234)
 fmt_pval <- function(p, digits = 3, width = 3 + digits) {
   scale <- 10^(-1 * digits)
   p_scale <- paste0("<", scale)

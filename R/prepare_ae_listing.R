@@ -27,7 +27,7 @@
 #' @param parameter A character value of parameter term name.
 #'   The term name is used as key to link information.
 #'
-#' @return To be added.
+#' @return A list of analysis raw datasets.
 #'
 #' @import metalite
 #'
@@ -35,7 +35,7 @@
 #'
 #' @examples
 #' meta <- meta_ae_listing_example()
-#' lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"), head, 10)
+#' str(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"))
 prepare_ae_listing <- function(meta,
                                analysis,
                                population,

@@ -21,12 +21,12 @@
 #' This function is only for illustration purpose.
 #' r2rtf is required.
 #'
-#' @return To be added.
+#' @return A metadata object.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' meta_ae_example()
 meta_ae_example <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
@@ -98,12 +98,12 @@ meta_ae_example <- function() {
 #' This function is only for illustration purpose.
 #' r2rtf is required.
 #'
-#' @return To be added.
+#' @return A metadata object.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' meta_ae_listing_example()
 meta_ae_listing_example <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A

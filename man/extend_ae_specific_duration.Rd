@@ -14,11 +14,19 @@ extend_ae_specific_duration(outdata, duration_var, duration_unit = "Day")
 \item{duration_unit}{A character value of AE duration unit.}
 }
 \value{
-To be added.
+A list of analysis raw datasets.
 }
 \description{
 Add average duration information for AE specific analysis
 }
 \examples{
-# To be added
+meta <- meta_ae_example()
+tbl <- prepare_ae_specific(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  extend_ae_specific_duration(duration_var = "ADURN") |>
+  format_ae_specific(display = c("n", "prop", "dur"))
+head(tbl$tbl)
 }

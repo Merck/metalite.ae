@@ -29,7 +29,7 @@
 #' @param reference_group An integer to indicate reference group.
 #'   Default is 2 if there are 2 groups, otherwise, the default is 1.
 #'
-#' @return To be added.
+#' @return A list of analysis raw datasets.
 #'
 #' @import metalite
 #'
@@ -37,7 +37,7 @@
 #'
 #' @examples
 #' meta <- meta_ae_example()
-#' lapply(prepare_ae_specific(meta, "apat", "wk12", "rel"), head, 10)
+#' str(prepare_ae_specific(meta, "apat", "wk12", "rel"))
 #'
 #' # Allow to extract each components
 #' prepare_ae_specific(meta, "apat", "wk12", "rel", components = NULL)$data

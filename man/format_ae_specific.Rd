@@ -45,11 +45,28 @@ number of AE per subjects.}
 \item{mock}{A boolean value to display mock table.}
 }
 \value{
-To be added.
+A list of analysis raw datasets.
 }
 \description{
 Format AE specific analysis
 }
 \examples{
-# To be added
+meta <- meta_ae_example()
+
+outdata <- prepare_ae_specific(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
+
+# Basic example
+tbl <- outdata |>
+  format_ae_specific()
+head(tbl$tbl)
+
+# Display different measurements
+tbl <- outdata |>
+  extend_ae_specific_events() |>
+  format_ae_specific(display = c("n", "prop", "events"))
+head(tbl$tbl)
 }

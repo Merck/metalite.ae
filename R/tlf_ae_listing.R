@@ -26,7 +26,7 @@
 #' @param path_outdata A character string of the outdata path.
 #' @param path_outtable A character string of the outtable path.
 #'
-#' @return To be added.
+#' @return RTF file and source dataset for AE listing.
 #'
 #' @export
 #'

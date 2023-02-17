@@ -37,12 +37,29 @@
 #'   - `events`: Average number of AE per subject.
 #' @param mock A boolean value to display mock table.
 #'
-#' @return To be added.
+#' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
 #' @examples
-#' # To be added
+#' meta <- meta_ae_example()
+#'
+#' outdata <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' )
+#'
+#' # Basic example
+#' tbl <- outdata |>
+#'   format_ae_specific()
+#' head(tbl$tbl)
+#'
+#' # Display different measurements
+#' tbl <- outdata |>
+#'   extend_ae_specific_events() |>
+#'   format_ae_specific(display = c("n", "prop", "events"))
+#' head(tbl$tbl)
 format_ae_specific <- function(outdata,
                                display = c("n", "prop", "total"),
                                digits_prop = 1,

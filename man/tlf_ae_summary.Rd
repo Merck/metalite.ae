@@ -36,11 +36,23 @@ displayed e.g. c(9,20,40).}
 \item{path_outtable}{A character string of the outtable path.}
 }
 \value{
-To be added.
+RTF file and source dataset for AE listing.
 }
 \description{
 AE summary table
 }
 \examples{
-# To be added
+meta <- meta_ae_example()
+outdata <- prepare_ae_summary(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+outdata |>
+  format_ae_summary() |>
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outdata = tempfile(fileext = ".Rdata"),
+    path_outtable = tempfile(fileext = ".rtf")
+  )
 }

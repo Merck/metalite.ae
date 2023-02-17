@@ -21,12 +21,12 @@ The term name is used as key to link information.}
 The term name is used as key to link information.}
 }
 \value{
-To be added.
+A list of analysis raw datasets.
 }
 \description{
 Prepare datasets for AE specific analysis
 }
 \examples{
 meta <- meta_ae_listing_example()
-lapply(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"), head, 10)
+str(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"))
 }

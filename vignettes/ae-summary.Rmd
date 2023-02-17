@@ -112,7 +112,7 @@ We can choose which measurement to display
 
 ```{r}
 tbl <- outdata |>
-  format_ae_specific(display = c("n", "prop"))
+  format_ae_summary(display = c("n", "prop"))
 head(tbl$tbl)
 ```
 
@@ -120,7 +120,7 @@ We can add risk difference
 
 ```{r}
 tbl <- outdata |>
-  format_ae_specific(display = c("n", "prop", "diff"))
+  format_ae_summary(display = c("n", "prop", "diff"))
 head(tbl$tbl)
 ```
 
@@ -130,7 +130,7 @@ to perform additional calculation.
 ```{r, eval = FALSE}
 tbl <- outdata |>
   extend_ae_specific_inference() |>
-  format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
+  format_ae_summary(display = c("n", "prop", "diff", "diff_ci"))
 head(tbl$tbl)
 ```
 
