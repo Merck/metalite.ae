@@ -38,7 +38,7 @@ Prepare datasets for AE specific analysis
 }
 \examples{
 meta <- meta_ae_example()
-lapply(prepare_ae_specific(meta, "apat", "wk12", "rel"), head, 10)
+str(prepare_ae_specific(meta, "apat", "wk12", "rel"))
 
 # Allow to extract each components
 prepare_ae_specific(meta, "apat", "wk12", "rel", components = NULL)$data
