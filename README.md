@@ -24,11 +24,15 @@ including define, develop, validate and finalize the analysis with full .
 
 ## Workflow
 
-The general workflow split into three parts.
+The general workflow split into:
 
 1. Define metadata information using the metalite package.
 1. Prepare outdata using `prepare_*()` functions.
+1. (optional) Extend outdata using `extend_*()` functions.
+1. Format outdata using `format_*()` functions.
 1. Create TLFs using `tlf_*()` functions.
+
+Tutorials with examples are listed in the [package website](https://merck.github.io/metalite.ae/articles/index.html)
 
 ## Highlighted features
 
