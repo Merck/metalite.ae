@@ -70,7 +70,7 @@ meta_ae_example() |>                                      # Example AE data crea
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0summary.pdf")
+knitr::include_graphics("pdf/ae0summary1.pdf")
 ```
 
 Tutorials with additional examples are listed in the [package website](https://merck.github.io/metalite.ae/articles/index.html)
