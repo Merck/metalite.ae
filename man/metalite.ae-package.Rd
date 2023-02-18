@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Adverse events analysis using the 'metalite' data structure.
+An R package to analyze adverse events in clinical trials using the 'metalite' data structure. The purpose is to provide end-to-end software development lifecycle (SDLC) solution for common adverse events analysis including define, develop, validate and finalize the analysis with full traceability.
 }
 \seealso{
 Useful links:

@@ -8,14 +8,18 @@
 
 ## Overview
 
-metalite.ae is an R package for standard adverse events analysis, including:
+metalite.ae is an R package to analyze adverse events (AE) in clinical trials including:
 
 - AE summary.
 - Specific AE analysis.
+- AE listing.
+
+The R package is created using 'metalite' data structure that provide end-to-end software development lifecycle (SDLC) solution 
+including define, develop, validate and finalize the analysis with full traceability. 
 
 ## Workflow
 
-The general workflow is split into three parts.
+The general workflow split into three parts.
 
 1. Define metadata information using the metalite package.
 1. Prepare outdata using `prepare_*()` functions.
@@ -23,6 +27,9 @@ The general workflow is split into three parts.
 
 ## Highlighted features
 
-- Enables metadata structure.
+- Avoid duplicated input by using metadata structure.
+  + e.g. define analysis population one time to use in all adverse events analysis.
 - Consistent input and output in standard functions.
 - Streamlines mock table generation.
+
+## Examples 
