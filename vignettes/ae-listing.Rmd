@@ -32,7 +32,7 @@ The development of AE listing contains exported functions:
 > We will illustrate the process to generate a AE listing RTF file similar to the following one.
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0listing0ser0wk12.pdf")
+knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
 ```
 
 ### Data Manipulation
@@ -244,11 +244,11 @@ tbl |>
     footnotes = footnote,
     orientation = "portrait",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    path_outtable = "outtable/ae0listing0ser0wk12.rtf",
+    path_outtable = "rtf/ae0listing0ser0wk12.rtf",
     path_outdata = NULL
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0listing0ser0wk12.pdf")
+knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
 ```

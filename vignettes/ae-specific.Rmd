@@ -185,12 +185,12 @@ outdata |>
   tlf_ae_specific(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    path_outtable = "outtable/ae0specific1.rtf"
+    path_outtable = "rtf/ae0specific1.rtf"
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0specific1.pdf")
+knitr::include_graphics("pdf/ae0specific1.pdf")
 ```
 
 The `tlf_ae_specific` function also provide some commonly used argument to customize the table.
@@ -204,12 +204,12 @@ outdata |>
     col_rel_width = c(6, rep(1, 8)),
     text_font_size = 8,
     orientation = "landscape",
-    path_outtable = "outtable/ae0specific2.rtf"
+    path_outtable = "rtf/ae0specific2.rtf"
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0specific2.pdf")
+knitr::include_graphics("pdf/ae0specific2.pdf")
 ```
 
 We can also generate the mock table
@@ -220,16 +220,10 @@ outdata |>
   tlf_ae_specific(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    path_outtable = "outtable/mock_ae0specific1.rtf"
+    path_outtable = "rtf/mock_ae0specific1.rtf"
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/mock_ae0specific1.pdf")
+knitr::include_graphics("pdf/mock_ae0specific1.pdf")
 ```
-
-## Future development
-
-### Features
-
-- Cross check the capability in SAS standard macro to identify required features.

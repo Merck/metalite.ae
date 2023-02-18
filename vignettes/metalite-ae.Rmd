@@ -6,7 +6,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
-   - outtable/*.pdf
+   - fig/*.png
+   - rtf/*.rtf
+   - pdf/*.pdf
 ---
 
 ```{r, include=FALSE}
