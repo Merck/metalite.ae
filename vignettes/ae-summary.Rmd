@@ -17,22 +17,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, include=FALSE}
+```{r}
 library(metalite)
 library(metalite.ae)
 ```
 
 ## Overview
 
+The purpose of this tutorial is to create product ready AE summary analyses 
+by extending examples shown in 
+[Chpater 7 of the R for Clinical Study Reports and Submission](https://r4csr.org/aesummary.html) book. 
+
 The AE summary analysis provides tables to summarize adverse events information.
-There are three steps to create AE summary analysis table using metalite.ae:
+With a metadata created by metalite, 
+there are three required steps to create AE summary analysis table using metalite.ae:
 
 - `prepare_ae_summary`: prepare analysis raw datasets
 - `format_ae_summary`: prepare analysis (mock) outdata with proper format
 - `tlf_ae_summary`: transfer (mock) output dataset to RTF table
 
-With the three function we can quickly create an AE summary analysis as shown in 
-[Chpater 7 of the R for Clinical Study Reports and Submission](https://r4csr.org/aesummary.html) book. 
+An example output: 
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("pdf/ae0summary1.pdf")
