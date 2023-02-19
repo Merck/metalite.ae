@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-An R package to analyze adverse events in clinical trials using the 'metalite' data structure. The R package simplified the workflow to create production ready table, listing and figures discussed in the Chpater 7 and Chapter 8 of the R for Clinical Study Reports and Submission book (https://r4csr.org/).
+Analyzes adverse events in clinical trials using the 'metalite' data structure. The package simplifies the workflow to create production-ready tables, listings, and figures discussed in the adverse events analysis chapters of "R for Clinical Study Reports and Submission" (Zhang et al., 2022, \url{https://r4csr.org/}).
 }
 \seealso{
 Useful links:
