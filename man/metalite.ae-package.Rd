@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Adverse events analysis using the 'metalite' data structure.
+Analyzes adverse events in clinical trials using the 'metalite' data structure. The package simplifies the workflow to create production-ready tables, listings, and figures discussed in the adverse events analysis chapters of "R for Clinical Study Reports and Submission" (Zhang et al., 2022, \url{https://r4csr.org/}).
 }
 \seealso{
 Useful links:
