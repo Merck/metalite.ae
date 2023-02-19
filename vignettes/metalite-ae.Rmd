@@ -6,7 +6,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
-   - outtable/*.pdf
+   - fig/*.png
+   - rtf/*.rtf
+   - pdf/*.pdf
 ---
 
 ```{r, include=FALSE}
@@ -80,7 +82,7 @@ meta_ae_example() |> # Example AE data created using metalite
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0summary.pdf")
+knitr::include_graphics("pdf/ae0summary1.pdf")
 ```
 
 Tutorials with additional examples are listed on the

@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 ## Overview
 
 Binary outcome is a commonly used endpoint in clinical trials.
-This page is to illustrate how to conduct the unstratified or stratified analysis
+This page illustrates how to conduct the unstratified or stratified analysis
 with the Miettinen and Nurminen (M&N) method [@miettinen1985comparative]
 for risk difference analysis in R.
 The following statistics can be calculated with the function `rate_compare()`:
@@ -166,7 +166,7 @@ The sample size weighting is often used in the clinical trial.
 Below is the function to conduct stratified MN analysis with sample size weights.
 
 We also support weight in `"equal"` and `"cmh"`.
-More details can be found in the `rate_compare` documentation.
+More details can be found in the `rate_compare()` documentation.
 
 ```{r}
 rate_compare(
