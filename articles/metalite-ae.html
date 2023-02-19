@@ -94,50 +94,61 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>metalite.ae is an R package for standard adverse events analysis,
-including:</p>
-<ul>
-<li>AE summary.</li>
-<li>Specific AE analysis.</li>
-<li>Specific AE subgroup analysis (TODO).</li>
-<li>AE listing (TODO).</li>
-</ul>
+<p>metalite.ae is an R package to analyze adverse events (AE) in
+clinical trials, including:</p>
+<details><summary>
+AE summary.
+</summary><img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png"></details><details><summary>
+Specific AE analysis.
+</summary><img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png"></details><details><summary>
+AE listing.
+</summary><img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png"></details><p>The R package simplifies the workflow to create production-ready
+tables, listings, and figures discussed in the <a href="https://r4csr.org/aesummary.html" class="external-link">AE summary chapter</a> and the
+<a href="https://r4csr.org/specific-ae.html" class="external-link">specific AE chapter</a> of
+the <em>R for Clinical Study Reports and Submission</em> book with full
+traceability.</p>
+<p>The R package is created using the <a href="https://merck.github.io/metalite/" class="external-link">metalite</a> data structure
+that provides an end-to-end software development lifecycle (SDLC)
+solution including defining, developing, validating, and finalizing the
+analysis.</p>
 <div class="section level3">
 <h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
 </h3>
-<p>The general workflow is split into three parts.</p>
+<p>The general workflow covers:</p>
 <ol style="list-style-type: decimal">
-<li>Define metadata information using the metalite package.</li>
+<li>Define metadata information using metalite.</li>
 <li>Prepare outdata using <code>prepare_*()</code> functions.</li>
-<li>Extend outdata using <code>extend_*()</code> functions.</li>
+<li>Extend outdata using <code>extend_*()</code> functions
+(optional).</li>
 <li>Format outdata using <code>format_*()</code> functions.</li>
 <li>Create TLFs using <code>tlf_*()</code> functions.</li>
 </ol>
 <p>For example, we can create a simple AE summary table as below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># Example AE data created using metalite</span></span>
 <span>  <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span></span>
-<span>    population <span class="op">=</span> <span class="st">"apat"</span>,</span>
-<span>    observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
-<span>    parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span></span>
+<span>    population <span class="op">=</span> <span class="st">"apat"</span>, <span class="co"># Select population by keywords</span></span>
+<span>    observation <span class="op">=</span> <span class="st">"wk12"</span>, <span class="co"># Select observation by keywords</span></span>
+<span>    parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span> <span class="co"># Select AE terms by keywords</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tlf_ae_summary.html">tlf_ae_summary</a></span><span class="op">(</span></span>
-<span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,</span>
-<span>    path_outtable <span class="op">=</span> <span class="st">"outtable/ae0summary.rtf"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "any"</span></span>
-<span><span class="co">#&gt; [1] "rel"</span></span>
-<span><span class="co">#&gt; [1] "ser"</span></span>
-<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/ae0summary.rtf</span></span></code></pre></div>
-<embed src="outtable/ae0summary.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>More examples can be found in <code><a href="../articles/ae-summary.html">vignette("ae-summary")</a></code> and
-<code><a href="../articles/ae-specific.html">vignette("ae-specific")</a></code>.</p>
+<span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>, <span class="co"># Define data source</span></span>
+<span>    path_outtable <span class="op">=</span> <span class="st">"ae0summary.rtf"</span> <span class="co"># Define output</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<embed src="outtable/ae0summary.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>Tutorials with additional examples are listed on the <a href="https://merck.github.io/metalite.ae/articles/">package
+website</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="highlighted-features">Highlighted features<a class="anchor" aria-label="anchor" href="#highlighted-features"></a>
 </h3>
 <ul>
-<li>Enables metadata structure.</li>
+<li>Avoid duplicated input by using metadata structure.
+<ul>
+<li>For example, define analysis population once to use in all adverse
+events analysis.</li>
+</ul>
+</li>
 <li>Consistent input and output in standard functions.</li>
 <li>Streamlines mock table generation.</li>
 </ul>
