@@ -95,37 +95,35 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>The AE summary analysis provides tables to summarize adverse events
-information. The development of AE summary analysis contains exported
-functions:</p>
+information. There are three steps to create an AE summary analysis
+table using metalite.ae:</p>
 <ul>
 <li>
-<code>prepare_ae_summary</code>: prepare analysis raw datasets</li>
+<code><a href="../reference/prepare_ae_summary.html">prepare_ae_summary()</a></code>: prepare analysis raw
+datasets.</li>
 <li>
-<code>format_ae_summary</code>: prepare analysis (mock) outdata with
-proper format</li>
+<code><a href="../reference/format_ae_summary.html">format_ae_summary()</a></code>: prepare analysis (mock) outdata
+with proper format.</li>
 <li>
-<code>tlf_ae_summary</code>: transfer (mock) output dataset to RTF
-table</li>
+<code><a href="../reference/tlf_ae_summary.html">tlf_ae_summary()</a></code>: transfer (mock) output dataset to RTF
+table.</li>
 </ul>
-<p>We also prepare (optional) additional function to extend the
-analysis.</p>
-<ul>
-<li>
-<strong>TODO</strong> <code>extend_ae_specific_inference</code>: add
-risk difference inference results based on M&amp;N method.</li>
-</ul>
-<div class="section level3">
+<p>With the three functions, we can quickly create an AE summary
+analysis as shown in the <a href="https://r4csr.org/aesummary.html" class="external-link">AE
+summary chapter</a> of the <em>R for Clinical Study Reports and
+Submission</em> book.</p>
+<embed src="pdf/ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><div class="section level3">
 <h3 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
 </h3>
-<p>The <code>prepare_ae_summary</code> function is design to be used for
-multiple purposes. The input of the function is a <code>meta</code>
-objects created from <code>metalite</code> package.</p>
+<p>The <code><a href="../reference/prepare_ae_summary.html">prepare_ae_summary()</a></code> function is designed to be used
+for multiple purposes. The input of the function is a <code>meta</code>
+object created by the metalite package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The output of the function is an <code>outdata</code> object that
-contain a list of analysis raw datasets. The parameter is a group of key
-words available in the <code>names(meta$parameter)</code> and separated
-by <code>;</code>.</p>
+contains a list of analysis raw datasets. The <code>parameter</code> is
+a group of key words available in the <code>names(meta$parameter)</code>
+and separated by <code>;</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span><span class="va">meta</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
@@ -166,7 +164,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <span><span class="co">#&gt; 5           400          with serious adverse events</span></span></code></pre></div>
 <ul>
 <li>
-<code>n_pop</code>: participants in population</li>
+<code>n_pop</code>: participants in population.</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span><span class="op">$</span><span class="va">n_pop</span></span>
@@ -174,7 +172,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <span><span class="co">#&gt; 1  86  84  84 254</span></span></code></pre></div>
 <ul>
 <li>
-<code>n</code>: number of subjects with AE</li>
+<code>n</code>: number of subjects with AE.</li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outdata</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
@@ -186,7 +184,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <span><span class="co">#&gt; 22   0   1   2   3</span></span></code></pre></div>
 <ul>
 <li>
-<code>prop</code>: proportion of subjects with AE</li>
+<code>prop</code>: proportion of subjects with AE.</li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outdata</span><span class="op">$</span><span class="va">prop</span><span class="op">)</span></span>
@@ -214,7 +212,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <h3 id="format-output">Format output<a class="anchor" aria-label="anchor" href="#format-output"></a>
 </h3>
 <p>After we have the raw analysis results, we can use
-<code>format_ae_summary</code> to prepare the outdata to create RTF
+<code><a href="../reference/format_ae_summary.html">format_ae_summary()</a></code> to prepare the outdata to create RTF
 tables.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
@@ -261,8 +259,8 @@ tables.</p>
 <span><span class="co">#&gt; 21    2.4</span></span>
 <span><span class="co">#&gt; 22  -13.8</span></span></code></pre></div>
 <p>We can add 95% confidence interval of M&amp;N method. It requires
-<code>extend_ae_specific_inference</code> to perform additional
-calculation.</p>
+<code><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference()</a></code> to perform additional
+calculations.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -272,13 +270,14 @@ calculation.</p>
 <div class="section level3">
 <h3 id="mock-data-preparation">Mock data preparation<a class="anchor" aria-label="anchor" href="#mock-data-preparation"></a>
 </h3>
-<p>We can also use <code>format_ae_summary</code> to create mock output
-data.</p>
+<p>We can also use <code><a href="../reference/format_ae_summary.html">format_ae_summary()</a></code> to create mock
+output data.</p>
 <p>The purpose of the <code>mock</code> argument is not to create a
-comprehensive mock table template, but a handy way to help user create a
-mock table that mimics the exact output layout.</p>
+comprehensive mock table template, but a handy way to help users create
+a mock table that mimics the exact output layout.</p>
 <p>Additional work is required to develop a flexible mock table
-generation tool (e.g. a dedicated mock table generation package)</p>
+generation tool (for example, a dedicated mock table generation
+package).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -299,18 +298,18 @@ generation tool (e.g. a dedicated mock table generation package)</p>
 <div class="section level3">
 <h3 id="rtf-tables">RTF tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>
 </h3>
-<p>By using <code>tlf_ae_summary</code>, we can transfer the output from
-<code>prepare_ae_summary</code> to an RTF table.</p>
+<p>By using <code><a href="../reference/tlf_ae_summary.html">tlf_ae_summary()</a></code>, we can transfer the output
+from <code><a href="../reference/prepare_ae_summary.html">prepare_ae_summary()</a></code> to an RTF table.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tlf_ae_summary.html">tlf_ae_summary</a></span><span class="op">(</span></span>
 <span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,</span>
-<span>    path_outtable <span class="op">=</span> <span class="st">"./outtable/ae0summary1.rtf"</span></span>
+<span>    path_outtable <span class="op">=</span> <span class="st">"rtf/ae0summary1.rtf"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/ae0summary1.rtf</span></span></code></pre></div>
-<embed src="./outtable/ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>The <code>tlf_ae_summary</code> function also provide some commonly
-used argument to customize the table.</p>
+<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0summary1.rtf</span></span></code></pre></div>
+<embed src="pdf/ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>The <code><a href="../reference/tlf_ae_summary.html">tlf_ae_summary()</a></code> function also provides some
+commonly used argument to customize the table.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -319,37 +318,19 @@ used argument to customize the table.</p>
 <span>    col_rel_width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    text_font_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>    orientation <span class="op">=</span> <span class="st">"landscape"</span>,</span>
-<span>    path_outtable <span class="op">=</span> <span class="st">"./outtable/ae0summary2.rtf"</span></span>
+<span>    path_outtable <span class="op">=</span> <span class="st">"rtf/ae0summary2.rtf"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/ae0summary2.rtf</span></span></code></pre></div>
-<embed src="./outtable/ae0summary2.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>We can also generate the mock table</p>
+<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0summary2.rtf</span></span></code></pre></div>
+<embed src="pdf/ae0summary2.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>We can also generate the mock table</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tlf_ae_summary.html">tlf_ae_summary</a></span><span class="op">(</span></span>
 <span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,</span>
-<span>    path_outtable <span class="op">=</span> <span class="st">"./outtable/mock_ae0summary1.rtf"</span></span>
+<span>    path_outtable <span class="op">=</span> <span class="st">"rtf/mock_ae0summary1.rtf"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/outtable/mock_ae0summary1.rtf</span></span></code></pre></div>
-<embed src="./outtable/mock_ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
-</div>
-</div>
-<div class="section level2">
-<h2 id="future-development">Future development<a class="anchor" aria-label="anchor" href="#future-development"></a>
-</h2>
-<div class="section level3">
-<h3 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
-</h3>
-<ul>
-<li>Enable CI and p-value calculation using M&amp;N method.</li>
-<li>Cross check the capability in SAS standard macro to identify
-required features.
-<ul>
-<li><code>usermanuals/asr0ae0summary/asr0ae0summary-spec.docx</code></li>
-<li><code>usermanuals/asr0ae0summary0analysis/asr0ae0summary0analysis-spec.docx</code></li>
-</ul>
-</li>
-</ul>
+<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/mock_ae0summary1.rtf</span></span></code></pre></div>
+<embed src="pdf/mock_ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

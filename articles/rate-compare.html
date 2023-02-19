@@ -95,8 +95,8 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>Binary outcome is a commonly used endpoint in clinical trials. This
-page is to illustrate how to conduct the unstratified or stratified
-analysis with the Miettinen and Nurminen (M&amp;N) method <span class="citation">(Miettinen and Nurminen 1985)</span> for risk
+page illustrates how to conduct the unstratified or stratified analysis
+with the Miettinen and Nurminen (M&amp;N) method <span class="citation">(Miettinen and Nurminen 1985)</span> for risk
 difference analysis in R. The following statistics can be calculated
 with the function <code><a href="../reference/rate_compare.html">rate_compare()</a></code>:</p>
 <ul>
@@ -288,7 +288,7 @@ is the function to conduct stratified MN analysis with sample size
 weights.</p>
 <p>We also support weight in <code>"equal"</code> and
 <code>"cmh"</code>. More details can be found in the
-<code>rate_compare</code> documentation.</p>
+<code><a href="../reference/rate_compare.html">rate_compare()</a></code> documentation.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/rate_compare.html">rate_compare</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">response</span> <span class="op">~</span> <span class="va">treatment</span>, strata <span class="op">=</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">ana</span>,</span>
