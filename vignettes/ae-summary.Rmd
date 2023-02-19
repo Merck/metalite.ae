@@ -25,14 +25,15 @@ library(metalite.ae)
 ## Overview
 
 The AE summary analysis provides tables to summarize adverse events information.
-There are three steps to create AE summary analysis table using metalite.ae:
+There are three steps to create an AE summary analysis table using metalite.ae:
 
-- `prepare_ae_summary`: prepare analysis raw datasets
-- `format_ae_summary`: prepare analysis (mock) outdata with proper format
-- `tlf_ae_summary`: transfer (mock) output dataset to RTF table
+- `prepare_ae_summary()`: prepare analysis raw datasets.
+- `format_ae_summary()`: prepare analysis (mock) outdata with proper format.
+- `tlf_ae_summary()`: transfer (mock) output dataset to RTF table.
 
-With the three function we can quickly create an AE summary analysis as shown in 
-[Chpater 7 of the R for Clinical Study Reports and Submission](https://r4csr.org/aesummary.html) book. 
+With the three functions, we can quickly create an AE summary analysis as shown
+in the [AE summary chapter](https://r4csr.org/aesummary.html) of the
+_R for Clinical Study Reports and Submission_ book.
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("pdf/ae0summary1.pdf")
@@ -40,15 +41,15 @@ knitr::include_graphics("pdf/ae0summary1.pdf")
 
 ### Analysis preparation
 
-The `prepare_ae_summary` function is design to be used for multiple purposes.
-The input of the function is a `meta` objects created from `metalite` package.
+The `prepare_ae_summary()` function is designed to be used for multiple purposes.
+The input of the function is a `meta` object created by the metalite package.
 
 ```{r}
 meta <- meta_ae_example()
 ```
 
-The output of the function is an `outdata` object that contain a list of analysis raw datasets.
-The parameter is a group of key words available in the `names(meta$parameter)` and separated by `;`.
+The output of the function is an `outdata` object that contains a list of analysis raw datasets.
+The `parameter` is a group of key words available in the `names(meta$parameter)` and separated by `;`.
 
 ```{r}
 outdata <- prepare_ae_summary(meta,
@@ -74,19 +75,19 @@ The row is indexed by the order of `outdata$name`.
 head(data.frame(outdata$order, outdata$name))
 ```
 
-- `n_pop`: participants in population
+- `n_pop`: participants in population.
 
 ```{r}
 outdata$n_pop
 ```
 
-- `n`: number of subjects with AE
+- `n`: number of subjects with AE.
 
 ```{r}
 head(outdata$n)
 ```
 
-- `prop`: proportion of subjects with AE
+- `prop`: proportion of subjects with AE.
 
 ```{r}
 head(outdata$prop)
@@ -100,7 +101,7 @@ head(outdata$diff)
 
 ### Format output
 
-After we have the raw analysis results, we can use `format_ae_summary` to prepare the outdata
+After we have the raw analysis results, we can use `format_ae_summary()` to prepare the outdata
 to create RTF tables.
 
 ```{r}
@@ -125,8 +126,8 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-We can add 95% confidence interval of M&N method. It requires `extend_ae_specific_inference`
-to perform additional calculation.
+We can add 95% confidence interval of M&N method. It requires `extend_ae_specific_inference()`
+to perform additional calculations.
 
 ```{r, eval = FALSE}
 tbl <- outdata |>
@@ -137,13 +138,13 @@ head(tbl$tbl)
 
 ### Mock data preparation
 
-We can also use `format_ae_summary` to create mock output data.
+We can also use `format_ae_summary()` to create mock output data.
 
 The purpose of the `mock` argument is not to create a comprehensive mock table template,
-but a handy way to help user create a mock table that mimics the exact output layout.
+but a handy way to help users create a mock table that mimics the exact output layout.
 
 Additional work is required to develop a flexible mock table generation tool
-(e.g. a dedicated mock table generation package)
+(for example, a dedicated mock table generation package).
 
 ```{r}
 tbl <- outdata |>
@@ -153,7 +154,7 @@ head(tbl$tbl)
 
 ### RTF tables
 
-By using `tlf_ae_summary`, we can transfer the output from `prepare_ae_summary` to an RTF table.
+By using `tlf_ae_summary()`, we can transfer the output from `prepare_ae_summary()` to an RTF table.
 
 ```{r}
 outdata |>
@@ -168,7 +169,7 @@ outdata |>
 knitr::include_graphics("pdf/ae0summary1.pdf")
 ```
 
-The `tlf_ae_summary` function also provide some commonly used argument to customize the table.
+The `tlf_ae_summary()` function also provides some commonly used argument to customize the table.
 
 ```{r}
 outdata |>

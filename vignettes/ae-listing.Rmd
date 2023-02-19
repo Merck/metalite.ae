@@ -14,46 +14,56 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r}
 library(metalite.ae)
 library(metalite)
 library(r2rtf)
 ```
 
-
 ## Overview
 
 The AE listing provides details about the interested adverse events information.
-The development of AE listing contains exported functions:
+The development of AE listing involves:
 
-- `prepare_ae_listing`: prepare listing datasets
-- `tlf_ae_listting`: transfer output dataset to RTF table
+- `prepare_ae_listing()`: prepare listing datasets.
+- `tlf_ae_listing()`: transfer output dataset to RTF table.
 
-> We will illustrate the process to generate a AE listing RTF file similar to the following one.
+> We will illustrate the process to generate an AE listing RTF file similar to the following one.
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
 ```
 
-### Data Manipulation
+### Data manipulation
 
 ```{r}
 adae <- r2rtf::r2rtf_adae
 adsl <- r2rtf::r2rtf_adsl
 ```
 
-First of all, we need to format the data from observation data set as we need to display on the final output. For example, if we need a 'related' column in the final output listing, we need to have a 'related' column in the observation data set. I
+First of all, we need to format the data from observation data set as we need to
+display on the final output. For example, if we need a 'related' column in the
+final output listing, we need to have a 'related' column in the observation
+data set.
 
-In the following example, we illustrate how to create a variable 'related' which use 'Y' and 'N' to present 'RELATED' and 'NOT RELATED' in listing.
+In the following example, we illustrate how to create a variable 'related'
+which use 'Y' and 'N' to present 'RELATED' and 'NOT RELATED' in listing.
 
 ```{r}
-adae$related <- ifelse(adae$AEREL == "RELATED", "Y", ifelse(
-  toupper(adae$AEREL) == "NOT RELATED", "N", tools::toTitleCase(tolower(adae$AEREL))
-))
+adae$related <- ifelse(
+  adae$AEREL == "RELATED",
+  "Y",
+  ifelse(
+    toupper(adae$AEREL) == "NOT RELATED",
+    "N",
+    tools::toTitleCase(tolower(adae$AEREL))
+  )
+)
 head(adae$related)
 ```
 
-In this code chunk, we provide a solution to generate a `outcome` variable in `adae` used to display AE outcome details in listings. 
+In this code chunk, we provide a solution to generate an `outcome` variable
+in `adae` used to display AE outcome details in listings.
 
 ```{r}
 for (i in seq_along(adae$AEOUT)) {
@@ -68,11 +78,13 @@ for (i in seq_along(adae$AEOUT)) {
 head(adae$outcome)
 ```
 
-
-This example we attempt to illustrate how to generate a column for `Action Taken` information.
+In this example, we attempt to illustrate how to generate a column for
+`Action Taken` information.
 
 ```{r}
-adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN) # raw data is all blank for 'AEACN', change to 'DOSE NOT CHANGED' for better illustration
+# Raw data is all blank for 'AEACN',
+# change to 'DOSE NOT CHANGED' for better illustration.
+adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN)
 
 for (i in seq_along(adae$AEACN)) {
   adae$action_taken[i] <- switch(adae$AEACN[i],
@@ -92,18 +104,33 @@ head(adae$action_taken)
 Example to create column for adverse event duration.
 
 ```{r}
-adae$duration <- paste(ifelse(is.na(adae$ADURN), "", as.character(adae$ADURN)), tools::toTitleCase(tolower(adae$ADURU)), sep = " ") # AE duration with unit
+# AE duration with unit
+adae$duration <- paste(
+  ifelse(
+    is.na(adae$ADURN),
+    "",
+    as.character(adae$ADURN)
+  ),
+  tools::toTitleCase(tolower(adae$ADURU)),
+  sep = " "
+)
 
 for (i in seq_along(adae$duration)) {
   if (is.na(adae$ADURN[i])) {
-    adae$duration[i] <- ifelse(charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
-      charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0, "Continuing", "Unknown")
+    adae$duration[i] <- ifelse(
+      charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
+        charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0,
+      "Continuing",
+      "Unknown"
+    )
   }
 }
 head(adae$duration)
 ```
 
-`Subline` variable is used as subline header in the AE listing. Here, we create the subline variable by concatenating 'Subject ID', 'Gender', 'Race', 'Age' and 'Treatment' information.
+The `subline` variable is used as subline header in the AE listing.
+Here, we create the subline variable by concatenating
+'Subject ID', 'Gender', 'Race', 'Age', and 'Treatment' information.
 
 ```{r}
 adae$subline <- paste0(
@@ -128,30 +155,34 @@ get_label(adae)
 
 ### Create `metadata` for AE listing
 
-In order to generate AE listings using `metalite.ae`, we have to create a `meatadata` using `metalite` package. 
+In order to generate AE listings using metalite.ae, we need to create a
+`metadata` object using the metalite package.
 
-While defining `analysis` for listing, several mapping name should be included:
+While defining `analysis` for listing, several mapping names should be included:
 
-- `name`: The name of this analysis. In this example, we use 'ae_listing'. 
-
-- `var_name`: Variable name in observation dataset which used to display in the listing. The order in the input vector for `var_nasme` will be the order of column display in the final listing.
-
-- `subline_by`: The variable is used as page subline header. It could be NULL if not applicable.
-
-- `group_by`: The variable only display when it is first appeared. In this example, we define as `c("USUBJID", "ASTDY")`.
-
-- `page_by`: The variable is used as section header. In this example, we define as `c("TRTA", "subline")`
+- `name`: The name of this analysis. In this example, we use 'ae_listing'.
+- `var_name`: Variable name in observation dataset which used to display
+  in the listing. The order in the input vector for `var_nasme` will be
+  the order of column display in the final listing.
+- `subline_by`: The variable is used as the page subline header.
+  It could be `NULL` if not applicable.
+- `group_by`: The variable only display when it is first appeared.
+  In this example, we define it as `c("USUBJID", "ASTDY")`.
+- `page_by`: The variable is used as section header.
+  In this example, we define it as `c("TRTA", "subline")`
 
 ```{r}
 meta_ae_listing <- function() {
   adsl$TRTA <- adsl$TRT01A
-  adsl$TRTA <- factor(adsl$TRTA,
+
+  adsl$TRTA <- factor(
+    adsl$TRTA,
     levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
     labels = c("Placebo", "Low Dose", "High Dose")
   )
 
-
-  adae$TRTA <- factor(adae$TRTA,
+  adae$TRTA <- factor(
+    adae$TRTA,
     levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
     labels = c("Placebo", "Low Dose", "High Dose")
   )
@@ -181,7 +212,7 @@ meta_ae_listing <- function() {
     define_observation(
       name = "wk24",
       group = "TRTA",
-      subset = quote(AOCC01FL == "Y"), # just for demo, another flag shall be used.
+      subset = quote(AOCC01FL == "Y"), # Only for demo, another flag should be used.
       label = "Weeks 0 to 24",
       rel_day = "ASTDY"
     ) |>
@@ -195,7 +226,10 @@ meta_ae_listing <- function() {
     ) |>
     define_analysis(
       name = "ae_listing",
-      var_name = c("USUBJID", "ASTDY", "AEDECOD", "duration", "AESEV", "AESER", "related", "action_taken", "outcome"),
+      var_name = c(
+        "USUBJID", "ASTDY", "AEDECOD", "duration",
+        "AESEV", "AESER", "related", "action_taken", "outcome"
+      ),
       subline_by = NULL,
       group_by = c("USUBJID", "ASTDY"),
       page_by = c("TRTA", "subline")
@@ -206,16 +240,16 @@ meta_ae_listing <- function() {
 
 ### Analysis preparation
 
-The `prepare_ae_listing` function is design to collect the variables used for listing.
+The `prepare_ae_listing()` function is designed to collect the variables used for the listing:
 
-- `meta`: The input is a `meta` objects. Here we use the `meta` object we have just created above.
-
-- `analysis`: Analysis name for listing defined in input `meta`. In this example it is "ae_listing".
-
+- `meta`: The input is a `meta` object. Here, we use the `meta` object created above.
+- `analysis`: Analysis name for listing defined in the input `meta`.
+  In this example, it is "ae_listing".
 
 ```{r}
 meta <- meta_ae_listing()
-tbl <- prepare_ae_listing(meta,
+tbl <- prepare_ae_listing(
+  meta,
   analysis = "ae_listing",
   population = "apat",
   observation = "wk12",
@@ -227,7 +261,8 @@ head(tbl$col_name)
 
 ### Generate RTF
 
-By using `tlf_ae_listing`, we can transfer the output from `prepare_ae_listing` to an RTF table.
+By using `tlf_ae_listing()`, we can transfer the output from
+`prepare_ae_listing()` to an RTF table.
 
 ```{r}
 footnote <- c(
