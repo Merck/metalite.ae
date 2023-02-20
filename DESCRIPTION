@@ -13,9 +13,12 @@ Authors@R: c(
     person("Nan", "Xiao", role = c("aut")),
     person("Merck Sharp & Dohme Corp", role = c("cph"))
     )
-Description: An R package to analyze adverse events in clinical trials using the 'metalite' data structure.
-  The R package simplified the workflow to create production ready table, listing and figures discussed in the 
-  Chpater 7 and Chapter 8 of the R for Clinical Study Reports and Submission book (https://r4csr.org/). 
+Description: Analyzes adverse events in clinical trials using the 'metalite'
+    data structure. The package simplifies the workflow to create
+    production-ready tables, listings, and figures discussed in the
+    adverse events analysis chapters of
+    "R for Clinical Study Reports and Submission"
+    (Zhang et al., 2022, <https://r4csr.org/>).
 License: GPL-3
 URL: https://merck.github.io/metalite.ae/, https://github.com/Merck/metalite.ae
 BugReports: https://github.com/Merck/metalite.ae/issues

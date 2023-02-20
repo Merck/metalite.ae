@@ -31,31 +31,32 @@ library(tidyr)
 ## Overview
 
 The AE specification analysis is to provide tables to summarize details of adverse events.
-The development of AE specification analysis contain exported functions
+The development of AE specification analysis involves:
 
-- `prepare_ae_specific`: prepare analysis raw datasets
-- `format_ae_specific`: prepare analysis (mock) outdata with proper format
-- `tlf_ae_specific`: transfer (mock) output dataset to RTF table
+- `prepare_ae_specific()`: prepare analysis raw datasets.
+- `format_ae_specific()`: prepare analysis (mock) outdata with proper format.
+- `tlf_ae_specific()`: transfer (mock) output dataset to RTF table.
 
-We also prepare (optional) additional function to extend the analysis.
+We can also prepare (optional) additional function to extend the analysis:
 
-- `extend_ae_specific_inference`: add risk difference inference results based on M&N method.
-- `extend_ae_specific_duration`: add average duration of AE.
-- `extend_ae_specific_events`: add average number of AE events.
+- `extend_ae_specific_inference()`: add risk difference inference results based on M&N method.
+- `extend_ae_specific_duration()`: add average duration of AE.
+- `extend_ae_specific_events()`: add average number of AE events.
 
 ### Analysis preparation
 
-The `prepare_ae_specific` function is design to be used for multiple purpose.
-The input of the function is a `meta` objects created from `metalite.ae` package.
+The `prepare_ae_specific()` function is designed to be used for multiple purposes.
+The input of the function is a `meta` object created by the metalite package.
 
 ```{r}
 meta <- meta_ae_example()
 ```
 
-The output of the function is an `outdata` objects contain a list of analysis raw datasets.
+The output of the function is an `outdata` object containing a list of analysis raw datasets.
 
 ```{r}
-outdata <- prepare_ae_specific(meta,
+outdata <- prepare_ae_specific(
+  meta,
   population = "apat",
   observation = "wk12",
   parameter = "rel"
@@ -66,7 +67,8 @@ outdata <- prepare_ae_specific(meta,
 outdata
 ```
 
-The output dataset contains commonly used statistics. The variable is indexed by the order of `outdata$group`.
+The output dataset contains commonly used statistics.
+The variable is indexed by the order of `outdata$group`.
 
 ```{r}
 outdata$group
@@ -78,19 +80,19 @@ The row is indexed by the order of `outdata$name`.
 head(data.frame(outdata$order, outdata$name))
 ```
 
-- `n_pop`: participants in population
+- `n_pop`: participants in population.
 
 ```{r}
 outdata$n_pop
 ```
 
-- `n`: number of subjects with AE
+- `n`: number of subjects with AE.
 
 ```{r}
 head(outdata$n)
 ```
 
-- `prop`: proportion of subjects with AE
+- `prop`: proportion of subjects with AE.
 
 ```{r}
 head(outdata$prop)
@@ -104,12 +106,11 @@ head(outdata$diff)
 
 ### Format output
 
-After we have the raw analysis results, we can use `format_ae_specific` to prepare the outdata
-to create RTF tables.
+After we have the raw analysis results, we can use `format_ae_specific()` to
+prepare the outdata and create RTF tables.
 
 ```{r}
-tbl <- outdata |>
-  format_ae_specific()
+tbl <- outdata |> format_ae_specific()
 head(tbl$tbl)
 ```
 
@@ -129,8 +130,8 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-Adding 95% confidence interval of M&N method. It requires to use `extend_ae_specific_inference`
-to perform additional calculation.
+Adding 95% confidence interval of M&N method. It requires to use
+`extend_ae_specific_inference()` to perform additional calculations.
 
 ```{r}
 tbl <- outdata |>
@@ -139,8 +140,8 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-Adding average duration of AE. It requires to use `extend_ae_specific_duration`
-to perform additional calculation.
+Adding average duration of AE. It requires to use
+`extend_ae_specific_duration()` to perform additional calculations.
 
 ```{r}
 tbl <- outdata |>
@@ -149,8 +150,8 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-Adding average number of AE per subject. It requires to use `extend_ae_specific_events`
-to perform additional calculation.
+Adding average number of AE per subject. It requires to use
+`extend_ae_specific_events()` to perform additional calculation.
 
 ```{r}
 tbl <- outdata |>
@@ -161,13 +162,13 @@ head(tbl$tbl)
 
 ### Mock data preparation
 
-We can also use `format_ae_specific` to create mock output data.
+We can also use `format_ae_specific()` to create mock output data.
 
 The purpose of the `mock` argument is not to create a comprehensive mock table template,
-but a handy way to help user create a mock table that mimic the exact output layout.
+but a handy way to help users create a mock table that mimic the exact output layout.
 
 Additional work is required to develop a flexible mock table generation tool
-(e.g. a dedicated mock table generation package)
+(for example, a dedicated mock table generation package).
 
 ```{r}
 tbl <- outdata |>
@@ -177,7 +178,8 @@ head(tbl$tbl)
 
 ### RTF tables
 
-By using `tlf_ae_specific`, we can transfer the output from `format_ae_specific` to an RTF table.
+By using `tlf_ae_specific()`, we can transfer the output from
+`format_ae_specific()` to an RTF table.
 
 ```{r}
 outdata |>
@@ -193,7 +195,8 @@ outdata |>
 knitr::include_graphics("pdf/ae0specific1.pdf")
 ```
 
-The `tlf_ae_specific` function also provide some commonly used argument to customize the table.
+The `tlf_ae_specific()` function also provides some commonly used arguments
+to customize the table.
 
 ```{r}
 outdata |>
