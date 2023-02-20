@@ -36,6 +36,10 @@ there are three required functions to create AE summary analysis table using met
 - `format_ae_summary()`: prepare analysis (mock) outdata with proper format.
 - `tlf_ae_summary()`: transfer (mock) output dataset to RTF table.
 
+There is one optional function to extend AE summary analysis. 
+
+- `extend_ae_specific_inference()`: add risk difference inference results based on M&N method.
+
 An example output: 
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
