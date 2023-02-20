@@ -67,7 +67,6 @@ reference:
 - title: Example data
   contents:
     - meta_ae_example
-    - meta_ae_listing_example
 
 articles:
 - title: Get started

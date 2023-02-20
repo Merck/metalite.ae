@@ -27,6 +27,6 @@ A list of analysis raw datasets.
 Prepare datasets for AE specific analysis
 }
 \examples{
-meta <- meta_ae_listing_example()
+meta <- meta_ae_example()
 str(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"))
 }

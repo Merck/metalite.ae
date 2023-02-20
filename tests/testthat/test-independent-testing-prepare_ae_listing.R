@@ -71,7 +71,8 @@ meta_ae_listing_example <- function() {
 listing_ae <- full_join(
   adsl |> select(USUBJID, TRT01AN, ITTFL), # Merge with adsl
   adae,
-  by = "USUBJID"
+  by = "USUBJID",
+  multiple = "all"
 )
 
 test_that("Its class is 'outdata'", {

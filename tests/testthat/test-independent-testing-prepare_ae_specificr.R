@@ -94,7 +94,8 @@ res_tot1 <- res_tot |>
 adae_itt <- full_join(
   adsl |> select(USUBJID, TRT01AN, ITTFL), # Merge with adsl to get percentage
   adae,
-  by = "USUBJID"
+  by = "USUBJID",
+  multiple = "all"
 ) |> subset(ITTFL == "Y" & TRTEMFL == "Y")
 
 adae_tot <- adae_itt |> mutate(TRT01AN = 99) # Add total rows into calculation
@@ -132,7 +133,9 @@ test_that("With one or more adverse events", {
     group_by(TRT01AN, ITTFL) |>
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1, by = c("TRT01AN", "ITTFL"))) |>
+  res_ae <- data.frame(full_join(res_ae, res_tot1,
+                                 by = c("TRT01AN", "ITTFL"),
+                                 multiple = "all")) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -191,7 +194,8 @@ test_that("With no adverse events", {
   res_noadv <- full_join(
     res_tot1, # Merge with adsl to get percentage
     res_ae,
-    by = c("TRT01AN", "ITTFL")
+    by = c("TRT01AN", "ITTFL"),
+    multiple = "all"
   ) |> mutate(p = z - n)
 
   res_noadv <- res_noadv |>
@@ -259,7 +263,9 @@ test_that("With aebodsys, aedecod count", {
     )) |>
     ungroup()
 
-  res_ae_aed <- data.frame(full_join(res_ae_aed, res_tot1, by = c("TRT01AN", "ITTFL"))) |>
+  res_ae_aed <- data.frame(full_join(res_ae_aed, res_tot1,
+                                     by = c("TRT01AN", "ITTFL"),
+                                     multiple = "all")) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0")) |>
     mutate(p = case_when(
       TRT01AN == 0 ~ "prop_1",
@@ -300,7 +306,9 @@ test_that("With aebodsys, aedecod count", {
     )) |>
     ungroup()
 
-  res_ae_aeb <- data.frame(full_join(res_ae_aeb, res_tot1, by = c("TRT01AN", "ITTFL"))) |>
+  res_ae_aeb <- data.frame(full_join(res_ae_aeb, res_tot1,
+                                     by = c("TRT01AN", "ITTFL"),
+                                     multiple = "all")) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0")) |>
     mutate(p = case_when(
       TRT01AN == 0 ~ "prop_1",

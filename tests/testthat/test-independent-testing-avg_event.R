@@ -1,5 +1,3 @@
-library(r2rtf)
-
 test_that("if group = ... is not a factor, throw errors", {
   expect_error(avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA))
 })

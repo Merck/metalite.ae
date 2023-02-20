@@ -1,8 +1,4 @@
-library(metalite)
-library(metalite.ae)
-library(r2rtf)
-
-x <- meta_ae_listing_example()
+x <- meta_ae_example()
 
 outdata <- prepare_ae_listing(
   x,
