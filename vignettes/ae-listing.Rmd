@@ -7,32 +7,48 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
+  comment = "#>",
   collapse = TRUE,
-  comment = "#>"
+  out.width = "100%",
+  dpi = 150
 )
 ```
 
 ```{r}
 library(metalite.ae)
 library(metalite)
-library(r2rtf)
 ```
 
 ## Overview
 
+The purpose of this tutorial is to create production ready AE listing. 
+
 The AE listing provides details about the interested adverse events information.
-The development of AE listing involves:
+With a metadata created by metalite, 
+there are two required functions to create AE summary analysis table using metalite.ae:
 
 - `prepare_ae_listing()`: prepare listing datasets.
 - `tlf_ae_listing()`: transfer output dataset to RTF table.
 
-> We will illustrate the process to generate an AE listing RTF file similar to the following one.
+An example output: 
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
+knitr::include_graphics("rtf/ae0listing0ser0wk12.rtf")
 ```
+
+## Example data 
+
+In metalite.ae, we created an example dataset using ADSL and ADAE datasets by the metalite package. 
+
+```{r}
+meta <- meta_ae_example()
+meta
+```
+
+The same metadata structure is used to support all analyses example in metalite.ae. 
+More details can be found in the [metalite package website](https://merck.github.io/metalite/articles/metalite.html). 
 
 ### Data manipulation
 

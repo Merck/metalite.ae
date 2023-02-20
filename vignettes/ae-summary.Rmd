@@ -12,8 +12,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
   out.width = "100%",
-  dpi = 150,
-  eval = TRUE
+  dpi = 150
 )
 ```
 
