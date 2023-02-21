@@ -219,9 +219,13 @@ test_that("with one or more adverse event count", {
     group_by(TRT01AN, ITTFL) |>
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -349,9 +353,13 @@ test_that("with drug-related adverse event count", {
       mutate(AEREL = "RELATED", n = 0)
   }
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -410,9 +418,13 @@ test_that("non-serious adverse events count", {
     group_by(TRT01AN, ITTFL) |>
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -483,9 +495,13 @@ test_that("serious adverse event count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -558,9 +574,13 @@ test_that("serious drug-related adverse event count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -633,9 +653,13 @@ test_that("death count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -708,9 +732,13 @@ test_that("died due to drug-related adverse event count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -782,9 +810,13 @@ test_that("discontinued due to an adverse event count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -857,9 +889,13 @@ test_that("discontinued due to drug-related adverse event count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -903,7 +939,8 @@ test_that("discontinued due to drug-related adverse event count", {
 
 
 test_that("discontinued due to serious adverse event count", {
-  adae_itt <- full_join(adsl |> select(USUBJID, TRT01AN, ITTFL), # merge with adsl to get percentage
+  adae_itt <- full_join(
+    adsl |> select(USUBJID, TRT01AN, ITTFL), # Merge with adsl to get percentage
     adae,
     by = "USUBJID",
     multiple = "all"
@@ -931,9 +968,13 @@ test_that("discontinued due to serious adverse event count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -1004,9 +1045,13 @@ test_that("discontinued due to serious drug-related adverse event count", {
 
   res_ae[is.na(res_ae)] <- 0
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)

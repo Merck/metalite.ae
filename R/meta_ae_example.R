@@ -41,7 +41,7 @@ meta_ae_example <- function() {
     labels = c("Placebo", "Low Dose", "High Dose")
   )
 
-  # Drug Related AE Values
+  # Drug-related AE values
   adae$related <- ifelse(
     adae$AEREL == "RELATED",
     "Y",
@@ -55,11 +55,11 @@ meta_ae_example <- function() {
   # AE outcome
   for (i in seq_along(adae$AEOUT)) {
     adae$outcome <- switch(adae$AEOUT[i],
-                           "RECOVERED/RESOLVED" = "Resolved",
-                           "RECOVERING/RESOLVING" = "Resolving",
-                           "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
-                           "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-                           tools::toTitleCase(tolower(adae$AEOUT[i]))
+      "RECOVERED/RESOLVED" = "Resolved",
+      "RECOVERING/RESOLVING" = "Resolving",
+      "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
+      "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
+      tools::toTitleCase(tolower(adae$AEOUT[i]))
     )
   }
 
@@ -68,14 +68,14 @@ meta_ae_example <- function() {
 
   for (i in seq_along(adae$AEACN)) {
     adae$action_taken[i] <- switch(adae$AEACN[i],
-                                   "DOSE NOT CHANGED" = "None",
-                                   "DOSE REDUCED" = "Reduced",
-                                   "DRUG INTERRUPTED" = "Interrupted",
-                                   "DOSE INCREASED" = "Increased",
-                                   "NOT APPLICABLE" = "N/A",
-                                   "UNKNOWN" = "Unknown",
-                                   "''" = "None",
-                                   tools::toTitleCase(tolower(adae$AEACN[i]))
+      "DOSE NOT CHANGED" = "None",
+      "DOSE REDUCED" = "Reduced",
+      "DRUG INTERRUPTED" = "Interrupted",
+      "DOSE INCREASED" = "Increased",
+      "NOT APPLICABLE" = "N/A",
+      "UNKNOWN" = "Unknown",
+      "''" = "None",
+      tools::toTitleCase(tolower(adae$AEACN[i]))
     )
   }
 
@@ -112,8 +112,8 @@ meta_ae_example <- function() {
 
   # Assign label
   adae <- assign_label(adae,
-                       var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
-                       label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
+    var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
+    label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
   )
 
   plan <- plan(

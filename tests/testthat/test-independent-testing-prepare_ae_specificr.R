@@ -133,9 +133,13 @@ test_that("With one or more adverse events", {
     group_by(TRT01AN, ITTFL) |>
     summarise(n = n_distinct(USUBJID), .groups = "drop")
 
-  res_ae <- data.frame(full_join(res_ae, res_tot1,
-                                 by = c("TRT01AN", "ITTFL"),
-                                 multiple = "all")) |>
+  res_ae <- data.frame(
+    full_join(
+      res_ae, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0"))
 
   res_ae$pct <- as.numeric(res_ae$pct)
@@ -263,9 +267,13 @@ test_that("With aebodsys, aedecod count", {
     )) |>
     ungroup()
 
-  res_ae_aed <- data.frame(full_join(res_ae_aed, res_tot1,
-                                     by = c("TRT01AN", "ITTFL"),
-                                     multiple = "all")) |>
+  res_ae_aed <- data.frame(
+    full_join(
+      res_ae_aed, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0")) |>
     mutate(p = case_when(
       TRT01AN == 0 ~ "prop_1",
@@ -306,9 +314,13 @@ test_that("With aebodsys, aedecod count", {
     )) |>
     ungroup()
 
-  res_ae_aeb <- data.frame(full_join(res_ae_aeb, res_tot1,
-                                     by = c("TRT01AN", "ITTFL"),
-                                     multiple = "all")) |>
+  res_ae_aeb <- data.frame(
+    full_join(
+      res_ae_aeb, res_tot1,
+      by = c("TRT01AN", "ITTFL"),
+      multiple = "all"
+    )
+  ) |>
     mutate(pct = formatC(100 * n / z, digits = 13, format = "f", flag = "0")) |>
     mutate(p = case_when(
       TRT01AN == 0 ~ "prop_1",
