@@ -25,17 +25,18 @@ Useful links:
 Authors:
 \itemize{
   \item Yilong Zhang
-  \item Xuan Deng
-  \item Ruchitbhai Patel
-  \item Madhusudhan Ginnaram
-  \item Sarad Nepal
-  \item Brian Lang
   \item Benjamin Wang
   \item Nan Xiao
+  \item Sarad Nepal
+  \item Madhusudhan Ginnaram
+  \item Ruchitbhai Patel
+  \item Brian Lang
+  \item Xuan Deng
 }
 
 Other contributors:
 \itemize{
+  \item Venkatesh Burla [contributor]
   \item Merck Sharp & Dohme Corp [copyright holder]
 }
 
