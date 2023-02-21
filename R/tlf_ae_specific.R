@@ -85,8 +85,9 @@ tlf_ae_specific <- function(outdata,
     stop(
       "col_rel_width must have the same length (has ",
       length(col_rel_width),
-      ") as as outdata$tbl has number of columns (has ",
-      n_col, ")."
+      ") as as `outdata$tbl` has number of columns (has ",
+      n_col, ").",
+      call. = FALSE
     )
   }
 
@@ -237,7 +238,9 @@ tlf_ae_specific <- function(outdata,
     )
   }
 
-  if (sum(rwidth_1) != sum(rwidth_2)) stop("width calculation broke, contact developer")
+  if (sum(rwidth_1) != sum(rwidth_2)) {
+    stop("Width calculation breaks, please contact developer.", call. = FALSE)
+  }
 
   # Column border
   border_top <- c("", rep("single", n_col - 1))
