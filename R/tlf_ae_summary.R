@@ -1,25 +1,43 @@
-#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+# All rights reserved.
 #
-#    This file is part of the metalite.ae program.
+# This file is part of the metalite.ae program.
 #
-#    metalite.ae is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# metalite.ae is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' AE summary table
 #'
 #' @inheritParams tlf_ae_specific
 #'
+#' @return RTF file and source dataset for AE listing.
+#'
 #' @export
+#'
+#' @examples
+#' meta <- meta_ae_example()
+#' outdata <- prepare_ae_summary(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "any;rel;ser"
+#' )
+#' outdata |>
+#'   format_ae_summary() |>
+#'   tlf_ae_summary(
+#'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     path_outdata = tempfile(fileext = ".Rdata"),
+#'     path_outtable = tempfile(fileext = ".rtf")
+#'   )
 tlf_ae_summary <- function(outdata,
                            source,
                            col_rel_width = NULL,
@@ -62,7 +80,6 @@ tlf_ae_summary <- function(outdata,
   colheader <- colheader_n
 
   # Relative width
-
   if (is.null(col_rel_width)) {
     rel_width <- c(3, rep(1, 2 * n_group))
   } else {
@@ -81,7 +98,6 @@ tlf_ae_summary <- function(outdata,
   border_top <- c("", rep("single", n_col - 1))
   border_left <- c("single", rep(c("single", ""), n_group), rep("single", n_col - n_group * 2 - 1))
 
-
   # Using order number to customize row format
   text_justification <- c("l", rep("c", n_col - 1))
 
@@ -91,8 +107,7 @@ tlf_ae_summary <- function(outdata,
   text_indent <- matrix(0, nrow = n_row, ncol = n_col)
   text_indent[, 1] <- ifelse(outdata$order == 1, 0, 100)
 
-  # Using r2rtf
-
+  # Use r2rtf
   outdata$rtf <- tbl |>
     r2rtf::rtf_page(orientation = orientation) |>
     r2rtf::rtf_title(title) |>
@@ -132,6 +147,6 @@ tlf_ae_summary <- function(outdata,
       )
   }
 
-  # prepare output
+  # Prepare output
   rtf_output(outdata, path_outdata, path_outtable)
 }

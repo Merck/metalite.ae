@@ -1,12 +1,14 @@
 ---
 title: "Introduction to metalite.ae"
-output:
-  rmarkdown::html_vignette
-resource_files:
-   - outtable/*.pdf
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Introduction to metalite.ae}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+resource_files:
+   - fig/*.png
+   - rtf/*.rtf
+   - pdf/*.pdf
 ---
 
 ```{r, include=FALSE}
@@ -26,47 +28,69 @@ library(metalite.ae)
 
 ## Overview
 
-`metalite.ae` is an R package for standard adverse events analysis including:
+metalite.ae is an R package to analyze adverse events (AE) in clinical trials,
+including:
 
-- AE summary
-- Specific AE analysis
-- Specific AE subgroup analysis (TODO)
-- AE listing (TODO)
+<details>
+<summary>AE summary.</summary>
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png">
+</details>
+<details>
+<summary>
+Specific AE analysis.</summary>
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png">
+</details>
+<details>
+<summary>AE listing.</summary>
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png">
+</details>
+
+The R package simplifies the workflow to create production-ready
+tables, listings, and figures discussed in the
+[AE summary chapter](https://r4csr.org/aesummary.html) and the
+[specific AE chapter](https://r4csr.org/specific-ae.html) of the
+_R for Clinical Study Reports and Submission_ book with full traceability.
+
+The R package is created using the [metalite](https://merck.github.io/metalite/)
+data structure that provides an end-to-end software development lifecycle (SDLC)
+solution including defining, developing, validating, and finalizing the analysis.
 
 ### Workflow
 
-The general workflow is splitted into three parts.
+The general workflow covers:
 
-1. Define meta data information using `metalite` package
-1. Prepare outdata using `prepare_xxx` functions
-1. Extend outdata using `extend_xxx` functions
-1. Format outdata using `format_xxx` functions
-1. Create TLFs using `tlf_xxx` functions
+1. Define metadata information using metalite.
+1. Prepare outdata using `prepare_*()` functions.
+1. Extend outdata using `extend_*()` functions (optional).
+1. Format outdata using `format_*()` functions.
+1. Create TLFs using `tlf_*()` functions.
 
 For example, we can create a simple AE summary table as below.
 
-```{r}
-meta_ae_dummy() |>
+```{r, eval = FALSE}
+meta_ae_example() |> # Example AE data created using metalite
   prepare_ae_summary(
-    population = "apat",
-    observation = "wk12",
-    parameter = "any;rel;ser"
+    population = "apat", # Select population by keywords
+    observation = "wk12", # Select observation by keywords
+    parameter = "any;rel;ser" # Select AE terms by keywords
   ) |>
   format_ae_summary() |>
   tlf_ae_summary(
-    source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    path_outtable = "outtable/ae0summary.rtf"
+    source = "Source:  [CDISCpilot: adam-adsl; adae]", # Define data source
+    path_outtable = "ae0summary.rtf" # Define output
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("outtable/ae0summary.pdf")
+knitr::include_graphics("pdf/ae0summary1.pdf")
 ```
 
-More examples can be found in `vignette("ae-summary")` and `vignette("ae-specific")`.
+Tutorials with additional examples are listed on the
+[package website](https://merck.github.io/metalite.ae/articles/).
 
 ### Highlighted features
 
-- Enable metadata structure
-- Consistent input and output in standard functions
-- Streamline mock table generation
+- Avoid duplicated input by using metadata structure.
+  - For example, define analysis population once to use in all adverse events analysis.
+- Consistent input and output in standard functions.
+- Streamlines mock table generation.

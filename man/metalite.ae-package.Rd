@@ -6,7 +6,9 @@
 \alias{metalite.ae-package}
 \title{metalite.ae: Adverse Events Analysis Using 'metalite'}
 \description{
-Adverse events analysis using the 'metalite' data structure.
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+Analyzes adverse events in clinical trials using the 'metalite' data structure. The package simplifies the workflow to create production-ready tables, listings, and figures discussed in the adverse events analysis chapters of "R for Clinical Study Reports and Submission" (Zhang et al., 2022, \url{https://r4csr.org/}).
 }
 \seealso{
 Useful links:
@@ -18,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Nan Xiao \email{nan.xiao1@merck.com}
+\strong{Maintainer}: Yujie Zhao \email{yujie.zhao@merck.com}
 
 Authors:
 \itemize{
@@ -27,7 +29,9 @@ Authors:
   \item Ruchitbhai Patel
   \item Madhusudhan Ginnaram
   \item Sarad Nepal
-  \item Yujie Zhao
+  \item Brian Lang
+  \item Benjamin Wang
+  \item Nan Xiao
 }
 
 Other contributors:

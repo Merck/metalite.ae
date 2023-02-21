@@ -7,16 +7,15 @@ You must agree to the terms of these licenses, in addition to the metalite.ae
 source code license, in order to use this software.
 
 --------------------------------------------------
-  Third party R packages listed by License type
+Third party R packages listed by License type
 [Format: Name - URL]
 --------------------------------------------------
-  
+
 MIT / X11 License (or adaptations) (https://www.opensource.org/licenses/MIT)
-  * rlang - https://github.com/r-lib/rlang
-  * glue - https://github.com/tidyverse/glue
-  * dplyr - https://github.com/tidyverse/dplyr
-  
-GPL-2 | GPL-3 [expanded from: GPL (>=2)]
-	* metalite  
-  * r2rtf - https://github.com/Merck/r2rtf
-  * DescTools - https://github.com/AndriSignorell/DescTools
+  * rlang - https://rlang.r-lib.org/LICENSE.html
+  * glue - https://glue.tidyverse.org/LICENSE.html
+  * dplyr - https://dplyr.tidyverse.org/LICENSE.html
+
+GPL-3
+  * metalite - https://merck.github.io/metalite/LICENSE.html
+  * r2rtf - https://github.com/Merck/r2rtf/blob/master/LICENSE

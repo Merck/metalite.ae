@@ -7,10 +7,24 @@
 extend_ae_specific_inference(outdata, ci = 0.95)
 }
 \arguments{
-\item{outdata}{a \code{outdata} object created by \code{prepare_ae_specific}}
+\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{ci}{a numeric value for the percentile of confidence interval.}
+\item{ci}{A numeric value for the percentile of confidence interval.}
+}
+\value{
+A list of analysis raw datasets.
 }
 \description{
 Add inference information for AE specific analysis
+}
+\examples{
+meta <- meta_ae_example()
+tbl <- prepare_ae_specific(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  extend_ae_specific_inference() |>
+  format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
+head(tbl$tbl)
 }

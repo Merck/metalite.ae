@@ -2,17 +2,23 @@
 % Please edit documentation in R/fmt.R
 \name{fmt_pval}
 \alias{fmt_pval}
-\title{Format P-Value}
+\title{Format p-value}
 \usage{
 fmt_pval(p, digits = 3, width = 3 + digits)
 }
 \arguments{
-\item{p}{a numeric vector of p-values}
+\item{p}{A numeric vector of p-values.}
 
-\item{digits}{digits of each column, i.e. format as x.xxx}
+\item{digits}{Digits of each column, i.e., format as x.xxx.}
 
-\item{width}{width of each column}
+\item{width}{Width of each column.}
+}
+\value{
+A numeric vector with the expected format.
 }
 \description{
-Format P-Value
+Format p-value
+}
+\examples{
+fmt_pval(0.1234)
 }

@@ -3,15 +3,22 @@ Title: Adverse Events Analysis Using 'metalite'
 Version: 0.0.0.9000
 Authors@R: c(
     person("Yilong", "Zhang", role = c("aut")),
-    person("Nan", "Xiao", email = "nan.xiao1@merck.com", role = c("aut", "cre")),
+    person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role = c("aut", "cre")),
     person("Xuan", "Deng", role = c("aut")),
     person("Ruchitbhai", "Patel", role = c("aut")),
     person("Madhusudhan", "Ginnaram", role = c("aut")),
     person("Sarad", "Nepal", role = c("aut")),
-    person("Yujie", "Zhao", role = c("aut")),
+    person("Brian", "Lang", role = c("aut")),
+    person("Benjamin", "Wang", role = c("aut")),
+    person("Nan", "Xiao", role = c("aut")),
     person("Merck Sharp & Dohme Corp", role = c("cph"))
     )
-Description: Adverse events analysis using the 'metalite' data structure.
+Description: Analyzes adverse events in clinical trials using the 'metalite'
+    data structure. The package simplifies the workflow to create
+    production-ready tables, listings, and figures discussed in the
+    adverse events analysis chapters of
+    "R for Clinical Study Reports and Submission"
+    (Zhang et al., 2022, <https://r4csr.org/>).
 License: GPL-3
 URL: https://merck.github.io/metalite.ae/, https://github.com/Merck/metalite.ae
 BugReports: https://github.com/Merck/metalite.ae/issues
@@ -19,15 +26,14 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
-    DescTools,
     dplyr,
     glue,
     metalite,
     r2rtf,
     stats,
-    tidyr,
-    haven
+    tidyr
 Suggests:
+    DescTools,
     covr,
     knitr,
     kableExtra,
@@ -35,8 +41,6 @@ Suggests:
     readxl,
     rprojroot,
     testthat (>= 3.0.0)
-Remotes:
-    Merck/metalite
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
 Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

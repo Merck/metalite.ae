@@ -1,42 +1,61 @@
-#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+# All rights reserved.
 #
-#    This file is part of the metalite.ae program.
+# This file is part of the metalite.ae program.
 #
-#    metalite.ae is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# metalite.ae is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Unstratified and Stratified  Miettinen and Nurminen Test in Aggregate Data level
+#' Unstratified and stratified Miettinen and Nurminen test in
+#' aggregate data level
 #'
-#' Unstratified and Stratified  Miettinen and Nurminen Test.
+#' @param n0,n1 The sample size in the control group and experimental group,
+#'   separately. The length should be the same as the length for
+#'   `x0/x1` and `strata`.
+#' @param x0,x1 The number of events in the control group and
+#'   experimental group, separately. The length should be the same
+#'   as the length for `n0/n1` and `strata`.
+#' @param strata A vector of stratum indication to be used in the analysis.
+#'   If `NULL` or the length of unique values of `strata` equals to 1,
+#'   it is unstratified MN analysis. Otherwise, it is stratified MN analysis.
+#'   The length of `strata` should be the same as the length for
+#'   `x0/x1` and `n0/n1`.
+#' @param delta A numeric value to set the difference of two groups
+#'   under the null.
+#' @param weight Weighting schema used in stratified MN method.
+#'   Default is `"ss"`:
+#'   - `"equal"` for equal weighting.
+#'   - `"ss"` for sample size weighting.
+#'   - `"cmh"` for Cochran-Mantel-Haenszel's weights.
+#' @param test A character string specifying the side of p-value,
+#'   must be one of `"one.sided"`, or `"two.sided"`.
+#' @param bisection The number of sections in the interval used in
+#'   bisection method. Default is 100.
+#' @param eps The level of precision. Default is 1e-06.
+#' @param alpha Pre-defined alpha level for two-sided confidence interval.
 #'
-#' @param n0,n1 the sample size in the control group and experimental group, separately. The length should be the same as the length for `x0/x1` and `strata`.
-#' @param x0,x1 the number of events in the control group and experimental group, separately. The length should be the same as the length for `n0/n1` and `strata`.
-#' @param strata a vector of stratum indication to be used in the analysis. If `NULL` or the length of unique values of `strata` equals to 1, it is unstratified MN analysis. Otherwise,
-#' it is stratified MN analysis. The length of `strata` should be the same as the length for `x0/x1` and `n0/n1`.
-#' @param delta a numeric value to set the difference of two group under the null.
-#' @param weight weighting schema used in stratified MN method. Default is "ss".
-#' - `"equal"` for equal weighting,
-#' - `"ss"` for sample size weighting,
-#' - `"cmh"` for Cochran Mantel-Haenszel's weights.
-#' @param test a character string specifying the side of p-value,
-#' must be one of `"one.sided"`, or `"two.sided"`.
-#' @param bisection the number of sections in the interval used in Bisection Method. Default is 100.
-#' @param eps the level of precision. Default is eps=1e-06.
-#' @param alpha pre-defined alpha level for two-sided confidence interval.
-#' @references Miettinen, O. and Nurminen, M, \emph{Comparative Analysis of Two Rates}. Statistics in Medicine, 4:213-226, 1985.
+#' @return A data frame with the test results.
+#'
+#' @references
+#' Miettinen, O. and Nurminen, M, Comparative Analysis of Two Rates.
+#' _Statistics in Medicine_, 4(2):213--226, 1985.
+#'
+#' @importFrom stats pnorm pchisq qchisq
+#'
+#' @export
+#'
 #' @examples
-#'
-#' ## To conduct the stratified MN analysis with sample size weights:
+#' # Conduct the stratified MN analysis with sample size weights
 #' treatment <- c(rep("pbo", 100), rep("exp", 100))
 #' response <- c(rep(0, 80), rep(1, 20), rep(0, 40), rep(1, 60))
 #' stratum <- c(rep(1:4, 12), 1, 3, 3, 1, rep(1:4, 12), rep(1:4, 25))
@@ -53,8 +72,6 @@
 #'   test = "one.sided",
 #'   alpha = 0.05
 #' )
-#' @export
-
 rate_compare_sum <- function(n0, n1,
                              x0, x1,
                              strata = NULL,
@@ -64,7 +81,7 @@ rate_compare_sum <- function(n0, n1,
                              bisection = 100,
                              eps = 1e-06,
                              alpha = 0.05) {
-  if (any(is.na(c(n0, n1, x0, x1))) | all(c(x0, x1) == 0)) {
+  if (any(is.na(c(n0, n1, x0, x1))) || all(c(x0, x1) == 0)) {
     z <- data.frame(
       est = NA, z_score = NA,
       p = NA, lower = NA, upper = NA
@@ -78,7 +95,7 @@ rate_compare_sum <- function(n0, n1,
   len <- c(length(n0), length(n1), length(x0), length(x1))
   if (!is.null(strata)) len <- c(len, length(strata))
   if (max(len) != min(len)) {
-    stop("The length of input parameters n0, n1, x0, x1, and strata are different.")
+    stop("The length of input arguments `n0`, `n1`, `x0`, `x1`, and `strata` are different.")
   }
 
   # Count the event
@@ -97,9 +114,9 @@ rate_compare_sum <- function(n0, n1,
   sign <- ifelse(q > 0, 1, -1)
   p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sign
 
-  # calcualte R tilter
+  # Calculate R tilter
   temp <- q / (p^3)
-  # to limit this temo within (-1,1)
+  # To limit this temp within (-1, 1)
   temp <- pmax(pmin(temp, 1), -1)
   a <- (pi + acos(temp)) / 3
 
@@ -108,7 +125,7 @@ rate_compare_sum <- function(n0, n1,
   r1t <- r0t + delta
   vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
 
-  if (is.null(strata) | length(unique(strata)) == 1) {
+  if (is.null(strata) || length(unique(strata)) == 1) {
     r_diff <- (r1 - r0)
     z_score <- (r_diff - delta) / sqrt(vart)
     pval <- switch(test,
@@ -117,7 +134,7 @@ rate_compare_sum <- function(n0, n1,
     )
   }
   if (!length(unique(strata)) == 1) {
-    # Start to calculate the chi-square
+    # Start to calculate the Chi-square
     w <- switch(weight,
       equal = rep(1, length(strata)),
       ss = n / sum(n),
@@ -134,10 +151,10 @@ rate_compare_sum <- function(n0, n1,
     )
   }
 
-  # bisection function to find the roots
-  # f is the function for which the root is sought,
-  # a and b are minimum and maximum of the interval
-  # which contains the root from Bisection Method
+  # Bisection function to find the roots:
+  # `f` is the function for which the root is sought,
+  # `a` and `b` are minimum and maximum of the interval,
+  # which contains the root from the bisection method.
   biroot <- function(f, a, b) {
     h <- abs(b - a) / bisection
     i <- 0
@@ -174,7 +191,7 @@ rate_compare_sum <- function(n0, n1,
     }
   }
 
-  # # Start to calculate the Confidence Interval
+  # Start to calculate the confidence interval
   func_d <- function(d) {
     l3 <- n
     l2 <- (n1 + 2 * n0) * d - n - c
@@ -193,9 +210,9 @@ rate_compare_sum <- function(n0, n1,
         p
       )
     )
-    # calculate R tilter
+    # Calculate R tilter
     temp <- q / (p^3)
-    # to limit this temp within (-1,1)
+    # To limit this temp within (-1, 1)
     temp <- pmax(pmin(temp, 1), -1)
     a <- (pi + acos(temp)) / 3
     # Start to calculate R tilter
@@ -203,12 +220,12 @@ rate_compare_sum <- function(n0, n1,
     r1t <- r0t + d
     vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
 
-    if (is.null(strata) | length(unique(strata)) == 1) {
+    if (is.null(strata) || length(unique(strata)) == 1) {
       r_diff <- (x1 / n1 - x0 / n0)
       chisq_obs <- (r_diff - d)^2 / vart
     }
     if (!length(unique(strata)) == 1) {
-      # Start to calculate the chi-square
+      # Start to calculate the Chi-square
       r1_w <- r1 * w
       r0_w <- r0 * w
       var_w <- w^2 * vart

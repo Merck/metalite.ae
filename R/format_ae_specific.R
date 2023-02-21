@@ -1,39 +1,65 @@
-#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+# All rights reserved.
 #
-#    This file is part of the metalite.ae program.
+# This file is part of the metalite.ae program.
 #
-#    metalite.ae is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# metalite.ae is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Format AE specific analysis
 #'
 #' @inheritParams extend_ae_specific_inference
-#' @param digits_prop a numeric value of number of digits for proportion value.
-#' @param digits_ci a numeric value of number of digits for confidence interval
-#' @param digits_p a numeric value of number of digits for p-value .
-#' @param digits_dur a numeric value of number of digits for average duration of AE
-#' @param digits_events a numeric value of number of digits for average of number of AE per subjects.
-#' @param display a character vector of measurement to be displayed.
-#'  - `n`: number of subjects with AE.
-#'  - `prop`: proportion of subjects with AE.
-#'  - `total`: total columns
-#'  - `diff`: risk difference
-#'  - `diff_ci`: 95% confidence interval of risk difference using M&N method
-#'  - `diff_p`: p-value of risk difference using M&N method
-#'  - `dur`: average of AE duration
-#'  - `events`: average number of AE per subject
-#' @param mock a boolean value to display mock table
+#' @param digits_prop A numeric value of number of digits for proportion value.
+#' @param digits_ci A numeric value of number of digits for confidence interval.
+#' @param digits_p A numeric value of number of digits for p-value.
+#' @param digits_dur A numeric value of number of digits for average
+#'   duration of AE.
+#' @param digits_events A numeric value of number of digits for average of
+#'   number of AE per subjects.
+#' @param display A character vector of measurement to be displayed:
+#'   - `n`: Number of subjects with AE.
+#'   - `prop`: Proportion of subjects with AE.
+#'   - `total`: Total columns.
+#'   - `diff`: Risk difference.
+#'   - `diff_ci`: 95% confidence interval of risk difference using M&N method.
+#'   - `diff_p`: p-value of risk difference using M&N method.
+#'   - `dur`: Average of AE duration.
+#'   - `events`: Average number of AE per subject.
+#' @param mock A boolean value to display mock table.
+#'
+#' @return A list of analysis raw datasets.
+#'
 #' @export
+#'
+#' @examples
+#' meta <- meta_ae_example()
+#'
+#' outdata <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' )
+#'
+#' # Basic example
+#' tbl <- outdata |>
+#'   format_ae_specific()
+#' head(tbl$tbl)
+#'
+#' # Display different measurements
+#' tbl <- outdata |>
+#'   extend_ae_specific_events() |>
+#'   format_ae_specific(display = c("n", "prop", "events"))
+#' head(tbl$tbl)
 format_ae_specific <- function(outdata,
                                display = c("n", "prop", "total"),
                                digits_prop = 1,
@@ -68,43 +94,37 @@ format_ae_specific <- function(outdata,
 
   # Define total column
   display_total <- "total" %in% display
-  index_total <- ncol(outdata$n)
+  index_total <- seq(ncol(outdata$n) - (!display_total))
+
+  # Drop total column from outdata if it's not requested.
+  outdata$group <- outdata$group[index_total]
 
   # Create output
   tbl <- list()
-  if ("n" %in% display) {
-    if (display_total) {
-      n <- outdata$n
-    } else {
-      n <- outdata$n[, -index_total]
-    }
-    tbl[["n"]] <- n
-  }
+
+  # n
+  tbl[["n"]] <- outdata$n[, index_total]
 
   if ("prop" %in% display) {
-    if (display_total) {
-      prop <- outdata$prop
-    } else {
-      prop <- outdata$prop[, -index_total]
-    }
+    prop <- outdata$prop[, index_total]
     prop <- apply(prop, 2, fmt_pct, digits = digits_prop, pre = "(", post = ")")
     tbl[["prop"]] <- prop
   }
 
   if ("diff" %in% display) {
+    # diff <- outdata$diff[, index_total]
     diff <- apply(outdata$diff, 2, fmt_est, digits = digits_prop)
     tbl[["diff"]] <- diff
   }
 
   if ("diff_ci" %in% display) {
-
-    if(is.null(outdata$ci_lower)){
+    if (is.null(outdata$ci_lower)) {
       stop("Please use extend_ae_specific_inference() to get the calculation of ci!")
     }
 
     ci <- outdata$ci_lower * NA
     names(ci) <- gsub("lower", "ci", names(ci))
-    for (i in 1:ncol(outdata$ci_lower)) {
+    for (i in seq_len(ncol(outdata$ci_lower))) {
       lower <- outdata$ci_lower[[i]]
       upper <- outdata$ci_upper[[i]]
       ci[, i] <- fmt_ci(lower, upper, digits = digits_ci)
@@ -113,8 +133,7 @@ format_ae_specific <- function(outdata,
   }
 
   if ("diff_p" %in% display) {
-
-    if(is.null(outdata$p)){
+    if (is.null(outdata$p)) {
       stop("Please use extend_ae_specific_inference() to get the calculation of p-values!")
     }
 
@@ -123,13 +142,12 @@ format_ae_specific <- function(outdata,
   }
 
   if ("dur" %in% display) {
-
-    if(is.null(outdata$dur)){
+    if (is.null(outdata$dur)) {
       stop("Please use extend_ae_specific_duration() to get the calculation of duration!")
     }
 
-    dur <- outdata$dur * NA
-    for (i in 1:ncol(outdata$dur)) {
+    dur <- outdata$dur[, index_total] * NA
+    for (i in seq(index_total)) {
       m <- outdata$dur[[i]]
       se <- outdata$dur_se[[i]]
       dur[, i] <- fmt_est(m, se, digits = digits_dur)
@@ -138,13 +156,12 @@ format_ae_specific <- function(outdata,
   }
 
   if ("events" %in% display) {
-
-    if(is.null(outdata$events)){
+    if (is.null(outdata$events)) {
       stop("Please use extend_ae_specific_events() to get the calculation of events!")
     }
 
-    events <- outdata$events * NA
-    for (i in 1:ncol(outdata$events)) {
+    events <- outdata$events[, index_total] * NA
+    for (i in seq(index_total)) {
       m <- outdata$events[[i]]
       se <- outdata$events_se[[i]]
       events[, i] <- fmt_est(m, se, digits = digits_dur)
@@ -160,14 +177,21 @@ format_ae_specific <- function(outdata,
   n_within <- length(within_tbl)
   n_group <- ncol(tbl[["n"]])
   within_tbl <- do.call(cbind, within_tbl)
-  within_tbl <- within_tbl[, as.vector(matrix(1:(n_group * n_within), ncol = n_group, byrow = TRUE))]
+  within_tbl <- within_tbl[, as.vector(matrix(1:(n_group * n_within),
+    ncol = n_group, byrow = TRUE
+  ))]
 
   # Arrange Between Group information
   between_var <- names(tbl)[names(tbl) %in% c("diff", "diff_ci", "diff_p")]
   between_tbl <- tbl[between_var]
+  n_between <- length(between_tbl)
+  n_group_btw <- n_group - 1 - display_total # Always groups - 1 - total col
 
   names(between_tbl) <- NULL
   between_tbl <- do.call(cbind, between_tbl)
+  between_tbl <- between_tbl[, as.vector(matrix(1:(n_group_btw * n_between),
+    ncol = n_group_btw, byrow = TRUE
+  ))]
 
   # Create Results
   if (is.null(between_tbl)) {

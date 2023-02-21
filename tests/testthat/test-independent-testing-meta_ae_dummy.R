@@ -1,7 +1,7 @@
-meta <- meta_ae_dummy()
+meta <- meta_ae_example()
 
 test_that("There are 2 analyses in the output: ae summary & ae specific", {
-  expect_equal(names(meta$analysis), c("ae_summary", "ae_specific"))
+  expect_equal(names(meta$analysis), c("ae_summary", "ae_listing", "ae_specific"))
 })
 
 test_that("There are 2 observations: wk12 & wk24", {
@@ -13,5 +13,5 @@ test_that("There is 1 population: apat", {
 })
 
 test_that("The output is a list", {
-  expect_type(meta, 'list')
+  expect_type(meta, "list")
 })

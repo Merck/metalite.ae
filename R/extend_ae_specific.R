@@ -1,39 +1,58 @@
-#    Copyright (c) 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+# All rights reserved.
 #
-#    This file is part of the metalite.ae program.
+# This file is part of the metalite.ae program.
 #
-#    metalite.ae is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# metalite.ae is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Add inference information for AE specific analysis
 #'
-#' @param outdata a `outdata` object created by `prepare_ae_specific`
-#' @param ci a numeric value for the percentile of confidence interval.
+#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#' @param ci A numeric value for the percentile of confidence interval.
+#'
+#' @return A list of analysis raw datasets.
 #'
 #' @export
-extend_ae_specific_inference <- function(outdata,
-                                         ci = 0.95) {
+#'
+#' @examples
+#' meta <- meta_ae_example()
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_inference() |>
+#'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
+#' head(tbl$tbl)
+extend_ae_specific_inference <- function(outdata, ci = 0.95) {
   res <- outdata
+
+  if (!(is.numeric(ci) && length(ci) == 1 && (0 <= ci && ci <= 1))) {
+    stop("ci is", ci, ". Please choose a number 0 >= ci >= 1.")
+  }
 
   n_row <- nrow(res$n)
   ref <- res$reference_group
-  grp <- (1:length(res$group))[-c(ref, length(res$group))]
+  grp <- (seq_along(res$group))[-c(ref, length(res$group))]
 
   ci_lower <- list()
   ci_upper <- list()
   p <- list()
 
-  for (iter in 1:length(grp)) {
+  bind_rows2 <- utils::getFromNamespace("bind_rows2", ns = "metalite")
+
+  for (iter in seq_along(grp)) {
     index <- grp[iter]
     x0 <- res$n[[ref]]
     x1 <- res$n[[index]]
@@ -42,7 +61,7 @@ extend_ae_specific_inference <- function(outdata,
 
     # Calculate confidence interval
     tmp <- list()
-    for (i in 1:length(x0)) {
+    for (i in seq_along(x0)) {
       tmp[[i]] <- rate_compare_sum(
         x0 = x0[i],
         x1 = x1[i],
@@ -50,7 +69,7 @@ extend_ae_specific_inference <- function(outdata,
         n1 = n1[i], alpha = 1 - ci
       )
     }
-    tmp <- metalite:::bind_rows2(tmp)
+    tmp <- bind_rows2(tmp)
     ci_lower[[iter]] <- tmp$lower
     ci_upper[[iter]] <- tmp$upper
     p[[iter]] <- tmp$p
@@ -67,6 +86,7 @@ extend_ae_specific_inference <- function(outdata,
 
   res$ci_lower <- ci_lower
   res$ci_upper <- ci_upper
+  res$ci_level <- ci
   res$p <- p
 
   res
@@ -74,16 +94,36 @@ extend_ae_specific_inference <- function(outdata,
 
 #' Add average duration information for AE specific analysis
 #'
-#' @param outdata a `outdata` object created by `prepare_ae_specific`
-#' @param duration_var a character value of variable name for AE duration.
-#' @param duration_unit a character value of AE duration unit.
+#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#' @param duration_var A character value of variable name for AE duration.
+#' @param duration_unit A character value of AE duration unit.
+#'
+#' @return A list of analysis raw datasets.
 #'
 #' @export
+#'
+#' @examples
+#' meta <- meta_ae_example()
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_duration(duration_var = "ADURN") |>
+#'   format_ae_specific(display = c("n", "prop", "dur"))
+#' head(tbl$tbl)
 extend_ae_specific_duration <- function(outdata,
                                         duration_var,
                                         duration_unit = "Day") {
-
   meta <- outdata$meta
+
+  if (!((length(duration_var) == 1) && is.character(duration_var))) {
+    stop("duration_var is ", duration_var, ". duration_var must be a string")
+  }
+
+  if (!(duration_var %in% names(outdata$meta$data_observation))) {
+    stop(duration_var, "does not exist in outdata")
+  }
 
   population <- outdata$population
   observation <- outdata$observation
@@ -168,10 +208,10 @@ extend_ae_specific_duration <- function(outdata,
   index <- c(index, blank_order)
 
   avg <- rbind(avg, blank_row)[order(index), ]
-  names(avg) <- paste0("dur_", 1:ncol(avg))
+  names(avg) <- paste0("dur_", seq_len(ncol(avg)))
 
   se <- rbind(se, blank_row)[order(index), ]
-  names(se) <- paste0("dur_se", 1:ncol(se))
+  names(se) <- paste0("dur_se", seq_len(ncol(se)))
 
   outdata$dur <- avg
   outdata$dur_se <- se
@@ -181,13 +221,25 @@ extend_ae_specific_duration <- function(outdata,
 
 #' Add average number of events information for AE specific analysis
 #'
-#' @param outdata a `outdata` object created by `prepare_ae_specific`
+#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#'
+#' @return A list of analysis raw datasets.
 #'
 #' @export
+#'
+#' @examples
+#' meta <- meta_ae_example()
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_events() |>
+#'   format_ae_specific(display = c("n", "prop", "events"))
+#' head(tbl$tbl)
 extend_ae_specific_events <- function(outdata) {
-  
   meta <- outdata$meta
-  
+
   population <- outdata$population
   observation <- outdata$observation
   parameter <- outdata$parameter
@@ -270,10 +322,10 @@ extend_ae_specific_events <- function(outdata) {
   index <- c(index, blank_order)
 
   avg <- rbind(avg, blank_row)[order(index), ]
-  names(avg) <- paste0("events_", 1:ncol(avg))
+  names(avg) <- paste0("events_", seq_len(ncol(avg)))
 
   se <- rbind(se, blank_row)[order(index), ]
-  names(se) <- paste0("events_se", 1:ncol(se))
+  names(se) <- paste0("events_se", seq_len(ncol(se)))
 
   outdata$events <- avg
   outdata$events_se <- se

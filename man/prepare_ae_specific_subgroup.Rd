@@ -17,31 +17,41 @@ prepare_ae_specific_subgroup(
 )
 }
 \arguments{
-\item{meta}{a meta data created by \code{metalite}.}
+\item{meta}{A metadata object created by metalite.}
 
-\item{population}{a character value of population term name.
+\item{population}{A character value of population term name.
 The term name is used as key to link information.}
 
-\item{observation}{a character value of observation term name.
+\item{observation}{A character value of observation term name.
 The term name is used as key to link information.}
 
-\item{parameter}{a character value of parameter term name.
+\item{parameter}{A character value of parameter term name.
 The term name is used as key to link information.}
 
-\item{subgroup_var}{a character value of subgroup variable name in observation data saved in \code{meta$data_observation}.}
+\item{subgroup_var}{A character value of subgroup variable name in
+observation data saved in \code{meta$data_observation}.}
 
-\item{subgroup_header}{a integer value of column header for subgroup.}
+\item{subgroup_header}{An integer value of column header for subgroup.}
 
-\item{components}{a character vector of components name.}
+\item{components}{A character vector of components name.}
 
 \item{display_total}{test}
 
 \item{display_subgroup_total}{test}
 }
+\value{
+A list of analysis raw datasets.
+}
 \description{
 Prepare datasets for AE specific analysis
 }
 \examples{
-#meta <- meta_ae_dummy()
-#prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
+# meta <- meta_ae_example()
+# prepare_ae_specific_subgroup(
+#   meta,
+#   population = "apat",
+#   observation = "wk12",
+#   parameter = "rel",
+#   subgroup_var = "RACE"
+# )$data
 }

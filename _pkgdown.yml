@@ -1,5 +1,7 @@
 destination: docs
 
+url: https://merck.github.io/metalite.ae/
+
 template:
   bootstrap: 5
   bslib:
@@ -42,8 +44,8 @@ reference:
     - extend_ae_specific_inference
     - format_ae_specific
     - tlf_ae_specific
-    - collect_ae_listing
-    - format_ae_listing
+    - prepare_ae_listing
+    - tlf_ae_listing
 - title: AE summary
   contents:
     - prepare_ae_summary
@@ -58,20 +60,13 @@ reference:
     - fmt_est
     - fmt_ci
     - fmt_pval
-- title: Utility
-  contents:
-    - n_subject
-    - avg_event
-    - avg_duration
-    - to_sentence
-    - propercase
 - title: Rate comparison
   contents:
     - rate_compare
     - rate_compare_sum
-- title: Dummy data
+- title: Example data
   contents:
-    - meta_ae_dummy
+    - meta_ae_example
 
 articles:
 - title: Get started
@@ -81,6 +76,7 @@ articles:
   contents:
     - ae-specific
     - ae-summary
+    - ae-listing
 - title: Specification
   contents:
     - rate-compare

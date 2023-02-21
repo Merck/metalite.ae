@@ -16,32 +16,48 @@ format_ae_summary(
 )
 }
 \arguments{
-\item{outdata}{a \code{outdata} object created by \code{prepare_ae_specific}}
+\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{display}{a character vector of measurement to be displayed.
+\item{display}{A character vector of measurement to be displayed:
 \itemize{
-\item \code{n}: number of subjects with AE.
-\item \code{prop}: proportion of subjects with AE.
-\item \code{total}: total columns
-\item \code{diff}: risk difference
-\item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method
-\item \code{diff_p}: p-value of risk difference using M&N method
-\item \code{dur}: average of AE duration
-\item \code{events}: average number of AE per subject
+\item \code{n}: Number of subjects with AE.
+\item \code{prop}: Proportion of subjects with AE.
+\item \code{total}: Total columns.
+\item \code{diff}: Risk difference.
+\item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method.
+\item \code{diff_p}: p-value of risk difference using M&N method.
+\item \code{dur}: Average of AE duration.
+\item \code{events}: Average number of AE per subject.
 }}
 
-\item{digits_prop}{a numeric value of number of digits for proportion value.}
+\item{digits_prop}{A numeric value of number of digits for proportion value.}
 
-\item{digits_ci}{a numeric value of number of digits for confidence interval}
+\item{digits_ci}{A numeric value of number of digits for confidence interval.}
 
-\item{digits_p}{a numeric value of number of digits for p-value .}
+\item{digits_p}{A numeric value of number of digits for p-value.}
 
-\item{digits_dur}{a numeric value of number of digits for average duration of AE}
+\item{digits_dur}{A numeric value of number of digits for average
+duration of AE.}
 
-\item{digits_events}{a numeric value of number of digits for average of number of AE per subjects.}
+\item{digits_events}{A numeric value of number of digits for average of
+number of AE per subjects.}
 
-\item{mock}{a boolean value to display mock table}
+\item{mock}{A boolean value to display mock table.}
+}
+\value{
+A list of analysis raw datasets.
 }
 \description{
 Format AE summary analysis
+}
+\examples{
+meta <- meta_ae_example()
+outdata <- prepare_ae_summary(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+tbl <- outdata |>
+  format_ae_summary()
+head(tbl$tbl)
 }

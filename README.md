@@ -1,31 +1,55 @@
-# metalite.ae 
+# metalite.ae <img src="man/figures/logo.png" align="right" width="120" />
 
 <!-- badges: start -->
-
-[![CRAN status](https://www.r-pkg.org/badges/version/metalite.ae)](https://CRAN.R-project.org/package=metalite.ae)
 [![Codecov test coverage](https://codecov.io/gh/Merck/metalite.ae/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Merck/metalite.ae?branch=main)
-[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/metalite.ae)](https://cran.r-project.org/package=metalite.ae)
 [![R-CMD-check](https://github.com/Merck/metalite.ae/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Merck/metalite.ae/actions/workflows/R-CMD-check.yaml)
 [![status](https://tinyverse.netlify.com/badge/metalite.ae)](https://tinyverse.netlify.app/)
 <!-- badges: end -->
 
 ## Overview
 
-`metalite.ae` is an R package for standard adverse events analysis including: 
+metalite.ae is an R package to analyze adverse events (AE) in clinical trials,
+including:
 
-- AE summary 
-- Specific AE analysis 
+<details>
+<summary>AE summary.</summary>
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png">
+</details>
+<details>
+<summary>Specific AE analysis.</summary>
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png">
+</details>
+<details>
+<summary>AE listing.</summary>
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png">
+</details>
 
-## Workflow 
+The R package simplifies the workflow to create production-ready
+tables, listings, and figures discussed in the
+[AE summary chapter](https://r4csr.org/aesummary.html) and the
+[specific AE chapter](https://r4csr.org/specific-ae.html) of the
+_R for Clinical Study Reports and Submission_ book with full traceability.
 
-The general workflow is splited into three parts. 
+The R package is created using the [metalite](https://merck.github.io/metalite/)
+data structure that provides an end-to-end software development lifecycle (SDLC)
+solution including defining, developing, validating, and finalizing the analysis.
 
-1. define meta data information using `metalite` package 
-1. prepare outdata using `prepare_xxx` functions 
-1. create TLFs using `tlf_xxx` functions 
+## Workflow
+
+The general workflow covers:
+
+1. Define metadata information using metalite.
+1. Prepare outdata using `prepare_*()` functions.
+1. Extend outdata using `extend_*()` functions (optional).
+1. Format outdata using `format_*()` functions.
+1. Create TLFs using `tlf_*()` functions.
+
+Tutorials with examples are listed on the
+[package website](https://merck.github.io/metalite.ae/articles/).
 
 ## Highlighted features
 
-- enable meta data structure 
-- consistent input and output in standard functions
-- streamline mock table generation
+- Avoid duplicated input by using metadata structure.
+  - For example, define analysis population once to use in all adverse events analysis.
+- Consistent input and output in standard functions.
+- Streamlines mock table generation.
