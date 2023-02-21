@@ -23,39 +23,39 @@ library(metalite)
 
 ## Overview
 
-The purpose of this tutorial is to create production ready AE listing. 
+The purpose of this tutorial is to create production ready AE listing.
 
 The AE listing provides details about the interested adverse events information.
-With a metadata created by metalite, 
-there are two required functions to create AE summary analysis table using metalite.ae:
+With a metadata object created by metalite,
+there are two required functions to create AE listing tables using metalite.ae:
 
 - `prepare_ae_listing()`: prepare listing datasets.
 - `tlf_ae_listing()`: transfer output dataset to RTF table.
 
-An example output: 
+An example output:
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
 ```
 
-## Example data 
+## Example data
 
-In metalite.ae, we created an example dataset using ADSL and ADAE datasets by the metalite package. 
+In metalite.ae, we created an example dataset using ADSL and ADAE datasets from the metalite package.
 
 ```{r}
 meta <- meta_ae_example()
 meta
 ```
 
-The same metadata structure is used to support all analyses example in metalite.ae. 
-More details can be found in the [metalite package website](https://merck.github.io/metalite/articles/metalite.html). 
+The same metadata structure is used to support all analyses examples in metalite.ae.
+More details can be found on the [metalite package website](https://merck.github.io/metalite/articles/metalite.html).
 
 ## Analysis preparation
 
-The `prepare_ae_listing` function is used to calculate statistics required for 
-AE listing using pre-specifed keywords in `meta`.
-The input of the function is a `meta` objects created from `metalite` package.
-The output of the function is an `outdata` object that contain a list of analysis raw datasets.
+The `prepare_ae_listing()` function is used to calculate statistics required for
+AE listing using pre-specified keywords in `meta`.
+The input of the function is a `meta` object created by metalite.
+The output of the function is an `outdata` object that contains a list of analysis raw datasets.
 
 ```{r}
 tbl <- prepare_ae_listing(
@@ -71,7 +71,7 @@ head(tbl$col_name)
 
 ## RTF tables
 
-The last step is to prepare the RTF table using `tlf_ae_listing`.
+The last step is to prepare the RTF table using `tlf_ae_listing()`.
 
 ```{r}
 footnote <- c(
@@ -83,14 +83,13 @@ footnote <- c(
 ```
 
 ```{r}
-tbl |>
-  tlf_ae_listing(
-    footnotes = footnote,
-    orientation = "portrait",
-    source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    path_outtable = "rtf/ae0listing0ser0wk12.rtf",
-    path_outdata = NULL
-  )
+tbl |> tlf_ae_listing(
+  footnotes = footnote,
+  orientation = "portrait",
+  source = "Source:  [CDISCpilot: adam-adsl; adae]",
+  path_outtable = "rtf/ae0listing0ser0wk12.rtf",
+  path_outdata = NULL
+)
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
