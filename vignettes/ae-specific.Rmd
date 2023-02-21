@@ -5,8 +5,6 @@ vignette: >
   %\VignetteIndexEntry{AE Specification}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-resource_files:
-   - package_manual.pdf
 ---
 
 ```{r, include=FALSE}
@@ -18,43 +16,52 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, include=FALSE}
+```{r}
 library(metalite)
 library(metalite.ae)
 ```
 
-```{r, include=FALSE}
-library(dplyr)
-library(tidyr)
-```
-
 ## Overview
 
-The AE specification analysis is to provide tables to summarize details of adverse events.
-The development of AE specification analysis involves:
+The purpose of this tutorial is to create production ready AE specification analyses
+by extending examples shown in the
+[specific AE chapter](https://r4csr.org/specific-ae.html)
+of the _R for Clinical Study Reports and Submission_ book.
+
+The AE specification analysis is to provide tables to summarize details of different types of adverse events.
+With a metadata object created by metalite,
+there are three required functions to create AE specification analysis tables using metalite.ae:
 
 - `prepare_ae_specific()`: prepare analysis raw datasets.
 - `format_ae_specific()`: prepare analysis (mock) outdata with proper format.
 - `tlf_ae_specific()`: transfer (mock) output dataset to RTF table.
 
-We can also prepare (optional) additional function to extend the analysis:
+There are three optional functions to extend AE specification analysis.
 
 - `extend_ae_specific_inference()`: add risk difference inference results based on M&N method.
 - `extend_ae_specific_duration()`: add average duration of AE.
 - `extend_ae_specific_events()`: add average number of AE events.
 
-### Analysis preparation
+## Example data
 
-The `prepare_ae_specific()` function is designed to be used for multiple purposes.
-The input of the function is a `meta` object created by the metalite package.
+In metalite.ae, we created an example dataset using ADSL and ADAE datasets from the metalite package.
 
 ```{r}
 meta <- meta_ae_example()
+meta
 ```
 
-The output of the function is an `outdata` object containing a list of analysis raw datasets.
+The same metadata structure is used to support all analysis examples in metalite.ae.
+More details can be found on the [metalite package website](https://merck.github.io/metalite/articles/metalite.html).
 
-```{r}
+### Analysis preparation
+
+The `prepare_ae_specific()` function is used to calculate statistics required for
+AE specification analysis using pre-specified keywords in `meta`.
+The input of the function is a `meta` object created by metalite.
+The output of the function is an `outdata` object that contains a list of analysis raw datasets.
+
+```{r, message = FALSE}
 outdata <- prepare_ae_specific(
   meta,
   population = "apat",
@@ -104,34 +111,31 @@ head(outdata$prop)
 head(outdata$diff)
 ```
 
-### Format output
+## Format output
 
-After we have the raw analysis results, we can use `format_ae_specific()` to
-prepare the outdata and create RTF tables.
+After we have the raw analysis results,
+we can use `format_ae_specific()` to prepare the outdata
+for production ready RTF tables.
 
 ```{r}
 tbl <- outdata |> format_ae_specific()
 head(tbl$tbl)
 ```
 
-We can hide total column
+### Additional statistics
+
+The `display` argument allows us to select statistics. For example, we can add risk difference.
 
 ```{r}
-tbl <- outdata |>
-  format_ae_specific(display = c("n", "prop"))
+tbl <- outdata |> format_ae_specific(display = c("n", "prop", "diff"))
 head(tbl$tbl)
 ```
 
-Adding risk difference
-
-```{r}
-tbl <- outdata |>
-  format_ae_specific(display = c("n", "prop", "diff"))
-head(tbl$tbl)
-```
-
-Adding 95% confidence interval of M&N method. It requires to use
-`extend_ae_specific_inference()` to perform additional calculations.
+For advanced analysis, we need `extend_*()` functions.
+For example, we can use `extend_ae_specific_inference()` to add
+95% confidence interval based on Miettinen and Nurminen (M&N) method.
+The details of the M&N method can be found in the
+[rate compare vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html)
 
 ```{r}
 tbl <- outdata |>
@@ -140,46 +144,44 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-Adding average duration of AE. It requires to use
-`extend_ae_specific_duration()` to perform additional calculations.
+We can use `extend_ae_specific_duration()` to add average duration of AE.
 
 ```{r}
 tbl <- outdata |>
   extend_ae_specific_duration(duration_var = "ADURN") |>
   format_ae_specific(display = c("n", "prop", "dur"))
+
 head(tbl$tbl)
 ```
 
-Adding average number of AE per subject. It requires to use
-`extend_ae_specific_events()` to perform additional calculation.
+We can use `extend_ae_specific_events()` to add average number of AE per subject.
 
 ```{r}
 tbl <- outdata |>
   extend_ae_specific_events() |>
   format_ae_specific(display = c("n", "prop", "events"))
+
 head(tbl$tbl)
 ```
 
 ### Mock data preparation
 
-We can also use `format_ae_specific()` to create mock output data.
+The  `mock` argument allows us to create a mock table easily.
 
-The purpose of the `mock` argument is not to create a comprehensive mock table template,
-but a handy way to help users create a mock table that mimic the exact output layout.
+Note: The purpose of the `mock` argument is not to create a comprehensive mock table template,
+but a handy way to help user create a mock table that mimics the exact output layout.
 
 Additional work is required to develop a flexible mock table generation tool
 (for example, a dedicated mock table generation package).
 
 ```{r}
-tbl <- outdata |>
-  format_ae_specific(mock = TRUE)
+tbl <- outdata |> format_ae_specific(mock = TRUE)
 head(tbl$tbl)
 ```
 
-### RTF tables
+## RTF tables
 
-By using `tlf_ae_specific()`, we can transfer the output from
-`format_ae_specific()` to an RTF table.
+The last step is to prepare the RTF table using `tlf_ae_specific()`.
 
 ```{r}
 outdata |>
@@ -195,8 +197,7 @@ outdata |>
 knitr::include_graphics("pdf/ae0specific1.pdf")
 ```
 
-The `tlf_ae_specific()` function also provides some commonly used arguments
-to customize the table.
+The `tlf_ae_specific()` function also provides some commonly used arguments to customize the table.
 
 ```{r}
 outdata |>
@@ -215,7 +216,7 @@ outdata |>
 knitr::include_graphics("pdf/ae0specific2.pdf")
 ```
 
-We can also generate the mock table
+The mock table can also be generated.
 
 ```{r}
 outdata |>
