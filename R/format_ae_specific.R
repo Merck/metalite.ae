@@ -89,7 +89,7 @@ format_ae_specific <- function(outdata,
 
   # TODO: check missing components
   # if(length(display_missing) > 0){
-  #   stop("Missing component in outdata: ", paste(display_missing, collapse = "; "))
+  #   stop("Missing component in outdata: ", paste(display_missing, collapse = "; "), call. = FALSE)
   # }
 
   # Define total column
@@ -119,7 +119,10 @@ format_ae_specific <- function(outdata,
 
   if ("diff_ci" %in% display) {
     if (is.null(outdata$ci_lower)) {
-      stop("Please use extend_ae_specific_inference() to get the calculation of ci!")
+      stop(
+        "Please use `extend_ae_specific_inference()` to get ci.",
+        call. = FALSE
+      )
     }
 
     ci <- outdata$ci_lower * NA
@@ -134,7 +137,10 @@ format_ae_specific <- function(outdata,
 
   if ("diff_p" %in% display) {
     if (is.null(outdata$p)) {
-      stop("Please use extend_ae_specific_inference() to get the calculation of p-values!")
+      stop(
+        "Please use `extend_ae_specific_inference()` to get p-values.",
+        call. = FALSE
+      )
     }
 
     p <- apply(outdata$p, 2, fmt_pval, digits = digits_p)
@@ -143,7 +149,10 @@ format_ae_specific <- function(outdata,
 
   if ("dur" %in% display) {
     if (is.null(outdata$dur)) {
-      stop("Please use extend_ae_specific_duration() to get the calculation of duration!")
+      stop(
+        "Please use `extend_ae_specific_duration()` to get duration.",
+        call. = FALSE
+      )
     }
 
     dur <- outdata$dur[, index_total] * NA
@@ -157,7 +166,10 @@ format_ae_specific <- function(outdata,
 
   if ("events" %in% display) {
     if (is.null(outdata$events)) {
-      stop("Please use extend_ae_specific_events() to get the calculation of events!")
+      stop(
+        "Please use `extend_ae_specific_events()` to get events.",
+        call. = FALSE
+      )
     }
 
     events <- outdata$events[, index_total] * NA

@@ -44,13 +44,23 @@ prepare_ae_summary <- function(meta,
   grp <- unique(c(pop_grp, obs_grp))
 
   for (i in seq(grp)) {
-    if(any(is.na(meta$data_population[[grp[i]]]))){
-      stop(paste0("There is >=1 subjects with missing grouping variable '", grp[i],
-                  "' in the population dataset !"))
+    if (any(is.na(meta$data_population[[grp[i]]]))) {
+      stop(
+        paste0(
+          "There are >= 1 subjects with missing grouping variable '", grp[i],
+          "' in the population dataset."
+        ),
+        call. = FALSE
+      )
     }
-    if(any(is.na(meta$data_observation[[grp[i]]]))){
-      stop(paste0("There is >=1 subjects with missing grouping variable '", grp[i],
-                  "' in the observation dataset !"))
+    if (any(is.na(meta$data_observation[[grp[i]]]))) {
+      stop(
+        paste0(
+          "There are >= 1 subjects with missing grouping variable '", grp[i],
+          "' in the observation dataset."
+        ),
+        call. = FALSE
+      )
     }
   }
 

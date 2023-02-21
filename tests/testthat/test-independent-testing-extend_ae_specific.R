@@ -42,12 +42,12 @@ test_that("specific_inference throws error when !(0 >= ci >= 1)", {
 test_that("specific_duration: duration_var must be string", {
   expect_error(
     extend_ae_specific_duration(test, duration_var = c("ADURN", "ADUR")),
-    regexp = "duration_var must be a string"
+    regexp = "`duration_var` must be a string"
   )
 
   expect_error(
     extend_ae_specific_duration(test, duration_var = c(1)),
-    regexp = "duration_var must be a string"
+    regexp = "`duration_var` must be a string"
   )
 
   expect_error(

@@ -41,7 +41,7 @@ n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")
   if ("factor" %in% class(group)) {
     u_group <- c(as.character(levels(group)), "Missing")
   } else {
-    stop("n_subject: group variable must be a factor")
+    stop("n_subject: group variable must be a factor.", call. = FALSE)
   }
 
   if (is.null(par)) {
@@ -87,7 +87,7 @@ avg_event <- function(id, group, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))
   } else {
-    stop("avg_event: group variable must be a factor")
+    stop("avg_event: group variable must be a factor.", call. = FALSE)
   }
 
   if (is.null(par)) {
@@ -134,7 +134,7 @@ avg_duration <- function(id, group, dur, par = NULL) {
   if ("factor" %in% class(group)) {
     u_group <- as.character(levels(group))
   } else {
-    stop("avg_event: group variable must be a factor")
+    stop("avg_event: group variable must be a factor.", call. = FALSE)
   }
 
   if (is.null(par)) {

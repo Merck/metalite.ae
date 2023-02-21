@@ -47,10 +47,10 @@ prepare_ae_specific_subgroup <- function(meta,
                                          components = c("soc", "par"),
                                          display_total = TRUE,
                                          display_subgroup_total = TRUE) {
-  stop("this function is still under development")
+  stop("This function is still under development.", call. = FALSE)
 
   if (!subgroup_header %in% c(1, 2)) {
-    stop("subgroup_header can only have value 1 or 2")
+    stop("`subgroup_header` can only have value 1 or 2.", call. = FALSE)
   }
 
   display <- c("n", "prop")

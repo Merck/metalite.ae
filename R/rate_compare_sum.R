@@ -95,7 +95,11 @@ rate_compare_sum <- function(n0, n1,
   len <- c(length(n0), length(n1), length(x0), length(x1))
   if (!is.null(strata)) len <- c(len, length(strata))
   if (max(len) != min(len)) {
-    stop("The length of input arguments `n0`, `n1`, `x0`, `x1`, and `strata` are different.")
+    stop(
+      "The length of input arguments ",
+      "`n0`, `n1`, `x0`, `x1`, and `strata` are different.",
+      call. = FALSE
+    )
   }
 
   # Count the event
