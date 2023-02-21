@@ -93,13 +93,15 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite.ae/">metalite.ae</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite/" class="external-link">metalite</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/r2rtf/" class="external-link">r2rtf</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite/" class="external-link">metalite</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
+<p>The purpose of this tutorial is to create production ready AE
+listing.</p>
 <p>The AE listing provides details about the interested adverse events
-information. The development of AE listing involves:</p>
+information. With a metadata object created by metalite, there are two
+required functions to create AE listing tables using metalite.ae:</p>
 <ul>
 <li>
 <code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code>: prepare listing datasets.</li>
@@ -107,354 +109,67 @@ information. The development of AE listing involves:</p>
 <code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code>: transfer output dataset to RTF
 table.</li>
 </ul>
-<blockquote>
-<p>We will illustrate the process to generate an AE listing RTF file
-similar to the following one.</p>
-</blockquote>
-<embed src="pdf/ae0listing0ser0wk12.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><div class="section level3">
-<h3 id="data-manipulation">Data manipulation<a class="anchor" aria-label="anchor" href="#data-manipulation"></a>
-</h3>
+<p>An example output:</p>
+<embed src="pdf/ae0listing0ser0wk12.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
+</div>
+<div class="section level2">
+<h2 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
+</h2>
+<p>In metalite.ae, we created an example dataset using ADSL and ADAE
+datasets from the metalite package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">r2rtf</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/r2rtf/reference/r2rtf_adae.html" class="external-link">r2rtf_adae</a></span></span>
-<span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">r2rtf</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/r2rtf/reference/r2rtf_adsl.html" class="external-link">r2rtf_adsl</a></span></span></code></pre></div>
-<p>First of all, we need to format the data from observation data set as
-we need to display on the final output. For example, if we need a
-‘related’ column in the final output listing, we need to have a
-‘related’ column in the observation data set.</p>
-<p>In the following example, we illustrate how to create a variable
-‘related’ which use ‘Y’ and ‘N’ to present ‘RELATED’ and ‘NOT RELATED’
-in listing.</p>
+<code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">meta</span></span>
+<span><span class="co">#&gt; ADaM metadata: </span></span>
+<span><span class="co">#&gt;    .$data_population     Population data with 254 subjects </span></span>
+<span><span class="co">#&gt;    .$data_observation    Observation data with 1191 records </span></span>
+<span><span class="co">#&gt;    .$plan    Analysis plan with 16 plans </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis population type:</span></span>
+<span><span class="co">#&gt;     name        id  group var       subset                         label</span></span>
+<span><span class="co">#&gt; 1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis observation type:</span></span>
+<span><span class="co">#&gt;     name        id  group var          subset           label</span></span>
+<span><span class="co">#&gt; 1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'</span></span>
+<span><span class="co">#&gt; 2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis parameter type:</span></span>
+<span><span class="co">#&gt;      name                                label</span></span>
+<span><span class="co">#&gt; 1   'rel'        'drug-related adverse events'</span></span>
+<span><span class="co">#&gt; 2 'aeosi' 'adverse events of special interest'</span></span>
+<span><span class="co">#&gt; 3   'any'                 'any adverse events'</span></span>
+<span><span class="co">#&gt; 4   'ser'             'serious adverse events'</span></span>
+<span><span class="co">#&gt;                                 subset</span></span>
+<span><span class="co">#&gt; 1 AEREL %in% c('POSSIBLE', 'PROBABLE')</span></span>
+<span><span class="co">#&gt; 2                         AEOSI == 'Y'</span></span>
+<span><span class="co">#&gt; 3                                     </span></span>
+<span><span class="co">#&gt; 4                         AESER == 'Y'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis function:</span></span>
+<span><span class="co">#&gt;            name                           label</span></span>
+<span><span class="co">#&gt; 1  'ae_summary'  'Table: adverse event summary'</span></span>
+<span><span class="co">#&gt; 2  'ae_listing'        'Listing: adverse event'</span></span>
+<span><span class="co">#&gt; 3 'ae_specific' 'Table: specific adverse event'</span></span></code></pre></div>
+<p>The same metadata structure is used to support all analyses examples
+in metalite.ae. More details can be found on the <a href="https://merck.github.io/metalite/articles/metalite.html" class="external-link">metalite
+package website</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
+</h2>
+<p>The <code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> function is used to calculate
+statistics required for AE listing using pre-specified keywords in
+<code>meta</code>. The input of the function is a <code>meta</code>
+object created by metalite. The output of the function is an
+<code>outdata</code> object that contains a list of analysis raw
+datasets.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adae</span><span class="op">$</span><span class="va">related</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>  <span class="va">adae</span><span class="op">$</span><span class="va">AEREL</span> <span class="op">==</span> <span class="st">"RELATED"</span>,</span>
-<span>  <span class="st">"Y"</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEREL</span><span class="op">)</span> <span class="op">==</span> <span class="st">"NOT RELATED"</span>,</span>
-<span>    <span class="st">"N"</span>,</span>
-<span>    <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/toTitleCase.html" class="external-link">toTitleCase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEREL</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">related</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Probable" "Probable" "Remote"   "Possible" "Probable" "Possible"</span></span></code></pre></div>
-<p>In this code chunk, we provide a solution to generate an
-<code>outcome</code> variable in <code>adae</code> used to display AE
-outcome details in listings.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEOUT</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">adae</span><span class="op">$</span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEOUT</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
-<span>    <span class="st">"RECOVERED/RESOLVED"</span> <span class="op">=</span> <span class="st">"Resolved"</span>,</span>
-<span>    <span class="st">"RECOVERING/RESOLVING"</span> <span class="op">=</span> <span class="st">"Resolving"</span>,</span>
-<span>    <span class="st">"RECOVERED/RESOLVED WITH SEQUELAE"</span> <span class="op">=</span> <span class="st">"Sequelae"</span>,</span>
-<span>    <span class="st">"NOT RECOVERED/NOT RESOLVED"</span> <span class="op">=</span> <span class="st">"Not Resolved"</span>,</span>
-<span>    <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/toTitleCase.html" class="external-link">toTitleCase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEOUT</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">outcome</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Resolved" "Resolved" "Resolved" "Resolved" "Resolved" "Resolved"</span></span></code></pre></div>
-<p>In this example, we attempt to illustrate how to generate a column
-for <code>Action Taken</code> information.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Raw data is all blank for 'AEACN',</span></span>
-<span><span class="co"># change to 'DOSE NOT CHANGED' for better illustration.</span></span>
-<span><span class="va">adae</span><span class="op">$</span><span class="va">AEACN</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"DOSE NOT CHANGED"</span>, <span class="va">adae</span><span class="op">$</span><span class="va">AEACN</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEACN</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">adae</span><span class="op">$</span><span class="va">action_taken</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEACN</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
-<span>    <span class="st">"DOSE NOT CHANGED"</span> <span class="op">=</span> <span class="st">"None"</span>,</span>
-<span>    <span class="st">"DOSE REDUCED"</span> <span class="op">=</span> <span class="st">"Reduced"</span>,</span>
-<span>    <span class="st">"DRUG INTERRUPTED"</span> <span class="op">=</span> <span class="st">"Interrupted"</span>,</span>
-<span>    <span class="st">"DOSE INCREASED"</span> <span class="op">=</span> <span class="st">"Increased"</span>,</span>
-<span>    <span class="st">"NOT APPLICABLE"</span> <span class="op">=</span> <span class="st">"N/A"</span>,</span>
-<span>    <span class="st">"UNKNOWN"</span> <span class="op">=</span> <span class="st">"Unknown"</span>,</span>
-<span>    <span class="st">"''"</span> <span class="op">=</span> <span class="st">"None"</span>,</span>
-<span>    <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/toTitleCase.html" class="external-link">toTitleCase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEACN</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">action_taken</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "None" "None" "None" "None" "None" "None"</span></span></code></pre></div>
-<p>Example to create column for adverse event duration.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># AE duration with unit</span></span>
-<span><span class="va">adae</span><span class="op">$</span><span class="va">duration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">ADURN</span><span class="op">)</span>,</span>
-<span>    <span class="st">""</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">ADURN</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/toTitleCase.html" class="external-link">toTitleCase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">ADURU</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  sep <span class="op">=</span> <span class="st">" "</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">duration</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">ADURN</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">adae</span><span class="op">$</span><span class="va">duration</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/charmatch.html" class="external-link">charmatch</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEOUT</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>, <span class="st">"RECOVERING/RESOLVING"</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">|</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/charmatch.html" class="external-link">charmatch</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">AEOUT</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>, <span class="st">"NOT RECOVERED/NOT RESOLVED"</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
-<span>      <span class="st">"Continuing"</span>,</span>
-<span>      <span class="st">"Unknown"</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">duration</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Continuing" "Continuing" "3 Day"      "24 Day"     "Continuing"</span></span>
-<span><span class="co">#&gt; [6] "Continuing"</span></span></code></pre></div>
-<p>The <code>subline</code> variable is used as subline header in the AE
-listing. Here, we create the subline variable by concatenating ‘Subject
-ID’, ‘Gender’, ‘Race’, ‘Age’, and ‘Treatment’ information.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adae</span><span class="op">$</span><span class="va">subline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="st">"Subject ID = "</span>, <span class="va">adae</span><span class="op">$</span><span class="va">USUBJID</span>,</span>
-<span>  <span class="st">", Gender = "</span>, <span class="va">adae</span><span class="op">$</span><span class="va">SEX</span>,</span>
-<span>  <span class="st">", Race = "</span>, <span class="va">adae</span><span class="op">$</span><span class="va">RACE</span>,</span>
-<span>  <span class="st">", AGE = "</span>, <span class="va">adae</span><span class="op">$</span><span class="va">AGE</span>, <span class="st">" Years"</span>,</span>
-<span>  <span class="st">", TRT = "</span>, <span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">adae</span><span class="op">$</span><span class="va">subline</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo"</span></span>
-<span><span class="co">#&gt; [2] "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo"</span></span>
-<span><span class="co">#&gt; [3] "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo"</span></span>
-<span><span class="co">#&gt; [4] "Subject ID = 01-701-1023, Gender = M, Race = WHITE, AGE = 64 Years, TRT = Placebo"</span></span>
-<span><span class="co">#&gt; [5] "Subject ID = 01-701-1023, Gender = M, Race = WHITE, AGE = 64 Years, TRT = Placebo"</span></span>
-<span><span class="co">#&gt; [6] "Subject ID = 01-701-1023, Gender = M, Race = WHITE, AGE = 64 Years, TRT = Placebo"</span></span></code></pre></div>
-<p>We assign label, which will be the column header of AE listing, to
-variables used for listing.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://merck.github.io/metalite/reference/assign_label.html" class="external-link">assign_label</a></span><span class="op">(</span><span class="va">adae</span>,</span>
-<span>  var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"related"</span>, <span class="st">"outcome"</span>, <span class="st">"duration"</span>, <span class="st">"AESEV"</span>, <span class="st">"AESER"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"action_taken"</span><span class="op">)</span>,</span>
-<span>  label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Related"</span>, <span class="st">"Outcome"</span>, <span class="st">"Duration"</span>, <span class="st">"Intensity"</span>, <span class="st">"Serious"</span>, <span class="st">"Adverse Event"</span>, <span class="st">"Action Taken"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://merck.github.io/metalite/reference/get_label.html" class="external-link">get_label</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                   STUDYID </span></span>
-<span><span class="co">#&gt;                        "Study Identifier" </span></span>
-<span><span class="co">#&gt;                                    SITEID </span></span>
-<span><span class="co">#&gt;                   "Study Site Identifier" </span></span>
-<span><span class="co">#&gt;                                   USUBJID </span></span>
-<span><span class="co">#&gt;               "Unique Subject Identifier" </span></span>
-<span><span class="co">#&gt;                                      TRTA </span></span>
-<span><span class="co">#&gt;                        "Actual Treatment" </span></span>
-<span><span class="co">#&gt;                                     TRTAN </span></span>
-<span><span class="co">#&gt;                    "Actual Treatment (N)" </span></span>
-<span><span class="co">#&gt;                                       AGE </span></span>
-<span><span class="co">#&gt;                                     "Age" </span></span>
-<span><span class="co">#&gt;                                    AGEGR1 </span></span>
-<span><span class="co">#&gt;                      "Pooled Age Group 1" </span></span>
-<span><span class="co">#&gt;                                   AGEGR1N </span></span>
-<span><span class="co">#&gt;                  "Pooled Age Group 1 (N)" </span></span>
-<span><span class="co">#&gt;                                      RACE </span></span>
-<span><span class="co">#&gt;                                    "Race" </span></span>
-<span><span class="co">#&gt;                                     RACEN </span></span>
-<span><span class="co">#&gt;                                "Race (N)" </span></span>
-<span><span class="co">#&gt;                                       SEX </span></span>
-<span><span class="co">#&gt;                                     "Sex" </span></span>
-<span><span class="co">#&gt;                                     SAFFL </span></span>
-<span><span class="co">#&gt;                  "Safety Population Flag" </span></span>
-<span><span class="co">#&gt;                                    TRTSDT </span></span>
-<span><span class="co">#&gt;     "Date of First Exposure to Treatment" </span></span>
-<span><span class="co">#&gt;                                    TRTEDT </span></span>
-<span><span class="co">#&gt;      "Date of Last Exposure to Treatment" </span></span>
-<span><span class="co">#&gt;                                     ASTDT </span></span>
-<span><span class="co">#&gt;                     "Analysis Start Date" </span></span>
-<span><span class="co">#&gt;                                    ASTDTF </span></span>
-<span><span class="co">#&gt;     "Analysis Start Date Imputation Flag" </span></span>
-<span><span class="co">#&gt;                                     ASTDY </span></span>
-<span><span class="co">#&gt;             "Analysis Start Relative Day" </span></span>
-<span><span class="co">#&gt;                                     AENDT </span></span>
-<span><span class="co">#&gt;                       "Analysis End Date" </span></span>
-<span><span class="co">#&gt;                                     AENDY </span></span>
-<span><span class="co">#&gt;               "Analysis End Relative Day" </span></span>
-<span><span class="co">#&gt;                                     ADURN </span></span>
-<span><span class="co">#&gt;                         "AE Duration (N)" </span></span>
-<span><span class="co">#&gt;                                     ADURU </span></span>
-<span><span class="co">#&gt;                       "AE Duration Units" </span></span>
-<span><span class="co">#&gt;                                    AETERM </span></span>
-<span><span class="co">#&gt;     "Reported Term for the Adverse Event" </span></span>
-<span><span class="co">#&gt;                                     AELLT </span></span>
-<span><span class="co">#&gt;                       "Lowest Level Term" </span></span>
-<span><span class="co">#&gt;                                   AELLTCD </span></span>
-<span><span class="co">#&gt;                  "Lowest Level Term Code" </span></span>
-<span><span class="co">#&gt;                                   AEDECOD </span></span>
-<span><span class="co">#&gt;                           "Adverse Event" </span></span>
-<span><span class="co">#&gt;                                    AEPTCD </span></span>
-<span><span class="co">#&gt;                     "Preferred Term Code" </span></span>
-<span><span class="co">#&gt;                                     AEHLT </span></span>
-<span><span class="co">#&gt;                         "High Level Term" </span></span>
-<span><span class="co">#&gt;                                   AEHLTCD </span></span>
-<span><span class="co">#&gt;                    "High Level Term Code" </span></span>
-<span><span class="co">#&gt;                                    AEHLGT </span></span>
-<span><span class="co">#&gt;                   "High Level Group Term" </span></span>
-<span><span class="co">#&gt;                                  AEHLGTCD </span></span>
-<span><span class="co">#&gt;              "High Level Group Term Code" </span></span>
-<span><span class="co">#&gt;                                  AEBODSYS </span></span>
-<span><span class="co">#&gt;              "Body System or Organ Class" </span></span>
-<span><span class="co">#&gt;                                     AESOC </span></span>
-<span><span class="co">#&gt;              "Primary System Organ Class" </span></span>
-<span><span class="co">#&gt;                                   AESOCCD </span></span>
-<span><span class="co">#&gt;         "Primary System Organ Class Code" </span></span>
-<span><span class="co">#&gt;                                     AESEV </span></span>
-<span><span class="co">#&gt;                               "Intensity" </span></span>
-<span><span class="co">#&gt;                                     AESER </span></span>
-<span><span class="co">#&gt;                                 "Serious" </span></span>
-<span><span class="co">#&gt;                                    AESCAN </span></span>
-<span><span class="co">#&gt;                         "Involves Cancer" </span></span>
-<span><span class="co">#&gt;                                   AESCONG </span></span>
-<span><span class="co">#&gt;      "Congenital Anomaly or Birth Defect" </span></span>
-<span><span class="co">#&gt;                                  AESDISAB </span></span>
-<span><span class="co">#&gt; "Persist or Signif Disability/Incapacity" </span></span>
-<span><span class="co">#&gt;                                    AESDTH </span></span>
-<span><span class="co">#&gt;                        "Results in Death" </span></span>
-<span><span class="co">#&gt;                                   AESHOSP </span></span>
-<span><span class="co">#&gt;    "Requires or Prolongs Hospitalization" </span></span>
-<span><span class="co">#&gt;                                   AESLIFE </span></span>
-<span><span class="co">#&gt;                     "Is Life Threatening" </span></span>
-<span><span class="co">#&gt;                                     AESOD </span></span>
-<span><span class="co">#&gt;                  "Occurred with Overdose" </span></span>
-<span><span class="co">#&gt;                                     AEREL </span></span>
-<span><span class="co">#&gt;                               "Causality" </span></span>
-<span><span class="co">#&gt;                                     AEACN </span></span>
-<span><span class="co">#&gt;       "Action Taken with Study Treatment" </span></span>
-<span><span class="co">#&gt;                                     AEOUT </span></span>
-<span><span class="co">#&gt;                "Outcome of Adverse Event" </span></span>
-<span><span class="co">#&gt;                                     AESEQ </span></span>
-<span><span class="co">#&gt;                         "Sequence Number" </span></span>
-<span><span class="co">#&gt;                                   TRTEMFL </span></span>
-<span><span class="co">#&gt;        "Treatment Emergent Analysis Flag" </span></span>
-<span><span class="co">#&gt;                                    AOCCFL </span></span>
-<span><span class="co">#&gt;           "1st Occurrence of Any AE Flag" </span></span>
-<span><span class="co">#&gt;                                   AOCCSFL </span></span>
-<span><span class="co">#&gt;              "1st Occurrence of SOC Flag" </span></span>
-<span><span class="co">#&gt;                                   AOCCPFL </span></span>
-<span><span class="co">#&gt;   "1st Occurrence of Preferred Term Flag" </span></span>
-<span><span class="co">#&gt;                                  AOCC02FL </span></span>
-<span><span class="co">#&gt;      "1st Occurrence 02 Flag for Serious" </span></span>
-<span><span class="co">#&gt;                                  AOCC03FL </span></span>
-<span><span class="co">#&gt;  "1st Occurrence 03 Flag for Serious SOC" </span></span>
-<span><span class="co">#&gt;                                  AOCC04FL </span></span>
-<span><span class="co">#&gt;   "1st Occurrence 04 Flag for Serious PT" </span></span>
-<span><span class="co">#&gt;                                   CQ01NAM </span></span>
-<span><span class="co">#&gt;                "Customized Query 01 Name" </span></span>
-<span><span class="co">#&gt;                                  AOCC01FL </span></span>
-<span><span class="co">#&gt;         "1st Occurrence 01 Flag for CQ01" </span></span>
-<span><span class="co">#&gt;                                   related </span></span>
-<span><span class="co">#&gt;                                 "Related" </span></span>
-<span><span class="co">#&gt;                                   outcome </span></span>
-<span><span class="co">#&gt;                                 "Outcome" </span></span>
-<span><span class="co">#&gt;                              action_taken </span></span>
-<span><span class="co">#&gt;                            "Action Taken" </span></span>
-<span><span class="co">#&gt;                                  duration </span></span>
-<span><span class="co">#&gt;                                "Duration" </span></span>
-<span><span class="co">#&gt;                                   subline </span></span>
-<span><span class="co">#&gt;                                 "subline"</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="create-metadata-for-ae-listing">Create <code>metadata</code> for AE listing<a class="anchor" aria-label="anchor" href="#create-metadata-for-ae-listing"></a>
-</h3>
-<p>In order to generate AE listings using metalite.ae, we need to create
-a <code>metadata</code> object using the metalite package.</p>
-<p>While defining <code>analysis</code> for listing, several mapping
-names should be included:</p>
-<ul>
-<li>
-<code>name</code>: The name of this analysis. In this example, we
-use ‘ae_listing’.</li>
-<li>
-<code>var_name</code>: Variable name in observation dataset which
-used to display in the listing. The order in the input vector for
-<code>var_nasme</code> will be the order of column display in the final
-listing.</li>
-<li>
-<code>subline_by</code>: The variable is used as the page subline
-header. It could be <code>NULL</code> if not applicable.</li>
-<li>
-<code>group_by</code>: The variable only display when it is first
-appeared. In this example, we define it as
-<code>c("USUBJID", "ASTDY")</code>.</li>
-<li>
-<code>page_by</code>: The variable is used as section header. In
-this example, we define it as <code>c("TRTA", "subline")</code>
-</li>
-</ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meta_ae_listing</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">adsl</span><span class="op">$</span><span class="va">TRTA</span> <span class="op">&lt;-</span> <span class="va">adsl</span><span class="op">$</span><span class="va">TRT01A</span></span>
-<span></span>
-<span>  <span class="va">adsl</span><span class="op">$</span><span class="va">TRTA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
-<span>    <span class="va">adsl</span><span class="op">$</span><span class="va">TRTA</span>,</span>
-<span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span><span class="op">)</span>,</span>
-<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"Low Dose"</span>, <span class="st">"High Dose"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
-<span>    <span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span>,</span>
-<span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Xanomeline High Dose"</span><span class="op">)</span>,</span>
-<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"Low Dose"</span>, <span class="st">"High Dose"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://merck.github.io/metalite/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span></span>
-<span>    analysis <span class="op">=</span> <span class="st">"ae_listing"</span>, population <span class="op">=</span> <span class="st">"apat"</span>,</span>
-<span>    observation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wk12"</span>, <span class="st">"wk24"</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"any"</span>, <span class="st">"rel"</span>, <span class="st">"ser"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu"><a href="https://merck.github.io/metalite/reference/meta_adam.html" class="external-link">meta_adam</a></span><span class="op">(</span></span>
-<span>    population <span class="op">=</span> <span class="va">adsl</span>,</span>
-<span>    observation <span class="op">=</span> <span class="va">adae</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/define_plan.html" class="external-link">define_plan</a></span><span class="op">(</span>plan <span class="op">=</span> <span class="va">plan</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/define_population.html" class="external-link">define_population</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"apat"</span>,</span>
-<span>      group <span class="op">=</span> <span class="st">"TRTA"</span>,</span>
-<span>      subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/define_observation.html" class="external-link">define_observation</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"wk12"</span>,</span>
-<span>      group <span class="op">=</span> <span class="st">"TRTA"</span>,</span>
-<span>      subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
-<span>      label <span class="op">=</span> <span class="st">"Weeks 0 to 12"</span>,</span>
-<span>      rel_day <span class="op">=</span> <span class="st">"ASTDY"</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/define_observation.html" class="external-link">define_observation</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"wk24"</span>,</span>
-<span>      group <span class="op">=</span> <span class="st">"TRTA"</span>,</span>
-<span>      subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">AOCC01FL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span>, <span class="co"># Only for demo, another flag should be used.</span></span>
-<span>      label <span class="op">=</span> <span class="st">"Weeks 0 to 24"</span>,</span>
-<span>      rel_day <span class="op">=</span> <span class="st">"ASTDY"</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"rel"</span>,</span>
-<span>      subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">AEREL</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"ser"</span>,</span>
-<span>      subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">AESER</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/define_analysis.html" class="external-link">define_analysis</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
-<span>      var_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>        <span class="st">"USUBJID"</span>, <span class="st">"ASTDY"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"duration"</span>,</span>
-<span>        <span class="st">"AESEV"</span>, <span class="st">"AESER"</span>, <span class="st">"related"</span>, <span class="st">"action_taken"</span>, <span class="st">"outcome"</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      subline_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>      group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USUBJID"</span>, <span class="st">"ASTDY"</span><span class="op">)</span>,</span>
-<span>      page_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TRTA"</span>, <span class="st">"subline"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://merck.github.io/metalite/reference/meta_build.html" class="external-link">meta_build</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
-</h3>
-<p>The <code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> function is designed to collect
-the variables used for the listing:</p>
-<ul>
-<li>
-<code>meta</code>: The input is a <code>meta</code> object. Here, we
-use the <code>meta</code> object created above.</li>
-<li>
-<code>analysis</code>: Analysis name for listing defined in the
-input <code>meta</code>. In this example, it is “ae_listing”.</li>
-</ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">meta_ae_listing</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_listing.html">prepare_ae_listing</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_listing.html">prepare_ae_listing</a></span><span class="op">(</span></span>
 <span>  <span class="va">meta</span>,</span>
 <span>  analysis <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
@@ -470,10 +185,10 @@ input <code>meta</code>. In this example, it is “ae_listing”.</li>
 <span><span class="co">#&gt; 689  MODERATE     Y Possible         None Resolved High Dose</span></span>
 <span><span class="co">#&gt; 1131   SEVERE     Y Probable         None Resolved  Low Dose</span></span>
 <span><span class="co">#&gt; 1173   SEVERE     Y     None         None Resolved High Dose</span></span>
-<span><span class="co">#&gt;                                                                                             subline</span></span>
-<span><span class="co">#&gt; 689  Subject ID = 01-709-1424, Gender = M, Race = WHITE, AGE = 77 Years, TRT = Xanomeline High Dose</span></span>
-<span><span class="co">#&gt; 1131  Subject ID = 01-718-1170, Gender = F, Race = WHITE, AGE = 80 Years, TRT = Xanomeline Low Dose</span></span>
-<span><span class="co">#&gt; 1173 Subject ID = 01-718-1371, Gender = F, Race = WHITE, AGE = 69 Years, TRT = Xanomeline High Dose</span></span>
+<span><span class="co">#&gt;                                                                                  subline</span></span>
+<span><span class="co">#&gt; 689  Subject ID = 01-709-1424, Gender = M, Race = WHITE, AGE = 77 Years, TRT = High Dose</span></span>
+<span><span class="co">#&gt; 1131  Subject ID = 01-718-1170, Gender = F, Race = WHITE, AGE = 80 Years, TRT = Low Dose</span></span>
+<span><span class="co">#&gt; 1173 Subject ID = 01-718-1371, Gender = F, Race = WHITE, AGE = 69 Years, TRT = High Dose</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">col_name</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                       USUBJID                         ASTDY </span></span>
 <span><span class="co">#&gt;   "Unique Subject Identifier" "Analysis Start Relative Day" </span></span>
@@ -482,30 +197,28 @@ input <code>meta</code>. In this example, it is “ae_listing”.</li>
 <span><span class="co">#&gt;                         AESEV                         AESER </span></span>
 <span><span class="co">#&gt;                   "Intensity"                     "Serious"</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="generate-rtf">Generate RTF<a class="anchor" aria-label="anchor" href="#generate-rtf"></a>
-</h3>
-<p>By using <code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code>, we can transfer the output
-from <code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> to an RTF table.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="section level2">
+<h2 id="rtf-tables">RTF tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>
+</h2>
+<p>The last step is to prepare the RTF table using
+<code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">footnote</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED"</span>,</span>
 <span>  <span class="st">"Action Taken: Discontinued = DRUG WITHDRAWN, Interrupted = DRUG INTERRUPTED, Reduced = DOSE REDUCED, Increased = DOSE INCREASED, None = DOSE NOT CHANGED, N/A = NOT APPLICABLE."</span>,</span>
 <span>  <span class="st">"Outcome: Resolved = RECOVERED/RESOLVED, Resolving = RECOVERING/RESOLVING, Sequelae = RECOVERED/RESOLVED WITH SEQUELAE, Not resolved = NOT RECOVERED/NOT RESOLVED."</span>,</span>
 <span>  <span class="st">"Adverse event terms are from MedDRA Version 25.0."</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/tlf_ae_listing.html">tlf_ae_listing</a></span><span class="op">(</span></span>
-<span>    footnotes <span class="op">=</span> <span class="va">footnote</span>,</span>
-<span>    orientation <span class="op">=</span> <span class="st">"portrait"</span>,</span>
-<span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,</span>
-<span>    path_outtable <span class="op">=</span> <span class="st">"rtf/ae0listing0ser0wk12.rtf"</span>,</span>
-<span>    path_outdata <span class="op">=</span> <span class="cn">NULL</span></span>
-<span>  <span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/tlf_ae_listing.html">tlf_ae_listing</a></span><span class="op">(</span></span>
+<span>  footnotes <span class="op">=</span> <span class="va">footnote</span>,</span>
+<span>  orientation <span class="op">=</span> <span class="st">"portrait"</span>,</span>
+<span>  source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,</span>
+<span>  path_outtable <span class="op">=</span> <span class="st">"rtf/ae0listing0ser0wk12.rtf"</span>,</span>
+<span>  path_outdata <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0listing0ser0wk12.rtf</span></span></code></pre></div>
 <embed src="pdf/ae0listing0ser0wk12.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

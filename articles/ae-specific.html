@@ -103,7 +103,7 @@ specification analyses by extending examples shown in the <a href="https://r4csr
 <p>The AE specification analysis is to provide tables to summarize
 details of different types of adverse events. With a metadata object
 created by metalite, there are three required functions to create AE
-specification analysis tables using metalite.ae:</p>
+specification analysis table using metalite.ae:</p>
 <ul>
 <li>
 <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code>: prepare analysis raw
@@ -128,6 +128,8 @@ AE.</li>
 <code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code>: add average number of AE
 events.</li>
 </ul>
+<p>An example output:</p>
+<p><img src="rtf/ae0specific1.rtf" width="100%" height="400px" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
@@ -140,7 +142,7 @@ datasets from the metalite package.</p>
 <span><span class="co">#&gt; ADaM metadata: </span></span>
 <span><span class="co">#&gt;    .$data_population     Population data with 254 subjects </span></span>
 <span><span class="co">#&gt;    .$data_observation    Observation data with 1191 records </span></span>
-<span><span class="co">#&gt;    .$plan    Analysis plan with 10 plans </span></span>
+<span><span class="co">#&gt;    .$plan    Analysis plan with 16 plans </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis population type:</span></span>
@@ -170,7 +172,8 @@ datasets from the metalite package.</p>
 <span><span class="co">#&gt;   Analysis function:</span></span>
 <span><span class="co">#&gt;            name                           label</span></span>
 <span><span class="co">#&gt; 1  'ae_summary'  'Table: adverse event summary'</span></span>
-<span><span class="co">#&gt; 2 'ae_specific' 'Table: specific adverse event'</span></span></code></pre></div>
+<span><span class="co">#&gt; 2  'ae_listing'        'Listing: adverse event'</span></span>
+<span><span class="co">#&gt; 3 'ae_specific' 'Table: specific adverse event'</span></span></code></pre></div>
 <p>The same metadata structure is used to support all analysis examples
 in metalite.ae. More details can be found on the <a href="https://merck.github.io/metalite/articles/metalite.html" class="external-link">metalite
 package website</a>.</p>

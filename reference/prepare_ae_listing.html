@@ -97,7 +97,7 @@ The term name is used as key to link information.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_listing_example.html">meta_ae_listing_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">prepare_ae_listing</span><span class="op">(</span><span class="va">meta</span>, <span class="st">"ae_listing"</span>, <span class="st">"apat"</span>, <span class="st">"wk12"</span>, <span class="st">"ser"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ meta           :List of 7</span>
@@ -195,138 +195,153 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "MMSE Total"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTA    : Factor w/ 3 levels "Placebo","Low Dose",..: 1 1 3 2 3 1 2 2 2 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "data_name")= chr "adsl"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ data_observation:'data.frame':	1191 obs. of  56 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ STUDYID : chr [1:1191] "CDISCPILOT01" "CDISCPILOT01" "CDISCPILOT01" "CDISCPILOT01" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ data_observation:'data.frame':	1191 obs. of  60 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ STUDYID     : chr [1:1191] "CDISCPILOT01" "CDISCPILOT01" "CDISCPILOT01" "CDISCPILOT01" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Study Identifier"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ SITEID  : chr [1:1191] "701" "701" "701" "701" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ SITEID      : chr [1:1191] "701" "701" "701" "701" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Study Site Identifier"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ USUBJID : chr [1:1191] "01-701-1015" "01-701-1015" "01-701-1015" "01-701-1023" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ USUBJID     : chr [1:1191] "01-701-1015" "01-701-1015" "01-701-1015" "01-701-1023" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Unique Subject Identifier"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTA    : Factor w/ 3 levels "Placebo","Low Dose",..: 1 1 1 1 1 1 1 3 3 3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTAN   : num [1:1191] 0 0 0 0 0 0 0 81 81 81 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTA        : Factor w/ 3 levels "Placebo","Low Dose",..: 1 1 1 1 1 1 1 3 3 3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTAN       : num [1:1191] 0 0 0 0 0 0 0 81 81 81 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Actual Treatment (N)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AGE     : num [1:1191] 63 63 63 64 64 64 64 71 71 77 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AGE         : num [1:1191] 63 63 63 64 64 64 64 71 71 77 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Age"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AGEGR1  : chr [1:1191] "&lt;65" "&lt;65" "&lt;65" "&lt;65" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AGEGR1      : chr [1:1191] "&lt;65" "&lt;65" "&lt;65" "&lt;65" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Pooled Age Group 1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AGEGR1N : num [1:1191] 1 1 1 1 1 1 1 2 2 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AGEGR1N     : num [1:1191] 1 1 1 1 1 1 1 2 2 2 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Pooled Age Group 1 (N)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ RACE    : chr [1:1191] "WHITE" "WHITE" "WHITE" "WHITE" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ RACE        : chr [1:1191] "WHITE" "WHITE" "WHITE" "WHITE" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Race"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ RACEN   : num [1:1191] 1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ RACEN       : num [1:1191] 1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Race (N)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ SEX     : chr [1:1191] "F" "F" "F" "M" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ SEX         : chr [1:1191] "F" "F" "F" "M" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Sex"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ SAFFL   : chr [1:1191] "Y" "Y" "Y" "Y" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ SAFFL       : chr [1:1191] "Y" "Y" "Y" "Y" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Safety Population Flag"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTSDT  : Date[1:1191], format: "2014-01-02" "2014-01-02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTEDT  : Date[1:1191], format: "2014-07-02" "2014-07-02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ASTDT   : Date[1:1191], format: "2014-01-03" "2014-01-03" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ASTDTF  : chr [1:1191] "" "" "" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTSDT      : Date[1:1191], format: "2014-01-02" "2014-01-02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTEDT      : Date[1:1191], format: "2014-07-02" "2014-07-02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ASTDT       : Date[1:1191], format: "2014-01-03" "2014-01-03" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ASTDTF      : chr [1:1191] "" "" "" "" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Analysis Start Date Imputation Flag"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ASTDY   : num [1:1191] 2 2 8 3 3 22 3 3 21 58 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ASTDY       : num [1:1191] 2 2 8 3 3 22 3 3 21 58 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Analysis Start Relative Day"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AENDT   : Date[1:1191], format: NA NA ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AENDY   : num [1:1191] NA NA 10 26 NA NA 26 NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AENDT       : Date[1:1191], format: NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AENDY       : num [1:1191] NA NA 10 26 NA NA 26 NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Analysis End Relative Day"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ADURN   : num [1:1191] NA NA 3 24 NA NA 24 NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ADURN       : num [1:1191] NA NA 3 24 NA NA 24 NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "AE Duration (N)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ADURU   : chr [1:1191] "" "" "DAY" "DAY" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ADURU       : chr [1:1191] "" "" "DAY" "DAY" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "AE Duration Units"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AETERM  : chr [1:1191] "APPLICATION SITE ERYTHEMA" "APPLICATION SITE PRURITUS" "DIARRHOEA" "ERYTHEMA" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AETERM      : chr [1:1191] "APPLICATION SITE ERYTHEMA" "APPLICATION SITE PRURITUS" "DIARRHOEA" "ERYTHEMA" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Reported Term for the Adverse Event"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AELLT   : chr [1:1191] "APPLICATION SITE REDNESS" "APPLICATION SITE ITCHING" "DIARRHEA" "ERYTHEMA" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AELLT       : chr [1:1191] "APPLICATION SITE REDNESS" "APPLICATION SITE ITCHING" "DIARRHEA" "ERYTHEMA" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Lowest Level Term"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AELLTCD : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AELLTCD     : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Lowest Level Term Code"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEDECOD : chr [1:1191] "APPLICATION SITE ERYTHEMA" "APPLICATION SITE PRURITUS" "DIARRHOEA" "ERYTHEMA" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Dictionary-Derived Term"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEPTCD  : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEDECOD     : chr [1:1191] "APPLICATION SITE ERYTHEMA" "APPLICATION SITE PRURITUS" "DIARRHOEA" "ERYTHEMA" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Adverse Event"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEPTCD      : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Preferred Term Code"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLT   : chr [1:1191] "HLT_0617" "HLT_0317" "HLT_0148" "HLT_0284" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLT       : chr [1:1191] "HLT_0617" "HLT_0317" "HLT_0148" "HLT_0284" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "High Level Term"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLTCD : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLTCD     : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "High Level Term Code"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLGT  : chr [1:1191] "HLGT_0152" "HLGT_0338" "HLGT_0588" "HLGT_0192" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLGT      : chr [1:1191] "HLGT_0152" "HLGT_0338" "HLGT_0588" "HLGT_0192" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "High Level Group Term"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLGTCD: num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEHLGTCD    : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "High Level Group Term Code"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEBODSYS: chr [1:1191] "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GASTROINTESTINAL DISORDERS" "SKIN AND SUBCUTANEOUS TISSUE DISORDERS" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEBODSYS    : chr [1:1191] "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GASTROINTESTINAL DISORDERS" "SKIN AND SUBCUTANEOUS TISSUE DISORDERS" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Body System or Organ Class"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESOC   : chr [1:1191] "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GASTROINTESTINAL DISORDERS" "SKIN AND SUBCUTANEOUS TISSUE DISORDERS" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESOC       : chr [1:1191] "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS" "GASTROINTESTINAL DISORDERS" "SKIN AND SUBCUTANEOUS TISSUE DISORDERS" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Primary System Organ Class"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESOCCD : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESOCCD     : num [1:1191] NA NA NA NA NA NA NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Primary System Organ Class Code"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESEV   : chr [1:1191] "MILD" "MILD" "MILD" "MILD" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Severity/Intensity"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESER   : chr [1:1191] "N" "N" "N" "N" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Serious Event"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESCAN  : chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESEV       : chr [1:1191] "MILD" "MILD" "MILD" "MILD" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Intensity"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESER       : chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Serious"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESCAN      : chr [1:1191] "N" "N" "N" "N" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Involves Cancer"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESCONG : chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESCONG     : chr [1:1191] "N" "N" "N" "N" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Congenital Anomaly or Birth Defect"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESDISAB: chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESDISAB    : chr [1:1191] "N" "N" "N" "N" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Persist or Signif Disability/Incapacity"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESDTH  : chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESDTH      : chr [1:1191] "N" "N" "N" "N" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Results in Death"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESHOSP : chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESHOSP     : chr [1:1191] "N" "N" "N" "N" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Requires or Prolongs Hospitalization"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESLIFE : chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESLIFE     : chr [1:1191] "N" "N" "N" "N" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Is Life Threatening"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESOD   : chr [1:1191] "N" "N" "N" "N" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESOD       : chr [1:1191] "N" "N" "N" "N" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Occurred with Overdose"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEREL   : chr [1:1191] "PROBABLE" "PROBABLE" "REMOTE" "POSSIBLE" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEREL       : chr [1:1191] "PROBABLE" "PROBABLE" "REMOTE" "POSSIBLE" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Causality"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEACN   : chr [1:1191] "" "" "" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEACN       : chr [1:1191] "DOSE NOT CHANGED" "DOSE NOT CHANGED" "DOSE NOT CHANGED" "DOSE NOT CHANGED" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Action Taken with Study Treatment"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEOUT   : chr [1:1191] "NOT RECOVERED/NOT RESOLVED" "NOT RECOVERED/NOT RESOLVED" "RECOVERED/RESOLVED" "NOT RECOVERED/NOT RESOLVED" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AEOUT       : chr [1:1191] "NOT RECOVERED/NOT RESOLVED" "NOT RECOVERED/NOT RESOLVED" "RECOVERED/RESOLVED" "NOT RECOVERED/NOT RESOLVED" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Outcome of Adverse Event"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESEQ   : num [1:1191] 1 2 3 1 2 3 4 1 2 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AESEQ       : num [1:1191] 1 2 3 1 2 3 4 1 2 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Sequence Number"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTEMFL : chr [1:1191] "Y" "Y" "Y" "Y" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ TRTEMFL     : chr [1:1191] "Y" "Y" "Y" "Y" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Treatment Emergent Analysis Flag"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCCFL  : chr [1:1191] "Y" "" "" "Y" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCCFL      : chr [1:1191] "Y" "" "" "Y" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "1st Occurrence of Any AE Flag"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCCSFL : chr [1:1191] "Y" "" "Y" "Y" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCCSFL     : chr [1:1191] "Y" "" "Y" "Y" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "1st Occurrence of SOC Flag"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCCPFL : chr [1:1191] "Y" "Y" "Y" "Y" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCCPFL     : chr [1:1191] "Y" "Y" "Y" "Y" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "1st Occurrence of Preferred Term Flag"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC02FL: chr [1:1191] "" "" "" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC02FL    : chr [1:1191] "" "" "" "" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "1st Occurrence 02 Flag for Serious"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC03FL: chr [1:1191] "" "" "" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC03FL    : chr [1:1191] "" "" "" "" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "1st Occurrence 03 Flag for Serious SOC"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC04FL: chr [1:1191] "" "" "" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC04FL    : chr [1:1191] "" "" "" "" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "1st Occurrence 04 Flag for Serious PT"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ CQ01NAM : chr [1:1191] "DERMATOLOGIC EVENTS" "DERMATOLOGIC EVENTS" "" "DERMATOLOGIC EVENTS" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ CQ01NAM     : chr [1:1191] "DERMATOLOGIC EVENTS" "DERMATOLOGIC EVENTS" "" "DERMATOLOGIC EVENTS" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Customized Query 01 Name"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC01FL: chr [1:1191] "Y" "" "" "Y" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ AOCC01FL    : chr [1:1191] "Y" "" "" "Y" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "1st Occurrence 01 Flag for CQ01"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ subline : chr [1:1191] "Age=63, ID=01-701-1015, Gender=F" "Age=63, ID=01-701-1015, Gender=F" "Age=63, ID=01-701-1015, Gender=F" "Age=64, ID=01-701-1023, Gender=M" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ related     : chr [1:1191] "Probable" "Probable" "Remote" "Possible" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Related"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ outcome     : chr [1:1191] "Resolved" "Resolved" "Resolved" "Resolved" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Outcome"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ action_taken: chr [1:1191] "None" "None" "None" "None" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Action Taken"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ duration    : chr [1:1191] "Continuing" "Continuing" "3 Day" "24 Day" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Duration"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ subline     : chr [1:1191] "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1023, Gender = M, Race = WHITE, AGE = 64 Years, TRT = Placebo" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "data_name")= chr "adae"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ plan            :Classes ‘meta_plan’ and 'data.frame':	3 obs. of  5 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ mock       : num [1:3] 1 1 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ analysis   : chr [1:3] "ae_listing" "ae_listing" "ae_listing"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ population : chr [1:3] "apat" "apat" "apat"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ observation: chr [1:3] "wk12" "wk12" "wk12"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parameter  : chr [1:3] "any" "rel" "ser"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ plan            :Classes ‘meta_plan’ and 'data.frame':	16 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ mock       : num [1:16] 1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ analysis   : chr [1:16] "ae_summary" "ae_summary" "ae_specific" "ae_specific" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ population : chr [1:16] "apat" "apat" "apat" "apat" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ observation: chr [1:16] "wk12" "wk24" "wk12" "wk24" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parameter  : chr [1:16] "any;rel;ser" "any;rel;ser" "any" "any" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "out.attrs")=List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:5] 1 1 1 1 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:5] 1 1 1 2 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "names")= chr [1:5] "mock" "analysis" "population" "observation" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dimnames:List of 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ mock       : chr "mock=1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ analysis   : chr "analysis=ae_listing"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ analysis   : chr "analysis=ae_summary"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ population : chr "population=apat"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ observation: chr "observation=wk12"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ parameter  : chr [1:3] "parameter=any" "parameter=rel" "parameter=ser"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ observation     :List of 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ wk12:List of 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name   : chr "wk12"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id     : chr "USUBJID"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group  : chr "TRTA"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var    : NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset : language SAFFL == "Y"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label  : chr "Weeks 0 to 12"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ rel_day: chr "ASTDY"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ observation: chr [1:2] "observation=wk12" "observation=wk24"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..$ parameter  : chr "parameter=any;rel;ser"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ observation     :List of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ wk12:List of 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "wk12"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : chr "USUBJID"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group : chr "TRTA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var   : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: language SAFFL == "Y"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "Weeks 0 to 12"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ wk24:List of 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "wk24"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : chr "USUBJID"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group : chr "TRTA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var   : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: language AOCC01FL == "Y"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "Weeks 0 to 24"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ population      :List of 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ apat:List of 6</span>
@@ -337,8 +352,8 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: language SAFFL == "Y"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "All Participants as Treated"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ parameter       :List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ rel:List of 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ parameter       :List of 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ rel  :List of 12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name     : chr "rel"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id       : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group    : NULL</span>
@@ -352,20 +367,18 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row : chr "with drug-related{^a} adverse events"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_foot: chr "{^a}Determined by the investigator to be related to the drug."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ser:List of 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name    : chr "ser"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id      : NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group   : NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var     : chr "AEDECOD"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset  : language AESER == "Y"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label   : chr "serious adverse events"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ soc     : chr "AEBODSYS"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ seq     : num 401</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term1   : chr "Serious"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2   : chr ""</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row: chr "with serious adverse events"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ aeosi:List of 9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "aeosi"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var   : chr "AEDECOD"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: language AEOSI == "Y"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "adverse events of special interest"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ soc   : chr "AEBODSYS"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term1 : chr ""</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2 : chr "of special interest"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ any:List of 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ any  :List of 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name    : chr "any"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id      : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group   : NULL</span>
@@ -378,19 +391,50 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2   : chr ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row: chr "with one or more adverse events"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ analysis        :List of 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ae_listing:List of 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ser  :List of 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name    : chr "ser"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id      : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group   : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var     : chr "AEDECOD"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset  : language AESER == "Y"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label   : chr "serious adverse events"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ soc     : chr "AEBODSYS"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ seq     : num 401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term1   : chr "Serious"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2   : chr ""</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row: chr "with serious adverse events"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ analysis        :List of 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ae_summary :List of 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "ae_summary"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var   : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "Table: adverse event summary"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ title : chr "Summary of Adverse Events"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ae_listing :List of 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name      : chr "ae_listing"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id        : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group     : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var       : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset    : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label     : chr "Listing: adverse event"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var_name  : chr [1:8] "USUBJID" "ASTDY" "AEDECOD" "ADURN" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var_name  : chr [1:9] "USUBJID" "ASTDY" "AEDECOD" "duration" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subline_by: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group_by  : chr [1:2] "USUBJID" "ASTDY"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ page_by   : chr [1:2] "TRTA" "subline"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ title     : chr "Listing of Participants With {term1} Adverse Events {term2}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ae_specific:List of 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "ae_specific"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var   : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "Table: specific adverse event"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ title : chr "Participants With {term1} Adverse Events {term2}"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "class")= chr "meta_adam"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ population     : chr "apat"</span>
@@ -400,37 +444,40 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ col_name       : Named chr [1:10] "Unique Subject Identifier" "Analysis Start Relative Day" "Dictionary-Derived Term" "AE Duration (N)" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "names")= chr [1:10] "USUBJID" "ASTDY" "AEDECOD" "ADURN" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ tbl            :'data.frame':	3 obs. of  10 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ USUBJID: chr [1:3] "01-709-1424" "01-718-1170" "01-718-1371"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ col_name       : Named chr [1:11] "Unique Subject Identifier" "Analysis Start Relative Day" "Adverse Event" "Duration" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "names")= chr [1:11] "USUBJID" "ASTDY" "AEDECOD" "duration" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ tbl            :'data.frame':	3 obs. of  11 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ USUBJID     : chr [1:3] "01-709-1424" "01-718-1170" "01-718-1371"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Unique Subject Identifier"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "USUBJID"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ ASTDY  : num [1:3] 5 27 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ ASTDY       : num [1:3] 5 27 38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Analysis Start Relative Day"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "ASTDY"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AEDECOD: chr [1:3] "SYNCOPE" "SYNCOPE" "PARTIAL SEIZURES WITH SECONDARY GENERALISATION"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Dictionary-Derived Term"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AEDECOD     : chr [1:3] "SYNCOPE" "SYNCOPE" "PARTIAL SEIZURES WITH SECONDARY GENERALISATION"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Adverse Event"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "AEDECOD"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ ADURN  : num [1:3] 1 2 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "AE Duration (N)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "ADURN"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AESEV  : chr [1:3] "MODERATE" "SEVERE" "SEVERE"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Severity/Intensity"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ duration    : chr [1:3] "1 Day" "2 Day" "4 Day"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Duration"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "duration"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AESEV       : chr [1:3] "MODERATE" "SEVERE" "SEVERE"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Intensity"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "AESEV"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AESER  : chr [1:3] "Y" "Y" "Y"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Serious Event"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AESER       : chr [1:3] "Y" "Y" "Y"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Serious"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "AESER"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AEREL  : chr [1:3] "POSSIBLE" "PROBABLE" "NONE"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Causality"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "AEREL"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ AEOUT  : chr [1:3] "RECOVERED/RESOLVED" "RECOVERED/RESOLVED" "RECOVERED/RESOLVED"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Outcome of Adverse Event"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "AEOUT"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ TRTA   : Factor w/ 3 levels "Placebo","Low Dose",..: 3 2 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ related     : chr [1:3] "Possible" "Probable" "None"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Related"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "related"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ action_taken: chr [1:3] "None" "None" "None"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Action Taken"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "action_taken"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ outcome     : chr [1:3] "Resolved" "Resolved" "Resolved"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "Outcome"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "outcome"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ TRTA        : Factor w/ 3 levels "Placebo","Low Dose",..: 3 2 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "TRTA"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "TRTA"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ subline: chr [1:3] "Age=77, ID=01-709-1424, Gender=M" "Age=80, ID=01-718-1170, Gender=F" "Age=69, ID=01-718-1371, Gender=F"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ subline     : chr [1:3] "Subject ID = 01-709-1424, Gender = M, Race = WHITE, AGE = 77 Years, TRT = High Dose" "Subject ID = 01-718-1170, Gender = F, Race = WHITE, AGE = 80 Years, TRT = Low Dose" "Subject ID = 01-718-1371, Gender = F, Race = WHITE, AGE = 69 Years, TRT = High Dose"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "label")= Named chr "subline"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "names")= chr "subline"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "outdata"</span>
