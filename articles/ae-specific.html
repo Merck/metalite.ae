@@ -91,12 +91,19 @@
 
     
     
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite/" class="external-link">metalite</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite.ae/">metalite.ae</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
+<p>The purpose of this tutorial is to create production ready AE
+specification analyses by extending examples shown in the <a href="https://r4csr.org/specific-ae.html" class="external-link">specific AE chapter</a> of the
+<em>R for Clinical Study Reports and Submission</em> book.</p>
 <p>The AE specification analysis is to provide tables to summarize
-details of adverse events. The development of AE specification analysis
-involves:</p>
+details of different types of adverse events. With a metadata object
+created by metalite, there are three required functions to create AE
+specification analysis tables using metalite.ae:</p>
 <ul>
 <li>
 <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code>: prepare analysis raw
@@ -108,8 +115,8 @@ with proper format.</li>
 <code><a href="../reference/tlf_ae_specific.html">tlf_ae_specific()</a></code>: transfer (mock) output dataset to
 RTF table.</li>
 </ul>
-<p>We can also prepare (optional) additional function to extend the
-analysis:</p>
+<p>There are three optional functions to extend AE specification
+analysis.</p>
 <ul>
 <li>
 <code><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference()</a></code>: add risk difference
@@ -121,24 +128,69 @@ AE.</li>
 <code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code>: add average number of AE
 events.</li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
+</h2>
+<p>In metalite.ae, we created an example dataset using ADSL and ADAE
+datasets from the metalite package.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">meta</span></span>
+<span><span class="co">#&gt; ADaM metadata: </span></span>
+<span><span class="co">#&gt;    .$data_population     Population data with 254 subjects </span></span>
+<span><span class="co">#&gt;    .$data_observation    Observation data with 1191 records </span></span>
+<span><span class="co">#&gt;    .$plan    Analysis plan with 10 plans </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis population type:</span></span>
+<span><span class="co">#&gt;     name        id  group var       subset                         label</span></span>
+<span><span class="co">#&gt; 1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis observation type:</span></span>
+<span><span class="co">#&gt;     name        id  group var          subset           label</span></span>
+<span><span class="co">#&gt; 1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'</span></span>
+<span><span class="co">#&gt; 2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis parameter type:</span></span>
+<span><span class="co">#&gt;      name                                label</span></span>
+<span><span class="co">#&gt; 1   'rel'        'drug-related adverse events'</span></span>
+<span><span class="co">#&gt; 2 'aeosi' 'adverse events of special interest'</span></span>
+<span><span class="co">#&gt; 3   'any'                 'any adverse events'</span></span>
+<span><span class="co">#&gt; 4   'ser'             'serious adverse events'</span></span>
+<span><span class="co">#&gt;                                 subset</span></span>
+<span><span class="co">#&gt; 1 AEREL %in% c('POSSIBLE', 'PROBABLE')</span></span>
+<span><span class="co">#&gt; 2                         AEOSI == 'Y'</span></span>
+<span><span class="co">#&gt; 3                                     </span></span>
+<span><span class="co">#&gt; 4                         AESER == 'Y'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Analysis function:</span></span>
+<span><span class="co">#&gt;            name                           label</span></span>
+<span><span class="co">#&gt; 1  'ae_summary'  'Table: adverse event summary'</span></span>
+<span><span class="co">#&gt; 2 'ae_specific' 'Table: specific adverse event'</span></span></code></pre></div>
+<p>The same metadata structure is used to support all analysis examples
+in metalite.ae. More details can be found on the <a href="https://merck.github.io/metalite/articles/metalite.html" class="external-link">metalite
+package website</a>.</p>
 <div class="section level3">
 <h3 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
 </h3>
-<p>The <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> function is designed to be
-used for multiple purposes. The input of the function is a
-<code>meta</code> object created by the metalite package.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The output of the function is an <code>outdata</code> object
-containing a list of analysis raw datasets.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>The <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> function is used to calculate
+statistics required for AE specification analysis using pre-specified
+keywords in <code>meta</code>. The input of the function is a
+<code>meta</code> object created by metalite. The output of the function
+is an <code>outdata</code> object that contains a list of analysis raw
+datasets.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_specific.html">prepare_ae_specific</a></span><span class="op">(</span></span>
 <span>  <span class="va">meta</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
 <span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
 <span>  parameter <span class="op">=</span> <span class="st">"rel"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span></span>
 <span><span class="co">#&gt; List of 13</span></span>
 <span><span class="co">#&gt;  $ meta           :List of 7</span></span>
@@ -156,11 +208,11 @@ containing a list of analysis raw datasets.</p>
 <span><span class="co">#&gt;  $ components     : chr [1:2] "soc" "par"</span></span></code></pre></div>
 <p>The output dataset contains commonly used statistics. The variable is
 indexed by the order of <code>outdata$group</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span><span class="op">$</span><span class="va">group</span></span>
 <span><span class="co">#&gt; [1] "Placebo"   "Low Dose"  "High Dose" "Total"</span></span></code></pre></div>
 <p>The row is indexed by the order of <code>outdata$name</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">outdata</span><span class="op">$</span><span class="va">order</span>, <span class="va">outdata</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   outdata.order                                 outdata.name</span></span>
 <span><span class="co">#&gt; 1             1                   Participants in population</span></span>
@@ -173,7 +225,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <li>
 <code>n_pop</code>: participants in population.</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span><span class="op">$</span><span class="va">n_pop</span></span>
 <span><span class="co">#&gt;   n_1 n_2 n_3 n_4</span></span>
 <span><span class="co">#&gt; 1  86  84  84 254</span></span></code></pre></div>
@@ -181,7 +233,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <li>
 <code>n</code>: number of subjects with AE.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outdata</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     n_1 n_2 n_3 n_4</span></span>
 <span><span class="co">#&gt; 1    86  84  84 254</span></span>
@@ -194,7 +246,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <li>
 <code>prop</code>: proportion of subjects with AE.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outdata</span><span class="op">$</span><span class="va">prop</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        prop_1    prop_2    prop_3    prop_4</span></span>
 <span><span class="co">#&gt; 1          NA        NA        NA        NA</span></span>
@@ -208,7 +260,7 @@ indexed by the order of <code>outdata$group</code>.</p>
 <code>diff</code>: risk difference compared with the
 <code>reference_group</code>.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outdata</span><span class="op">$</span><span class="va">diff</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         diff_2     diff_3</span></span>
 <span><span class="co">#&gt; 1           NA         NA</span></span>
@@ -218,13 +270,14 @@ indexed by the order of <code>outdata$group</code>.</p>
 <span><span class="co">#&gt; 122   1.356589  -2.214839</span></span>
 <span><span class="co">#&gt; 25   -1.162791   1.218162</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="format-output">Format output<a class="anchor" aria-label="anchor" href="#format-output"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="format-output">Format output<a class="anchor" aria-label="anchor" href="#format-output"></a>
+</h2>
 <p>After we have the raw analysis results, we can use
-<code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> to prepare the outdata and create RTF
-tables.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> to prepare the outdata for production
+ready RTF tables.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             name n_1 prop_1 n_2 prop_2 n_3</span></span>
@@ -241,29 +294,13 @@ tables.</p>
 <span><span class="co">#&gt; 4     &lt;NA&gt;  NA   &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 122  (4.8)  17  (6.7)</span></span>
 <span><span class="co">#&gt; 25   (2.4)   3  (1.2)</span></span></code></pre></div>
-<p>We can hide total column</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                             name n_1 prop_1 n_2 prop_2 n_3</span></span>
-<span><span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span></span>
-<span><span class="co">#&gt; 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70</span></span>
-<span><span class="co">#&gt; 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14</span></span>
-<span><span class="co">#&gt; 4                                                 NA   &lt;NA&gt;  NA   &lt;NA&gt;  NA</span></span>
-<span><span class="co">#&gt; 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4</span></span>
-<span><span class="co">#&gt; 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2</span></span>
-<span><span class="co">#&gt;     prop_3</span></span>
-<span><span class="co">#&gt; 1     &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2   (83.3)</span></span>
-<span><span class="co">#&gt; 3   (16.7)</span></span>
-<span><span class="co">#&gt; 4     &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 122  (4.8)</span></span>
-<span><span class="co">#&gt; 25   (2.4)</span></span></code></pre></div>
-<p>Adding risk difference</p>
+<div class="section level3">
+<h3 id="additional-statistics">Additional statistics<a class="anchor" aria-label="anchor" href="#additional-statistics"></a>
+</h3>
+<p>The <code>display</code> argument allows us to select statistics. For
+example, we can add risk difference.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             name n_1 prop_1 n_2 prop_2 n_3</span></span>
 <span><span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span></span>
@@ -279,9 +316,11 @@ tables.</p>
 <span><span class="co">#&gt; 4     &lt;NA&gt;     NA     NA</span></span>
 <span><span class="co">#&gt; 122  (4.8)    1.4   -2.2</span></span>
 <span><span class="co">#&gt; 25   (2.4)   -1.2    1.2</span></span></code></pre></div>
-<p>Adding 95% confidence interval of M&amp;N method. It requires to use
-<code><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference()</a></code> to perform additional
-calculations.</p>
+<p>For advanced analysis, we need <code>extend_*()</code> functions. For
+example, we can use <code><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference()</a></code> to add
+95% confidence interval based on Miettinen and Nurminen (M&amp;N)
+method. The details of the M&amp;N method can be found in the <a href="https://merck.github.io/metalite.ae/articles/rate-compare.html">rate
+compare vignette</a></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -301,13 +340,13 @@ calculations.</p>
 <span><span class="co">#&gt; 4     &lt;NA&gt;     NA           &lt;NA&gt;     NA           &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 122  (4.8)    1.4   (-7.3, 10.2)   -2.2  (-10.3,  5.6)</span></span>
 <span><span class="co">#&gt; 25   (2.4)   -1.2   (-6.3,  3.3)    1.2   (-4.2,  7.3)</span></span></code></pre></div>
-<p>Adding average duration of AE. It requires to use
-<code><a href="../reference/extend_ae_specific_duration.html">extend_ae_specific_duration()</a></code> to perform additional
-calculations.</p>
+<p>We can use <code><a href="../reference/extend_ae_specific_duration.html">extend_ae_specific_duration()</a></code> to add average
+duration of AE.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extend_ae_specific_duration.html">extend_ae_specific_duration</a></span><span class="op">(</span>duration_var <span class="op">=</span> <span class="st">"ADURN"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"dur"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             name n_1 prop_1        dur_1 n_2</span></span>
 <span><span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;           NA  84</span></span>
@@ -323,13 +362,13 @@ calculations.</p>
 <span><span class="co">#&gt; 4     &lt;NA&gt;           NA  NA   &lt;NA&gt;           NA</span></span>
 <span><span class="co">#&gt; 122  (8.3)  16.1 ( 3.5)   4  (4.8)   1.5 ( 0.4)</span></span>
 <span><span class="co">#&gt; 25   (0.0)  43.8 ( 9.8)   2  (2.4)  87.2 (22.5)</span></span></code></pre></div>
-<p>Adding average number of AE per subject. It requires to use
-<code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code> to perform additional
-calculation.</p>
+<p>We can use <code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code> to add average
+number of AE per subject.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"events"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             name n_1 prop_1     events_1 n_2</span></span>
 <span><span class="co">#&gt; 1                     Participants in population  86   &lt;NA&gt;           NA  84</span></span>
@@ -349,17 +388,16 @@ calculation.</p>
 <div class="section level3">
 <h3 id="mock-data-preparation">Mock data preparation<a class="anchor" aria-label="anchor" href="#mock-data-preparation"></a>
 </h3>
-<p>We can also use <code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> to create mock
-output data.</p>
-<p>The purpose of the <code>mock</code> argument is not to create a
-comprehensive mock table template, but a handy way to help users create
-a mock table that mimic the exact output layout.</p>
+<p>The <code>mock</code> argument allows us to create a mock table
+easily.</p>
+<p>Note: The purpose of the <code>mock</code> argument is not to create
+a comprehensive mock table template, but a handy way to help user create
+a mock table that mimics the exact output layout.</p>
 <p>Additional work is required to develop a flexible mock table
 generation tool (for example, a dedicated mock table generation
 package).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                           name  n_1 prop_1  n_2 prop_2  n_3</span></span>
 <span><span class="co">#&gt; 1                   Participants in population   xx   &lt;NA&gt;   xx   &lt;NA&gt;   xx</span></span>
@@ -376,11 +414,12 @@ package).</p>
 <span><span class="co">#&gt; 5  (x.x)   xx  (x.x)</span></span>
 <span><span class="co">#&gt; 6  (x.x)    x  (x.x)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="rtf-tables">RTF tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>
-</h3>
-<p>By using <code><a href="../reference/tlf_ae_specific.html">tlf_ae_specific()</a></code>, we can transfer the output
-from <code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> to an RTF table.</p>
+</div>
+<div class="section level2">
+<h2 id="rtf-tables">RTF tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>
+</h2>
+<p>The last step is to prepare the RTF table using
+<code><a href="../reference/tlf_ae_specific.html">tlf_ae_specific()</a></code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -404,7 +443,7 @@ commonly used arguments to customize the table.</p>
 <span>    path_outtable <span class="op">=</span> <span class="st">"rtf/ae0specific2.rtf"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2.rtf</span></span></code></pre></div>
-<embed src="pdf/ae0specific2.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>We can also generate the mock table</p>
+<embed src="pdf/ae0specific2.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>The mock table can also be generated.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -415,7 +454,6 @@ commonly used arguments to customize the table.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/mock_ae0specific1.rtf</span></span></code></pre></div>
 <embed src="pdf/mock_ae0specific1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
