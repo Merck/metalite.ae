@@ -30,7 +30,7 @@ of the _R for Clinical Study Reports and Submission_ book.
 
 The AE specification analysis is to provide tables to summarize details of different types of adverse events.
 With a metadata object created by metalite,
-there are three required functions to create AE specification analysis tables using metalite.ae:
+there are three required functions to create AE specification analysis table using metalite.ae:
 
 - `prepare_ae_specific()`: prepare analysis raw datasets.
 - `format_ae_specific()`: prepare analysis (mock) outdata with proper format.
@@ -41,6 +41,12 @@ There are three optional functions to extend AE specification analysis.
 - `extend_ae_specific_inference()`: add risk difference inference results based on M&N method.
 - `extend_ae_specific_duration()`: add average duration of AE.
 - `extend_ae_specific_events()`: add average number of AE events.
+
+An example output:
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("rtf/ae0specific1.rtf")
+```
 
 ## Example data
 

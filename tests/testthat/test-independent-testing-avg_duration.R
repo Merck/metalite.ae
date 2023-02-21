@@ -1,10 +1,10 @@
-library(r2rtf)
-
 test_that("if group = ... is not a factor, throw errors", {
+  r2rtf_adae <- r2rtf::r2rtf_adae
   expect_error(avg_duration(r2rtf_adae$USUBJID, r2rtf_adae$TRTA))
 })
 
 test_that("if par = NULL, return the average duration in each group (take the r2rtf::r2rtf_adae dataset as an example)", {
+  r2rtf_adae <- r2rtf::r2rtf_adae
   r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
   db <- data.frame(
     id = r2rtf_adae$USUBJID,
@@ -35,6 +35,7 @@ test_that("if par = NULL, return the average duration in each group (take the r2
 })
 
 test_that("if, say, par = AEDECOD, return the average duration per group per AE (take the r2rtf::r2rtf_adae dataset as an example)", {
+  r2rtf_adae <- r2rtf::r2rtf_adae
   r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
   db <- data.frame(
     id = r2rtf_adae$USUBJID,

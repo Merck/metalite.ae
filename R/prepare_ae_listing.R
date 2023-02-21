@@ -34,7 +34,7 @@
 #' @export
 #'
 #' @examples
-#' meta <- meta_ae_listing_example()
+#' meta <- meta_ae_example()
 #' str(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"))
 prepare_ae_listing <- function(meta,
                                analysis,

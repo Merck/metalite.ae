@@ -1,4 +1,5 @@
 library(testthat)
+library(metalite)
 library(metalite.ae)
-
+library(r2rtf)
 test_check("metalite.ae")

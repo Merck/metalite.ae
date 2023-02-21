@@ -45,7 +45,7 @@ Specific adverse events table
 library(r2rtf)
 library(metalite)
 
-meta <- meta_ae_listing_example()
+meta <- meta_ae_example()
 prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
   tlf_ae_listing(
     footnotes = "footnote1",

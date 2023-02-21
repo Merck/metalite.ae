@@ -41,6 +41,81 @@ meta_ae_example <- function() {
     labels = c("Placebo", "Low Dose", "High Dose")
   )
 
+  # Drug-related AE values
+  adae$related <- ifelse(
+    adae$AEREL == "RELATED",
+    "Y",
+    ifelse(
+      toupper(adae$AEREL) == "NOT RELATED",
+      "N",
+      tools::toTitleCase(tolower(adae$AEREL))
+    )
+  )
+
+  # AE outcome
+  for (i in seq_along(adae$AEOUT)) {
+    adae$outcome <- switch(adae$AEOUT[i],
+      "RECOVERED/RESOLVED" = "Resolved",
+      "RECOVERING/RESOLVING" = "Resolving",
+      "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
+      "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
+      tools::toTitleCase(tolower(adae$AEOUT[i]))
+    )
+  }
+
+  # AE action
+  adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN)
+
+  for (i in seq_along(adae$AEACN)) {
+    adae$action_taken[i] <- switch(adae$AEACN[i],
+      "DOSE NOT CHANGED" = "None",
+      "DOSE REDUCED" = "Reduced",
+      "DRUG INTERRUPTED" = "Interrupted",
+      "DOSE INCREASED" = "Increased",
+      "NOT APPLICABLE" = "N/A",
+      "UNKNOWN" = "Unknown",
+      "''" = "None",
+      tools::toTitleCase(tolower(adae$AEACN[i]))
+    )
+  }
+
+  # AE duration with unit
+  adae$duration <- paste(
+    ifelse(
+      is.na(adae$ADURN),
+      "",
+      as.character(adae$ADURN)
+    ),
+    tools::toTitleCase(tolower(adae$ADURU)),
+    sep = " "
+  )
+
+  for (i in seq_along(adae$duration)) {
+    if (is.na(adae$ADURN[i])) {
+      adae$duration[i] <- ifelse(
+        charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
+          charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0,
+        "Continuing",
+        "Unknown"
+      )
+    }
+  }
+
+  # AE subject line
+  adae$subline <- paste0(
+    "Subject ID = ", adae$USUBJID,
+    ", Gender = ", adae$SEX,
+    ", Race = ", adae$RACE,
+    ", AGE = ", adae$AGE, " Years",
+    ", TRT = ", adae$TRTA
+  )
+
+  # Assign label
+  adae <- assign_label(adae,
+    var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
+    label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
+  )
+
   plan <- plan(
     analysis = "ae_summary", population = "apat",
     observation = c("wk12", "wk24"), parameter = "any;rel;ser"
@@ -49,6 +124,10 @@ meta_ae_example <- function() {
       analysis = "ae_specific", population = "apat",
       observation = c("wk12", "wk24"),
       parameter = c("any", "aeosi", "rel", "ser")
+    ) |>
+    add_plan(
+      analysis = "ae_listing", population = "apat",
+      observation = c("wk12", "wk24"), parameter = c("any", "rel", "ser")
     )
 
   meta_adam(
@@ -90,69 +169,12 @@ meta_ae_example <- function() {
       name = "ae_summary",
       title = "Summary of Adverse Events"
     ) |>
-    meta_build()
-}
-
-#' Create an example `meta_adam` object for AE listing
-#'
-#' This function is only for illustration purpose.
-#' r2rtf is required.
-#'
-#' @return A metadata object.
-#'
-#' @export
-#'
-#' @examples
-#' meta_ae_listing_example()
-meta_ae_listing_example <- function() {
-  adsl <- r2rtf::r2rtf_adsl
-  adsl$TRTA <- adsl$TRT01A
-  adsl$TRTA <- factor(adsl$TRTA,
-    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-    labels = c("Placebo", "Low Dose", "High Dose")
-  )
-
-  adae <- r2rtf::r2rtf_adae
-  adae$TRTA <- factor(adae$TRTA,
-    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-    labels = c("Placebo", "Low Dose", "High Dose")
-  )
-
-  adae$subline <- paste0("Age=", adae$AGE, ", ID=", adae$USUBJID, ", Gender=", adae$SEX)
-
-  plan <- plan(
-    analysis = "ae_listing", population = "apat",
-    observation = "wk12", parameter = c("any", "rel", "ser")
-  )
-
-  meta_adam(
-    population = adsl,
-    observation = adae
-  ) |>
-    define_plan(plan = plan) |>
-    define_population(
-      name = "apat",
-      group = "TRTA",
-      subset = quote(SAFFL == "Y")
-    ) |>
-    define_observation(
-      name = "wk12",
-      group = "TRTA",
-      subset = quote(SAFFL == "Y"),
-      label = "Weeks 0 to 12",
-      rel_day = "ASTDY"
-    ) |>
-    define_parameter(
-      name = "rel",
-      subset = quote(AEREL %in% c("POSSIBLE", "PROBABLE"))
-    ) |>
-    define_parameter(
-      name = "ser",
-      subset = quote(AESER == "Y")
-    ) |>
     define_analysis(
       name = "ae_listing",
-      var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
+      var_name = c(
+        "USUBJID", "ASTDY", "AEDECOD", "duration",
+        "AESEV", "AESER", "related", "action_taken", "outcome"
+      ),
       subline_by = NULL,
       group_by = c("USUBJID", "ASTDY"),
       page_by = c("TRTA", "subline")
