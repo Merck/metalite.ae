@@ -1,6 +1,6 @@
 Package: metalite.ae
 Title: Adverse Events Analysis Using 'metalite'
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Yilong", "Zhang", role = c("aut")),
     person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role = c("aut", "cre")),
@@ -18,8 +18,7 @@ Description: Analyzes adverse events in clinical trials using the 'metalite'
     data structure. The package simplifies the workflow to create
     production-ready tables, listings, and figures discussed in the
     adverse events analysis chapters of
-    "R for Clinical Study Reports and Submission"
-    (Zhang et al., 2022, <https://r4csr.org/>).
+    Zhang et al., 2022, <https://r4csr.org/>.
 License: GPL-3
 URL: https://merck.github.io/metalite.ae/, https://github.com/Merck/metalite.ae
 BugReports: https://github.com/Merck/metalite.ae/issues

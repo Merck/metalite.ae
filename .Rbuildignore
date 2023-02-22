@@ -26,3 +26,4 @@
 ^metalite.ae\.Rcheck$
 ^metalite.ae.*\.tar\.gz$
 ^metalite.ae.*\.tgz$
+^cran-comments\.md$
