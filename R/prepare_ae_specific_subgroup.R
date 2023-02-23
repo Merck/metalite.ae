@@ -30,14 +30,15 @@
 #' @export
 #'
 #' @examples
-#' # meta <- meta_ae_example()
-#' # prepare_ae_specific_subgroup(
-#' #   meta,
-#' #   population = "apat",
-#' #   observation = "wk12",
-#' #   parameter = "rel",
-#' #   subgroup_var = "RACE"
-#' # )$data
+#' meta <- meta_ae_example()
+#'
+#' prepare_ae_specific_subgroup(
+#'   meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel",
+#'   subgroup_var = "RACE"
+#' )
 prepare_ae_specific_subgroup <- function(meta,
                                          population,
                                          observation,
@@ -47,7 +48,8 @@ prepare_ae_specific_subgroup <- function(meta,
                                          components = c("soc", "par"),
                                          display_total = TRUE,
                                          display_subgroup_total = TRUE) {
-  stop("This function is still under development.", call. = FALSE)
+  message("This function is still under development.")
+  return(invisible(NULL))
 
   if (!subgroup_header %in% c(1, 2)) {
     stop("`subgroup_header` can only have value 1 or 2.", call. = FALSE)

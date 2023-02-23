@@ -46,12 +46,13 @@ A list of analysis raw datasets.
 Prepare datasets for AE specific analysis
 }
 \examples{
-# meta <- meta_ae_example()
-# prepare_ae_specific_subgroup(
-#   meta,
-#   population = "apat",
-#   observation = "wk12",
-#   parameter = "rel",
-#   subgroup_var = "RACE"
-# )$data
+meta <- meta_ae_example()
+
+prepare_ae_specific_subgroup(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel",
+  subgroup_var = "RACE"
+)
 }
