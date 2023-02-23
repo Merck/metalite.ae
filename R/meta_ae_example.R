@@ -111,7 +111,7 @@ meta_ae_example <- function() {
   )
 
   # Assign label
-  adae <- assign_label(adae,
+  adae <- metalite::assign_label(adae,
     var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
     label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
   )
