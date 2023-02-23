@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">metalite.ae</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,15 +124,16 @@ observation data saved in <code>meta$data_observation</code>.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># meta &lt;- meta_ae_example()</span></span></span>
-<span class="r-in"><span><span class="co"># prepare_ae_specific_subgroup(</span></span></span>
-<span class="r-in"><span><span class="co">#   meta,</span></span></span>
-<span class="r-in"><span><span class="co">#   population = "apat",</span></span></span>
-<span class="r-in"><span><span class="co">#   observation = "wk12",</span></span></span>
-<span class="r-in"><span><span class="co">#   parameter = "rel",</span></span></span>
-<span class="r-in"><span><span class="co">#   subgroup_var = "RACE"</span></span></span>
-<span class="r-in"><span><span class="co"># )$data</span></span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">prepare_ae_specific_subgroup</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">meta</span>,</span></span>
+<span class="r-in"><span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
+<span class="r-in"><span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
+<span class="r-in"><span>  parameter <span class="op">=</span> <span class="st">"rel"</span>,</span></span>
+<span class="r-in"><span>  subgroup_var <span class="op">=</span> <span class="st">"RACE"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This function is still under development.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
