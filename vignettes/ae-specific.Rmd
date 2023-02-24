@@ -45,7 +45,7 @@ There are three optional functions to extend AE specification analysis.
 An example output:
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("rtf/ae0specific1.rtf")
+knitr::include_graphics("pdf/ae0specific1.pdf")
 ```
 
 ## Example data

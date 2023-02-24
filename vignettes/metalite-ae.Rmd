@@ -33,16 +33,16 @@ including:
 
 <details>
 <summary>AE summary.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png">
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png" width="100%">
 </details>
 <details>
 <summary>
 Specific AE analysis.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png">
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png" width="100%">
 </details>
 <details>
 <summary>AE listing.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png">
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%">
 </details>
 
 The R package simplifies the workflow to create production-ready
