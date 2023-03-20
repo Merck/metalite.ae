@@ -43,10 +43,10 @@ tlf_ae_summary <- function(outdata,
                            col_rel_width = NULL,
                            text_font_size = 9,
                            orientation = "portrait",
+                           title = NULL,
                            footnotes = NULL,
                            path_outdata = NULL,
-                           path_outtable = NULL,
-                           title = NULL) {
+                           path_outtable = NULL) {
   tbl <- outdata$tbl
   group <- outdata$group
   reference_group <- outdata$reference_group
