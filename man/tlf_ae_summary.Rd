@@ -12,7 +12,8 @@ tlf_ae_summary(
   orientation = "portrait",
   footnotes = NULL,
   path_outdata = NULL,
-  path_outtable = NULL
+  path_outtable = NULL,
+  title = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ displayed e.g. c(9,20,40).}
 \item{path_outdata}{A character string of the outdata path.}
 
 \item{path_outtable}{A character string of the outtable path.}
+
+\item{title}{A character vector of table titles.}
 }
 \value{
 RTF file and source dataset for AE listing.
