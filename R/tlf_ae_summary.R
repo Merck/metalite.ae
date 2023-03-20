@@ -43,6 +43,7 @@ tlf_ae_summary <- function(outdata,
                            col_rel_width = NULL,
                            text_font_size = 9,
                            orientation = "portrait",
+                           title = NULL,
                            footnotes = NULL,
                            path_outdata = NULL,
                            path_outtable = NULL) {
@@ -56,7 +57,15 @@ tlf_ae_summary <- function(outdata,
   parameters <- unlist(strsplit(outdata$parameter, ";"))
 
   # Title
-  title <- collect_title(outdata$meta, outdata$population, outdata$observation, parameters[1], analysis = "ae_summary")
+  # Define title
+  if (is.null(title)) {
+    title <- collect_title(outdata$meta,
+                           outdata$population,
+                           outdata$observation,
+                           parameters[1],
+                           analysis = "ae_summary"
+    )
+  }
 
   # Footnotes
   x <- lapply(parameters, function(x) {

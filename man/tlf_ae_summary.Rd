@@ -10,6 +10,7 @@ tlf_ae_summary(
   col_rel_width = NULL,
   text_font_size = 9,
   orientation = "portrait",
+  title = NULL,
   footnotes = NULL,
   path_outdata = NULL,
   path_outtable = NULL
@@ -28,6 +29,8 @@ numeric vector with length of vector equal to number of columns
 displayed e.g. c(9,20,40).}
 
 \item{orientation}{Orientation in 'portrait' or 'landscape'.}
+
+\item{title}{A character vector of table titles.}
 
 \item{footnotes}{A character vector of table footnotes.}
 
