@@ -1,3 +1,8 @@
+# metalite.ae 0.1.2
+
+- Updated `format_ae_specific` to avoid warning when no comparison variables are
+requested.
+
 # metalite.ae 0.1.1
 
 - Updated the `DESCRIPTION` file to reformat the reference.
