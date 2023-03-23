@@ -193,23 +193,25 @@ format_ae_specific <- function(outdata,
     ncol = n_group, byrow = TRUE
   ))]
 
-  # Arrange Between Group information
+  # Arrange group comparison information (diff, diff_ci, diff_p).
   between_var <- names(tbl)[names(tbl) %in% c("diff", "diff_ci", "diff_p")]
-  between_tbl <- tbl[between_var]
-  n_between <- length(between_tbl)
-  n_group_btw <- n_group - 1 - display_total # Always groups - 1 - total col
 
-  names(between_tbl) <- NULL
-  between_tbl <- do.call(cbind, between_tbl)
-  between_tbl <- between_tbl[, as.vector(matrix(1:(n_group_btw * n_between),
-    ncol = n_group_btw, byrow = TRUE
-  ))]
-
-  # Create Results
-  if (is.null(between_tbl)) {
-    res <- within_tbl
+  ## If there are any comparison variables selected, order their columns appropriately.
+  res <- if (length(between_var) != 0) {
+    between_tbl <- tbl[between_var]
+    n_between <- length(between_tbl)
+    # Number of comparison columns is always: treatment groups - 1 - total column (1 or 0).
+    n_group_btw <- n_group - 1 - display_total
+    names(between_tbl) <- NULL
+    # Bind all the comparison columns together.
+    between_tbl <- do.call(cbind, between_tbl)
+    # Reorder the comparison columns.
+    between_tbl <- between_tbl[, as.vector(matrix(1:(n_group_btw * n_between),
+      ncol = n_group_btw, byrow = TRUE
+    ))]
+    data.frame(within_tbl, between_tbl)
   } else {
-    res <- data.frame(within_tbl, between_tbl)
+    within_tbl
   }
 
   # Transfer to Mock
