@@ -46,13 +46,17 @@ test_that("if par = NULL, return the average number of events in each group (tak
     tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
   avg <- tmp |>
-    select(starts_with("avg")) |>
-    as.data.frame()
+    dplyr::select(par, starts_with("avg")) |>
+    as.data.frame() |>
+    dplyr::arrange(par) |>
+    dplyr::select(-par)
   names(avg) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
 
   se <- tmp |>
-    select(starts_with("se")) |>
-    as.data.frame()
+    dplyr::select(par, starts_with("se")) |>
+    as.data.frame()|>
+    dplyr::arrange(par) |>
+    dplyr::select(-par)
   names(se) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
 
   avg1 <- list(avg = avg, se = se)

@@ -70,8 +70,6 @@ n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")
 #'
 #' @inheritParams n_subject
 #'
-#' @importFrom dplyr count group_by summarise select starts_with n
-#' @importFrom tidyr pivot_wider
 #' @importFrom stats sd
 #'
 #' @noRd
@@ -100,21 +98,33 @@ avg_event <- function(id, group, par = NULL) {
     res <- table(db$id, db$group, db$par)
     res <- data.frame(res)
 
-    tmp <- db |>
-      count(group, par, id) |>
-      group_by(group, par) |>
-      summarise(avg = mean(n, na.rm = TRUE), se = sd(n, na.rm = TRUE) / sqrt(n())) |>
-      tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
+    tmp <- split(db, ~ group + par + id, drop = TRUE) |>
+      lapply(FUN = function(X){
+        data.frame(group = unique(X$group),
+          par = unique(X$par),
+          n = nrow(X))}) |>
+      do.call(what = rbind) |>
+      split( ~ group + par, drop = TRUE) |>
+      lapply(FUN = function(X){
+        data.frame(group = unique(X$group),
+          par = unique(X$par),
+          avg = mean(X$n, na.rm = TRUE),
+          se = sd(X$n, na.rm = TRUE)/ sqrt(nrow(X)))
+      }) |>
+      do.call(what = rbind) |>
+      reshape(timevar = "group", idvar = "par", direction = "wide")
 
-    avg <- tmp |>
-      select(starts_with("avg")) |>
-      as.data.frame()
-    names(avg) <- u_group
+    rownames(tmp) <- NULL
 
-    se <- tmp |>
-      select(starts_with("se")) |>
-      as.data.frame()
-    names(se) <- u_group
+    avg <- cbind(par = tmp$par, tmp[,grepl(names(tmp), pattern = "^avg")])
+    names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
+    avg <- avg[order(avg$par),]
+    avg <- avg[, u_group]
+
+    se <- cbind(par = tmp$par, tmp[,grepl(names(tmp), pattern = "^se")])
+    names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
+    se <- se[order(se$par),]
+    se <- se[, u_group]
   }
 
   list(avg = avg, se = se)
@@ -125,7 +135,6 @@ avg_event <- function(id, group, par = NULL) {
 #' @inheritParams n_subject
 #' @param dur A numeric vector of AE duration.
 #'
-#' @importFrom dplyr n
 #' @importFrom stats sd
 #'
 #' @noRd
@@ -138,38 +147,45 @@ avg_duration <- function(id, group, dur, par = NULL) {
 
   if (is.null(par)) {
     db <- data.frame(id = id, group = group, dur = dur)
-    res <- db |>
-      group_by(group) |>
-      summarise(
-        avg = mean(dur, na.rm = TRUE),
-        se = sd(dur, na.rm = TRUE) / sqrt(n())
-      )
+
+    # Compute average and se by treatment group.
+    res <- split(db, db$group) |>
+      lapply(FUN = function(X){
+        data.frame(group = unique(X$group),
+          avg = mean(X$dur, na.rm = TRUE),
+        se = sd(X$dur, na.rm = TRUE)/ sqrt(nrow(X)))
+        }) |>
+      do.call(what = rbind)
 
     avg <- res$avg
-    names(avg) <- u_group
+    names(avg) <- res$group
 
     se <- res$se
-    names(se) <- u_group
+    names(se) <- res$group
   } else {
     db <- data.frame(id = id, group = group, dur = dur, par = par)
 
-    tmp <- db |>
-      group_by(group, par) |>
-      summarise(
-        avg = mean(dur, na.rm = TRUE),
-        se = sd(dur, na.rm = TRUE) / sqrt(n())
-      ) |>
-      tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
+    tmp2 <- split(db, ~ group + par, drop = TRUE) |>
+      lapply(FUN = function(X){
+      data.frame(group = unique(X$group),
+        par = unique(X$par),
+        avg = mean(X$dur, na.rm = TRUE),
+        se = sd(X$dur, na.rm = TRUE)/ sqrt(nrow(X)))
+    }) |>
+      do.call(what = rbind) |>
+      reshape(timevar = "group", idvar = "par", direction = "wide")
 
-    avg <- tmp |>
-      select(starts_with("avg")) |>
-      as.data.frame()
-    names(avg) <- u_group
+    rownames(tmp2) <- NULL
 
-    se <- tmp |>
-      select(starts_with("se")) |>
-      as.data.frame()
-    names(se) <- u_group
+    avg <- cbind(par = tmp2$par, tmp2[,grepl(names(tmp2), pattern = "^avg")])
+    names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
+    avg <- avg[order(avg$par),]
+    avg <- avg[, u_group]
+
+    se <- cbind(par = tmp2$par, tmp2[,grepl(names(tmp2), pattern = "^se")])
+    names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
+    se <- se[order(se$par),]
+    se <- se[, u_group]
   }
 
   list(avg = avg, se = se)

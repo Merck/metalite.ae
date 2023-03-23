@@ -20,5 +20,5 @@ A numeric vector with the expected format.
 Format p-value
 }
 \examples{
-fmt_pval(0.1234)
+fmt_pval(c(0.1234, 0.00002))
 }

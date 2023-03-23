@@ -47,13 +47,6 @@ Decimals will understand the number will be formatted as x.x (x.xx).
 }
 
 \examples{
-library(dplyr)
-
-x <- datasets::iris |>
-  summarise(
-    mean = mean(Petal.Length),
-    n = n(),
-    sd = sd(Petal.Length)
-  )
-fmt_est(x$mean, x$sd)
+fmt_est(mean(iris$Petal.Length), sd(iris$Petal.Length))
+fmt_est(mean(iris$Petal.Length), sd(iris$Petal.Length), digits = c(2, 3))
 }

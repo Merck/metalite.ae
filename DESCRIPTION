@@ -27,7 +27,6 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
-    dplyr,
     glue,
     metalite,
     r2rtf,
@@ -35,6 +34,7 @@ Imports:
     tidyr
 Suggests:
     DescTools,
+    dplyr,
     covr,
     knitr,
     kableExtra,
