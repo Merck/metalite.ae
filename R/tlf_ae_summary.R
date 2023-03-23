@@ -60,10 +60,10 @@ tlf_ae_summary <- function(outdata,
   # Define title
   if (is.null(title)) {
     title <- collect_title(outdata$meta,
-                           outdata$population,
-                           outdata$observation,
-                           parameters[1],
-                           analysis = "ae_summary"
+      outdata$population,
+      outdata$observation,
+      parameters[1],
+      analysis = "ae_summary"
     )
   }
 
