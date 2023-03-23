@@ -99,31 +99,36 @@ avg_event <- function(id, group, par = NULL) {
     res <- data.frame(res)
 
     tmp <- split(db, ~ group + par + id, drop = TRUE) |>
-      lapply(FUN = function(X){
-        data.frame(group = unique(X$group),
+      lapply(FUN = function(X) {
+        data.frame(
+          group = unique(X$group),
           par = unique(X$par),
-          n = nrow(X))}) |>
+          n = nrow(X)
+        )
+      }) |>
       do.call(what = rbind) |>
-      split( ~ group + par, drop = TRUE) |>
-      lapply(FUN = function(X){
-        data.frame(group = unique(X$group),
+      split(~ group + par, drop = TRUE) |>
+      lapply(FUN = function(X) {
+        data.frame(
+          group = unique(X$group),
           par = unique(X$par),
           avg = mean(X$n, na.rm = TRUE),
-          se = sd(X$n, na.rm = TRUE)/ sqrt(nrow(X)))
+          se = sd(X$n, na.rm = TRUE) / sqrt(nrow(X))
+        )
       }) |>
       do.call(what = rbind) |>
       reshape(timevar = "group", idvar = "par", direction = "wide")
 
     rownames(tmp) <- NULL
 
-    avg <- cbind(par = tmp$par, tmp[,grepl(names(tmp), pattern = "^avg")])
+    avg <- cbind(par = tmp$par, tmp[, grepl(names(tmp), pattern = "^avg")])
     names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
-    avg <- avg[order(avg$par),]
+    avg <- avg[order(avg$par), ]
     avg <- avg[, u_group]
 
-    se <- cbind(par = tmp$par, tmp[,grepl(names(tmp), pattern = "^se")])
+    se <- cbind(par = tmp$par, tmp[, grepl(names(tmp), pattern = "^se")])
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
-    se <- se[order(se$par),]
+    se <- se[order(se$par), ]
     se <- se[, u_group]
   }
 
@@ -150,11 +155,13 @@ avg_duration <- function(id, group, dur, par = NULL) {
 
     # Compute average and se by treatment group.
     res <- split(db, db$group) |>
-      lapply(FUN = function(X){
-        data.frame(group = unique(X$group),
+      lapply(FUN = function(X) {
+        data.frame(
+          group = unique(X$group),
           avg = mean(X$dur, na.rm = TRUE),
-        se = sd(X$dur, na.rm = TRUE)/ sqrt(nrow(X)))
-        }) |>
+          se = sd(X$dur, na.rm = TRUE) / sqrt(nrow(X))
+        )
+      }) |>
       do.call(what = rbind)
 
     avg <- res$avg
@@ -166,25 +173,27 @@ avg_duration <- function(id, group, dur, par = NULL) {
     db <- data.frame(id = id, group = group, dur = dur, par = par)
 
     tmp2 <- split(db, ~ group + par, drop = TRUE) |>
-      lapply(FUN = function(X){
-      data.frame(group = unique(X$group),
-        par = unique(X$par),
-        avg = mean(X$dur, na.rm = TRUE),
-        se = sd(X$dur, na.rm = TRUE)/ sqrt(nrow(X)))
-    }) |>
+      lapply(FUN = function(X) {
+        data.frame(
+          group = unique(X$group),
+          par = unique(X$par),
+          avg = mean(X$dur, na.rm = TRUE),
+          se = sd(X$dur, na.rm = TRUE) / sqrt(nrow(X))
+        )
+      }) |>
       do.call(what = rbind) |>
       reshape(timevar = "group", idvar = "par", direction = "wide")
 
     rownames(tmp2) <- NULL
 
-    avg <- cbind(par = tmp2$par, tmp2[,grepl(names(tmp2), pattern = "^avg")])
+    avg <- cbind(par = tmp2$par, tmp2[, grepl(names(tmp2), pattern = "^avg")])
     names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
-    avg <- avg[order(avg$par),]
+    avg <- avg[order(avg$par), ]
     avg <- avg[, u_group]
 
-    se <- cbind(par = tmp2$par, tmp2[,grepl(names(tmp2), pattern = "^se")])
+    se <- cbind(par = tmp2$par, tmp2[, grepl(names(tmp2), pattern = "^se")])
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
-    se <- se[order(se$par),]
+    se <- se[order(se$par), ]
     se <- se[, u_group]
   }
 
