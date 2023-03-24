@@ -38,7 +38,6 @@ prepare_ae_summary <- function(meta,
                                observation,
                                parameter,
                                ...) {
-
   parameters <- unlist(strsplit(parameter, ";"))
 
   res <- lapply(parameters, function(x) {

@@ -49,7 +49,6 @@ prepare_ae_specific <- function(meta,
                                 parameter,
                                 components = c("soc", "par"),
                                 reference_group = NULL) {
-
   # Obtain variables
   pop_var <- collect_adam_mapping(meta, population)$var
   obs_var <- collect_adam_mapping(meta, observation)$var
@@ -74,24 +73,24 @@ prepare_ae_specific <- function(meta,
   # grp <- unique(c(pop_grp, obs_grp))
 
 
-    if (any(is.na(pop[[pop_group]]))) {
-      stop(
-        paste0(
-          "There are >= 1 subjects with missing grouping variable '", pop_group,
-          "' in the population dataset."
-        ),
-        call. = FALSE
-      )
-    }
-    if (any(is.na(obs[[obs_group]]))) {
-      stop(
-        paste0(
-          "There are >= 1 subjects with missing grouping variable '", obs_group,
-          "' in the observation dataset."
-        ),
-        call. = FALSE
-      )
-    }
+  if (any(is.na(pop[[pop_group]]))) {
+    stop(
+      paste0(
+        "There are >= 1 subjects with missing grouping variable '", pop_group,
+        "' in the population dataset."
+      ),
+      call. = FALSE
+    )
+  }
+  if (any(is.na(obs[[obs_group]]))) {
+    stop(
+      paste0(
+        "There are >= 1 subjects with missing grouping variable '", obs_group,
+        "' in the observation dataset."
+      ),
+      call. = FALSE
+    )
+  }
 
   # Ensure group is a factor
   if (!"factor" %in% class(pop[[pop_group]])) {
