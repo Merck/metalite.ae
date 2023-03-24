@@ -12,10 +12,10 @@ test_that("if par = NULL, return the average duration in each group (take the r2
     dur = r2rtf_adae$ADURN
   )
   res <- db |>
-    group_by(group) |>
-    summarise(
+    dplyr::group_by(group) |>
+    dplyr::summarise(
       avg = mean(dur, na.rm = TRUE),
-      se = sd(dur, na.rm = TRUE) / sqrt(n())
+      se = sd(dur, na.rm = TRUE) / sqrt(dplyr::n()), .groups = "keep"
     )
 
   avg <- res$avg
@@ -45,10 +45,10 @@ test_that("if, say, par = AEDECOD, return the average duration per group per AE 
   )
 
   tmp <- db |>
-    group_by(group, par) |>
-    summarise(
+    dplyr::group_by(group, par) |>
+    dplyr::summarise(
       avg = mean(dur, na.rm = TRUE),
-      se = sd(dur, na.rm = TRUE) / sqrt(n())
+      se = sd(dur, na.rm = TRUE) / sqrt(dplyr::n()), .groups = "keep"
     ) |>
     tidyr::pivot_wider(
       id_cols = par,
@@ -56,21 +56,26 @@ test_that("if, say, par = AEDECOD, return the average duration per group per AE 
       values_from = c("avg", "se")
     )
 
-  avg <- tmp |>
+  avg <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
+    tmp,
+    by = dplyr::join_by(par)
+  ) |>
     dplyr::select(par, starts_with("avg")) |>
-    as.data.frame() |>
-    dplyr::arrange(par) |>
-    select(-par)
-  names(avg) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
+    as.data.frame()
+  names(avg) <- stringr::str_remove(names(avg), pattern = "avg_")
 
-  se <- tmp |>
-    dplyr::select(par, starts_with("se")) |>
-    as.data.frame() |>
-    dplyr::arrange(par) |>
-    select(-par)
-  names(se) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
+  # Expect that avg is ordered by unique AEDECOD which was input.
+  expect_equal(unique(r2rtf_adae$AEDECOD), avg$par)
 
-  avg_dur1 <- list(avg = avg, se = se)
+  se <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
+    tmp,
+    by = dplyr::join_by(par)
+  ) |>
+    dplyr::select(starts_with("se")) |>
+    as.data.frame()
+  names(se) <- stringr::str_remove(names(se), pattern = "se_")
+
+  avg_dur1 <- list(avg = avg |> dplyr::select(-par), se = se)
   avg_dur2 <- avg_duration(
     r2rtf_adae$USUBJID,
     r2rtf_adae$TRTA,

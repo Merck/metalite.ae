@@ -68,6 +68,10 @@ n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")
 
 #' Average number of events
 #'
+#' Calculates average number of records per group and, if requested, parameter.
+#' Returns a list of means and sd of counts of records per group, ordered in
+#' the same way as the input datasets.
+#'
 #' @inheritParams n_subject
 #'
 #' @importFrom stats sd
@@ -91,13 +95,16 @@ avg_event <- function(id, group, par = NULL) {
     db <- data.frame(id = id, group = group)
     res <- table(db$id, db$group)
     res <- data.frame(res)
-    avg <- vapply(split(res, res$Var2), function(x) mean(x$Freq, na.rm = TRUE), FUN.VALUE = numeric(1))
-    se <- vapply(split(res, res$Var2), function(x) sd(x$Freq, na.rm = TRUE) / sqrt(nrow(x)), FUN.VALUE = numeric(1))
+    avg <- vapply(split(res, res$Var2),
+      function(x) mean(x$Freq, na.rm = TRUE),
+      FUN.VALUE = numeric(1))
+    se <- vapply(split(res, res$Var2),
+      function(x) sd(x$Freq, na.rm = TRUE) / sqrt(nrow(x)),
+      FUN.VALUE = numeric(1))
   } else {
     db <- data.frame(id = id, group = group, par = par)
-    res <- table(db$id, db$group, db$par)
-    res <- data.frame(res)
 
+    # Count number of observations per group, par, and id.
     tmp <- split(db, ~ group + par + id, drop = TRUE) |>
       lapply(FUN = function(X) {
         data.frame(
@@ -107,35 +114,43 @@ avg_event <- function(id, group, par = NULL) {
         )
       }) |>
       do.call(what = rbind) |>
-      split(~ group + par, drop = TRUE) |>
-      lapply(FUN = function(X) {
-        data.frame(
-          group = unique(X$group),
+      split( ~ group + par, drop = TRUE) |>
+      lapply(FUN = function(X){
+        data.frame(group = unique(X$group),
           par = unique(X$par),
           avg = mean(X$n, na.rm = TRUE),
           se = sd(X$n, na.rm = TRUE) / sqrt(nrow(X))
         )
       }) |>
       do.call(what = rbind) |>
-      reshape(timevar = "group", idvar = "par", direction = "wide")
+      # Spread to wide format so that group.statistics are column variables.
+      reshape(timevar = "group", idvar = "par", direction = "wide", new.row.names = NULL)
 
+    # Sort the summarized data so that par is in the same order as input.
+    tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
+    if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
+
+    # Remove rownames.
     rownames(tmp) <- NULL
 
-    avg <- cbind(par = tmp$par, tmp[, grepl(names(tmp), pattern = "^avg")])
+    # Extract avg and se into separate datasets.
+    avg <- tmp[,grepl(names(tmp), pattern = "^avg")]
     names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
-    avg <- avg[order(avg$par), ]
+    # Reorder columns (group) to be as input.
     avg <- avg[, u_group]
 
-    se <- cbind(par = tmp$par, tmp[, grepl(names(tmp), pattern = "^se")])
+    se <- tmp[,grepl(names(tmp), pattern = "^se")]
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
-    se <- se[order(se$par), ]
+    # Reorder columns (group) to be as input.
     se <- se[, u_group]
   }
 
   list(avg = avg, se = se)
 }
 
-#' Average number of events
+#' Calculates average duration per group and, if requested, parameter.
+#' Returns a list of means and sd of durations per group, ordered in
+#' the same way as the input datasets.
 #'
 #' @inheritParams n_subject
 #' @param dur A numeric vector of AE duration.
@@ -153,7 +168,7 @@ avg_duration <- function(id, group, dur, par = NULL) {
   if (is.null(par)) {
     db <- data.frame(id = id, group = group, dur = dur)
 
-    # Compute average and se by treatment group.
+    # Compute average and se of dur by treatment group.
     res <- split(db, db$group) |>
       lapply(FUN = function(X) {
         data.frame(
@@ -172,28 +187,33 @@ avg_duration <- function(id, group, dur, par = NULL) {
   } else {
     db <- data.frame(id = id, group = group, dur = dur, par = par)
 
-    tmp2 <- split(db, ~ group + par, drop = TRUE) |>
-      lapply(FUN = function(X) {
-        data.frame(
-          group = unique(X$group),
-          par = unique(X$par),
-          avg = mean(X$dur, na.rm = TRUE),
-          se = sd(X$dur, na.rm = TRUE) / sqrt(nrow(X))
-        )
-      }) |>
+    # summarize dur by group and par.
+    tmp <- split(db, ~ group + par, drop = TRUE) |>
+      lapply(FUN = function(X){
+      data.frame(group = unique(X$group),
+        par = unique(X$par),
+        avg = mean(X$dur, na.rm = TRUE),
+        se = sd(X$dur, na.rm = TRUE)/ sqrt(nrow(X)))
+    }) |>
       do.call(what = rbind) |>
       reshape(timevar = "group", idvar = "par", direction = "wide")
+    # Sort the summarized data so that par is in the same order as input.
+    tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
+    if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
 
-    rownames(tmp2) <- NULL
+    # Set rownames to null.
+    rownames(tmp) <- NULL
 
-    avg <- cbind(par = tmp2$par, tmp2[, grepl(names(tmp2), pattern = "^avg")])
+
+    # Extract avg and se into separate datasets.
+    avg <- cbind(par = tmp$par, tmp[,grepl(names(tmp), pattern = "^avg")])
     names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
-    avg <- avg[order(avg$par), ]
+    # Reorder columns (group) to be as input.
     avg <- avg[, u_group]
 
-    se <- cbind(par = tmp2$par, tmp2[, grepl(names(tmp2), pattern = "^se")])
+    se <- cbind(par = tmp$par, tmp[,grepl(names(tmp), pattern = "^se")])
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
-    se <- se[order(se$par), ]
+    # Reorder columns (group) to be as input.
     se <- se[, u_group]
   }
 
