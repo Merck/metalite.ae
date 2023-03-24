@@ -36,26 +36,36 @@ test_that("if par = NULL, return the average number of events in each group (tak
     group = r2rtf_adae$TRTA,
     par = r2rtf_adae$AEDECOD
   )
-  res <- table(db$id, db$group, db$par)
-  res <- data.frame(res)
 
   tmp <- db |>
-    count(group, par, id) |>
-    group_by(group, par) |>
-    summarise(avg = mean(n, na.rm = TRUE), se = sd(n, na.rm = TRUE) / sqrt(n())) |>
+    dplyr::count(group, par, id) |>
+    dplyr::group_by(group, par) |>
+    dplyr::summarise(avg = mean(n, na.rm = TRUE),
+      se = sd(n, na.rm = TRUE) / sqrt(dplyr::n()),
+      .groups = "keep") |>
     tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
-  avg <- tmp |>
-    select(starts_with("avg")) |>
-    as.data.frame()
-  names(avg) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
+  avg <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
+    tmp,
+    by = dplyr::join_by(par)
+  ) |>
+    dplyr::select(par, starts_with("avg")) |>
+    dplyr::select(-par)
+  names(avg) <- sub(x = names(avg), pattern = "avg_", replacement = "")
 
-  se <- tmp |>
-    select(starts_with("se")) |>
-    as.data.frame()
-  names(se) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
+  se <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
+    tmp,
+    by = dplyr::join_by(par)
+  ) |>
+    dplyr::select(par, starts_with("se"))
+  names(se) <- sub(x = names(se), pattern = "se_", replacement = "")
 
-  avg1 <- list(avg = avg, se = se)
+  # check to make sure that order of output is the same as input (par)
+  expect_equal(se$par, unique(r2rtf_adae$AEDECOD))
+
+  avg1 <- list(avg = avg,
+    se = se |>
+      dplyr::select(-par))
   avg2 <- avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 
   expect_equal(avg1, avg2)

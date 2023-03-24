@@ -27,21 +27,21 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
-    dplyr,
     glue,
     metalite,
     r2rtf,
-    stats,
-    tidyr
+    stats
 Suggests:
     DescTools,
+    dplyr,
     covr,
     knitr,
     kableExtra,
     rmarkdown,
     readxl,
     rprojroot,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tidyr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

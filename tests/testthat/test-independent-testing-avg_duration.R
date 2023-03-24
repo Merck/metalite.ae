@@ -12,10 +12,10 @@ test_that("if par = NULL, return the average duration in each group (take the r2
     dur = r2rtf_adae$ADURN
   )
   res <- db |>
-    group_by(group) |>
-    summarise(
+    dplyr::group_by(group) |>
+    dplyr::summarise(
       avg = mean(dur, na.rm = TRUE),
-      se = sd(dur, na.rm = TRUE) / sqrt(n())
+      se = sd(dur, na.rm = TRUE) / sqrt(dplyr::n()), .groups = "keep"
     )
 
   avg <- res$avg
@@ -45,10 +45,10 @@ test_that("if, say, par = AEDECOD, return the average duration per group per AE 
   )
 
   tmp <- db |>
-    group_by(group, par) |>
-    summarise(
+    dplyr::group_by(group, par) |>
+    dplyr::summarise(
       avg = mean(dur, na.rm = TRUE),
-      se = sd(dur, na.rm = TRUE) / sqrt(n())
+      se = sd(dur, na.rm = TRUE) / sqrt(dplyr::n()), .groups = "keep"
     ) |>
     tidyr::pivot_wider(
       id_cols = par,
@@ -56,17 +56,26 @@ test_that("if, say, par = AEDECOD, return the average duration per group per AE 
       values_from = c("avg", "se")
     )
 
-  avg <- tmp |>
-    select(starts_with("avg")) |>
+  avg <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
+    tmp,
+    by = dplyr::join_by(par)
+  ) |>
+    dplyr::select(par, starts_with("avg")) |>
     as.data.frame()
-  names(avg) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
+  names(avg) <- sub(x = names(avg), pattern = "avg_", replacement = "")
 
-  se <- tmp |>
-    select(starts_with("se")) |>
+  # Expect that avg is ordered by unique AEDECOD which was input.
+  expect_equal(unique(r2rtf_adae$AEDECOD), avg$par)
+
+  se <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
+    tmp,
+    by = dplyr::join_by(par)
+  ) |>
+    dplyr::select(starts_with("se")) |>
     as.data.frame()
-  names(se) <- c("Placebo", "Xanomeline High Dose", "Xanomeline Low Dose")
+  names(se) <- sub(x = names(se), pattern = "se_", replacement = "")
 
-  avg_dur1 <- list(avg = avg, se = se)
+  avg_dur1 <- list(avg = avg |> dplyr::select(-par), se = se)
   avg_dur2 <- avg_duration(
     r2rtf_adae$USUBJID,
     r2rtf_adae$TRTA,

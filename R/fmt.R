@@ -66,24 +66,20 @@ fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
 #' @export
 #'
 #' @examples
-#' library(dplyr)
-#'
-#' x <- datasets::iris |>
-#'   summarise(
-#'     mean = mean(Petal.Length),
-#'     n = n(),
-#'     sd = sd(Petal.Length)
-#'   )
-#' fmt_est(x$mean, x$sd)
+#' fmt_est(mean(iris$Petal.Length), sd(iris$Petal.Length))
+#' fmt_est(mean(iris$Petal.Length), sd(iris$Petal.Length), digits = c(2, 3))
 fmt_est <- function(mean,
                     sd = rep(NA, length(mean)),
                     digits = c(1, 1),
                     width = c(4, 3) + digits) {
   .mean <- formatC(mean, digits = digits[1], format = "f", width = width[1])
-  ifelse(is.na(sd), .mean, {
-    .sd <- formatC(sd, digits = digits[2], format = "f", width = width[2])
-    paste0(.mean, " (", .sd, ")")
-  })
+  ifelse(is.na(sd),
+    .mean,
+    {
+      .sd <- formatC(sd, digits = digits[2], format = "f", width = width[2])
+      paste0(.mean, " (", .sd, ")")
+    }
+  )
 }
 
 #' Format confidence interval
@@ -114,16 +110,15 @@ fmt_ci <- function(lower, upper, digits = 2, width = 3 + digits) {
 #'
 #' @return A numeric vector with the expected format.
 #'
-#' @importFrom dplyr if_else
-#'
 #' @export
 #'
 #' @examples
-#' fmt_pval(0.1234)
+#' fmt_pval(c(0.1234, 0.00002))
 fmt_pval <- function(p, digits = 3, width = 3 + digits) {
   scale <- 10^(-1 * digits)
   p_scale <- paste0("<", scale)
-  if_else(p < scale, p_scale,
+  ifelse(p < scale,
+    p_scale,
     formatC(p, digits = digits, format = "f", width = width)
   )
 }
