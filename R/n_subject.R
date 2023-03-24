@@ -74,7 +74,7 @@ n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")
 #'
 #' @inheritParams n_subject
 #'
-#' @importFrom stats sd
+#' @importFrom stats sd reshape
 #'
 #' @noRd
 #'
@@ -158,7 +158,7 @@ avg_event <- function(id, group, par = NULL) {
 #' @inheritParams n_subject
 #' @param dur A numeric vector of AE duration.
 #'
-#' @importFrom stats sd
+#' @importFrom stats sd reshape
 #'
 #' @noRd
 avg_duration <- function(id, group, dur, par = NULL) {
