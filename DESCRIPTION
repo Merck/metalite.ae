@@ -30,8 +30,7 @@ Imports:
     glue,
     metalite,
     r2rtf,
-    stats,
-    tidyr
+    stats
 Suggests:
     DescTools,
     dplyr,
@@ -41,7 +40,9 @@ Suggests:
     rmarkdown,
     readxl,
     rprojroot,
-    testthat (>= 3.0.0)
+    stringr,
+    testthat (>= 3.0.0),
+    tidyr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
