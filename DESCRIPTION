@@ -40,7 +40,6 @@ Suggests:
     rmarkdown,
     readxl,
     rprojroot,
-    stringr,
     testthat (>= 3.0.0),
     tidyr
 Config/testthat/edition: 3

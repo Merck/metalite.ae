@@ -62,7 +62,7 @@ test_that("if, say, par = AEDECOD, return the average duration per group per AE 
   ) |>
     dplyr::select(par, starts_with("avg")) |>
     as.data.frame()
-  names(avg) <- stringr::str_remove(names(avg), pattern = "avg_")
+  names(avg) <- sub(x = names(avg), pattern = "avg_", replacement = "")
 
   # Expect that avg is ordered by unique AEDECOD which was input.
   expect_equal(unique(r2rtf_adae$AEDECOD), avg$par)
@@ -73,7 +73,7 @@ test_that("if, say, par = AEDECOD, return the average duration per group per AE 
   ) |>
     dplyr::select(starts_with("se")) |>
     as.data.frame()
-  names(se) <- stringr::str_remove(names(se), pattern = "se_")
+  names(se) <- sub(x = names(se), pattern = "se_", replacement = "")
 
   avg_dur1 <- list(avg = avg |> dplyr::select(-par), se = se)
   avg_dur2 <- avg_duration(

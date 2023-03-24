@@ -51,14 +51,14 @@ test_that("if par = NULL, return the average number of events in each group (tak
   ) |>
     dplyr::select(par, starts_with("avg")) |>
     dplyr::select(-par)
-  names(avg) <- stringr::str_remove(names(avg), pattern = "avg_")
+  names(avg) <- sub(x = names(avg), pattern = "avg_", replacement = "")
 
   se <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
     tmp,
     by = dplyr::join_by(par)
   ) |>
     dplyr::select(par, starts_with("se"))
-  names(se) <- stringr::str_remove(names(se), pattern = "se_")
+  names(se) <- sub(x = names(se), pattern = "se_", replacement = "")
 
   # check to make sure that order of output is the same as input (par)
   expect_equal(se$par, unique(r2rtf_adae$AEDECOD))
