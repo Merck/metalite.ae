@@ -49,31 +49,6 @@ prepare_ae_specific <- function(meta,
                                 parameter,
                                 components = c("soc", "par"),
                                 reference_group = NULL) {
-  # Check if the grouping variable is missing
-  pop_grp <- vapply(meta$population, "[[", FUN.VALUE = character(1), "group")
-  obs_grp <- vapply(meta$population, "[[", FUN.VALUE = character(1), "group")
-  grp <- unique(c(pop_grp, obs_grp))
-
-  for (i in seq(grp)) {
-    if (any(is.na(meta$data_population[[grp[i]]]))) {
-      stop(
-        paste0(
-          "There are >= 1 subjects with missing grouping variable '", grp[i],
-          "' in the population dataset."
-        ),
-        call. = FALSE
-      )
-    }
-    if (any(is.na(meta$data_observation[[grp[i]]]))) {
-      stop(
-        paste0(
-          "There are >= 1 subjects with missing grouping variable '", grp[i],
-          "' in the observation dataset."
-        ),
-        call. = FALSE
-      )
-    }
-  }
 
   # Obtain variables
   pop_var <- collect_adam_mapping(meta, population)$var
@@ -92,6 +67,31 @@ prepare_ae_specific <- function(meta,
 
   pop_group <- collect_adam_mapping(meta, population)$group
   obs_group <- collect_adam_mapping(meta, observation)$group
+
+  # Check if the grouping variable is missing
+  # pop_grp <- vapply(meta$population, "[[", FUN.VALUE = character(1), "group")
+  # obs_grp <- vapply(meta$population, "[[", FUN.VALUE = character(1), "group")
+  # grp <- unique(c(pop_grp, obs_grp))
+
+
+    if (any(is.na(pop[[pop_group]]))) {
+      stop(
+        paste0(
+          "There are >= 1 subjects with missing grouping variable '", pop_group,
+          "' in the population dataset."
+        ),
+        call. = FALSE
+      )
+    }
+    if (any(is.na(obs[[obs_group]]))) {
+      stop(
+        paste0(
+          "There are >= 1 subjects with missing grouping variable '", obs_group,
+          "' in the observation dataset."
+        ),
+        call. = FALSE
+      )
+    }
 
   # Ensure group is a factor
   if (!"factor" %in% class(pop[[pop_group]])) {
