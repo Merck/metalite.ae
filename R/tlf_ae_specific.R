@@ -25,7 +25,7 @@
 #' @inheritParams r2rtf::rtf_page
 #' @inheritParams r2rtf::rtf_body
 #' @param footnotes A character vector of table footnotes.
-#' @param title A character vector of table titles.
+#' @param title Term "analysis", "observation"and "population") for collecting title from metadata or a character vector of table titles.
 #' @param path_outdata A character string of the outdata path.
 #' @param path_outtable A character string of the outtable path.
 #'
@@ -56,7 +56,7 @@ tlf_ae_specific <- function(outdata,
                             text_font_size = 9,
                             orientation = "portrait",
                             footnotes = NULL,
-                            title = NULL,
+                            title = c("analysis", "observation", "population"),
                             path_outdata = NULL,
                             path_outtable = NULL) {
   if (is.null(footnotes)) {
@@ -92,12 +92,13 @@ tlf_ae_specific <- function(outdata,
   }
 
   # Define title
-  if (is.null(title)) {
+  if ("analysis" %in% title | "observation" %in% title | "population" %in% title) {
     title <- collect_title(outdata$meta,
       outdata$population,
       outdata$observation,
       outdata$parameter,
-      analysis = "ae_specific"
+      analysis = "ae_specific",
+      title_order = title
     )
   }
 
