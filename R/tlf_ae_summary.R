@@ -43,7 +43,7 @@ tlf_ae_summary <- function(outdata,
                            col_rel_width = NULL,
                            text_font_size = 9,
                            orientation = "portrait",
-                           title = NULL,
+                           title = c("analysis", "observation", "population"),
                            footnotes = NULL,
                            path_outdata = NULL,
                            path_outtable = NULL) {
@@ -58,12 +58,13 @@ tlf_ae_summary <- function(outdata,
 
   # Title
   # Define title
-  if (is.null(title)) {
+  if ("analysis" %in% title | "observation" %in% title | "population" %in% title) {
     title <- collect_title(outdata$meta,
       outdata$population,
       outdata$observation,
       parameters[1],
-      analysis = "ae_summary"
+      analysis = "ae_summary",
+      title_order = title
     )
   }
 

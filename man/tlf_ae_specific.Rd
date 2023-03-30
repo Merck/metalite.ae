@@ -12,7 +12,7 @@ tlf_ae_specific(
   text_font_size = 9,
   orientation = "portrait",
   footnotes = NULL,
-  title = NULL,
+  title = c("analysis", "observation", "population"),
   path_outdata = NULL,
   path_outtable = NULL
 )
@@ -36,7 +36,7 @@ displayed e.g. c(9,20,40).}
 
 \item{footnotes}{A character vector of table footnotes.}
 
-\item{title}{A character vector of table titles.}
+\item{title}{Term "analysis", "observation"and "population") for collecting title from metadata or a character vector of table titles.}
 
 \item{path_outdata}{A character string of the outdata path.}
 
