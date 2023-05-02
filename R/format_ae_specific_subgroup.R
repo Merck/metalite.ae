@@ -42,61 +42,58 @@ format_ae_specific_subgroup <- function(outdata,
                                         digits_dur = c(1, 1),
                                         digits_events = c(1, 1),
                                         mock = FALSE) {
-
-  if ("total" %in% display){
-    display <- display[! display %in% "total"]
+  if ("total" %in% display) {
+    display <- display[!display %in% "total"]
     print(paste("total is not supported within Sub-Group"))
   }
 
   out_all <- outdata$out_all
 
   outlst <- list()
-  for (i in 1:length(out_all) ){
+  for (i in 1:length(out_all)) {
     tbl <- out_all[[i]] |>
-      format_ae_specific(display = display,
-                         digits_prop =digits_prop,
-                         digits_ci =digits_ci,
-                         digits_p =digits_p,
-                         digits_dur=digits_dur,
-                         digits_events =digits_events,
-                         mock =mock)
+      format_ae_specific(
+        display = display,
+        digits_prop = digits_prop,
+        digits_ci = digits_ci,
+        digits_p = digits_p,
+        digits_dur = digits_dur,
+        digits_events = digits_events,
+        mock = mock
+      )
 
     names(tbl$tbl)[-1] <- paste0(names(out_all[i]), names(tbl$tbl)[-1])
-    if ( i == length(out_all)){
+    if (i == length(out_all)) {
       tbl$tbl$order <- out_all[[i]]$order
     }
 
     outlst[[i]] <- tbl$tbl
-
   }
 
   names(outlst) <- names(out_all)
 
-  i =1
-  while ( i  < length(outlst)){
-    if (i ==1 ){
+  i <- 1
+  while (i < length(outlst)) {
+    if (i == 1) {
       tbl <- merge(outlst[[i]], outlst[[i + 1]], by = "name", all = TRUE)
     }
 
-    i = i + 1
+    i <- i + 1
 
-    if (i > 1 & i  < length(outlst)){
-      tbl <- merge(tbl, outlst[[i + 1]], by ="name", all = TRUE)
+    if (i > 1 & i < length(outlst)) {
+      tbl <- merge(tbl, outlst[[i + 1]], by = "name", all = TRUE)
     }
-
   }
 
-  #Need order column from Total Column for Ordering properly across tables
+  # Need order column from Total Column for Ordering properly across tables
   tbl <- tbl[order(tbl$order), ]
 
-  #If outdata$display_subgroup_total = FALSE remove that part
-  if (!outdata$display_subgroup_total){
+  # If outdata$display_subgroup_total = FALSE remove that part
+  if (!outdata$display_subgroup_total) {
+    rm_tot <- names(outlst$Total) # Columns from Total Section
+    rm_tot <- rm_tot[!rm_tot %in% c("name", "order")]
 
-    rm_tot <- names(outlst$Total) #Columns from Total Section
-    rm_tot <- rm_tot[! rm_tot %in% c('name', "order")]
-
-    tbl <- tbl[ , -which(names(tbl) %in% rm_tot)]
-
+    tbl <- tbl[, -which(names(tbl) %in% rm_tot)]
   }
 
   outdata$tbl <- tbl

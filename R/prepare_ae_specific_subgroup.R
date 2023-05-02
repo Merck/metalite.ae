@@ -22,8 +22,8 @@
 #' @param column_hierarchy a character value for type of subgroup analysis.
 #' @param display_subgroup_total a logical Value to display total column for subgroup analysis.
 #' @examples
-#' #meta <- meta_ae_dummy()
-#' #prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
+#' # meta <- meta_ae_dummy()
+#' # prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
 #' @export
 prepare_ae_specific_subgroup <- function(meta,
                                          population,
@@ -33,12 +33,11 @@ prepare_ae_specific_subgroup <- function(meta,
                                          column_hierarchy = "trt_within_sub",
                                          components = c("soc", "par"),
                                          display_subgroup_total = TRUE) {
-
   if (!column_hierarchy %in% c("trt_within_sub", "sub_within_trt")) {
     stop("column_hierarchy can only have value trt_within_sub or sub_within_trt")
   }
 
-  if (column_hierarchy ==  "sub_within_trt") {
+  if (column_hierarchy == "sub_within_trt") {
     stop("Currently the function only supports subgroup analysis for trt_within_sub")
   }
 
@@ -73,8 +72,8 @@ prepare_ae_specific_subgroup <- function(meta,
     components = components
   )
 
-# Currently Total column analysis is supported for trt_within_sub.
-# Need programming for Total column for sub_within_trt.
+  # Currently Total column analysis is supported for trt_within_sub.
+  # Need programming for Total column for sub_within_trt.
 
   outdata_subgroup <- lapply(meta_subgroup,
     prepare_ae_specific,
@@ -84,15 +83,15 @@ prepare_ae_specific_subgroup <- function(meta,
     components = components
   )
 
-#Current output for subgroup analysis is supported for trt_within_sub.
-#output of subgroup analysis needs restructing for sub_within_trt.
+  # Current output for subgroup analysis is supported for trt_within_sub.
+  # output of subgroup analysis needs restructing for sub_within_trt.
   out_all <- outdata_subgroup
   out_all$Total <- outdata_all
 
-group <-  outdata_subgroup[[1]]$group
-group <- group[! group %in% "Total"]
+  group <- outdata_subgroup[[1]]$group
+  group <- group[!group %in% "Total"]
 
-outdata <- list(
+  outdata <- list(
     components = outdata_subgroup[[1]]$components,
     group = group,
     subgroup = tools::toTitleCase(tolower(names(outdata_subgroup))),
