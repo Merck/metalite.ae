@@ -1,0 +1,100 @@
+---
+title: "adex dataset"
+author: "Jeetender Chauhan"
+date: "2023-05-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(glue)
+library(haven)
+library(dplyr)
+library(tibble)
+library(lubridate)
+library(tidyverse)
+library(Hmisc)
+```
+
+
+```{r}
+# Set data library paths ----
+lptda <- "/opt/bardsar/test/baamr/mk9999-p001/dataanalysis"
+raw <- "/opt/bardsar/test/baamr/mk9999-p001/adhoc/jjj-jeetender"
+```
+
+```{r}
+
+# Read in the ADSL and EX datasets
+ex <- read_xpt(glue("{raw}/ex.xpt"))
+adsl <- read_sas(glue("{lptda}/adsl.sas7bdat"))
+
+```
+
+```{r}
+
+# Create a new data object with selected variables
+adsl <- select(adsl, STUDYID, SITEID, USUBJID, starts_with("TRT01"), AGE, starts_with("AGEGR1"), starts_with("RACE"), SEX, SAFFL, ITTFL, TRTSDT, TRTEDT)
+
+
+
+# Merge both dataset by usubjid
+ ex1<- merge(adsl, ex, by =c("STUDYID", "USUBJID"))  
+
+```
+
+
+
+```{r}
+# Derive ASTDT and AENDT
+adex1 <-ex1 %>% mutate(ASTDT = as.Date(EXSTDTC, format='%Y-%m-%d')) %>% mutate(AENDT = as.Date(EXENDTC, format='%Y-%m-%d')) 
+```
+
+#We can derive ASTDTM and AENDTM later
+
+```{r}
+
+```
+
+
+```{r}
+#Derive ASTDY AENDY EXDURDD EXDURDDU
+adex2 <- adex1 %>% mutate(ASTDY = ASTDT-TRTSDT+(ASTDT>=TRTSDT)) %>% mutate(AENDY=AENDT-TRTSDT+(AENDT>=TRTSDT)) %>% mutate(EXDURDD=AENDT-ASTDT+(AENDT>=ASTDT)) %>% mutate(EXDURDDU="Days")
+```
+
+```{r}
+#Assign Label to derived variables
+label(adex2$ASTDT) <- "Analysis Start Date"
+label(adex2$AENDT) <- "Analysis End Date"
+label(adex2$ASTDY) <- "Analysis Study Day"
+label(adex2$AENDY) <- "Analysis End Day"
+label(adex2$EXDURDD) <- "Exposure Duration"
+label(adex2$EXDURDDU) <- "Exposure Duration Unit"
+```
+
+
+
+```{r}
+
+# Load your dataset
+adex <- adex2
+
+# Output file path to save ADEX dataset
+data <- "/home/chauhaje/metalite.ae/data/adex.sas7bdat"
+
+# Output file path to save xpt ex dataset
+raw <- "/home/chauhaje/metalite.ae/data-raw/ex.xpt"
+
+# Save the dataset as sas7bdat file
+write_sas(adex, data)
+write_xpt(adex, raw)
+```
+
+
+
+
