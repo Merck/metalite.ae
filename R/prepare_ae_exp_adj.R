@@ -34,6 +34,8 @@ prepare_ae_exp_adj <- function(meta,
   adj_unit <- match.arg(adj_unit)
   exp_factor <- 100 * time_unit[[adj_unit]]
 
+  ### xxxx
+
   # obtain variables
   pop_var <- collect_adam_mapping(meta, population)$var
   obs_var <- collect_adam_mapping(meta, observation)$var
