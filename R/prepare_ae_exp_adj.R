@@ -59,11 +59,11 @@ prepare_ae_exp_adj <- function(meta,
   parameters <- unlist(strsplit(parameter, ";"))
 
   # total exposure in person-year/month/week/day
-  total_exposure <- aggregate(pop$TRTDUR , by = list(pop[[pop_group]]), FUN = sum)
+  total_exposure <- aggregate(pop$TRTDUR, by = list(pop[[pop_group]]), FUN = sum)
   names(total_exposure) <- c("group", "tol_exp")
 
   res <- lapply(parameters, function(x) {
-    if(x == "any"){
+    if (x == "any") {
       ans <- nrow(meta$data_observation) * exp_factor / total_exposure$tol_exp
     } else {
       # count the number of events either serious or drug-related or ... depending on the parameter
@@ -77,10 +77,10 @@ prepare_ae_exp_adj <- function(meta,
   })
 
   metalite::outdata(meta, population, observation, parameter,
-                    n = n_exposed, order = NULL, group = pop_group,
-                    reference_group = NULL,
-                    total_exposure = total_exposure,
-                    adj_rate = res,
-                    group_label = unique(pop[[pop_group]])
+    n = n_exposed, order = NULL, group = pop_group,
+    reference_group = NULL,
+    total_exposure = total_exposure,
+    adj_rate = res,
+    group_label = unique(pop[[pop_group]])
   )
 }
