@@ -18,7 +18,7 @@
 
 #' Add inference information for AE specific analysis
 #'
-#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #' @param ci A numeric value for the percentile of confidence interval.
 #'
 #' @return A list of analysis raw datasets.
@@ -94,7 +94,7 @@ extend_ae_specific_inference <- function(outdata, ci = 0.95) {
 
 #' Add average duration information for AE specific analysis
 #'
-#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #' @param duration_var A character value of variable name for AE duration.
 #' @param duration_unit A character value of AE duration unit.
 #'
@@ -225,7 +225,7 @@ extend_ae_specific_duration <- function(outdata,
 
 #' Add average number of events information for AE specific analysis
 #'
-#' @param outdata A `outdata` object created by [prepare_ae_specific()].
+#' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #'
 #' @return A list of analysis raw datasets.
 #'

@@ -7,7 +7,7 @@
 extend_ae_specific_duration(outdata, duration_var, duration_unit = "Day")
 }
 \arguments{
-\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+\item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
 \item{duration_var}{A character value of variable name for AE duration.}
 
