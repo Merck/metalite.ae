@@ -18,7 +18,7 @@
 
 #' Specific adverse events table
 #'
-#' @param outdata A outdata list created from [prepare_ae_specific()].
+#' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #' @param meddra_version A character value of the MedDRA version
 #'   for this dataset.
 #' @param source A character value of the data source.

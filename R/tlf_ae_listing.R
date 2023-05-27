@@ -18,7 +18,7 @@
 
 #' Specific adverse events table
 #'
-#' @param outdata A outdata list created by [prepare_ae_listing()].
+#' @param outdata An `outdata` object created by [prepare_ae_listing()].
 #' @param footnotes A character vector of table footnotes.
 #' @param source A character value of the data source.
 #' @inheritParams r2rtf::rtf_page

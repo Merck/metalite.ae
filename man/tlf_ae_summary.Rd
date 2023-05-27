@@ -17,7 +17,7 @@ tlf_ae_summary(
 )
 }
 \arguments{
-\item{outdata}{A outdata list created from \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+\item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
 \item{source}{A character value of the data source.}
 

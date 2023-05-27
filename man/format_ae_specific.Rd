@@ -16,7 +16,7 @@ format_ae_specific(
 )
 }
 \arguments{
-\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+\item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
 \item{display}{A character vector of measurement to be displayed:
 \itemize{
