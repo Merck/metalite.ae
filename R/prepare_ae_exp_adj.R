@@ -62,28 +62,28 @@ prepare_ae_exp_adj <- function(meta,
   total_exposure <- aggregate(pop$TRTDUR, by = list(pop[[pop_group]]), FUN = sum)
   names(total_exposure) <- c("group", "tol_exp")
 
- res <- lapply(parameters, function(x) {
-    data = meta$data_observation  
+  res <- lapply(parameters, function(x) {
+    data <- meta$data_observation
     if (x == "any") {
-            num  = ( data |> group_by(get(obs_group))
-                          |> summarise(n()) )$'n()'     
-            ans  = num * exp_factor/total_exposure$tol_exp      
-    } else {       
+      num <- (data |> group_by(get(obs_group))
+        |> summarise(n()))$"n()"
+      ans <- num * exp_factor / total_exposure$tol_exp
+    } else {
       # count the number of events either serious or drug-related or ... depending on the parameter
-            TrtGrps  = levels( data |> pull(obs_group) )  
-            J        = length(TrtGrps)                    
-            num      = rep(NA,J)   
-            for( j in 1:J ){
-              expr   = collect_adam_mapping(meta, x)$subset   
-              data_j = meta$data_observation |> filter(get(obs_group) == TrtGrps[j] )
-              temp_j = rlang::eval_tidy(expr=expr,data=data_j)
-              num[j] = sum(temp_j)
-     }    
-      ans <- num * exp_factor / total_exposure$tol_exp  
+      TrtGrps <- levels(data |> pull(obs_group))
+      J <- length(TrtGrps)
+      num <- rep(NA, J)
+      for (j in 1:J) {
+        expr <- collect_adam_mapping(meta, x)$subset
+        data_j <- meta$data_observation |> filter(get(obs_group) == TrtGrps[j])
+        temp_j <- rlang::eval_tidy(expr = expr, data = data_j)
+        num[j] <- sum(temp_j)
+      }
+      ans <- num * exp_factor / total_exposure$tol_exp
     }
-    
+
     return(ans)
-    })
+  })
 
   metalite::outdata(meta, population, observation, parameter,
     n = n_exposed, order = NULL, group = pop_group,
