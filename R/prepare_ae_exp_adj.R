@@ -18,7 +18,6 @@
 
 #' Prepare datasets for AE specific analysis
 #'
-#'
 #' @return A list of analysis raw datasets.
 #'
 #' @export
