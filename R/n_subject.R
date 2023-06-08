@@ -46,12 +46,12 @@ avg_event <- function(id, group, par = NULL) {
     res <- table(db$id, db$group)
     res <- data.frame(res)
     avg <- vapply(split(res, res$Var2),
-                  function(x) mean(x$Freq, na.rm = TRUE),
-                  FUN.VALUE = numeric(1)
+      function(x) mean(x$Freq, na.rm = TRUE),
+      FUN.VALUE = numeric(1)
     )
     se <- vapply(split(res, res$Var2),
-                 function(x) sd(x$Freq, na.rm = TRUE) / sqrt(nrow(x)),
-                 FUN.VALUE = numeric(1)
+      function(x) sd(x$Freq, na.rm = TRUE) / sqrt(nrow(x)),
+      FUN.VALUE = numeric(1)
     )
   } else {
     db <- data.frame(id = id, group = group, par = par)
