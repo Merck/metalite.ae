@@ -16,56 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Count number of unique subjects
-#'
-#' @param id A character vector of subject ID.
-#' @param group A factor vector of group name.
-#' @param par A character vector of parameter name.
-#' @param use_na A character value for whether to include `NA` values
-#'   in the table. See the `useNA` argument in [base::table()] for details.
-#'
-#' @noRd
-#'
-#' @examples
-#' library(r2rtf)
-#'
-#' r2rtf_adae$TRTA <- factor(r2rtf_adae$TRTA)
-#' r2rtf_adae$SEX[1:5] <- NA
-#'
-#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
-#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX)
-#' metalite.ae:::n_subject(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$SEX, use_na = "always")
-n_subject <- function(id, group, par = NULL, use_na = c("ifany", "no", "always")) {
-  use_na <- match.arg(use_na)
-
-  if ("factor" %in% class(group)) {
-    u_group <- c(as.character(levels(group)), "Missing")
-  } else {
-    stop("n_subject: group variable must be a factor.", call. = FALSE)
-  }
-
-  if (is.null(par)) {
-    db <- data.frame(id = id, group = group)
-    res <- table(unique(db)[["group"]], useNA = use_na)
-
-    n_row <- nrow(res)
-    res <- data.frame(t(as.vector(res)))
-    names(res) <- c(u_group[1:n_row])
-  } else {
-    db <- data.frame(id = id, group = group, par = par)
-    res <- table(unique(db)[, c("group", "par")], useNA = use_na)
-    name <- colnames(res)
-    name[is.na(name)] <- "Missing"
-
-    n_row <- nrow(res)
-    n_col <- ncol(res)
-    res <- data.frame(name = name[1:n_col], matrix(res, ncol = n_row, byrow = TRUE))
-    names(res) <- c("name", u_group[1:n_row])
-  }
-
-  res
-}
-
 #' Average number of events
 #'
 #' Calculates average number of records per group and, if requested, parameter.
