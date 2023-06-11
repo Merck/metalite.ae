@@ -51,11 +51,13 @@ prepare_ae_specific_subgroup(meta,
   population = "apat",
   observation = "wk12",
   parameter = "rel",
-  subgroup_var = "race",
-  display_subgroup_total = T) |>
-format_ae_specific_subgroup() |>
-tlf_ae_specific_subgroup(
-  medra_version = "24.0",
-  source = "Source:  [CDISCpilot: adam-adsl; adae]",
-  path_outtable = tempfile(fileext=".rtf"))
+  subgroup_var = "SEX",
+  display_subgroup_total = T
+) |>
+  format_ae_specific_subgroup() |>
+  tlf_ae_specific_subgroup(
+    medra_version = "24.0",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outtable = tempfile(fileext = ".rtf")
+  )
 }

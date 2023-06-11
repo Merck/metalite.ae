@@ -1,29 +1,30 @@
-#    Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+# All rights reserved.
 #
-#    This file is part of the metalite.ae program.
+# This file is part of the metalite.ae program.
 #
-#    metalite.ae is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# metalite.ae is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Format AE specific analysis
 #'
 #' @inheritParams format_ae_specific
-#' @param digits_prop a numeric value of number of digits for proportion value.
-#' @param digits_ci a numeric value of number of digits for confidence interval
-#' @param digits_p a numeric value of number of digits for p-value .
-#' @param digits_dur a numeric value of number of digits for average duration of AE
-#' @param digits_events a numeric value of number of digits for average of number of AE per subjects.
-#' @param display a character vector of measurement to be displayed.
+#' @param digits_prop A numeric value of number of digits for proportion value.
+#' @param digits_ci A numeric value of number of digits for confidence interval
+#' @param digits_p A numeric value of number of digits for p-value .
+#' @param digits_dur A numeric value of number of digits for average duration of AE
+#' @param digits_events A numeric value of number of digits for average of number of AE per subjects.
+#' @param display A character vector of measurement to be displayed.
 #'  - `n`: number of subjects with AE.
 #'  - `prop`: proportion of subjects with AE.
 #'  - `total`: total columns
@@ -32,7 +33,21 @@
 #'  - `diff_p`: p-value of risk difference using M&N method
 #'  - `dur`: average of AE duration
 #'  - `events`: average number of AE per subject
-#' @param mock a boolean value to display mock table
+#' @param mock A boolean value to display mock table
+#'
+#' @return A list of analysis raw datasets.
+#'
+#' @examples
+#' meta <- meta_ae_example()
+#' prepare_ae_specific_subgroup(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel",
+#'   subgroup_var = "SEX",
+#'   display_subgroup_total = T
+#' ) |>
+#'   format_ae_specific_subgroup()
+#'
 #' @export
 format_ae_specific_subgroup <- function(outdata,
                                         display = c("n", "prop"),

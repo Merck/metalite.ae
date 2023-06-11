@@ -18,7 +18,7 @@ format_ae_specific_subgroup(
 \arguments{
 \item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{display}{a character vector of measurement to be displayed.
+\item{display}{A character vector of measurement to be displayed.
 \itemize{
 \item \code{n}: number of subjects with AE.
 \item \code{prop}: proportion of subjects with AE.
@@ -30,18 +30,33 @@ format_ae_specific_subgroup(
 \item \code{events}: average number of AE per subject
 }}
 
-\item{digits_prop}{a numeric value of number of digits for proportion value.}
+\item{digits_prop}{A numeric value of number of digits for proportion value.}
 
-\item{digits_ci}{a numeric value of number of digits for confidence interval}
+\item{digits_ci}{A numeric value of number of digits for confidence interval}
 
-\item{digits_p}{a numeric value of number of digits for p-value .}
+\item{digits_p}{A numeric value of number of digits for p-value .}
 
-\item{digits_dur}{a numeric value of number of digits for average duration of AE}
+\item{digits_dur}{A numeric value of number of digits for average duration of AE}
 
-\item{digits_events}{a numeric value of number of digits for average of number of AE per subjects.}
+\item{digits_events}{A numeric value of number of digits for average of number of AE per subjects.}
 
-\item{mock}{a boolean value to display mock table}
+\item{mock}{A boolean value to display mock table}
+}
+\value{
+A list of analysis raw datasets.
 }
 \description{
 Format AE specific analysis
+}
+\examples{
+meta <- meta_ae_example()
+prepare_ae_specific_subgroup(meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel",
+  subgroup_var = "SEX",
+  display_subgroup_total = T
+) |>
+  format_ae_specific_subgroup()
+
 }

@@ -23,9 +23,13 @@
 #' @param subgroup_header A character vector for column header hierarchy. First element will be first level header and
 #' second element will be second level header.
 #' @param display_subgroup_total A logical Value to display total column for subgroup analysis.
+#'
+#' @return A list of analysis raw datasets.
+#'
 #' @examples
-#' # meta <- meta_ae_dummy()
-#' # prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
+#' meta <- meta_ae_dummy()
+#' prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
+#'
 #' @export
 prepare_ae_specific_subgroup <- function(meta,
                                          population,

@@ -36,10 +36,14 @@ second element will be second level header.}
 
 \item{display_subgroup_total}{A logical Value to display total column for subgroup analysis.}
 }
+\value{
+A list of analysis raw datasets.
+}
 \description{
 Prepare datasets for AE specific analysis
 }
 \examples{
-# meta <- meta_ae_dummy()
-# prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
+meta <- meta_ae_dummy()
+prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
+
 }

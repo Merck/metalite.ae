@@ -30,7 +30,7 @@
 #'   population = "apat",
 #'   observation = "wk12",
 #'   parameter = "rel",
-#'   subgroup_var = "race",
+#'   subgroup_var = "SEX",
 #'   display_subgroup_total = T
 #' ) |>
 #'   format_ae_specific_subgroup() |>
