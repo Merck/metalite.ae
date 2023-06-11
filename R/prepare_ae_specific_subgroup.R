@@ -1,26 +1,28 @@
-#    Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.
+# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+# All rights reserved.
 #
-#    This file is part of the metalite.ae program.
+# This file is part of the metalite.ae program.
 #
-#    metalite.ae is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# metalite.ae is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #' Prepare datasets for AE specific analysis
 #'
 #' @inheritParams prepare_ae_specific
-#' @param subgroup_var a character value of subgroup variable name in observation data saved in `meta$data_observation`.
-#' @param column_hierarchy a character value for type of subgroup analysis.
-#' @param display_subgroup_total a logical Value to display total column for subgroup analysis.
+#' @param subgroup_var A character value of subgroup variable name in observation data saved in `meta$data_observation`.
+#' @param subgroup_header A character vector for column header hierarchy. First element will be first level header and
+#' second element will be second level header.
+#' @param display_subgroup_total A logical Value to display total column for subgroup analysis.
 #' @examples
 #' # meta <- meta_ae_dummy()
 #' # prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
@@ -30,18 +32,20 @@ prepare_ae_specific_subgroup <- function(meta,
                                          observation,
                                          parameter,
                                          subgroup_var,
-                                         column_hierarchy = "trt_within_sub",
+                                         subgroup_header = c(meta$population[[population]]$group, subgroup_var),
                                          components = c("soc", "par"),
                                          display_subgroup_total = TRUE) {
-  if (!column_hierarchy %in% c("trt_within_sub", "sub_within_trt")) {
-    stop("column_hierarchy can only have value trt_within_sub or sub_within_trt")
-  }
-
-  if (column_hierarchy == "sub_within_trt") {
-    stop("Currently the function only supports subgroup analysis for trt_within_sub")
-  }
-
   meta_original <- meta
+
+  meta$data_population[[subgroup_var]] <- factor(as.character(meta$data_population[[subgroup_var]]),
+    levels = sort(unique(meta$data_population[[subgroup_var]]))
+  )
+  meta$data_observation[[subgroup_var]] <- factor(as.character(meta$data_observation[[subgroup_var]]),
+    levels = sort(unique(meta$data_observation[[subgroup_var]]))
+  )
+
+  meta$observation[[observation]]$group <- subgroup_header[1]
+  meta$population[[population]]$group <- subgroup_header[1]
 
   meta$data_observation <- collect_observation_record(meta,
     population = population,
@@ -63,7 +67,7 @@ prepare_ae_specific_subgroup <- function(meta,
     levels = sort(unique(meta$data_observation[[par_soc]]))
   )
 
-  meta_subgroup <- metalite::meta_split(meta, toupper(subgroup_var))
+  meta_subgroup <- metalite::meta_split(meta, subgroup_header[2])
 
   outdata_all <- prepare_ae_specific(meta,
     population = population,

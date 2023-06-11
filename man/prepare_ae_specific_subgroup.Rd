@@ -10,7 +10,7 @@ prepare_ae_specific_subgroup(
   observation,
   parameter,
   subgroup_var,
-  column_hierarchy = "trt_within_sub",
+  subgroup_header = c(meta$population[[population]]$group, subgroup_var),
   components = c("soc", "par"),
   display_subgroup_total = TRUE
 )
@@ -27,18 +27,19 @@ The term name is used as key to link information.}
 \item{parameter}{A character value of parameter term name.
 The term name is used as key to link information.}
 
-\item{subgroup_var}{a character value of subgroup variable name in observation data saved in \code{meta$data_observation}.}
+\item{subgroup_var}{A character value of subgroup variable name in observation data saved in \code{meta$data_observation}.}
 
-\item{column_hierarchy}{a character value for type of subgroup analysis.}
+\item{subgroup_header}{A character vector for column header hierarchy. First element will be first level header and
+second element will be second level header.}
 
 \item{components}{A character vector of components name.}
 
-\item{display_subgroup_total}{a logical Value to display total column for subgroup analysis.}
+\item{display_subgroup_total}{A logical Value to display total column for subgroup analysis.}
 }
 \description{
 Prepare datasets for AE specific analysis
 }
 \examples{
-#meta <- meta_ae_dummy()
-#prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
+# meta <- meta_ae_dummy()
+# prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "RACE")$data
 }
