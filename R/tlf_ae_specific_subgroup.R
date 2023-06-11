@@ -31,7 +31,7 @@
 #'   observation = "wk12",
 #'   parameter = "rel",
 #'   subgroup_var = "SEX",
-#'   display_subgroup_total = T
+#'   display_subgroup_total = TRUE
 #' ) |>
 #'   format_ae_specific_subgroup() |>
 #'   tlf_ae_specific_subgroup(
