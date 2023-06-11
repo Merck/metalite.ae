@@ -6,7 +6,7 @@
 \usage{
 tlf_ae_specific_subgroup(
   outdata,
-  medra_version,
+  meddra_version,
   source,
   col_rel_width = NULL,
   text_font_size = 9,
@@ -19,6 +19,9 @@ tlf_ae_specific_subgroup(
 }
 \arguments{
 \item{outdata}{A outdata list created from \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+
+\item{meddra_version}{A character value of the MedDRA version
+for this dataset.}
 
 \item{source}{A character value of the data source.}
 
@@ -56,7 +59,7 @@ prepare_ae_specific_subgroup(meta,
 ) |>
   format_ae_specific_subgroup() |>
   tlf_ae_specific_subgroup(
-    medra_version = "24.0",
+    meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     path_outtable = tempfile(fileext = ".rtf")
   )

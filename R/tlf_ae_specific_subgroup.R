@@ -35,12 +35,12 @@
 #' ) |>
 #'   format_ae_specific_subgroup() |>
 #'   tlf_ae_specific_subgroup(
-#'     medra_version = "24.0",
+#'     meddra_version = "24.0",
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_specific_subgroup <- function(outdata,
-                                     medra_version,
+                                     meddra_version,
                                      source,
                                      col_rel_width = NULL,
                                      text_font_size = 9,
@@ -57,12 +57,12 @@ tlf_ae_specific_subgroup <- function(outdata,
         "its incidence in one or more of the columns meets the incidence",
         "criterion in the report title, after rounding."
       ),
-      "Adverse event terms are from MedDRA Version {medra_version}."
+      "Adverse event terms are from MedDRA Version {meddra_version}."
     )
   }
 
   footnotes <- vapply(footnotes, glue::glue_data,
-    .x = list(medra_version = medra_version), FUN.VALUE = character(1)
+    .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
   )
   names(footnotes) <- NULL
 
