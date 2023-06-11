@@ -27,7 +27,7 @@
 #' @return A list of analysis raw datasets.
 #'
 #' @examples
-#' meta <- meta_ae_dummy()
+#' meta <- meta_ae_example()
 #' prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
 #'
 #' @export
