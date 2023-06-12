@@ -27,18 +27,26 @@
 #'
 #' @examples
 #' meta_ae_example()
-meta_ae_example <- function() {
+
+
+meta_ae_example <- function(population_in        ,
+                            analysis_in          ,
+                            analysis_title_in    ,
+                            observation_in       ,
+                            observation_label_in ,
+                            parameter_in) {
+
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
   adsl$TRTA <- factor(adsl$TRTA,
-    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-    labels = c("Placebo", "Low Dose", "High Dose")
+                      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+                      labels = c("Placebo", "Low Dose", "High Dose")
   )
 
   adae <- r2rtf::r2rtf_adae
   adae$TRTA <- factor(adae$TRTA,
-    levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-    labels = c("Placebo", "Low Dose", "High Dose")
+                      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+                      labels = c("Placebo", "Low Dose", "High Dose")
   )
 
   # Drug-related AE values
@@ -55,11 +63,11 @@ meta_ae_example <- function() {
   # AE outcome
   for (i in seq_along(adae$AEOUT)) {
     adae$outcome <- switch(adae$AEOUT[i],
-      "RECOVERED/RESOLVED" = "Resolved",
-      "RECOVERING/RESOLVING" = "Resolving",
-      "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
-      "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-      tools::toTitleCase(tolower(adae$AEOUT[i]))
+                           "RECOVERED/RESOLVED" = "Resolved",
+                           "RECOVERING/RESOLVING" = "Resolving",
+                           "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
+                           "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
+                           tools::toTitleCase(tolower(adae$AEOUT[i]))
     )
   }
 
@@ -68,14 +76,14 @@ meta_ae_example <- function() {
 
   for (i in seq_along(adae$AEACN)) {
     adae$action_taken[i] <- switch(adae$AEACN[i],
-      "DOSE NOT CHANGED" = "None",
-      "DOSE REDUCED" = "Reduced",
-      "DRUG INTERRUPTED" = "Interrupted",
-      "DOSE INCREASED" = "Increased",
-      "NOT APPLICABLE" = "N/A",
-      "UNKNOWN" = "Unknown",
-      "''" = "None",
-      tools::toTitleCase(tolower(adae$AEACN[i]))
+                                   "DOSE NOT CHANGED" = "None",
+                                   "DOSE REDUCED" = "Reduced",
+                                   "DRUG INTERRUPTED" = "Interrupted",
+                                   "DOSE INCREASED" = "Increased",
+                                   "NOT APPLICABLE" = "N/A",
+                                   "UNKNOWN" = "Unknown",
+                                   "''" = "None",
+                                   tools::toTitleCase(tolower(adae$AEACN[i]))
     )
   }
 
@@ -112,72 +120,79 @@ meta_ae_example <- function() {
 
   # Assign label
   adae <- metalite::assign_label(adae,
-    var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
-    label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
+                                 var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
+                                 label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
   )
 
   plan <- plan(
-    analysis = "ae_summary", population = "apat",
-    observation = c("wk12", "wk24"), parameter = "any;rel;ser"
-  ) |>
-    add_plan(
-      analysis = "ae_specific", population = "apat",
-      observation = c("wk12", "wk24"),
-      parameter = c("any", "aeosi", "rel", "ser")
-    ) |>
-    add_plan(
-      analysis = "ae_listing", population = "apat",
-      observation = c("wk12", "wk24"), parameter = c("any", "rel", "ser")
-    )
+    analysis = analysis_in, population = population_in,
+    observation = observation_in, parameter = parameter_in
+  ) #|>
+#    add_plan(
+#      analysis = "ae_specific", population = "apat",
+#      observation = c("wk12", "wk24"),
+#      parameter = c("any", "aeosi", "rel", "ser")
+#    ) |>
+#    add_plan(
+#      analysis = "ae_listing", population = "apat",
+#      observation = c("wk12", "wk24"), parameter = c("any", "rel", "ser")
+#    )
 
-  meta_adam(
+  meta_adam <- meta_adam(
     population = adsl,
     observation = adae
   ) |>
     define_plan(plan = plan) |>
     define_population(
-      name = "apat",
+      name = population_in,
       group = "TRTA",
       subset = quote(SAFFL == "Y")
     ) |>
     define_observation(
-      name = "wk12",
+      name = observation_in[1],
       group = "TRTA",
       subset = quote(SAFFL == "Y"),
-      label = "Weeks 0 to 12"
+      label =  observation_label_in[1]
     ) |>
     define_observation(
-      name = "wk24",
+      name = observation_in[2],
       group = "TRTA",
       subset = quote(AOCC01FL == "Y"), # Just for demo, another flag should be used
-      label = "Weeks 0 to 24"
+      label =  observation_label_in[2]
     ) |>
     define_parameter(
       name = "rel",
       subset = quote(AEREL %in% c("POSSIBLE", "PROBABLE"))
     ) |>
-    define_parameter(
-      name = "aeosi",
-      subset = quote(AEOSI == "Y"),
-      var = "AEDECOD",
-      soc = "AEBODSYS",
-      term1 = "",
-      term2 = "of special interest",
-      label = "adverse events of special interest"
-    ) |>
+#    define_parameter(
+#      name = "aeosi",
+#      subset = quote(AEOSI == "Y"),
+#      var = "AEDECOD",
+#      soc = "AEBODSYS",
+#      term1 = "",
+#      term2 = "of special interest",
+#      label = "adverse events of special interest"
+#    ) |>
     define_analysis(
-      name = "ae_summary",
-      title = "Summary of Adverse Events"
+      name = analysis_in,
+      title = analysis_title_in
     ) |>
-    define_analysis(
-      name = "ae_listing",
-      var_name = c(
-        "USUBJID", "ASTDY", "AEDECOD", "duration",
-        "AESEV", "AESER", "related", "action_taken", "outcome"
-      ),
-      subline_by = NULL,
-      group_by = c("USUBJID", "ASTDY"),
-      page_by = c("TRTA", "subline")
-    ) |>
+#    define_analysis(
+#      name = "ae_summary",
+#      title = "Summary of Adverse Events"
+#    ) |>
+#    define_analysis(
+#      name = "ae_listing",
+#      var_name = c(
+#        "USUBJID", "ASTDY", "AEDECOD", "duration",
+#        "AESEV", "AESER", "related", "action_taken", "outcome"
+#      )
+#      subline_by = NULL,
+#      group_by = c("USUBJID", "ASTDY"),
+#      page_by = c("TRTA", "subline")
+#    ) |>
     meta_build()
+
+  return(meta_adam)
 }
+
