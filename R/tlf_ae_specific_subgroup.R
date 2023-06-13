@@ -39,16 +39,17 @@
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
-tlf_ae_specific_subgroup <- function(outdata,
-                                     meddra_version,
-                                     source,
-                                     col_rel_width = NULL,
-                                     text_font_size = 9,
-                                     orientation = "landscape",
-                                     footnotes = NULL,
-                                     title = NULL,
-                                     path_outdata = NULL,
-                                     path_outtable = NULL) {
+tlf_ae_specific_subgroup <- function(
+    outdata,
+    meddra_version,
+    source,
+    col_rel_width = NULL,
+    text_font_size = 9,
+    orientation = "landscape",
+    footnotes = NULL,
+    title = NULL,
+    path_outdata = NULL,
+    path_outtable = NULL) {
   if (is.null(footnotes)) {
     footnotes <- c(
       "Every participant is counted a single time for each applicable row and column.",
@@ -61,7 +62,8 @@ tlf_ae_specific_subgroup <- function(outdata,
     )
   }
 
-  footnotes <- vapply(footnotes, glue::glue_data,
+  footnotes <- vapply(
+    footnotes, glue::glue_data,
     .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
   )
   names(footnotes) <- NULL
@@ -70,15 +72,13 @@ tlf_ae_specific_subgroup <- function(outdata,
   tbl <- outdata$tbl
   tgroup <- outdata$group
   sgroup <- outdata$subgroup
-  if (outdata$display_subgroup_total) {
-    sgroup <- c(sgroup, "Total")
-  }
+  if (outdata$display_subgroup_total) sgroup <- c(sgroup, "Total")
   n_sgroup <- length(sgroup)
   n_tgroup <- length(outdata$group)
   n_row <- nrow(outdata$tbl)
   n_col <- ncol(outdata$tbl)
 
-  if (!is.null(col_rel_width) & !n_col == length(col_rel_width)) {
+  if (!is.null(col_rel_width) && !n_col == length(col_rel_width)) {
     stop(
       "col_rel_width must have the same length (has ",
       length(col_rel_width),
@@ -188,7 +188,9 @@ tlf_ae_specific_subgroup <- function(outdata,
     )
   }
 
-  if ((sum(rwidth_1) != sum(rwidth_2)) | (sum(rwidth_1) != sum(rwidth_3))) stop("width calculation broke, contact developer")
+  if ((sum(rwidth_1) != sum(rwidth_2)) || (sum(rwidth_1) != sum(rwidth_3))) {
+    stop("Width calculation breaks, contact developer.")
+  }
 
   # Column border
   border_top2 <- c("", rep("single", n_sgroup * n_tgroup))
@@ -248,6 +250,6 @@ tlf_ae_specific_subgroup <- function(outdata,
       )
   }
 
-  # prepare output
+  # Prepare output
   rtf_output(outdata, path_outdata, path_outtable)
 }

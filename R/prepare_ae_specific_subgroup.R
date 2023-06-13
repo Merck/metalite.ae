@@ -19,39 +19,46 @@
 #' Prepare datasets for AE specific analysis
 #'
 #' @inheritParams prepare_ae_specific
-#' @param subgroup_var A character value of subgroup variable name in observation data saved in `meta$data_observation`.
-#' @param subgroup_header A character vector for column header hierarchy. First element will be first level header and
-#' second element will be second level header.
-#' @param display_subgroup_total A logical Value to display total column for subgroup analysis.
+#' @param subgroup_var A character value of subgroup variable name in
+#'   observation data saved in `meta$data_observation`.
+#' @param subgroup_header A character vector for column header hierarchy.
+#'   The first element will be the first level header and the second element
+#'   will be second level header.
+#' @param display_subgroup_total Logical. Display total column for
+#'   subgroup analysis or not.
 #'
 #' @return A list of analysis raw datasets.
+#'
+#' @export
 #'
 #' @examples
 #' meta <- meta_ae_example()
 #' prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
-#'
-#' @export
-prepare_ae_specific_subgroup <- function(meta,
-                                         population,
-                                         observation,
-                                         parameter,
-                                         subgroup_var,
-                                         subgroup_header = c(meta$population[[population]]$group, subgroup_var),
-                                         components = c("soc", "par"),
-                                         display_subgroup_total = TRUE) {
+prepare_ae_specific_subgroup <- function(
+    meta,
+    population,
+    observation,
+    parameter,
+    subgroup_var,
+    subgroup_header = c(meta$population[[population]]$group, subgroup_var),
+    components = c("soc", "par"),
+    display_subgroup_total = TRUE) {
   meta_original <- meta
 
-  meta$data_population[[subgroup_var]] <- factor(as.character(meta$data_population[[subgroup_var]]),
+  meta$data_population[[subgroup_var]] <- factor(
+    as.character(meta$data_population[[subgroup_var]]),
     levels = sort(unique(meta$data_population[[subgroup_var]]))
   )
-  meta$data_observation[[subgroup_var]] <- factor(as.character(meta$data_observation[[subgroup_var]]),
+  meta$data_observation[[subgroup_var]] <- factor(
+    as.character(meta$data_observation[[subgroup_var]]),
     levels = sort(unique(meta$data_observation[[subgroup_var]]))
   )
 
   meta$observation[[observation]]$group <- subgroup_header[1]
   meta$population[[population]]$group <- subgroup_header[1]
 
-  meta$data_observation <- collect_observation_record(meta,
+  meta$data_observation <- collect_observation_record(
+    meta,
     population = population,
     observation = observation,
     parameter = parameter,
@@ -63,27 +70,30 @@ prepare_ae_specific_subgroup <- function(meta,
   par_soc <- collect_adam_mapping(meta, parameter)$soc
 
   # Convert variable to factor
-  meta$data_observation[[par_var]] <- factor(as.character(meta$data_observation[[par_var]]),
+  meta$data_observation[[par_var]] <- factor(
+    as.character(meta$data_observation[[par_var]]),
     levels = sort(unique(meta$data_observation[[par_var]]))
   )
 
-  meta$data_observation[[par_soc]] <- factor(as.character(meta$data_observation[[par_soc]]),
+  meta$data_observation[[par_soc]] <- factor(
+    as.character(meta$data_observation[[par_soc]]),
     levels = sort(unique(meta$data_observation[[par_soc]]))
   )
 
   meta_subgroup <- metalite::meta_split(meta, subgroup_header[2])
 
-  outdata_all <- prepare_ae_specific(meta,
+  outdata_all <- prepare_ae_specific(
+    meta,
     population = population,
     observation = observation,
     parameter = parameter,
     components = components
   )
 
-  # Currently Total column analysis is supported for trt_within_sub.
+  # Currently, Total column analysis is supported for trt_within_sub.
   # Need programming for Total column for sub_within_trt.
-
-  outdata_subgroup <- lapply(meta_subgroup,
+  outdata_subgroup <- lapply(
+    meta_subgroup,
     prepare_ae_specific,
     population = population,
     observation = observation,
@@ -92,7 +102,7 @@ prepare_ae_specific_subgroup <- function(meta,
   )
 
   # Current output for subgroup analysis is supported for trt_within_sub.
-  # output of subgroup analysis needs restructing for sub_within_trt.
+  # output of subgroup analysis needs restructuring for sub_within_trt.
   out_all <- outdata_subgroup
   out_all$Total <- outdata_all
 
