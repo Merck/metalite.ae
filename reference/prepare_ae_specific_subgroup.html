@@ -94,12 +94,14 @@ The term name is used as key to link information.</p></dd>
 
 
 <dt>subgroup_var</dt>
-<dd><p>A character value of subgroup variable name in observation data saved in <code>meta$data_observation</code>.</p></dd>
+<dd><p>A character value of subgroup variable name in
+observation data saved in <code>meta$data_observation</code>.</p></dd>
 
 
 <dt>subgroup_header</dt>
-<dd><p>A character vector for column header hierarchy. First element will be first level header and
-second element will be second level header.</p></dd>
+<dd><p>A character vector for column header hierarchy.
+The first element will be the first level header and the second element
+will be second level header.</p></dd>
 
 
 <dt>components</dt>
@@ -107,7 +109,8 @@ second element will be second level header.</p></dd>
 
 
 <dt>display_subgroup_total</dt>
-<dd><p>A logical Value to display total column for subgroup analysis.</p></dd>
+<dd><p>Logical. Display total column for
+subgroup analysis or not.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -122,7 +125,6 @@ second element will be second level header.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prepare_ae_specific_subgroup</span><span class="op">(</span><span class="va">meta</span>, <span class="st">"apat"</span>, <span class="st">"wk12"</span>, <span class="st">"rel"</span>, subgroup_var <span class="op">=</span> <span class="st">"SEX"</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
