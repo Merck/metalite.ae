@@ -54,6 +54,8 @@ reference:
 - title: AE subgroup analysis
   contents:
     - prepare_ae_specific_subgroup
+    - format_ae_specific_subgroup
+    - tlf_ae_specific_subgroup
 - title: Format
   contents:
     - fmt_pct
