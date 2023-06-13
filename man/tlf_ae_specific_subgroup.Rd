@@ -18,7 +18,7 @@ tlf_ae_specific_subgroup(
 )
 }
 \arguments{
-\item{outdata}{A outdata list created from \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+\item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
 \item{meddra_version}{A character value of the MedDRA version
 for this dataset.}

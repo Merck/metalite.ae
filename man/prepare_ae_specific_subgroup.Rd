@@ -27,14 +27,17 @@ The term name is used as key to link information.}
 \item{parameter}{A character value of parameter term name.
 The term name is used as key to link information.}
 
-\item{subgroup_var}{A character value of subgroup variable name in observation data saved in \code{meta$data_observation}.}
+\item{subgroup_var}{A character value of subgroup variable name in
+observation data saved in \code{meta$data_observation}.}
 
-\item{subgroup_header}{A character vector for column header hierarchy. First element will be first level header and
-second element will be second level header.}
+\item{subgroup_header}{A character vector for column header hierarchy.
+The first element will be the first level header and the second element
+will be second level header.}
 
 \item{components}{A character vector of components name.}
 
-\item{display_subgroup_total}{A logical Value to display total column for subgroup analysis.}
+\item{display_subgroup_total}{Logical. Display total column for
+subgroup analysis or not.}
 }
 \value{
 A list of analysis raw datasets.
@@ -45,5 +48,4 @@ Prepare datasets for AE specific analysis
 \examples{
 meta <- meta_ae_example()
 prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
-
 }

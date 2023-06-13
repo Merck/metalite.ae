@@ -16,18 +16,18 @@ format_ae_specific_subgroup(
 )
 }
 \arguments{
-\item{outdata}{A \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+\item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
 \item{display}{A character vector of measurement to be displayed.
 \itemize{
-\item \code{n}: number of subjects with AE.
-\item \code{prop}: proportion of subjects with AE.
-\item \code{total}: total columns
-\item \code{diff}: risk difference
-\item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method
-\item \code{diff_p}: p-value of risk difference using M&N method
-\item \code{dur}: average of AE duration
-\item \code{events}: average number of AE per subject
+\item \code{n}: Number of subjects with AE.
+\item \code{prop}: Proportion of subjects with AE.
+\item \code{total}: Total columns.
+\item \code{diff}: Risk difference.
+\item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method.
+\item \code{diff_p}: p-value of risk difference using M&N method.
+\item \code{dur}: Average of AE duration.
+\item \code{events}: Average number of AE per subject.
 }}
 
 \item{digits_prop}{A numeric value of number of digits for proportion value.}
@@ -36,11 +36,13 @@ format_ae_specific_subgroup(
 
 \item{digits_p}{A numeric value of number of digits for p-value .}
 
-\item{digits_dur}{A numeric value of number of digits for average duration of AE}
+\item{digits_dur}{A numeric value of number of digits for
+average duration of AE.}
 
-\item{digits_events}{A numeric value of number of digits for average of number of AE per subjects.}
+\item{digits_events}{A numeric value of number of digits for
+average of number of AE per subjects.}
 
-\item{mock}{A boolean value to display mock table}
+\item{mock}{Logical. Display mock table or not.}
 }
 \value{
 A list of analysis raw datasets.
@@ -58,5 +60,4 @@ prepare_ae_specific_subgroup(meta,
   display_subgroup_total = TRUE
 ) |>
   format_ae_specific_subgroup()
-
 }
