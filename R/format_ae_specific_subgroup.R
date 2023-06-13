@@ -22,20 +22,24 @@
 #' @param digits_prop A numeric value of number of digits for proportion value.
 #' @param digits_ci A numeric value of number of digits for confidence interval
 #' @param digits_p A numeric value of number of digits for p-value .
-#' @param digits_dur A numeric value of number of digits for average duration of AE
-#' @param digits_events A numeric value of number of digits for average of number of AE per subjects.
+#' @param digits_dur A numeric value of number of digits for
+#'   average duration of AE.
+#' @param digits_events A numeric value of number of digits for
+#'   average of number of AE per subjects.
 #' @param display A character vector of measurement to be displayed.
-#'  - `n`: number of subjects with AE.
-#'  - `prop`: proportion of subjects with AE.
-#'  - `total`: total columns
-#'  - `diff`: risk difference
-#'  - `diff_ci`: 95% confidence interval of risk difference using M&N method
-#'  - `diff_p`: p-value of risk difference using M&N method
-#'  - `dur`: average of AE duration
-#'  - `events`: average number of AE per subject
-#' @param mock A boolean value to display mock table
+#'   - `n`: Number of subjects with AE.
+#'   - `prop`: Proportion of subjects with AE.
+#'   - `total`: Total columns.
+#'   - `diff`: Risk difference.
+#'   - `diff_ci`: 95% confidence interval of risk difference using M&N method.
+#'   - `diff_p`: p-value of risk difference using M&N method.
+#'   - `dur`: Average of AE duration.
+#'   - `events`: Average number of AE per subject.
+#' @param mock Logical. Display mock table or not.
 #'
 #' @return A list of analysis raw datasets.
+#'
+#' @export
 #'
 #' @examples
 #' meta <- meta_ae_example()
@@ -47,16 +51,15 @@
 #'   display_subgroup_total = TRUE
 #' ) |>
 #'   format_ae_specific_subgroup()
-#'
-#' @export
-format_ae_specific_subgroup <- function(outdata,
-                                        display = c("n", "prop"),
-                                        digits_prop = 1,
-                                        digits_ci = 1,
-                                        digits_p = 3,
-                                        digits_dur = c(1, 1),
-                                        digits_events = c(1, 1),
-                                        mock = FALSE) {
+format_ae_specific_subgroup <- function(
+    outdata,
+    display = c("n", "prop"),
+    digits_prop = 1,
+    digits_ci = 1,
+    digits_p = 3,
+    digits_dur = c(1, 1),
+    digits_events = c(1, 1),
+    mock = FALSE) {
   if ("total" %in% display) {
     display <- display[!display %in% "total"]
     print(paste("total is not supported within Sub-Group"))
@@ -65,7 +68,7 @@ format_ae_specific_subgroup <- function(outdata,
   out_all <- outdata$out_all
 
   outlst <- list()
-  for (i in 1:length(out_all)) {
+  for (i in seq_along(out_all)) {
     tbl <- out_all[[i]] |>
       format_ae_specific(
         display = display,
@@ -95,7 +98,7 @@ format_ae_specific_subgroup <- function(outdata,
 
     i <- i + 1
 
-    if (i > 1 & i < length(outlst)) {
+    if (i > 1 && i < length(outlst)) {
       tbl <- merge(tbl, outlst[[i + 1]], by = "name", all = TRUE)
     }
   }
@@ -103,7 +106,7 @@ format_ae_specific_subgroup <- function(outdata,
   # Need order column from Total Column for Ordering properly across tables
   tbl <- tbl[order(tbl$order), ]
 
-  # If outdata$display_subgroup_total = FALSE remove that part
+  # If outdata$display_subgroup_total = FALSE, remove that part
   if (!outdata$display_subgroup_total) {
     rm_tot <- names(outlst$Total) # Columns from Total Section
     rm_tot <- rm_tot[!rm_tot %in% c("name", "order")]

@@ -127,10 +127,7 @@ tlf_ae_specific <- function(outdata,
   )
 
   colhead_1_within <- paste(group, collapse = " | ")
-
-  colhead_2_within <- paste(rep(colhead_within, n_group),
-    collapse = " | "
-  )
+  colhead_2_within <- paste(rep(colhead_within, n_group), collapse = " | ")
 
   colborder_within <- vapply(
     X = col_tbl_within,
