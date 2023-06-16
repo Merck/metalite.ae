@@ -29,7 +29,7 @@
 #' meta <- meta_ae_example()
 
 
-meta_ae_example_arg <- function(){
+meta_ae_example <- function(){
 
   # create adsl
   {
@@ -127,87 +127,86 @@ meta_ae_example_arg <- function(){
 
   }
 
-  # plan
+  # define plan
   {
     plan <- plan(
-       analysis = "ae_summary", population = "apat",
-       observation = c("wk12", "wk24"), parameter = "any;rel;ser"
-        ) |>
-        add_plan(
-          analysis = "ae_specific", population = "apat",
-          observation = c("wk12", "wk24"),
-          parameter = c("any", "aeosi", "rel", "ser")
-        ) |>
-        add_plan(
-          analysis = "ae_listing", population = "apat",
-          observation = c("wk12", "wk24"), parameter = c("any", "rel", "ser")
-        )
-       add_plan(
-       analysis = "ae_exp_adj", population = "apat",
-       observation = c("wk12", "wk24"), parameter =  "any;rel;ser"
+      analysis = "ae_summary", population = "apat",
+      observation = c("wk12", "wk24"), parameter = "any;rel;ser"
+    ) |>
+      add_plan(
+        analysis = "ae_specific", population = "apat",
+        observation = c("wk12", "wk24"),
+        parameter = c("any", "aeosi", "rel", "ser")
+      ) |>
+      add_plan(
+        analysis = "ae_listing", population = "apat",
+        observation = c("wk12", "wk24"), parameter = c("any", "rel", "ser")
+      )  |>
+      add_plan(
+        analysis = "ae_exp_adj", population = "apat",
+        observation = c("wk12", "wk24"), parameter =  "any;rel;ser"
     )
   }
 
-  # meta_adam
+  # create meta_adam
   {
-    meta_adam <- meta_adam(
-    population = adsl,
-    observation = adae
+    meta_adam<- meta_adam(
+      population = adsl,
+      observation = adae
     ) |>
-    define_plan(plan = plan) |>
-    define_population(
-      name = population_in,
-      group = "TRTA",
-      subset = quote(SAFFL == "Y"),
-      var="TRTDUR"
-    ) |>
-    define_observation(
-      name = observation_in[1],
-      group = "TRTA",
-      subset = quote(SAFFL == "Y"),
-      label =  observation_label_in[1]
-    ) |>
-    define_observation(
-      name = observation_in[2],
-      group = "TRTA",
-      subset = quote(AOCC01FL == "Y"), # Just for demo, another flag should be used
-      label =  observation_label_in[2]
-    ) |>
-    define_parameter(
-      name = "rel",
-      subset = quote(AEREL %in% c("POSSIBLE", "PROBABLE"))
-    ) |>
-    define_parameter(
-     name = "aeosi",
-     subset = quote(AEOSI == "Y"),
-     var = "AEDECOD",
-     soc = "AEBODSYS",
-     term1 = "",
-     term2 = "of special interest",
-     label = "adverse events of special interest"
-    ) |>
-    define_analysis(
-          name = "ae_summary",
-          title = "Summary of Adverse Events"
-        ) |>
-    define_analysis(
-          name = "ae_listing",
-          var_name = c(
-            "USUBJID", "ASTDY", "AEDECOD", "duration",
-            "AESEV", "AESER", "related", "action_taken", "outcome"
-          ),
-          subline_by = NULL,
-          group_by = c("USUBJID", "ASTDY"),
-          page_by = c("TRTA", "subline")
-         ) |>
-    define_analysis(
+      define_plan(plan = plan) |>
+      define_population(
+        name = "apat",
+        group = "TRTA",
+        subset = quote(SAFFL == "Y"),
+        var="TRTDUR"
+      ) |>
+      define_observation(
+        name = "wk12",
+        group = "TRTA",
+        subset = quote(SAFFL == "Y"),
+        label = "Weeks 0 to 12"
+      ) |>
+      define_observation(
+        name = "wk24",
+        group = "TRTA",
+        subset = quote(AOCC01FL == "Y"), # Just for demo, another flag should be used
+        label = "Weeks 0 to 24"
+      ) |>
+      define_parameter(
+        name = "rel",
+        subset = quote(AEREL %in% c("POSSIBLE", "PROBABLE"))
+      ) |>
+      define_parameter(
+        name = "aeosi",
+        subset = quote(AEOSI == "Y"),
+        var = "AEDECOD",
+        soc = "AEBODSYS",
+        term1 = "",
+        term2 = "of special interest",
+        label = "adverse events of special interest"
+      ) |>
+      define_analysis(
+        name = "ae_summary",
+        title = "Summary of Adverse Events"
+      ) |>
+      define_analysis(
+        name = "ae_listing",
+        var_name = c(
+          "USUBJID", "ASTDY", "AEDECOD", "duration",
+          "AESEV", "AESER", "related", "action_taken", "outcome"
+        ),
+        subline_by = NULL,
+        group_by = c("USUBJID", "ASTDY"),
+        page_by = c("TRTA", "subline")
+      ) |>
+      define_analysis(
           name  =  "ae_exp_adj",
-          label =  "label",
+          label =  "Exposure Adjusted Incident Rate",
           title =  "Exposure-Adjusted Adverse Event Summary"
       ) |>
     meta_build()
   }
-
 
   return(meta_adam)
 }
