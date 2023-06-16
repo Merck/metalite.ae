@@ -28,8 +28,7 @@ prepare_ae_exp_adj <- function(meta,
                                population = "apat",
                                observation = "wk12",
                                parameter = "any;rel;ser",
-                               adj_unit = c("year", "month", "week", "day")
-                               ){
+                               adj_unit = c("year", "month", "week", "day")) {
   time_unit <- list("year" = 365.24, "month" = 30.4367, "week" = 7, "day" = 1)
   adj_unit <- match.arg(adj_unit)
   exp_factor <- 100 * time_unit[[adj_unit]]
@@ -93,4 +92,3 @@ prepare_ae_exp_adj <- function(meta,
     group_label = unique(pop[[pop_group]])
   )
 }
-
