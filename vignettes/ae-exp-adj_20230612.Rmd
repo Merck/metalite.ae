@@ -1,6 +1,5 @@
 ---
 title: "Exposure-Adjusted Adverse Event Summary (Updated)"
-author: Bing Liu (Jun 2, 2023)
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Exposure-Adjusted Adverse Event Summary}
@@ -118,7 +117,7 @@ meta <- meta_ae_example(
 )
 ```
 At the end of this step, 'meta' is created.(See .Rmd file for codes)
-```{r,include=FALSE}
+```{r}
 meta
 ```
 
@@ -156,7 +155,7 @@ step 2.   obtain variables
 
 ```{r,error=TRUE,message=FALSE,warning=FALSE}
 time_unit <- list("year" = 365.24, "month" = 30.4367, "week" = 7, "day" = 1)
- adj_unit <- match.arg(adj_unit)  # Q : What does match.arg() do? --> error message
+# adj_unit <- match.arg(adj_unit)  # Q : What does match.arg() do? --> error message
 exp_factor <- 100 * time_unit[[adj_unit]]  # 3043.67
 
   ### xxxx

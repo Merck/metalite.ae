@@ -26,7 +26,13 @@
 #' @export
 #'
 #' @examples
-#' meta_ae_example()
+#' meta <- meta_ae_example( population_in        = "apat",
+#'                          analysis_in          = "ae_exp_adj",
+#'                          analysis_title_in    = "Exposure-Adjusted Adverse Event Summary",
+#'                          observation_in       = c("wk12","wk24"),
+#'                          observation_label_in = c("Weeks 0 to 12","Weeks 0 to 24"),
+#'                          parameter_in         = "any;rel;ser"
+#'                         )
 
 
 meta_ae_example <- function(population_in        ,
@@ -34,7 +40,7 @@ meta_ae_example <- function(population_in        ,
                             analysis_title_in    ,
                             observation_in       ,
                             observation_label_in ,
-                            parameter_in) {
+                            parameter_in){
 
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
@@ -146,7 +152,8 @@ meta_ae_example <- function(population_in        ,
     define_population(
       name = population_in,
       group = "TRTA",
-      subset = quote(SAFFL == "Y")
+      subset = quote(SAFFL == "Y"),
+      var="TRTDUR"
     ) |>
     define_observation(
       name = observation_in[1],
