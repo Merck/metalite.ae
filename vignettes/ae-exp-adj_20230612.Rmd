@@ -109,7 +109,8 @@ head(adae)
 
 ####  2. Build a metadata 
 
-```{r,echo=FALSE,warning=FALSE, message=FALSE}
+$a.$  Run function meta_ae_example_arg() --- with arguments defined.
+```{r, warning=FALSE, message=FALSE}
 meta <- meta_ae_example_arg(
   population_in        = "apat",
   analysis_in          = "ae_exp_adj",
@@ -124,6 +125,14 @@ At the end of this step, 'meta' is created.(See .Rmd file for codes)
 meta
 ```
 
+$b.$ Run function meta_ae_example()
+```{r, warning=FALSE, message=FALSE}
+meta <- meta_ae_example()
+```
+At the end of this step, 'meta' is created.(See .Rmd file for codes)
+```{r}
+meta
+```
 
 #### 3.Call function prepare_ae_exp_adj() --- Function updated by Bing (--To Be Discussed.)
 
