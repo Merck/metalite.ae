@@ -30,6 +30,9 @@
 #'   - `n`: Number of subjects with AE.
 #'   - `prop`: Proportion of subjects with AE.
 #'   - `total`: Total columns.
+#'   - `diff`: Risk difference.
+#'   - `diff_ci`: 95% confidence interval of risk difference using M&N method.
+#'   - `diff_p`: p-value of risk difference using M&N method.
 #'   - `dur`: Average of AE duration.
 #'   - `events`: Average number of AE per subject.
 #' @param mock Logical. Display mock table or not.
