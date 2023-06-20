@@ -182,7 +182,7 @@ tlf_ae_specific_subgroup <- function(
 
     rwidth_1 <- tapply(
       col_rel_width[2:length(col_rel_width)],
-      c(rep(1:n_sgroup, each = length(col_tbl_within)* n_tgroup)),
+      c(rep(1:n_sgroup, each = length(col_tbl_within) * n_tgroup)),
       sum
     )
 
