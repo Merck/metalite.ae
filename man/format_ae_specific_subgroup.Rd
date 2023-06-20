@@ -23,9 +23,6 @@ format_ae_specific_subgroup(
 \item \code{n}: Number of subjects with AE.
 \item \code{prop}: Proportion of subjects with AE.
 \item \code{total}: Total columns.
-\item \code{diff}: Risk difference.
-\item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method.
-\item \code{diff_p}: p-value of risk difference using M&N method.
 \item \code{dur}: Average of AE duration.
 \item \code{events}: Average number of AE per subject.
 }}

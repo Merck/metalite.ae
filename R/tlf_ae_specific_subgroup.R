@@ -70,13 +70,14 @@ tlf_ae_specific_subgroup <- function(
 
   out_all <- outdata$out_all
   tbl <- outdata$tbl
+  tbl1 <- tbl[names(tbl) != "order"]
   tgroup <- outdata$group
   sgroup <- outdata$subgroup
   if (outdata$display_subgroup_total) sgroup <- c(sgroup, "Total")
   n_sgroup <- length(sgroup)
   n_tgroup <- length(outdata$group)
-  n_row <- nrow(outdata$tbl)
-  n_col <- ncol(outdata$tbl)
+  n_row <- nrow(tbl1)
+  n_col <- ncol(tbl1)
 
   if (!is.null(col_rel_width) && !n_col == length(col_rel_width)) {
     stop(
@@ -161,30 +162,33 @@ tlf_ae_specific_subgroup <- function(
   # Relative width
 
   if (is.null(col_rel_width)) {
-    rwidth_1 <- c(3, rwidth_1_within)
-    rwidth_2 <- c(3, rwidth_2_within)
-    rwidth_3 <- c(3, rwidth_3_within)
+    rwidth_1 <- c(2.5, rwidth_1_within)
+    rwidth_2 <- c(2.5, rwidth_2_within)
+    rwidth_3 <- c(2.5, rwidth_3_within)
   } else {
-    rwidth_2 <- col_rel_width
+    rwidth_3 <- col_rel_width
 
-    rw_1_recalc_w <- tapply(
-      col_rel_width[2:(n_group * length(col_tbl_within) + 1)],
-      c(rep(1:n_group, each = length(col_tbl_within))), sum
+    rwidth_2 <- tapply(
+      col_rel_width[2:length(col_rel_width)],
+      c(rep(1:(n_sgroup * n_tgroup), each = length(col_tbl_within))),
+      sum
     )
 
-    rw_1_recalc_b <- if (length(col_tbl_between) > 0) {
-      tapply(
-        col_rel_width[(n_group * length(col_tbl_within) + 2):n_col],
-        c(rep(1:n_comparisons, each = length(col_tbl_between))), sum
-      )
-    } else {
-      NULL
-    }
+    rwidth_2 <- c(
+      rwidth_3[1],
+      rwidth_2
+    )
+
+
+    rwidth_1 <- tapply(
+      col_rel_width[2:length(col_rel_width)],
+      c(rep(1:n_sgroup, each = length(col_tbl_within)* n_tgroup)),
+      sum
+    )
 
     rwidth_1 <- c(
-      rwidth_2[1],
-      rw_1_recalc_w,
-      rw_1_recalc_b
+      rwidth_3[1],
+      rwidth_1
     )
   }
 
@@ -209,14 +213,12 @@ tlf_ae_specific_subgroup <- function(
     text_format <- ""
   }
 
-  ncolmat <- n_col - 1
-  text_format <- matrix(text_format, nrow = n_row, ncol = ncolmat)
+  text_format <- matrix(text_format, nrow = n_row, ncol = n_col)
 
-  text_indent <- matrix(0, nrow = n_row, ncol = ncolmat)
+  text_indent <- matrix(0, nrow = n_row, ncol = n_col)
   text_indent[, 1] <- ifelse(tbl$order %% 1000 == 0 | tbl$order == 1, 0, 100)
 
   # Using r2rtf
-  tbl1 <- tbl[names(tbl) != "order"]
 
   outdata$rtf <- tbl1 |>
     r2rtf::rtf_page(orientation = orientation) |>
