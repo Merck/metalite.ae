@@ -1,0 +1,238 @@
+---
+title: "AE Specification for subgroup analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AE Specification for subgroup analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  out.width = "100%",
+  dpi = 150
+)
+```
+
+```{r, include=FALSE}
+library(metalite)
+# library(metalite.ae)
+devtools::load_all()
+```
+
+```{r, include=FALSE}
+library(dplyr)
+library(tidyr)
+```
+
+## Overview
+
+The AE specific Subgroup analysis is to provide tables to summarize details of adverse events by Subgroup.
+The development of AE specific Subgroup analysis contain exported functions
+
+- `prepare_ae_specific_subgroup`: prepare analysis raw datasets
+- `format_ae_specific_subgroup`: prepare analysis (mock) outdata with proper format
+- `tlf_ae_specific_subgroup`: transfer (mock) output dataset to RTF table
+
+### Analysis preparation
+
+The `prepare_ae_specific_subgroup` function is design to be used for multiple purpose.
+The input of the function is a `meta` objects created from `metalite.ae` package.
+
+```{r}
+meta <- meta_ae_example()
+```
+
+The output of the function is an `outdata` objects contain a list of analysis raw datasets.
+Key information needed are `subgroup_var`, `display_subgroup_total` and
+
+```{r}
+outdata <- prepare_ae_specific_subgroup(meta,
+                               population = "apat",
+                               observation = "wk12",
+                               parameter = "rel",
+                               subgroup_var = "SEX",
+                               subgroup_header = c("SEX", "TRTA"),
+                               display_subgroup_total = T)
+```
+
+```{r}
+outdata
+```
+
+The output dataset contains commonly used statistics within each `subgroup_var`.
+
+```{r}
+outdata$out_all$`AMERICAN INDIAN OR ALASKA NATIVE`
+outdata$out_all$`BLACK OR AFRICAN AMERICAN`
+outdata$out_all$WHITE
+outdata$out_all$Total
+
+```
+
+The variable is indexed by the order of `outdata$group` and `outdata$subgroup` within each `subgroup_var`.
+
+```{r}
+outdata$group
+outdata$subgroup
+```
+
+The row is indexed by the order of `name` within each `subgroup_var` analysis output.
+
+```{r}
+head(data.frame(outdata$out_all$Total$order, outdata$out_all$Total$name))
+```
+
+- `n_pop`: participants in population within each `subgroup_var`.
+
+```{r}
+outdata$out_all$`AMERICAN INDIAN OR ALASKA NATIVE`$n_pop
+outdata$out_all$`BLACK OR AFRICAN AMERICAN`$n_pop
+outdata$out_all$WHITE$n_pop
+outdata$out_all$Total$n_pop
+```
+
+- `n`: number of subjects with AE whitin each `subgroup_var`.
+
+```{r}
+head(outdata$out_all$`AMERICAN INDIAN OR ALASKA NATIVE`$n)
+head(outdata$out_all$`BLACK OR AFRICAN AMERICAN`$n)
+head(outdata$out_all$WHITE$n)
+head(outdata$out_all$Total$n)
+```
+
+- `prop`: proportion of subjects with AE within each `subgroup_var`.
+
+```{r}
+head(outdata$out_all$`AMERICAN INDIAN OR ALASKA NATIVE`$prop)
+head(outdata$out_all$`BLACK OR AFRICAN AMERICAN`$prop)
+head(outdata$out_all$WHITE$prop)
+head(outdata$out_all$Total$prop)
+```
+
+- `diff`: risk difference compared with the `reference_group` within each `subgroup_var`.
+
+```{r}
+head(outdata$out_all$Total$diff)
+```
+
+### Format output
+
+After we have the raw analysis results, we can use `format_ae_specific_subgroup` to prepare the outdata
+to create RTF tables.
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific_subgroup()
+head(tbl$tbl)
+```
+
+We can hide total column
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific_subgroup(display = c("n", "prop"))
+head(tbl$tbl)
+```
+
+Adding risk difference
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific_subgroup(display = c("n", "prop", "diff"))
+head(tbl$tbl)
+```
+
+
+### Mock data preparation
+
+We can also use `format_ae_specific_subgroup` to create mock output data.
+
+The purpose of the `mock` argument is not to create a comprehensive mock table template,
+but a handy way to help user create a mock table that mimic the exact output layout.
+
+Additional work is required to develop a flexible mock table generation tool
+(e.g. a dedicated mock table generation package)
+
+```{r}
+tbl <- outdata |>
+  format_ae_specific_subgroup(mock = TRUE)
+head(tbl$tbl)
+```
+
+### RTF tables
+
+By using `tlf_ae_specific`, we can transfer the output from `format_ae_specific` to an RTF table.
+
+```{r}
+outdata |>
+  format_ae_specific_subgroup() |>
+  tlf_ae_specific_subgroup(
+    meddra_version = "24.0",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outtable = "rtf/ae0specific0sub0race2.rtf"
+  )
+```
+
+```{r}
+outdata |>
+  format_ae_specific_subgroup() |>
+  tlf_ae_specific_subgroup(
+    medra_version = "24.0",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outtable = "rtf/ae0specific0sub0race1.rtf"
+  )
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("outtable/ae0specific0sub0race1.pdf")
+```
+
+The `tlf_ae_specific` function also provide some commonly used argument to customize the table.
+
+```{r}
+outdata |>
+  format_ae_specific() |>
+  tlf_ae_specific(
+    medra_version = "24.0",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    col_rel_width = c(6, rep(1, 8)),
+    text_font_size = 8,
+    orientation = "landscape",
+    path_outtable = "outtable/ae0specific2.rtf"
+  )
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("outtable/ae0specific2.pdf")
+```
+
+We can also generate the mock table
+
+```{r}
+outdata |>
+  format_ae_specific(mock = TRUE) |>
+  tlf_ae_specific(
+    medra_version = "24.0",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    path_outtable = "outtable/mock_ae0specific1.rtf"
+  )
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("outtable/mock_ae0specific1.pdf")
+```
+
+## Future developement
+
+### Features
+
+- Cross check the capability in SAS standard macro to identify required features.
+
+### Technical requirements (for future development)
+
+- Avoiding `%>%`, using `|>` to reduce dependency of `magrittr`.
+- The functions in the `R/` folder should not depends on `dplyr`, `tidyr` etc.
