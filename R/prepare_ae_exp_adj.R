@@ -18,21 +18,33 @@
 
 #' Prepare datasets for AE specific analysis
 #'
+#' @param meta A metadata object created by metalite.
+#' @param population A character value of population term name.
+#'   The term name is used as key to link information.
+#' @param observation A character value of observation term name.
+#'   The term name is used as key to link information.
+#' @param parameter A character value of parameter term name.
+#'   The term name is used as key to link information.
+#' @param duration_var A character value of duration variable name.
+#    By default "TRTDUR" is used.
+#' @param adj_unit A character value of exposure adjusted unit.
+#    It could be select from "year", "month", "week" and "day".
 #' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
 #' @examples
+#' meta <- meta_ae_example()
+#' prepare_ae_exp_adj(meta)
 prepare_ae_exp_adj <- function(meta,
                                population = "apat",
                                observation = "wk12",
                                parameter = "any;rel;ser",
+                               duration_var = "TRTDUR",
                                adj_unit = c("year", "month", "week", "day")) {
   time_unit <- list("year" = 365.24, "month" = 30.4367, "week" = 7, "day" = 1)
   adj_unit <- match.arg(adj_unit)
   exp_factor <- 100 * time_unit[[adj_unit]]
-
-  ### xxxx
 
   # obtain variables
   pop_var <- collect_adam_mapping(meta, population)$var
@@ -47,7 +59,7 @@ prepare_ae_exp_adj <- function(meta,
   obs_id <- collect_adam_mapping(meta, observation)$id
 
   # obtain data
-  pop <- collect_population_record(meta, population, var = pop_var)
+  pop <- collect_population_record(meta, population, var = c(pop_var, duration_var))
   obs <- collect_observation_record(meta, population, observation, parameter, var = unique(c(obs_var, par_var, par_soc)))
 
   # number of Subjects exposed

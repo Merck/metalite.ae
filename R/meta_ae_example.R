@@ -153,8 +153,7 @@ meta_ae_example <- function() {
       define_population(
         name = "apat",
         group = "TRTA",
-        subset = quote(SAFFL == "Y"),
-        var = "TRTDUR"
+        subset = quote(SAFFL == "Y")
       ) |>
       define_observation(
         name = "wk12",
