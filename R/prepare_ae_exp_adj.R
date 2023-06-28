@@ -75,7 +75,7 @@ prepare_ae_exp_adj <- function(meta,
   res <- lapply(parameters, function(x) {
     data <- meta$data_observation
     if (x == "any") {
-      num <- aggregate(data, by = list(data[[obs_group]]), FUN = length)[, obs_group]
+      num <- sapply(split(data, data[[obs_group]]), function(x) length(x[[obs_group]]))
       ans <- num * exp_factor / total_exposure[["tol_exp"]]
     } else {
       # count the number of events either serious or drug-related or ... depending on the parameter
@@ -85,7 +85,7 @@ prepare_ae_exp_adj <- function(meta,
       for (j in 1:num_grps) {
         expr <- collect_adam_mapping(meta, x)$subset
         data_j <- data |> subset(data[[obs_group]] == trt_grps[j])
-        temp_j <- rlang::eval_tidy(expr = expr, data = data_j)
+        temp_j <- eval(expr = substitute(expr), envir = substitute(data_j))
         num[j] <- sum(temp_j)
       }
       ans <- num * exp_factor / total_exposure[["tol_exp"]]
