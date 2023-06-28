@@ -63,33 +63,32 @@ prepare_ae_exp_adj <- function(meta,
   obs <- collect_observation_record(meta, population, observation, parameter, var = unique(c(obs_var, par_var, par_soc)))
 
   # number of Subjects exposed
-  n_exposed <- metalite:::n_subject(id = pop[[pop_id]], group = pop[[pop_group]])
+  n_exposed <- metalite::n_subject(id = pop[[pop_id]], group = pop[[pop_group]])
 
   # exposure adjust evnt rate = total number of event * exp_factor / total_exposure_days
   parameters <- unlist(strsplit(parameter, ";"))
 
   # total exposure in person-year/month/week/day
-  total_exposure <- aggregate(pop$TRTDUR, by = list(pop[[pop_group]]), FUN = sum)
+  total_exposure <- tapply(pop$TRTDUR, pop[[pop_group]], FUN = sum)
   names(total_exposure) <- c("group", "tol_exp")
 
   res <- lapply(parameters, function(x) {
     data <- meta$data_observation
     if (x == "any") {
-      num <- (data |> group_by(get(obs_group))
-        |> summarise(n()))$"n()"
-      ans <- num * exp_factor / total_exposure$tol_exp
+      num <- aggregate(data, by = list(data[[obs_group]]), FUN = length)[, obs_group]
+      ans <- num * exp_factor / total_exposure[["tol_exp"]]
     } else {
       # count the number of events either serious or drug-related or ... depending on the parameter
-      TrtGrps <- levels(data |> pull(obs_group))
-      J <- length(TrtGrps)
-      num <- rep(NA, J)
-      for (j in 1:J) {
+      trt_grps <- levels(data[[obs_group]])
+      num_grps <- length(trt_grps)
+      num <- rep(NA, num_grps)
+      for (j in 1:num_grps) {
         expr <- collect_adam_mapping(meta, x)$subset
-        data_j <- meta$data_observation |> filter(get(obs_group) == TrtGrps[j])
+        data_j <- data |> subset(data[[obs_group]] == trt_grps[j])
         temp_j <- rlang::eval_tidy(expr = expr, data = data_j)
         num[j] <- sum(temp_j)
       }
-      ans <- num * exp_factor / total_exposure$tol_exp
+      ans <- num * exp_factor / total_exposure[["tol_exp"]]
     }
 
     return(ans)

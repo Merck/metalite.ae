@@ -35,3 +35,7 @@ A list of analysis raw datasets.
 \description{
 Prepare datasets for AE specific analysis
 }
+\examples{
+meta <- meta_ae_example()
+prepare_ae_exp_adj(meta)
+}
