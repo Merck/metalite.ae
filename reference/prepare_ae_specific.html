@@ -323,12 +323,12 @@ Default is 2 if there are 2 groups, otherwise, the default is 1.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Duration"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ subline     : chr [1:1191] "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1023, Gender = M, Race = WHITE, AGE = 64 Years, TRT = Placebo" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "data_name")= chr "adae"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ plan            :Classes ‘meta_plan’ and 'data.frame':	16 obs. of  5 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ mock       : num [1:16] 1 1 2 2 2 2 2 2 2 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ analysis   : chr [1:16] "ae_summary" "ae_summary" "ae_specific" "ae_specific" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ population : chr [1:16] "apat" "apat" "apat" "apat" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ observation: chr [1:16] "wk12" "wk24" "wk12" "wk24" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parameter  : chr [1:16] "any;rel;ser" "any;rel;ser" "any" "any" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ plan            :Classes ‘meta_plan’ and 'data.frame':	18 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ mock       : num [1:18] 1 1 2 2 2 2 2 2 2 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ analysis   : chr [1:18] "ae_summary" "ae_summary" "ae_specific" "ae_specific" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ population : chr [1:18] "apat" "apat" "apat" "apat" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ observation: chr [1:18] "wk12" "wk24" "wk12" "wk24" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parameter  : chr [1:18] "any;rel;ser" "any;rel;ser" "any" "any" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "out.attrs")=List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:5] 1 1 1 2 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "names")= chr [1:5] "mock" "analysis" "population" "observation" ...</span>
@@ -416,7 +416,7 @@ Default is 2 if there are 2 groups, otherwise, the default is 1.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2   : chr ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row: chr "with serious adverse events"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ analysis        :List of 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ analysis        :List of 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ae_summary :List of 7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "ae_summary"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : NULL</span>
@@ -438,6 +438,15 @@ Default is 2 if there are 2 groups, otherwise, the default is 1.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group_by  : chr [1:2] "USUBJID" "ASTDY"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ page_by   : chr [1:2] "TRTA" "subline"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ title     : chr "Listing of Participants With {term1} Adverse Events {term2}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ae_exp_adj :List of 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "ae_exp_adj"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var   : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "Exposure Adjusted Incident Rate"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ title : chr "Exposure-Adjusted Adverse Event Summary"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ae_specific:List of 7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "ae_specific"</span>

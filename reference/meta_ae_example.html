@@ -75,43 +75,7 @@ r2rtf is required.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">meta_ae_example</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ADaM metadata: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .$data_population 	Population data with 254 subjects </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .$data_observation 	Observation data with 1191 records </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .$plan 	Analysis plan with 16 plans </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis population type:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     name        id  group var       subset                         label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis observation type:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     name        id  group var          subset           label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis parameter type:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      name                                label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   'rel'        'drug-related adverse events'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 'aeosi' 'adverse events of special interest'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   'any'                 'any adverse events'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   'ser'             'serious adverse events'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 subset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 AEREL %in% c('POSSIBLE', 'PROBABLE')</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         AEOSI == 'Y'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                         AESER == 'Y'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis function:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            name                           label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  'ae_summary'  'Table: adverse event summary'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  'ae_listing'        'Listing: adverse event'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 'ae_specific' 'Table: specific adverse event'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">meta_ae_example</span><span class="op">(</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
