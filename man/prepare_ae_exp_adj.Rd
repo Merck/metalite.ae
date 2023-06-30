@@ -25,9 +25,11 @@ The term name is used as key to link information.}
 \item{parameter}{A character value of parameter term name.
 The term name is used as key to link information.}
 
-\item{duration_var}{A character value of duration variable name.}
+\item{duration_var}{A character value of duration variable name.
+By default, \code{"TRTDUR"} is used.}
 
-\item{adj_unit}{A character value of exposure adjusted unit.}
+\item{adj_unit}{A character value of exposure adjusted unit.
+It could be select from \code{"year"}, \code{"month"}, \code{"week"}, and \code{"day"}.}
 }
 \value{
 A list of analysis raw datasets.

@@ -40,9 +40,11 @@ test_that("if par = NULL, return the average number of events in each group (tak
   tmp <- db |>
     dplyr::count(group, par, id) |>
     dplyr::group_by(group, par) |>
-    dplyr::summarise(avg = mean(n, na.rm = TRUE),
+    dplyr::summarise(
+      avg = mean(n, na.rm = TRUE),
       se = sd(n, na.rm = TRUE) / sqrt(dplyr::n()),
-      .groups = "keep") |>
+      .groups = "keep"
+    ) |>
     tidyr::pivot_wider(id_cols = par, names_from = group, values_from = c("avg", "se"))
 
   avg <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
@@ -63,9 +65,11 @@ test_that("if par = NULL, return the average number of events in each group (tak
   # check to make sure that order of output is the same as input (par)
   expect_equal(se$par, unique(r2rtf_adae$AEDECOD))
 
-  avg1 <- list(avg = avg,
+  avg1 <- list(
+    avg = avg,
     se = se |>
-      dplyr::select(-par))
+      dplyr::select(-par)
+  )
   avg2 <- avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
 
   expect_equal(avg1, avg2)
