@@ -26,17 +26,21 @@
 #' @export
 #'
 #' @examples
-#' meta_ae_example()
+#' meta <- meta_ae_example()
 meta_ae_example <- function() {
+  # Create adsl ----
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
-  adsl$TRTA <- factor(adsl$TRTA,
+  adsl$TRTA <- factor(
+    adsl$TRTA,
     levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
     labels = c("Placebo", "Low Dose", "High Dose")
   )
 
+  # Create adae ----
   adae <- r2rtf::r2rtf_adae
-  adae$TRTA <- factor(adae$TRTA,
+  adae$TRTA <- factor(
+    adae$TRTA,
     levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
     labels = c("Placebo", "Low Dose", "High Dose")
   )
@@ -111,11 +115,13 @@ meta_ae_example <- function() {
   )
 
   # Assign label
-  adae <- metalite::assign_label(adae,
+  adae <- metalite::assign_label(
+    adae,
     var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
     label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
   )
 
+  # Define plan ----
   plan <- plan(
     analysis = "ae_summary", population = "apat",
     observation = c("wk12", "wk24"), parameter = "any;rel;ser"
@@ -128,9 +134,14 @@ meta_ae_example <- function() {
     add_plan(
       analysis = "ae_listing", population = "apat",
       observation = c("wk12", "wk24"), parameter = c("any", "rel", "ser")
+    ) |>
+    add_plan(
+      analysis = "ae_exp_adj", population = "apat",
+      observation = c("wk12", "wk24"), parameter = "any;rel;ser"
     )
 
-  meta_adam(
+  # Create meta_adam ----
+  meta_adam <- meta_adam(
     population = adsl,
     observation = adae
   ) |>
@@ -179,5 +190,12 @@ meta_ae_example <- function() {
       group_by = c("USUBJID", "ASTDY"),
       page_by = c("TRTA", "subline")
     ) |>
+    define_analysis(
+      name = "ae_exp_adj",
+      label = "Exposure Adjusted Incident Rate",
+      title = "Exposure-Adjusted Adverse Event Summary"
+    ) |>
     meta_build()
+
+  meta_adam
 }
