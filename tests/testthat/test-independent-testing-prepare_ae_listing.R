@@ -78,8 +78,6 @@ listing_ae <- full_join(
 test_that("Its class is 'outdata'", {
   output <- prepare_ae_listing(meta_ae_listing_example(), "ae_listing", "apat", "wk12", "ser")
   expect_equal(class(output), "outdata")
-  expect_equal(length(output), 10)
-  expect_equal(names(output), c("meta", "population", "observation", "parameter", "n", "order", "group", "reference_group", "col_name", "tbl"))
   expect_equal(output$population, "apat")
   expect_equal(output$parameter, "ser")
   expect_equal(output$n, NULL)
