@@ -66,15 +66,16 @@
 #'   test = "one.sided",
 #'   alpha = 0.05
 #' )
-rate_compare <- function(formula,
-                         strata,
-                         data,
-                         delta = 0,
-                         weight = c("ss", "equal", "cmh"),
-                         test = c("one.sided", "two.sided"),
-                         bisection = 100,
-                         eps = 1e-06,
-                         alpha = 0.05) {
+rate_compare <- function(
+    formula,
+    strata,
+    data,
+    delta = 0,
+    weight = c("ss", "equal", "cmh"),
+    test = c("one.sided", "two.sided"),
+    bisection = 100,
+    eps = 1e-06,
+    alpha = 0.05) {
   test <- match.arg(test)
   weight <- match.arg(weight)
   mf <- match.call(expand.dots = FALSE)
@@ -180,15 +181,16 @@ rate_compare <- function(formula,
 #'   test = "one.sided",
 #'   alpha = 0.05
 #' )
-rate_compare_sum <- function(n0, n1,
-                             x0, x1,
-                             strata = NULL,
-                             delta = 0,
-                             weight = c("ss", "equal", "cmh"),
-                             test = c("one.sided", "two.sided"),
-                             bisection = 100,
-                             eps = 1e-06,
-                             alpha = 0.05) {
+rate_compare_sum <- function(
+    n0, n1,
+    x0, x1,
+    strata = NULL,
+    delta = 0,
+    weight = c("ss", "equal", "cmh"),
+    test = c("one.sided", "two.sided"),
+    bisection = 100,
+    eps = 1e-06,
+    alpha = 0.05) {
   if (any(is.na(c(n0, n1, x0, x1))) || all(c(x0, x1) == 0)) {
     z <- data.frame(
       est = NA, z_score = NA,
