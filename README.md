@@ -9,13 +9,14 @@
 
 ## Overview
 
-metalite.ae is an R package designed for the analysis of adverse events (AE) in clinical trials. 
-It operates on ADaM datasets and adheres to the metalite structure. 
-The package encompasses the following components:
-The R package streamlines the process of generating production-ready tables, listings, and figures
-as outlined in the [AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
+metalite.ae is an R package designed for the analysis of adverse events (AE)
+in clinical trials.
+It operates on ADaM datasets and adheres to the metalite structure.
+The R package streamlines the process of generating production-ready tables,
+listings, and figures as outlined in the
+[AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
 [specific AE chapter](https://r4csr.org/tlf-ae-specific.html) of the
-_R for Clinical Study Reports and Submission_ book. 
+_R for Clinical Study Reports and Submission_ book.
 
 #### AE summary
 
@@ -32,13 +33,14 @@ _R for Clinical Study Reports and Submission_ book.
 ## Highlighted features
 
 - Avoid duplicated input by using metadata structure.
-  - For example, define analysis population once to use in all adverse events analysis.
+  - For example, define analysis population once to use
+    in all adverse events analysis.
 - Consistent input and output in standard functions.
 - Streamlines mock table generation.
 
-## Example 
+## Example
 
-```
+```r
 meta_ae_example() |> # Example AE data created using metalite
   prepare_ae_summary(
     population = "apat", # Select population by keywords
@@ -53,4 +55,3 @@ meta_ae_example() |> # Example AE data created using metalite
 ```
 
 - [Additional tutorials](https://merck.github.io/metalite.ae/articles/metalite-ae.html)
-
