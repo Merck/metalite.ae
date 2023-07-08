@@ -18,19 +18,17 @@ knitr::opts_chunk$set(
 
 ```{r}
 library(metalite.ae)
-library(metalite)
 ```
 
 ## Overview
 
-The purpose of this tutorial is to create production ready AE listing.
+The objective of this tutorial is to generate a production-ready adverse events (AE) listing.
 
-The AE listing provides details about the interested adverse events information.
-With a metadata object created by metalite,
-there are two required functions to create AE listing tables using metalite.ae:
+The AE listing offers comprehensive information on the desired adverse events.
+There are two essential functions for constructing AE listing tables with metalite.ae:
 
-- `prepare_ae_listing()`: prepare listing datasets.
-- `tlf_ae_listing()`: transfer output dataset to RTF table.
+- `prepare_ae_listing()`: prepare AE listing datasets.
+- `tlf_ae_listing()`: transfer output datasets to RTF files.
 
 An example output:
 
@@ -40,22 +38,32 @@ knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
 
 ## Example data
 
-In metalite.ae, we created an example dataset using ADSL and ADAE datasets from the metalite package.
+Within metalite.ae, we utilized the ADSL and ADAE datasets from the metalite
+package to create an illustrative dataset.
+The metadata structure remains consistent across all analysis examples
+within metalite.ae.
+Additional information can be accessed on the
+[metalite package website](https://merck.github.io/metalite/articles/metalite.html).
 
 ```{r}
 meta <- meta_ae_example()
-meta
 ```
 
-The same metadata structure is used to support all analyses examples in metalite.ae.
-More details can be found on the [metalite package website](https://merck.github.io/metalite/articles/metalite.html).
+<details>
+<summary>Click to show the output</summary>
+```{r}
+meta
+```
+</details>
 
 ## Analysis preparation
 
-The `prepare_ae_listing()` function is used to calculate statistics required for
-AE listing using pre-specified keywords in `meta`.
-The input of the function is a `meta` object created by metalite.
-The output of the function is an `outdata` object that contains a list of analysis raw datasets.
+The function `prepare_ae_listing()` is used to create a dataset for
+AE listing by utilizing predefined keywords specified
+in the example data `meta`.
+
+The resulting output of the function is an `outdata` object, which comprises
+a collection of raw datasets for analysis and reporting.
 
 ```{r}
 tbl <- prepare_ae_listing(
@@ -65,7 +73,13 @@ tbl <- prepare_ae_listing(
   observation = "wk12",
   parameter = "ser"
 )
+```
+
+```{r}
 head(tbl$tbl)
+```
+
+```{r}
 head(tbl$col_name)
 ```
 

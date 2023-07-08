@@ -41,7 +41,7 @@ prepare_ae_summary <- function(meta,
   parameters <- unlist(strsplit(parameter, ";"))
 
   res <- lapply(parameters, function(x) {
-    print(x)
+    message(x)
     prepare_ae_specific(meta,
       population = population, observation = observation, parameter = x,
       components = NULL, ...
