@@ -36,7 +36,6 @@
 #'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
 #' head(tbl$tbl)
 extend_ae_specific_inference <- function(outdata, ci = 0.95) {
-
   res <- outdata
 
   if (!(is.numeric(ci) && length(ci) == 1 && (0 <= ci && ci <= 1))) {
@@ -345,8 +344,7 @@ extend_ae_specific_events <- function(outdata) {
 #' @param subgroup a character string for subgroup variable name
 #'
 #' @export
-extend_ae_specific_subgroup <- function(outdata, subgroup){
-
+extend_ae_specific_subgroup <- function(outdata, subgroup) {
   outdata$subgroup <- subgroup
 
   outdata
