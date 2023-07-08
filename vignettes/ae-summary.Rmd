@@ -46,9 +46,11 @@ knitr::include_graphics("pdf/ae0summary1.pdf")
 
 ## Example data
 
-Within metalite.ae, we utilized the ADSL and ADAE datasets from the metalite package to create an illustrative dataset. 
-The metadata structure remains consistent across all analysis examples within metalite.ae. 
-Additional information can be accessed on the 
+Within metalite.ae, we utilized the ADSL and ADAE datasets from the metalite
+package to create an illustrative dataset.
+The metadata structure remains consistent across all analysis examples
+within metalite.ae.
+Additional information can be accessed on the
 [metalite package website](https://merck.github.io/metalite/articles/metalite.html).
 
 ```{r}
@@ -64,9 +66,12 @@ meta
 
 ## Analysis preparation
 
-The function  `prepare_ae_summary()` is used to create a dataset for AE summary analysis by utilizing predefined keywords specified in the example data `meta`.
+The function  `prepare_ae_summary()` is used to create a dataset for
+AE summary analysis by utilizing predefined keywords specified
+in the example data `meta`.
 
-The resulting output of the function is an outdata object, which comprises a collection of raw datasets for analysis and reporting.
+The resulting output of the function is an outdata object, which comprises
+a collection of raw datasets for analysis and reporting.
 
 ```{r, message=FALSE}
 outdata <- prepare_ae_summary(
@@ -81,7 +86,7 @@ outdata <- prepare_ae_summary(
 outdata
 ```
 
-The resulting dataset contains frequently used statistics, 
+The resulting dataset contains frequently used statistics,
 with variables indexed according to the order specified in `outdata$group`.
 
 ```{r}
@@ -120,10 +125,9 @@ head(outdata$diff)
 
 ## Format output
 
-Once the raw analysis results are obtained, 
-the `format_ae_summary()` function can be employed to prepare the outdata, 
+Once the raw analysis results are obtained,
+the `format_ae_summary()` function can be employed to prepare the outdata,
 ensuring its compatibility with production-ready RTF tables.
-
 
 ```{r}
 tbl <- outdata |> format_ae_summary()
@@ -133,7 +137,7 @@ tbl$tbl
 ### Additional statistics
 
 By using the `display` argument,
-we can choose specific statistics to include. 
+we can choose specific statistics to include.
 For instance, we have the option to incorporate the risk difference.
 
 ```{r}
@@ -141,9 +145,12 @@ tbl <- outdata |> format_ae_summary(display = c("n", "prop", "diff"))
 tbl$tbl
 ```
 
-To perform advanced analysis, the `extend_ae_specific_inference()` function is utilized. 
-For instance, we can incorporate a 95% confidence interval based on the Miettinen and Nurminen (M&N) method. 
-Further information regarding the M&N method can be found in the  [rate compare page](https://merck.github.io/metalite.ae/articles/rate-compare.html).
+To perform advanced analysis, the `extend_ae_specific_inference()`
+function is utilized.
+For instance, we can incorporate a 95% confidence interval based on the
+Miettinen and Nurminen (M&N) method.
+Further information regarding the M&N method can be found in the
+[rate compare vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html).
 
 ```{r}
 tbl <- outdata |>
@@ -157,11 +164,14 @@ tbl$tbl
 
 The `mock` argument facilitates the creation of a mock table with ease.
 
-Please note that the intention of the `moc`k argument is not to provide an all-encompassing mock table template. 
-Instead, it serves as a convenient method to assist users in generating a mock table that closely resembles the desired output layout.
-To develop a more versatile mock table generation tool, further efforts are necessary. 
-This could potentially involve the creation of a dedicated mock table generation package or similar solution.
-
+Please note that the intention of the `mock` argument is not to provide
+an all-encompassing mock table template.
+Instead, it serves as a convenient method to assist users in generating
+a mock table that closely resembles the desired output layout.
+To develop a more versatile mock table generation tool, further efforts
+are necessary.
+This could potentially involve the creation of a dedicated mock table
+generation package or similar solutions.
 
 ```{r}
 tbl <- outdata |> format_ae_summary(mock = TRUE)

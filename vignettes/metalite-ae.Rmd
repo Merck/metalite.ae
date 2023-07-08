@@ -27,8 +27,9 @@ library(metalite.ae)
 
 ## Overview
 
-metalite.ae is an R package designed for the analysis of adverse events (AE) in clinical trials. 
-It operates on ADaM datasets and adheres to the metalite structure. 
+metalite.ae is an R package designed for the analysis of adverse events (AE)
+in clinical trials.
+It operates on ADaM datasets and adheres to the metalite structure.
 The package encompasses the following components:
 
 <details>
@@ -45,19 +46,23 @@ Specific AE analysis.</summary>
 <img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%">
 </details>
 
-The R package streamlines the process of generating production-ready tables, listings, and figures
-as outlined in the [AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
+The R package streamlines the process of generating production-ready tables,
+listings, and figures as outlined in the
+[AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
 [specific AE chapter](https://r4csr.org/tlf-ae-specific.html) of the
-_R for Clinical Study Reports and Submission_ book. 
-It ensures complete traceability throughout the development lifecycle, leveraging the metalite data structure.
+_R for Clinical Study Reports and Submission_ book.
+It ensures complete traceability throughout the development lifecycle,
+leveraging the metalite data structure.
 
-This R package offers a comprehensive software development lifecycle (SDLC) solution, 
-encompassing activities such as definition, development, validation, and finalization of the analysis.
+This R package offers a comprehensive software development lifecycle (SDLC)
+solution, encompassing activities such as definition, development,
+validation, and finalization of the analysis.
 
 ## Highlighted features
 
 - Avoid duplicated input by using metadata structure.
-  - For example, define analysis population once to use in all adverse events analysis.
+  - For example, define analysis population once to use
+    in all adverse events analysis.
 - Consistent input and output in standard functions.
 - Streamlines mock table generation.
 
@@ -71,8 +76,8 @@ The overall workflow includes the following steps:
 1. Format outdata using `format_*()` functions.
 1. Create TLFs using `tlf_*()` functions.
 
-For instance, we can illustrate the creation of a straightforward AE summary table as shown below.
-
+For instance, we can illustrate the creation of a straightforward
+AE summary table as shown below.
 
 ```{r, eval = FALSE}
 meta_ae_example() |> # Example AE data created using metalite
@@ -92,11 +97,15 @@ meta_ae_example() |> # Example AE data created using metalite
 knitr::include_graphics("pdf/ae0summary1.pdf")
 ```
 
-Additional examples and tutorials can be found on the [package website](https://merck.github.io/metalite.ae/articles/), offering further guidance and illustrations.
+Additional examples and tutorials can be found on the
+[package website](https://merck.github.io/metalite.ae/articles/),
+offering further guidance and illustrations.
 
-## Input 
+## Input
 
-To implement the workflow in metalite.ae, it is necessary to establish a metadata structure using the metalite R package.
-For detailed instructions, please consult the [metalite tutorial](https://merck.github.io/metalite/articles/metalite.html) and 
-refer to the source code of the [`meta_ae_example`](https://github.com/Merck/metalite.ae/blob/main/R/meta_ae_example.R). 
-
+To implement the workflow in metalite.ae, it is necessary to establish
+a metadata structure using the metalite R package.
+For detailed instructions, please consult the
+[metalite tutorial](https://merck.github.io/metalite/articles/metalite.html)
+and refer to the source code of the function
+[`meta_ae_example()`](https://github.com/Merck/metalite.ae/blob/main/R/meta_ae_example.R).
