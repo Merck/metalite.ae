@@ -16,6 +16,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' Create mock table
+#'
+#' @param df A data frame.
+#' @param mask A character string to mask the number.
+#' @param n A numeric value for the number of rows displayed in the mock.
+#'
+#' @noRd
+to_mock <- function(df, mask = "x", n = 20) {
+  if (is.null(df)) {
+    return(df)
+  }
+  n <- min(c(n, nrow(df)), na.rm = TRUE)
+
+  apply(df[1:n, ], 2, function(x) {
+    gsub("[0-9]", mask, as.character(x))
+  })
+}
+
+#' Convert to sentence case
+#'
+#' @param x A character vector.
+#'
+#' @noRd
+#'
+#' @examples
+#' metalite.ae:::to_sentence("this is An Example")
+to_sentence <- function(x) {
+  gsub("(^[[:alpha:]])", "\\U\\1", tolower(x), perl = TRUE)
+}
+
 #' Save outputs for RTF generation
 #'
 #' @param outdata An `outdata` object.
