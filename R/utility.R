@@ -33,3 +33,41 @@ to_mock <- function(df, mask = "x", n = 20) {
     gsub("[0-9]", mask, as.character(x))
   })
 }
+
+#' Convert to sentence case
+#'
+#' @param x A character vector.
+#'
+#' @noRd
+#'
+#' @examples
+#' metalite.ae:::to_sentence("this is An Example")
+to_sentence <- function(x) {
+  gsub("(^[[:alpha:]])", "\\U\\1", tolower(x), perl = TRUE)
+}
+
+#' Save outputs for RTF generation.
+#'
+#' @param outdata a `outdata` object
+#' @param path_outdata a character string for file path to save the outdata.
+#' @param pat_outtable a character string for file path to save the RTF table.
+#'
+#' @noRd
+rtf_output <- function(
+    outdata,
+    path_outdata,
+    path_outtable) {
+  if (!is.null(path_outdata)) {
+    save(outdata, file = path_outdata)
+    message("The outdata is saved in", normalizePath(path_outdata))
+  }
+
+  if (!is.null(path_outtable)) {
+    outdata$rtf |>
+      r2rtf::rtf_encode() |>
+      r2rtf::write_rtf(file = path_outtable)
+    message("The output is saved in", normalizePath(path_outtable))
+  }
+
+  invisible(outdata)
+}
