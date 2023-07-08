@@ -12,29 +12,22 @@
 metalite.ae is an R package designed for the analysis of adverse events (AE) in clinical trials. 
 It operates on ADaM datasets and adheres to the metalite structure. 
 The package encompasses the following components:
-
-<details>
-<summary>AE summary.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png" width="100%">
-</details>
-<details>
-<summary>
-Specific AE analysis.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png" width="100%">
-</details>
-<details>
-<summary>AE listing.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%">
-</details>
-
 The R package streamlines the process of generating production-ready tables, listings, and figures
 as outlined in the [AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
 [specific AE chapter](https://r4csr.org/tlf-ae-specific.html) of the
 _R for Clinical Study Reports and Submission_ book. 
-It ensures complete traceability throughout the development lifecycle, leveraging the metalite data structure.
 
-This R package offers a comprehensive software development lifecycle (SDLC) solution, 
-encompassing activities such as definition, development, validation, and finalization of the analysis.
+#### AE summary
+
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png" width="100%">
+
+#### Specific AE analysis
+
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png" width="100%">
+
+#### AE listing
+
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%">
 
 ## Highlighted features
 
