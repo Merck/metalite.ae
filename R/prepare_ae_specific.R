@@ -199,6 +199,7 @@ prepare_ae_specific <- function(meta,
     prop = tbl_rate, diff = tbl_diff,
     n_pop = tbl_num[1, ],
     name = tbl$name,
-    components = components
+    components = components,
+    prepare_call = match.call()
   )
 }
