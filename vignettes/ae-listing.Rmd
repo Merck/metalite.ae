@@ -38,9 +38,11 @@ knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
 
 ## Example data
 
-Within metalite.ae, we utilized the ADSL and ADAE datasets from the metalite package to create an illustrative dataset. 
-The metadata structure remains consistent across all analysis examples within metalite.ae. 
-Additional information can be accessed on the 
+Within metalite.ae, we utilized the ADSL and ADAE datasets from the metalite
+package to create an illustrative dataset.
+The metadata structure remains consistent across all analysis examples
+within metalite.ae.
+Additional information can be accessed on the
 [metalite package website](https://merck.github.io/metalite/articles/metalite.html).
 
 ```{r}
@@ -56,9 +58,12 @@ meta
 
 ## Analysis preparation
 
-The function `prepare_ae_listing()` is used to create a dataset for AE listing by utilizing predefined keywords specified in the example data `meta`.
+The function `prepare_ae_listing()` is used to create a dataset for
+AE listing by utilizing predefined keywords specified
+in the example data `meta`.
 
-The resulting output of the function is an outdata object, which comprises a collection of raw datasets for analysis and reporting.
+The resulting output of the function is an `outdata` object, which comprises
+a collection of raw datasets for analysis and reporting.
 
 ```{r}
 tbl <- prepare_ae_listing(

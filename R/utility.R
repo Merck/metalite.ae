@@ -46,11 +46,11 @@ to_sentence <- function(x) {
   gsub("(^[[:alpha:]])", "\\U\\1", tolower(x), perl = TRUE)
 }
 
-#' Save outputs for RTF generation.
+#' Save outputs for RTF generation
 #'
-#' @param outdata a `outdata` object
-#' @param path_outdata a character string for file path to save the outdata.
-#' @param pat_outtable a character string for file path to save the RTF table.
+#' @param outdata An `outdata` object.
+#' @param path_outdata A character string of file path to save the outdata.
+#' @param pat_outtable A character string of file path to save the RTF table.
 #'
 #' @noRd
 rtf_output <- function(
