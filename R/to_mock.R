@@ -16,6 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' Create mock table
+#'
+#' @param df A data frame.
+#' @param mask A character string to mask the number.
+#' @param n A numeric value for the number of rows displayed in the mock.
+#'
 #' @noRd
 to_mock <- function(df, mask = "x", n = 20) {
   if (is.null(df)) {
