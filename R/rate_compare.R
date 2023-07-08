@@ -241,16 +241,16 @@ rate_compare_sum <- function(n0, n1,
     r_diff <- (r1 - r0)
     z_score <- (r_diff - delta) / sqrt(vart)
     pval <- switch(test,
-                   one.sided = ifelse(delta <= 0, 1 - pnorm(z_score), pnorm(z_score)),
-                   two.sided = 1 - pchisq(z_score^2, 1)
+      one.sided = ifelse(delta <= 0, 1 - pnorm(z_score), pnorm(z_score)),
+      two.sided = 1 - pchisq(z_score^2, 1)
     )
   }
   if (!length(unique(strata)) == 1) {
     # Start to calculate the Chi-square
     w <- switch(weight,
-                equal = rep(1, length(strata)),
-                ss = n / sum(n),
-                cmh = (n0 * n1 / n) / sum(n0 * n1 / n)
+      equal = rep(1, length(strata)),
+      ss = n / sum(n),
+      cmh = (n0 * n1 / n) / sum(n0 * n1 / n)
     )
     r1_w <- r1 * w
     r0_w <- r0 * w
@@ -258,8 +258,8 @@ rate_compare_sum <- function(n0, n1,
     r_diff <- (sum(r1_w) - sum(r0_w))
     z_score <- (r_diff - delta) / sqrt(sum(var_w))
     pval <- switch(test,
-                   one.sided = ifelse(delta <= 0, 1 - pnorm(z_score), pnorm(z_score)),
-                   two.sided = 1 - pchisq(z_score^2, 1)
+      one.sided = ifelse(delta <= 0, 1 - pnorm(z_score), pnorm(z_score)),
+      two.sided = 1 - pchisq(z_score^2, 1)
     )
   }
 
@@ -315,12 +315,12 @@ rate_compare_sum <- function(n0, n1,
     p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sign
     # Adust p
     p <- ifelse(p > (-1e-20) & p < 0,
-                p - 1e-16,
-                ifelse(
-                  p >= 0 & p < (1e-20),
-                  p + 1e-16,
-                  p
-                )
+      p - 1e-16,
+      ifelse(
+        p >= 0 & p < (1e-20),
+        p + 1e-16,
+        p
+      )
     )
     # Calculate R tilter
     temp <- q / (p^3)
