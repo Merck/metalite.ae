@@ -17,6 +17,7 @@ listings, and figures as outlined in the
 [AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
 [specific AE chapter](https://r4csr.org/tlf-ae-specific.html) of the
 _R for Clinical Study Reports and Submission_ book.
+The package encompasses the following components:
 
 #### AE summary
 
