@@ -18,9 +18,9 @@
 
 #' Create mock table
 #'
-#' @param df a data frame
-#' @param mask a character string to mask te number
-#' @param n a numeric value for the number of rows displayed in the mock.
+#' @param df A data frame.
+#' @param mask A character string to mask the number.
+#' @param n A numeric value for the number of rows displayed in the mock.
 #'
 #' @noRd
 to_mock <- function(df, mask = "x", n = 20) {
