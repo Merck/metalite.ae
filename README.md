@@ -9,44 +9,32 @@
 
 ## Overview
 
-metalite.ae is an R package to analyze adverse events (AE) in clinical trials,
-including:
+metalite.ae is an R package designed for the analysis of adverse events (AE) in clinical trials. 
+It operates on ADaM datasets and adheres to the metalite structure. 
+The package encompasses the following components:
 
 <details>
 <summary>AE summary.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png">
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png" width="100%">
 </details>
 <details>
-<summary>Specific AE analysis.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png">
+<summary>
+Specific AE analysis.</summary>
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png" width="100%">
 </details>
 <details>
 <summary>AE listing.</summary>
-<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png">
+<img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%">
 </details>
 
-The R package simplifies the workflow to create production-ready
-tables, listings, and figures discussed in the
-[AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
+The R package streamlines the process of generating production-ready tables, listings, and figures
+as outlined in the [AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
 [specific AE chapter](https://r4csr.org/tlf-ae-specific.html) of the
-_R for Clinical Study Reports and Submission_ book with full traceability.
+_R for Clinical Study Reports and Submission_ book. 
+It ensures complete traceability throughout the development lifecycle, leveraging the metalite data structure.
 
-The R package is created using the [metalite](https://merck.github.io/metalite/)
-data structure that provides an end-to-end software development lifecycle (SDLC)
-solution including defining, developing, validating, and finalizing the analysis.
-
-## Workflow
-
-The general workflow covers:
-
-1. Define metadata information using metalite.
-1. Prepare outdata using `prepare_*()` functions.
-1. Extend outdata using `extend_*()` functions (optional).
-1. Format outdata using `format_*()` functions.
-1. Create TLFs using `tlf_*()` functions.
-
-Tutorials with examples are listed on the
-[package website](https://merck.github.io/metalite.ae/articles/).
+This R package offers a comprehensive software development lifecycle (SDLC) solution, 
+encompassing activities such as definition, development, validation, and finalization of the analysis.
 
 ## Highlighted features
 
@@ -54,3 +42,22 @@ Tutorials with examples are listed on the
   - For example, define analysis population once to use in all adverse events analysis.
 - Consistent input and output in standard functions.
 - Streamlines mock table generation.
+
+## Example 
+
+```
+meta_ae_example() |> # Example AE data created using metalite
+  prepare_ae_summary(
+    population = "apat", # Select population by keywords
+    observation = "wk12", # Select observation by keywords
+    parameter = "any;rel;ser" # Select AE terms by keywords
+  ) |>
+  format_ae_summary() |>
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]", # Define data source
+    path_outtable = "ae0summary.rtf" # Define output
+  )
+```
+
+- [Additional tutorials](https://merck.github.io/metalite.ae/articles/metalite-ae.html)
+
