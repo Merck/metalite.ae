@@ -34,14 +34,11 @@ Imports:
 Suggests:
     DescTools,
     dplyr,
+    tidyr,
     covr,
     knitr,
-    kableExtra,
     rmarkdown,
-    readxl,
-    rprojroot,
-    testthat (>= 3.0.0),
-    tidyr
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
