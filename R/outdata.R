@@ -4,11 +4,9 @@
 #' @param call a function call that require `outdata` object as an input.
 #'
 #' @noRd
-outdata_eval_extend_call <- function(outdata, call){
-
+outdata_eval_extend_call <- function(outdata, call) {
   call$outdata <- str2lang("outdata")
   eval(call)
-
 }
 
 #' Evaluate a call using outdata
@@ -17,31 +15,27 @@ outdata_eval_extend_call <- function(outdata, call){
 #' @param call a function call that require `outdata` object as an input.
 #'
 #' @noRd
-outdata_eval_prepare_call <- function(outdata){
-
+outdata_eval_prepare_call <- function(outdata) {
   call <- outdata$prepare_call
   call$meta <- str2lang("outdata$meta")
 
   population <- names(outdata$meta$population)
 
   res <- list()
-  for(i in seq_along(population)){
-
+  for (i in seq_along(population)) {
     call$population <- population[i]
 
     outdata_subgroup <- eval(call)
 
     extend_call <- outdata$extend_call
-    for(j in seq_along(extend_call)){
+    for (j in seq_along(extend_call)) {
       outdata_subgroup <- outdata_eval_extend_call(outdata_subgroup, extend_call[[j]])
     }
 
     res[[i]] <- outdata_subgroup
-
   }
 
   res
-
 }
 
 #' Update outdata subgroup population
@@ -51,8 +45,7 @@ outdata_eval_prepare_call <- function(outdata){
 #' @noRd
 outdata_population_subgroup <- function(
     outdata,
-    subgroup){
-
+    subgroup) {
   meta <- outdata$meta
 
   # define subgroup
@@ -69,13 +62,12 @@ outdata_population_subgroup <- function(
   new_subset <- outer(pop_subset, subgroup_subset, paste, sep = " & ")
   new_name <- outer(pop_name, u_subgroup, paste, sep = "-")
 
-  for(i in 1:nrow(new_name)){
-    for(j in 1:ncol(new_name)){
+  for (i in 1:nrow(new_name)) {
+    for (j in 1:ncol(new_name)) {
       x <- meta$population[[pop_name[i]]]
-      x$name <- new_name[i,j]
-      x$subset <- str2lang(new_subset[i,j])
-      meta$population[[new_name[i,j]]] <- x
-
+      x$name <- new_name[i, j]
+      x$subset <- str2lang(new_subset[i, j])
+      meta$population[[new_name[i, j]]] <- x
     }
   }
 
@@ -83,5 +75,4 @@ outdata_population_subgroup <- function(
   outdata$meta <- meta
 
   outdata
-
 }
