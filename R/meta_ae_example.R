@@ -36,6 +36,7 @@ meta_ae_example <- function() {
     levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
     labels = c("Placebo", "Low Dose", "High Dose")
   )
+  adsl$RACE <- tools::toTitleCase(adsl$RACE)
 
   # Create adae ----
   adae <- r2rtf::r2rtf_adae
@@ -44,6 +45,7 @@ meta_ae_example <- function() {
     levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
     labels = c("Placebo", "Low Dose", "High Dose")
   )
+  adae$RACE <- tools::toTitleCase(adae$RACE)
 
   # Drug-related AE values
   adae$related <- ifelse(
