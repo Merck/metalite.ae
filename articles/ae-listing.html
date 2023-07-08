@@ -92,22 +92,21 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite.ae/">metalite.ae</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite/" class="external-link">metalite</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite.ae/">metalite.ae</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The purpose of this tutorial is to create production ready AE
-listing.</p>
-<p>The AE listing provides details about the interested adverse events
-information. With a metadata object created by metalite, there are two
-required functions to create AE listing tables using metalite.ae:</p>
+<p>The objective of this tutorial is to generate a production-ready
+adverse events (AE) listing.</p>
+<p>The AE listing offers comprehensive information on the desired
+adverse events. There are two essential functions for constructing AE
+listing tables with metalite.ae:</p>
 <ul>
 <li>
-<code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code>: prepare listing datasets.</li>
+<code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code>: prepare AE listing datasets.</li>
 <li>
-<code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code>: transfer output dataset to RTF
-table.</li>
+<code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code>: transfer output datasets to RTF
+files.</li>
 </ul>
 <p>An example output:</p>
 <embed src="pdf/ae0listing0ser0wk12.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
@@ -115,11 +114,17 @@ table.</li>
 <div class="section level2">
 <h2 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
 </h2>
-<p>In metalite.ae, we created an example dataset using ADSL and ADAE
-datasets from the metalite package.</p>
+<p>Within metalite.ae, we utilized the ADSL and ADAE datasets from the
+metalite package to create an illustrative dataset. The metadata
+structure remains consistent across all analysis examples within
+metalite.ae. Additional information can be accessed on the <a href="https://merck.github.io/metalite/articles/metalite.html" class="external-link">metalite
+package website</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">meta</span></span>
+<code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<details><summary>
+Click to show the output
+</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">meta</span></span>
 <span><span class="co">#&gt; ADaM metadata: </span></span>
 <span><span class="co">#&gt;    .$data_population     Population data with 254 subjects </span></span>
 <span><span class="co">#&gt;    .$data_observation    Observation data with 1191 records </span></span>
@@ -156,28 +161,27 @@ datasets from the metalite package.</p>
 <span><span class="co">#&gt; 2  'ae_listing'          'Listing: adverse event'</span></span>
 <span><span class="co">#&gt; 3  'ae_exp_adj' 'Exposure Adjusted Incident Rate'</span></span>
 <span><span class="co">#&gt; 4 'ae_specific'   'Table: specific adverse event'</span></span></code></pre></div>
-<p>The same metadata structure is used to support all analyses examples
-in metalite.ae. More details can be found on the <a href="https://merck.github.io/metalite/articles/metalite.html" class="external-link">metalite
-package website</a>.</p>
+</details>
 </div>
 <div class="section level2">
 <h2 id="analysis-preparation">Analysis preparation<a class="anchor" aria-label="anchor" href="#analysis-preparation"></a>
 </h2>
-<p>The <code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> function is used to calculate
-statistics required for AE listing using pre-specified keywords in
-<code>meta</code>. The input of the function is a <code>meta</code>
-object created by metalite. The output of the function is an
-<code>outdata</code> object that contains a list of analysis raw
-datasets.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>The function <code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> is used to create a
+dataset for AE listing by utilizing predefined keywords specified in the
+example data <code>meta</code>.</p>
+<p>The resulting output of the function is an <code>outdata</code>
+object, which comprises a collection of raw datasets for analysis and
+reporting.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_listing.html">prepare_ae_listing</a></span><span class="op">(</span></span>
 <span>  <span class="va">meta</span>,</span>
 <span>  analysis <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
 <span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
 <span>  parameter <span class="op">=</span> <span class="st">"ser"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          USUBJID ASTDY                                        AEDECOD duration</span></span>
 <span><span class="co">#&gt; 689  01-709-1424     5                                        SYNCOPE    1 Day</span></span>
 <span><span class="co">#&gt; 1131 01-718-1170    27                                        SYNCOPE    2 Day</span></span>
@@ -189,8 +193,9 @@ datasets.</p>
 <span><span class="co">#&gt;                                                                                  subline</span></span>
 <span><span class="co">#&gt; 689  Subject ID = 01-709-1424, Gender = M, Race = WHITE, AGE = 77 Years, TRT = High Dose</span></span>
 <span><span class="co">#&gt; 1131  Subject ID = 01-718-1170, Gender = F, Race = WHITE, AGE = 80 Years, TRT = Low Dose</span></span>
-<span><span class="co">#&gt; 1173 Subject ID = 01-718-1371, Gender = F, Race = WHITE, AGE = 69 Years, TRT = High Dose</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">col_name</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1173 Subject ID = 01-718-1371, Gender = F, Race = WHITE, AGE = 69 Years, TRT = High Dose</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">col_name</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                       USUBJID                         ASTDY </span></span>
 <span><span class="co">#&gt;   "Unique Subject Identifier" "Analysis Start Relative Day" </span></span>
 <span><span class="co">#&gt;                       AEDECOD                      duration </span></span>
@@ -203,14 +208,14 @@ datasets.</p>
 </h2>
 <p>The last step is to prepare the RTF table using
 <code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">footnote</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED"</span>,</span>
 <span>  <span class="st">"Action Taken: Discontinued = DRUG WITHDRAWN, Interrupted = DRUG INTERRUPTED, Reduced = DOSE REDUCED, Increased = DOSE INCREASED, None = DOSE NOT CHANGED, N/A = NOT APPLICABLE."</span>,</span>
 <span>  <span class="st">"Outcome: Resolved = RECOVERED/RESOLVED, Resolving = RECOVERING/RESOLVING, Sequelae = RECOVERED/RESOLVED WITH SEQUELAE, Not resolved = NOT RECOVERED/NOT RESOLVED."</span>,</span>
 <span>  <span class="st">"Adverse event terms are from MedDRA Version 25.0."</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/tlf_ae_listing.html">tlf_ae_listing</a></span><span class="op">(</span></span>
 <span>  footnotes <span class="op">=</span> <span class="va">footnote</span>,</span>
 <span>  orientation <span class="op">=</span> <span class="st">"portrait"</span>,</span>

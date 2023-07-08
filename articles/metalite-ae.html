@@ -94,36 +94,54 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>metalite.ae is an R package to analyze adverse events (AE) in
-clinical trials, including:</p>
+<p>metalite.ae is an R package designed for the analysis of adverse
+events (AE) in clinical trials. It operates on ADaM datasets and adheres
+to the metalite structure. The package encompasses the following
+components:</p>
 <details><summary>
 AE summary.
 </summary><img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png" width="100%"></details><details><summary>
 Specific AE analysis.
 </summary><img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png" width="100%"></details><details><summary>
 AE listing.
-</summary><img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%"></details><p>The R package simplifies the workflow to create production-ready
-tables, listings, and figures discussed in the <a href="https://r4csr.org/tlf-ae-summary.html" class="external-link">AE summary chapter</a> and
+</summary><img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%"></details><p>The R package streamlines the process of generating production-ready
+tables, listings, and figures as outlined in the <a href="https://r4csr.org/tlf-ae-summary.html" class="external-link">AE summary chapter</a> and
 the <a href="https://r4csr.org/tlf-ae-specific.html" class="external-link">specific AE
 chapter</a> of the <em>R for Clinical Study Reports and Submission</em>
-book with full traceability.</p>
-<p>The R package is created using the <a href="https://merck.github.io/metalite/" class="external-link">metalite</a> data structure
-that provides an end-to-end software development lifecycle (SDLC)
-solution including defining, developing, validating, and finalizing the
-analysis.</p>
-<div class="section level3">
-<h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
-</h3>
-<p>The general workflow covers:</p>
+book. It ensures complete traceability throughout the development
+lifecycle, leveraging the metalite data structure.</p>
+<p>This R package offers a comprehensive software development lifecycle
+(SDLC) solution, encompassing activities such as definition,
+development, validation, and finalization of the analysis.</p>
+</div>
+<div class="section level2">
+<h2 id="highlighted-features">Highlighted features<a class="anchor" aria-label="anchor" href="#highlighted-features"></a>
+</h2>
+<ul>
+<li>Avoid duplicated input by using metadata structure.
+<ul>
+<li>For example, define analysis population once to use in all adverse
+events analysis.</li>
+</ul>
+</li>
+<li>Consistent input and output in standard functions.</li>
+<li>Streamlines mock table generation.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
+</h2>
+<p>The overall workflow includes the following steps:</p>
 <ol style="list-style-type: decimal">
-<li>Define metadata information using metalite.</li>
+<li>Define metadata information using metalite R package.</li>
 <li>Prepare outdata using <code>prepare_*()</code> functions.</li>
 <li>Extend outdata using <code>extend_*()</code> functions
 (optional).</li>
 <li>Format outdata using <code>format_*()</code> functions.</li>
 <li>Create TLFs using <code>tlf_*()</code> functions.</li>
 </ol>
-<p>For example, we can create a simple AE summary table as below.</p>
+<p>For instance, we can illustrate the creation of a straightforward AE
+summary table as shown below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># Example AE data created using metalite</span></span>
 <span>  <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span></span>
@@ -136,23 +154,16 @@ analysis.</p>
 <span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>, <span class="co"># Define data source</span></span>
 <span>    path_outtable <span class="op">=</span> <span class="st">"ae0summary.rtf"</span> <span class="co"># Define output</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<embed src="pdf/ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>Tutorials with additional examples are listed on the <a href="https://merck.github.io/metalite.ae/articles/">package
-website</a>.</p>
+<embed src="pdf/ae0summary1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed><p>Additional examples and tutorials can be found on the <a href="https://merck.github.io/metalite.ae/articles/">package
+website</a>, offering further guidance and illustrations.</p>
 </div>
-<div class="section level3">
-<h3 id="highlighted-features">Highlighted features<a class="anchor" aria-label="anchor" href="#highlighted-features"></a>
-</h3>
-<ul>
-<li>Avoid duplicated input by using metadata structure.
-<ul>
-<li>For example, define analysis population once to use in all adverse
-events analysis.</li>
-</ul>
-</li>
-<li>Consistent input and output in standard functions.</li>
-<li>Streamlines mock table generation.</li>
-</ul>
-</div>
+<div class="section level2">
+<h2 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a>
+</h2>
+<p>To implement the workflow in metalite.ae, it is necessary to
+establish a metadata structure using the metalite R package. For
+detailed instructions, please consult the <a href="https://merck.github.io/metalite/articles/metalite.html" class="external-link">metalite
+tutorial</a> and refer to the source code of the function <a href="https://github.com/Merck/metalite.ae/blob/main/R/meta_ae_example.R" class="external-link"><code>meta_ae_example()</code></a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
