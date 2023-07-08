@@ -16,8 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' Save outputs for RTF generation.
+#'
+#' @param outdata a `outdata` object
+#' @param path_outdata a character string for file path to save the outdata.
+#' @param pat_outtable a character string for file path to save the RTF table.
+#'
 #' @noRd
-rtf_output <- function(outdata, path_outdata, path_outtable) {
+rtf_output <- function(
+    outdata,
+    path_outdata,
+    path_outtable) {
   if (!is.null(path_outdata)) {
     save(outdata, file = path_outdata)
     message("The outdata is saved in", normalizePath(path_outdata))
