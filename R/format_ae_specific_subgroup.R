@@ -59,7 +59,7 @@ format_ae_specific_subgroup <- function(
     mock = FALSE) {
   if ("total" %in% display) {
     display <- display[!display %in% "total"]
-    print(paste("total is not supported within Sub-Group"))
+    message("total is not supported within Sub-Group")
   }
 
   out_all <- outdata$out_all
