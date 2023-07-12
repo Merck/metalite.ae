@@ -191,7 +191,7 @@ comprises a collection of raw datasets for analysis and reporting.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outdata</span></span>
-<span><span class="co">#&gt; List of 12</span></span>
+<span><span class="co">#&gt; List of 13</span></span>
 <span><span class="co">#&gt;  $ meta           :List of 7</span></span>
 <span><span class="co">#&gt;  $ population     : chr "apat"</span></span>
 <span><span class="co">#&gt;  $ observation    : chr "wk12"</span></span>
@@ -203,7 +203,8 @@ comprises a collection of raw datasets for analysis and reporting.</p>
 <span><span class="co">#&gt;  $ prop           :'data.frame': 5 obs. of  4 variables:</span></span>
 <span><span class="co">#&gt;  $ diff           :'data.frame': 5 obs. of  2 variables:</span></span>
 <span><span class="co">#&gt;  $ n_pop          :'data.frame': 1 obs. of  4 variables:</span></span>
-<span><span class="co">#&gt;  $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...</span></span>
+<span><span class="co">#&gt;  $ prepare_call   : language prepare_ae_summary(meta = meta, population = "apat", observation = "wk12",      parameter = "any;rel;ser")</span></span></code></pre></div>
 <p>The resulting dataset contains frequently used statistics, with
 variables indexed according to the order specified in
 <code>outdata$group</code>.</p>

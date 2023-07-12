@@ -111,7 +111,7 @@ Default is 2 if there are 2 groups, otherwise, the default is 1.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">prepare_ae_specific</span><span class="op">(</span><span class="va">meta</span>, <span class="st">"apat"</span>, <span class="st">"wk12"</span>, <span class="st">"rel"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> List of 14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ meta           :List of 7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ data_population :'data.frame':	254 obs. of  49 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ STUDYID : chr [1:254] "CDISCPILOT01" "CDISCPILOT01" "CDISCPILOT01" "CDISCPILOT01" ...</span>
@@ -482,6 +482,7 @@ Default is 2 if there are 2 groups, otherwise, the default is 1.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ n_4: int 254</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ components     : chr [1:2] "soc" "par"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prepare_call   : language prepare_ae_specific(meta = meta, population = "apat", observation = "wk12",      parameter = "rel")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "outdata"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Allow to extract each components</span></span></span>
