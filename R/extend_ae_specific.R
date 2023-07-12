@@ -88,7 +88,7 @@ extend_ae_specific_inference <- function(outdata, ci = 0.95) {
   res$ci_upper <- ci_upper
   res$ci_level <- ci
   res$p <- p
-
+  res$extend_call <- c(res$call, match.call())
   res
 }
 
@@ -219,6 +219,7 @@ extend_ae_specific_duration <- function(outdata,
 
   outdata$dur <- avg
   outdata$dur_se <- se
+  outdata$extend_call <- c(outdata$extend_call, match.call())
 
   outdata
 }
@@ -333,6 +334,18 @@ extend_ae_specific_events <- function(outdata) {
 
   outdata$events <- avg
   outdata$events_se <- se
+  outdata$extend_call <- c(outdata$extend_call, match.call())
+
+  outdata
+}
+
+#' Add Subgroup analysis in AE specific analysis
+#'
+#' @param subgroup a character string for subgroup variable name
+#'
+#' @export
+extend_ae_specific_subgroup <- function(outdata, subgroup) {
+  outdata$subgroup <- subgroup
 
   outdata
 }
