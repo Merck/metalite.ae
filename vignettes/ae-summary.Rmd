@@ -25,7 +25,7 @@ library(metalite.ae)
 
 The purpose of this tutorial is to create production ready AE summary analyses
 by extending examples shown in the
-[AE summary chapter](https://r4csr.org/aesummary.html)
+[AE summary chapter](https://r4csr.org/tlf-ae-summary.html)
 of the _R for Clinical Study Reports and Submission_ book.
 
 The AE summary analysis provides tables to summarize adverse events information.

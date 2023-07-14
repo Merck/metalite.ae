@@ -47,8 +47,8 @@ Specific AE analysis.</summary>
 
 The R package simplifies the workflow to create production-ready
 tables, listings, and figures discussed in the
-[AE summary chapter](https://r4csr.org/aesummary.html) and the
-[specific AE chapter](https://r4csr.org/specific-ae.html) of the
+[AE summary chapter](https://r4csr.org/tlf-ae-summary.html) and the
+[specific AE chapter](https://r4csr.org/tlf-ae-specific.html) of the
 _R for Clinical Study Reports and Submission_ book with full traceability.
 
 The R package is created using the [metalite](https://merck.github.io/metalite/)

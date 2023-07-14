@@ -25,7 +25,7 @@ library(metalite.ae)
 
 The purpose of this tutorial is to create production ready AE specification analyses
 by extending examples shown in the
-[specific AE chapter](https://r4csr.org/specific-ae.html)
+[specific AE chapter](https://r4csr.org/tlf-ae-specific.html)
 of the _R for Clinical Study Reports and Submission_ book.
 
 The AE specification analysis is to provide tables to summarize details of different types of adverse events.
