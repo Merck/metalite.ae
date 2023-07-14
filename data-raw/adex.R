@@ -1,7 +1,5 @@
 library(haven)
 library(dplyr)
-library(tibble)
-library(lubridate)
 library(r2rtf)
 library(Hmisc)
 
