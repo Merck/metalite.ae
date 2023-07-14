@@ -72,7 +72,7 @@ reference:
 - title: Example data
   contents:
     - meta_ae_example
-    - metalite.ae_adex
+    - metalite_ae_adex
 articles:
 - title: Get started
   contents:
