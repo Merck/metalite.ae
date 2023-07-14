@@ -1,7 +1,7 @@
 meta <- meta_ae_example()
 
 test_that("There are 2 analyses in the output: ae summary & ae specific", {
-  expect_equal(names(meta$analysis), c("ae_summary", "ae_listing", "ae_specific"))
+  expect_equal(names(meta$analysis), c("ae_summary", "ae_listing", "ae_exp_adj", "ae_specific"))
 })
 
 test_that("There are 2 observations: wk12 & wk24", {

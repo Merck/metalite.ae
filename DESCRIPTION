@@ -34,13 +34,10 @@ Imports:
     stats
 Suggests:
     DescTools,
-    dplyr,
     covr,
+    dplyr,
     knitr,
-    kableExtra,
     rmarkdown,
-    readxl,
-    rprojroot,
     testthat (>= 3.0.0),
     tidyr
 Config/testthat/edition: 3

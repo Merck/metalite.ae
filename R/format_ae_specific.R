@@ -228,5 +228,7 @@ format_ae_specific <- function(outdata,
   }
 
   outdata$tbl <- res
+  outdata$extend_call <- c(outdata$extend_call, match.call())
+
   outdata
 }

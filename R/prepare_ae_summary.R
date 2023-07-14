@@ -41,7 +41,7 @@ prepare_ae_summary <- function(meta,
   parameters <- unlist(strsplit(parameter, ";"))
 
   res <- lapply(parameters, function(x) {
-    print(x)
+    message(x)
     prepare_ae_specific(meta,
       population = population, observation = observation, parameter = x,
       components = NULL, ...
@@ -103,7 +103,8 @@ prepare_ae_summary <- function(meta,
     prop = rbind(pop_prop, tbl_prop),
     diff = rbind(pop_diff, tbl_diff),
     n_pop = n_pop,
-    name = c(pop_name, name)
+    name = c(pop_name, name),
+    prepare_call = match.call()
   )
 }
 
