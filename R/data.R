@@ -14,5 +14,5 @@
 #' \item{EXNUMDOS}{Number of Daily Doses.}
 #' }
 #' @source \url{https://github.com/phuse-org/phuse-scripts/tree/master
-#/data/sdtm/cdiscpilot01}
+# /data/sdtm/cdiscpilot01}
 "metalite.ae_adex"
