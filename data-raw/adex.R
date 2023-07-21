@@ -7,7 +7,10 @@ library(Hmisc)
 ex0 <- read_xpt("data-raw/ex.xpt")
 adsl <- r2rtf::r2rtf_adsl
 
+csv_file <- "data-raw/ex.csv"
+write.csv(ex0, file=csv_file, row.names=FALSE)
 
+getwd()
 # Create a new data object with selected variables
 adsl <- select(adsl, STUDYID, SITEID, USUBJID, starts_with("TRT01"), AGE,
                starts_with("AGEGR1"),
@@ -57,14 +60,7 @@ label(adex3$EXDURDDU) <- "Exposure Duration Unit"
 label(adex3$EXNUMDOS) <- "Number of Daily Doses"
 
 # Load your dataset
-metalite.ae_adex <- adex3
+metalite_ae_adex <- adex3
 
-# Output file path to save ADEX dataset
-data <- "data/metalite.ae_adex.rda"
-
-# Output file path to save xpt ex dataset
-raw <- "/ex.xpt"
-
-# save to rda file
-save(metalite.ae_adex, file = data, compress = "xz")
+usethis::use_data(metalite_ae_adex)
 
