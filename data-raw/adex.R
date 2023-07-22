@@ -5,9 +5,10 @@ library(Hmisc)
 
 # Read in the ADSL and EX datasets
 ex0 <- read_xpt("data-raw/ex.xpt")
-adsl <- r2rtf::r2rtf_adsl
+write.csv(ex0, file = "data-raw/ex.csv", row.names = FALSE, quote = FALSE)
 
 # Create a new data object with selected variables
+adsl <- r2rtf::r2rtf_adsl
 adsl <- select(
   adsl, STUDYID, SITEID, USUBJID, starts_with("TRT01"), AGE,
   starts_with("AGEGR1"),
@@ -18,17 +19,21 @@ adsl <- select(
 ex1 <- merge(adsl, ex0, by = c("STUDYID", "USUBJID"))
 
 # Derive ASTDT and AENDT
-adex1 <- ex1 %>%
+adex1 <- ex1 |>
   mutate(ASTDT = as.Date(EXSTDTC, format = "%Y-%m-%d")) |>
   mutate(AENDT = as.Date(EXENDTC, format = "%Y-%m-%d"))
 
 # ASTDTM and AENDTM
-adex1$ASTDTM <- ifelse(nchar(adex1$EXSTDTC) == 10,
-  paste(adex1$EXSTDTC, "T00:00:00"), EXSTDTC
+adex1$ASTDTM <- ifelse(
+  nchar(adex1$EXSTDTC) == 10,
+  paste(adex1$EXSTDTC, "T00:00:00"),
+  EXSTDTC
 )
 
-adex1$AENDTM <- ifelse(nchar(adex1$EXENDTC) == 10,
-  paste(adex1$EXENDTC, "T00:00:00"), adex1$EXENDTC
+adex1$AENDTM <- ifelse(
+  nchar(adex1$EXENDTC) == 10,
+  paste(adex1$EXENDTC, "T00:00:00"),
+  adex1$EXENDTC
 )
 
 # Derive ASTDY AENDY EXDURDD EXDURDDU
@@ -58,11 +63,6 @@ label(adex3$EXDURDD) <- "Exposure Duration"
 label(adex3$EXDURDDU) <- "Exposure Duration Unit"
 label(adex3$EXNUMDOS) <- "Number of Daily Doses"
 
-# Load dataset
 metalite_ae_adex <- adex3
 
-# Output file path to save ADEX dataset
-data <- "data/metalite_ae_adex.rda"
-
-# Save to rda file
-save(metalite_ae_adex, file = data, compress = "xz")
+usethis::use_data(metalite_ae_adex, overwrite = TRUE)
