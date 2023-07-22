@@ -126,8 +126,8 @@ prepare_ae_specific <- function(meta,
   }
 
   # Number of subjects
-  pop_n <- n_subject(pop[[pop_id]], pop[[pop_group]])
-  obs_n <- n_subject(obs[[obs_id]], obs[[obs_group]])
+  pop_n <- metalite::n_subject(pop[[pop_id]], pop[[pop_group]])
+  obs_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]])
   obs_n <- rbind(obs_n, pop_n - obs_n)
 
   # Define Population section
@@ -147,7 +147,7 @@ prepare_ae_specific <- function(meta,
 
   # Define SOC section
   if ("soc" %in% components && nrow(obs) > 0) {
-    soc_n <- n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]])
+    soc_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]])
 
     soc_n[[par_soc]] <- soc_n$name
     soc_n[[par_var]] <- soc_n$name
@@ -161,7 +161,7 @@ prepare_ae_specific <- function(meta,
   if ("par" %in% components && nrow(obs) > 0) {
     u_soc <- unique(obs[order(obs[[par_soc]]), c(par_soc, par_var)])
 
-    par_n <- n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]])
+    par_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]])
 
     par_n[[par_var]] <- par_n$name
     par_n <- merge(u_soc, par_n, all.y = TRUE)
@@ -199,6 +199,7 @@ prepare_ae_specific <- function(meta,
     prop = tbl_rate, diff = tbl_diff,
     n_pop = tbl_num[1, ],
     name = tbl$name,
-    components = components
+    components = components,
+    prepare_call = match.call()
   )
 }

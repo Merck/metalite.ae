@@ -14,5 +14,5 @@ This function is only for illustration purpose.
 r2rtf is required.
 }
 \examples{
-meta_ae_example()
+meta <- meta_ae_example()
 }

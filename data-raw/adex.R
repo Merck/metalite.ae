@@ -12,9 +12,11 @@ write.csv(ex0, file=csv_file, row.names=FALSE)
 
 getwd()
 # Create a new data object with selected variables
-adsl <- select(adsl, STUDYID, SITEID, USUBJID, starts_with("TRT01"), AGE,
-               starts_with("AGEGR1"),
-               starts_with("RACE"), SEX, SAFFL, ITTFL, TRTSDT, TRTEDT)
+adsl <- select(
+  adsl, STUDYID, SITEID, USUBJID, starts_with("TRT01"), AGE,
+  starts_with("AGEGR1"),
+  starts_with("RACE"), SEX, SAFFL, ITTFL, TRTSDT, TRTEDT
+)
 
 # Merge both dataset by usubjid
 ex1 <- merge(adsl, ex0, by = c("STUDYID", "USUBJID"))
@@ -24,19 +26,20 @@ adex1 <- ex1 %>%
   mutate(ASTDT = as.Date(EXSTDTC, format = "%Y-%m-%d")) |>
   mutate(AENDT = as.Date(EXENDTC, format = "%Y-%m-%d"))
 
-#ASTDTM and AENDTM
-
+# ASTDTM and AENDTM
 adex1$ASTDTM <- ifelse(nchar(adex1$EXSTDTC) == 10,
-                       paste(adex1$EXSTDTC, "T00:00:00"), EXSTDTC)
+  paste(adex1$EXSTDTC, "T00:00:00"), EXSTDTC
+)
 
 adex1$AENDTM <- ifelse(nchar(adex1$EXENDTC) == 10,
-                       paste(adex1$EXENDTC, "T00:00:00"), adex1$EXENDTC)
+  paste(adex1$EXENDTC, "T00:00:00"), adex1$EXENDTC
+)
 
 # Derive ASTDY AENDY EXDURDD EXDURDDU
 adex2 <- adex1 |>
-  mutate(ASTDY = ASTDT - TRTSDT + (ASTDT >= TRTSDT))|>
-  mutate(AENDY = AENDT - TRTSDT + (AENDT >= TRTSDT))|>
-  mutate(EXDURDD = AENDT - ASTDT + (AENDT >= ASTDT))|>
+  mutate(ASTDY = ASTDT - TRTSDT + (ASTDT >= TRTSDT)) |>
+  mutate(AENDY = AENDT - TRTSDT + (AENDT >= TRTSDT)) |>
+  mutate(EXDURDD = AENDT - ASTDT + (AENDT >= ASTDT)) |>
   mutate(EXDURDDU = "Days")
 
 # Convert ASTDY AENDY and EXDURDD into numeric
@@ -64,3 +67,5 @@ metalite_ae_adex <- adex3
 
 usethis::use_data(metalite_ae_adex)
 
+# Save to rda file
+save(metalite_ae_adex, file = data, compress = "xz")
