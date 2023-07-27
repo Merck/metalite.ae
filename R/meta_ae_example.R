@@ -28,7 +28,6 @@
 #' @examples
 #' meta <- meta_ae_example()
 meta_ae_example <- function() {
-
   # Create adsl ----
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
@@ -62,73 +61,60 @@ meta_ae_example <- function() {
   # AE outcome
   for (i in seq_along(adae$AEOUT)) {
     adae$outcome <- switch(adae$AEOUT[i],
-      "RECOVERED/RESOLVED" = "Resolved",
-      "RECOVERING/RESOLVING" = "Resolving",
-      "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
-      "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-      tools::toTitleCase(tolower(adae$AEOUT[i]))
+                           "RECOVERED/RESOLVED" = "Resolved",
+                           "RECOVERING/RESOLVING" = "Resolving",
+                           "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
+                           "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
+                           tools::toTitleCase(tolower(adae$AEOUT[i]))
     )
+  }
+
+  # AE action
+  adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN)
 
   for (i in seq_along(adae$AEACN)) {
     adae$action_taken[i] <- switch(adae$AEACN[i],
-      "DOSE NOT CHANGED" = "None",
-      "DOSE REDUCED" = "Reduced",
-      "DRUG INTERRUPTED" = "Interrupted",
-      "DOSE INCREASED" = "Increased",
-      "NOT APPLICABLE" = "N/A",
-      "UNKNOWN" = "Unknown",
-      "''" = "None",
-      tools::toTitleCase(tolower(adae$AEACN[i]))
+                                   "DOSE NOT CHANGED" = "None",
+                                   "DOSE REDUCED" = "Reduced",
+                                   "DRUG INTERRUPTED" = "Interrupted",
+                                   "DOSE INCREASED" = "Increased",
+                                   "NOT APPLICABLE" = "N/A",
+                                   "UNKNOWN" = "Unknown",
+                                   "''" = "None",
+                                   tools::toTitleCase(tolower(adae$AEACN[i]))
     )
+  }
 
-    # AE outcome
-    for (i in seq_along(adae$AEOUT)) {
-      adae$outcome <- switch(adae$AEOUT[i],
-        "RECOVERED/RESOLVED" = "Resolved",
-        "RECOVERING/RESOLVING" = "Resolving",
-        "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
-        "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-        tools::toTitleCase(tolower(adae$AEOUT[i]))
+  # AE duration with unit
+  adae$duration <- paste(
+    ifelse(
+      is.na(adae$ADURN),
+      "",
+      as.character(adae$ADURN)
+    ),
+    tools::toTitleCase(tolower(adae$ADURU)),
+    sep = " "
+  )
+
+  for (i in seq_along(adae$duration)) {
+    if (is.na(adae$ADURN[i])) {
+      adae$duration[i] <- ifelse(
+        charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
+          charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0,
+        "Continuing",
+        "Unknown"
       )
     }
+  }
 
-    # AE action
-    adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN)
-
-    for (i in seq_along(adae$AEACN)) {
-      adae$action_taken[i] <- switch(adae$AEACN[i],
-        "DOSE NOT CHANGED" = "None",
-        "DOSE REDUCED" = "Reduced",
-        "DRUG INTERRUPTED" = "Interrupted",
-        "DOSE INCREASED" = "Increased",
-        "NOT APPLICABLE" = "N/A",
-        "UNKNOWN" = "Unknown",
-        "''" = "None",
-        tools::toTitleCase(tolower(adae$AEACN[i]))
-      )
-    }
-
-    # AE duration with unit
-    adae$duration <- paste(
-      ifelse(
-        is.na(adae$ADURN),
-        "",
-        as.character(adae$ADURN)
-      ),
-      tools::toTitleCase(tolower(adae$ADURU)),
-      sep = " "
-    )
-
-    for (i in seq_along(adae$duration)) {
-      if (is.na(adae$ADURN[i])) {
-        adae$duration[i] <- ifelse(
-          charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
-            charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0,
-          "Continuing",
-          "Unknown"
-        )
-      }
-    }
+  # AE subject line
+  adae$subline <- paste0(
+    "Subject ID = ", adae$USUBJID,
+    ", Gender = ", adae$SEX,
+    ", Race = ", adae$RACE,
+    ", AGE = ", adae$AGE, " Years",
+    ", TRT = ", adae$TRTA
+  )
 
   # Assign label
   adae <- metalite::assign_label(
