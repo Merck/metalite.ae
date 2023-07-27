@@ -27,104 +27,99 @@
 #'
 #' @examples
 #' meta <- meta_ae_example()
-
-
-meta_ae_example <- function(){
-
+meta_ae_example <- function() {
   # create adsl
   {
     adsl <- r2rtf::r2rtf_adsl
     adsl$TRTA <- adsl$TRT01A
     adsl$TRTA <- factor(adsl$TRTA,
-                        levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-                        labels = c("Placebo", "Low Dose", "High Dose")
+      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+      labels = c("Placebo", "Low Dose", "High Dose")
     )
-
   }
 
   # create adae
   {
     adae <- r2rtf::r2rtf_adae
-  adae$TRTA <- factor(adae$TRTA,
-                      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-                      labels = c("Placebo", "Low Dose", "High Dose")
-  )
-
-  # Drug-related AE values
-  adae$related <- ifelse(
-    adae$AEREL == "RELATED",
-    "Y",
-    ifelse(
-      toupper(adae$AEREL) == "NOT RELATED",
-      "N",
-      tools::toTitleCase(tolower(adae$AEREL))
+    adae$TRTA <- factor(adae$TRTA,
+      levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+      labels = c("Placebo", "Low Dose", "High Dose")
     )
-  )
 
-  # AE outcome
-  for (i in seq_along(adae$AEOUT)) {
-    adae$outcome <- switch(adae$AEOUT[i],
-                           "RECOVERED/RESOLVED" = "Resolved",
-                           "RECOVERING/RESOLVING" = "Resolving",
-                           "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
-                           "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-                           tools::toTitleCase(tolower(adae$AEOUT[i]))
+    # Drug-related AE values
+    adae$related <- ifelse(
+      adae$AEREL == "RELATED",
+      "Y",
+      ifelse(
+        toupper(adae$AEREL) == "NOT RELATED",
+        "N",
+        tools::toTitleCase(tolower(adae$AEREL))
+      )
     )
-  }
 
-  # AE action
-  adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN)
-
-  for (i in seq_along(adae$AEACN)) {
-    adae$action_taken[i] <- switch(adae$AEACN[i],
-                                   "DOSE NOT CHANGED" = "None",
-                                   "DOSE REDUCED" = "Reduced",
-                                   "DRUG INTERRUPTED" = "Interrupted",
-                                   "DOSE INCREASED" = "Increased",
-                                   "NOT APPLICABLE" = "N/A",
-                                   "UNKNOWN" = "Unknown",
-                                   "''" = "None",
-                                   tools::toTitleCase(tolower(adae$AEACN[i]))
-    )
-  }
-
-  # AE duration with unit
-  adae$duration <- paste(
-    ifelse(
-      is.na(adae$ADURN),
-      "",
-      as.character(adae$ADURN)
-    ),
-    tools::toTitleCase(tolower(adae$ADURU)),
-    sep = " "
-  )
-
-  for (i in seq_along(adae$duration)) {
-    if (is.na(adae$ADURN[i])) {
-      adae$duration[i] <- ifelse(
-        charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
-          charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0,
-        "Continuing",
-        "Unknown"
+    # AE outcome
+    for (i in seq_along(adae$AEOUT)) {
+      adae$outcome <- switch(adae$AEOUT[i],
+        "RECOVERED/RESOLVED" = "Resolved",
+        "RECOVERING/RESOLVING" = "Resolving",
+        "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
+        "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
+        tools::toTitleCase(tolower(adae$AEOUT[i]))
       )
     }
-  }
 
-  # AE subject line
-  adae$subline <- paste0(
-    "Subject ID = ", adae$USUBJID,
-    ", Gender = ", adae$SEX,
-    ", Race = ", adae$RACE,
-    ", AGE = ", adae$AGE, " Years",
-    ", TRT = ", adae$TRTA
-  )
+    # AE action
+    adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN)
 
-  # Assign label
-  adae <- metalite::assign_label(adae,
-                                 var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
-                                 label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
-  )
+    for (i in seq_along(adae$AEACN)) {
+      adae$action_taken[i] <- switch(adae$AEACN[i],
+        "DOSE NOT CHANGED" = "None",
+        "DOSE REDUCED" = "Reduced",
+        "DRUG INTERRUPTED" = "Interrupted",
+        "DOSE INCREASED" = "Increased",
+        "NOT APPLICABLE" = "N/A",
+        "UNKNOWN" = "Unknown",
+        "''" = "None",
+        tools::toTitleCase(tolower(adae$AEACN[i]))
+      )
+    }
 
+    # AE duration with unit
+    adae$duration <- paste(
+      ifelse(
+        is.na(adae$ADURN),
+        "",
+        as.character(adae$ADURN)
+      ),
+      tools::toTitleCase(tolower(adae$ADURU)),
+      sep = " "
+    )
+
+    for (i in seq_along(adae$duration)) {
+      if (is.na(adae$ADURN[i])) {
+        adae$duration[i] <- ifelse(
+          charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
+            charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0,
+          "Continuing",
+          "Unknown"
+        )
+      }
+    }
+
+    # AE subject line
+    adae$subline <- paste0(
+      "Subject ID = ", adae$USUBJID,
+      ", Gender = ", adae$SEX,
+      ", Race = ", adae$RACE,
+      ", AGE = ", adae$AGE, " Years",
+      ", TRT = ", adae$TRTA
+    )
+
+    # Assign label
+    adae <- metalite::assign_label(adae,
+      var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
+      label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
+    )
   }
 
   # define plan
@@ -141,16 +136,16 @@ meta_ae_example <- function(){
       add_plan(
         analysis = "ae_listing", population = "apat",
         observation = c("wk12", "wk24"), parameter = c("any", "rel", "ser")
-      )  |>
+      ) |>
       add_plan(
         analysis = "ae_exp_adj", population = "apat",
-        observation = c("wk12", "wk24"), parameter =  "any;rel;ser"
-    )
+        observation = c("wk12", "wk24"), parameter = "any;rel;ser"
+      )
   }
 
   # create meta_adam
   {
-    meta_adam<- meta_adam(
+    meta_adam <- meta_adam(
       population = adsl,
       observation = adae
     ) |>
@@ -159,7 +154,7 @@ meta_ae_example <- function(){
         name = "apat",
         group = "TRTA",
         subset = quote(SAFFL == "Y"),
-        var="TRTDUR"
+        var = "TRTDUR"
       ) |>
       define_observation(
         name = "wk12",
@@ -201,13 +196,12 @@ meta_ae_example <- function(){
         page_by = c("TRTA", "subline")
       ) |>
       define_analysis(
-          name  =  "ae_exp_adj",
-          label =  "Exposure Adjusted Incident Rate",
-          title =  "Exposure-Adjusted Adverse Event Summary"
+        name = "ae_exp_adj",
+        label = "Exposure Adjusted Incident Rate",
+        title = "Exposure-Adjusted Adverse Event Summary"
       ) |>
-    meta_build()
+      meta_build()
   }
 
   return(meta_adam)
 }
-
