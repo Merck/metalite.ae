@@ -65,6 +65,7 @@ prepare_ae_listing <- function(meta,
   # Return value
   outdata(meta, population, observation, parameter,
     n = NULL, order = NULL, group = NULL, reference_group = NULL,
-    col_name = col_name, tbl = res
+    col_name = col_name, tbl = res,
+    prepare_call = match.call()
   )
 }

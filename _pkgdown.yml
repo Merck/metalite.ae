@@ -19,7 +19,7 @@ footer:
     left: [developed_by, built_with, legal]
     right: [blank]
   components:
-    legal: "<br>Copyright &copy; 2022 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
+    legal: "<br>Copyright &copy; 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved."
     blank: "<span></span>"
 
 navbar:
@@ -36,24 +36,29 @@ navbar:
       href: news/index.html
 
 reference:
-- title: AE specification
-  contents:
-    - prepare_ae_specific
-    - extend_ae_specific_duration
-    - extend_ae_specific_events
-    - extend_ae_specific_inference
-    - format_ae_specific
-    - tlf_ae_specific
-    - prepare_ae_listing
-    - tlf_ae_listing
 - title: AE summary
   contents:
     - prepare_ae_summary
     - format_ae_summary
     - tlf_ae_summary
+- title: AE specification
+  contents:
+    - prepare_ae_specific
+    - prepare_ae_exp_adj
+    - extend_ae_specific_duration
+    - extend_ae_specific_events
+    - extend_ae_specific_inference
+    - format_ae_specific
+    - tlf_ae_specific
+- title: AE listing
+  contents:
+    - prepare_ae_listing
+    - tlf_ae_listing
 - title: AE subgroup analysis
   contents:
     - prepare_ae_specific_subgroup
+    - format_ae_specific_subgroup
+    - tlf_ae_specific_subgroup
 - title: Format
   contents:
     - fmt_pct
@@ -67,12 +72,12 @@ reference:
 - title: Example data
   contents:
     - meta_ae_example
-
+    - metalite_ae_adex
 articles:
 - title: Get started
   contents:
     - metalite-ae
-- title: Design
+- title: Tutorial
   contents:
     - ae-specific
     - ae-summary

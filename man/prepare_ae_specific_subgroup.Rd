@@ -10,9 +10,8 @@ prepare_ae_specific_subgroup(
   observation,
   parameter,
   subgroup_var,
-  subgroup_header = 1,
+  subgroup_header = c(meta$population[[population]]$group, subgroup_var),
   components = c("soc", "par"),
-  display_total = TRUE,
   display_subgroup_total = TRUE
 )
 }
@@ -31,13 +30,14 @@ The term name is used as key to link information.}
 \item{subgroup_var}{A character value of subgroup variable name in
 observation data saved in \code{meta$data_observation}.}
 
-\item{subgroup_header}{An integer value of column header for subgroup.}
+\item{subgroup_header}{A character vector for column header hierarchy.
+The first element will be the first level header and the second element
+will be second level header.}
 
 \item{components}{A character vector of components name.}
 
-\item{display_total}{test}
-
-\item{display_subgroup_total}{test}
+\item{display_subgroup_total}{Logical. Display total column for
+subgroup analysis or not.}
 }
 \value{
 A list of analysis raw datasets.
@@ -47,12 +47,5 @@ Prepare datasets for AE specific analysis
 }
 \examples{
 meta <- meta_ae_example()
-
-prepare_ae_specific_subgroup(
-  meta,
-  population = "apat",
-  observation = "wk12",
-  parameter = "rel",
-  subgroup_var = "RACE"
-)
+prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
 }

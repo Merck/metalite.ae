@@ -18,7 +18,7 @@
 
 #' Specific adverse events table
 #'
-#' @param outdata A outdata list created from [prepare_ae_specific()].
+#' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #' @param meddra_version A character value of the MedDRA version
 #'   for this dataset.
 #' @param source A character value of the data source.
@@ -127,10 +127,7 @@ tlf_ae_specific <- function(outdata,
   )
 
   colhead_1_within <- paste(group, collapse = " | ")
-
-  colhead_2_within <- paste(rep(colhead_within, n_group),
-    collapse = " | "
-  )
+  colhead_2_within <- paste(rep(colhead_within, n_group), collapse = " | ")
 
   colborder_within <- vapply(
     X = col_tbl_within,

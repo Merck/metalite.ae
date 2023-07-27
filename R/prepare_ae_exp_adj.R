@@ -18,23 +18,37 @@
 
 #' Prepare datasets for AE specific analysis
 #'
+#' @param meta A metadata object created by metalite.
+#' @param population A character value of population term name.
+#'   The term name is used as key to link information.
+#' @param observation A character value of observation term name.
+#'   The term name is used as key to link information.
+#' @param parameter A character value of parameter term name.
+#'   The term name is used as key to link information.
+#' @param duration_var A character value of duration variable name.
+#'   By default, `"TRTDUR"` is used.
+#' @param adj_unit A character value of exposure adjusted unit.
+#'   It could be select from `"year"`, `"month"`, `"week"`, and `"day"`.
+#'
 #' @return A list of analysis raw datasets.
 #'
 #' @export
 #'
 #' @examples
-prepare_ae_exp_adj <- function(meta,
-                               population = "apat",
-                               observation = "wk12",
-                               parameter = "any;rel;ser",
-                               adj_unit = c("year", "month", "week", "day")) {
+#' meta <- meta_ae_example()
+#' prepare_ae_exp_adj(meta)
+prepare_ae_exp_adj <- function(
+    meta,
+    population = "apat",
+    observation = "wk12",
+    parameter = "any;rel;ser",
+    duration_var = "TRTDUR",
+    adj_unit = c("year", "month", "week", "day")) {
   time_unit <- list("year" = 365.24, "month" = 30.4367, "week" = 7, "day" = 1)
   adj_unit <- match.arg(adj_unit)
   exp_factor <- 100 * time_unit[[adj_unit]]
 
-  ### xxxx
-
-  # obtain variables
+  # Obtain variables
   pop_var <- collect_adam_mapping(meta, population)$var
   obs_var <- collect_adam_mapping(meta, observation)$var
   par_var <- collect_adam_mapping(meta, parameter)$var
@@ -46,45 +60,47 @@ prepare_ae_exp_adj <- function(meta,
   pop_id <- collect_adam_mapping(meta, population)$id
   obs_id <- collect_adam_mapping(meta, observation)$id
 
-  # obtain data
-  pop <- collect_population_record(meta, population, var = pop_var)
+  # Obtain data
+  pop <- collect_population_record(meta, population, var = c(pop_var, duration_var))
   obs <- collect_observation_record(meta, population, observation, parameter, var = unique(c(obs_var, par_var, par_soc)))
 
-  # number of Subjects exposed
-  n_exposed <- metalite:::n_subject(id = pop[[pop_id]], group = pop[[pop_group]])
+  # Number of subjects exposed
+  n_exposed <- metalite::n_subject(id = pop[[pop_id]], group = pop[[pop_group]])
 
-  # exposure adjust evnt rate = total number of event * exp_factor / total_exposure_days
+  # Exposure adjust event rate = total number of event * exp_factor / total_exposure_days
   parameters <- unlist(strsplit(parameter, ";"))
 
-  # total exposure in person-year/month/week/day
-  total_exposure <- aggregate(pop$TRTDUR, by = list(pop[[pop_group]]), FUN = sum)
+  # Total exposure in person-year/month/week/day
+  total_exposure <- tapply(pop$TRTDUR, pop[[pop_group]], FUN = sum)
   names(total_exposure) <- c("group", "tol_exp")
 
   res <- lapply(parameters, function(x) {
     data <- meta$data_observation
     if (x == "any") {
-      num <- (data |> group_by(get(obs_group))
-        |> summarise(n()))$"n()"
-      ans <- num * exp_factor / total_exposure$tol_exp
+      num <- sapply(split(data, data[[obs_group]]), function(x) length(x[[obs_group]]))
+      ans <- num * exp_factor / total_exposure[["tol_exp"]]
     } else {
-      # count the number of events either serious or drug-related or ... depending on the parameter
-      TrtGrps <- levels(data |> pull(obs_group))
-      J <- length(TrtGrps)
-      num <- rep(NA, J)
-      for (j in 1:J) {
+      # Count the number of events either serious or drug-related or ... depending on the parameter
+      trt_grps <- levels(data[[obs_group]])
+      num_grps <- length(trt_grps)
+      num <- rep(NA, num_grps)
+      for (j in 1:num_grps) {
         expr <- collect_adam_mapping(meta, x)$subset
-        data_j <- meta$data_observation |> filter(get(obs_group) == TrtGrps[j])
-        temp_j <- rlang::eval_tidy(expr = expr, data = data_j)
+        data_j <- data |> subset(data[[obs_group]] == trt_grps[j])
+        temp_j <- eval(expr = substitute(expr), envir = substitute(data_j))
         num[j] <- sum(temp_j)
       }
-      ans <- num * exp_factor / total_exposure$tol_exp
+      ans <- num * exp_factor / total_exposure[["tol_exp"]]
     }
 
-    return(ans)
+    ans
   })
 
-  metalite::outdata(meta, population, observation, parameter,
-    n = n_exposed, order = NULL, group = pop_group,
+  metalite::outdata(
+    meta, population, observation, parameter,
+    n = n_exposed,
+    order = NULL,
+    group = pop_group,
     reference_group = NULL,
     total_exposure = total_exposure,
     adj_rate = res,

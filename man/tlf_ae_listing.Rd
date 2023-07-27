@@ -16,7 +16,7 @@ tlf_ae_listing(
 )
 }
 \arguments{
-\item{outdata}{A outdata list created by \code{\link[=prepare_ae_listing]{prepare_ae_listing()}}.}
+\item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_listing]{prepare_ae_listing()}}.}
 
 \item{footnotes}{A character vector of table footnotes.}
 

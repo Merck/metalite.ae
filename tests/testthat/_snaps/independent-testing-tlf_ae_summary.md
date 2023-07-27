@@ -3,7 +3,7 @@
     Code
       tbl
     Output
-      List of 14
+      List of 16
        $ meta           :List of 7
        $ population     : chr "apat"
        $ observation    : chr "wk12"
@@ -16,6 +16,8 @@
        $ diff           :'data.frame':	5 obs. of  2 variables:
        $ n_pop          :'data.frame':	1 obs. of  4 variables:
        $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...
+       $ prepare_call   : language prepare_ae_summary(meta = meta, population = "apat", observation = "wk12",      parameter = "any;rel;ser")
        $ tbl            :'data.frame':	5 obs. of  9 variables:
+       $ extend_call    :List of 1
        $ rtf            :Classes 'rtf_text', 'rtf_border' and 'data.frame':	5 obs. of  9 variables:
 

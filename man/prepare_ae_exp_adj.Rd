@@ -9,13 +9,35 @@ prepare_ae_exp_adj(
   population = "apat",
   observation = "wk12",
   parameter = "any;rel;ser",
-  adj_unit = c("year", "month", "week", "day"),
-  ...
+  duration_var = "TRTDUR",
+  adj_unit = c("year", "month", "week", "day")
 )
+}
+\arguments{
+\item{meta}{A metadata object created by metalite.}
+
+\item{population}{A character value of population term name.
+The term name is used as key to link information.}
+
+\item{observation}{A character value of observation term name.
+The term name is used as key to link information.}
+
+\item{parameter}{A character value of parameter term name.
+The term name is used as key to link information.}
+
+\item{duration_var}{A character value of duration variable name.
+By default, \code{"TRTDUR"} is used.}
+
+\item{adj_unit}{A character value of exposure adjusted unit.
+It could be select from \code{"year"}, \code{"month"}, \code{"week"}, and \code{"day"}.}
 }
 \value{
 A list of analysis raw datasets.
 }
 \description{
 Prepare datasets for AE specific analysis
+}
+\examples{
+meta <- meta_ae_example()
+prepare_ae_exp_adj(meta)
 }
