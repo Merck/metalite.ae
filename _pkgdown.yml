@@ -85,4 +85,4 @@ articles:
 - title: Specification
   contents:
     - rate-compare
-    - ae-exp-adj_formula_explanation
+    - exposure-adjusted-event-rate
