@@ -85,3 +85,4 @@ articles:
 - title: Specification
   contents:
     - rate-compare
+    - exposure-adjusted-event-rate
