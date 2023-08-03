@@ -1,23 +1,11 @@
 ---
-title: "Formula Explanation for EAER"
-author: Bing Liu (Jul 26, 2023)
+title: "Exposure Adjusted Event Rate"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Exposure-Adjusted Adverse Event Summary}
+  %\VignetteIndexEntry{Exposure Adjusted Event Rate}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-resource_files:
-   - fig/*.png
-   - rtf/*.rtf
-   - pdf/*.pdf
 ---
-
-```{r,echo=FALSE,warning=FALSE, message=FALSE}
-library(metalite)
-library(metalite.ae)
-library(dplyr)
-```
- 
 
 This is a supplementary document for the file "Exposure-Adjusted Adverse Event Summary (Updated)".  
 
@@ -25,13 +13,9 @@ This is a supplementary document for the file "Exposure-Adjusted Adverse Event S
 
 - Part 2 briefly summarize the programming steps of this calculation. 
 
-A further explanation of the data manipulation steps in Part 2 will be provided in a separate file.
+## EAER Formula Explanation
 
-####  1. EAER Formula Explanation
-
-$(1)$ EAER Formula 
-
-Note: This is based on the new definition in main file 'Exposure-Adjusted Adverse Event Summary (Updated)').
+### EAER Formula 
 
 $$
 \begin{aligned}
@@ -49,11 +33,12 @@ EAER_j (100~person-month)
 &=\frac{total~number~of~events~for~Trt_j * 3043.67}{total~person-day~for~Trt_j}  
 \end{aligned}
 $$
-$(2)$ EAER for different types of AEs 
+
+### EAER for different types of AEs
  
- Below is the EAER definitions for three types of AEs using three treatment groups as an example (PBO, Low Dose, High Dose).
+Below is the EAER definitions for three types of AEs using three treatment groups as an example (PBO, Low Dose, High Dose).
  
-$(a)$ ANY AE adj rate  
+#### ANY AE adj rate  
 
 $$
 EAER_{PBO} (100~person-month) =\frac{total~number~of~AEs~for~PBO * 3043.67}{total~person-day~for~PBO}
@@ -67,7 +52,7 @@ EAER_{HD} (100~person-month) =\frac{total~number~of~AEs~for~High~Dose * 3043.67}
 $$
  
 
-$(b)$ Serious AE adj rate  
+#### Serious AE adj rate  
 
 
 $$
@@ -82,7 +67,7 @@ EAER_{HD} (100~person-month) =\frac{total~number~of~SAEs~for~High~Dose * 3043.67
 $$
  
  
-$(c)$  REL AE adj rate  
+#### REL AE adj rate  
   
 
 $$
@@ -97,19 +82,13 @@ EAER_{HD} (100~person-month) =\frac{total~number~of~Drug-Related~AEs~for~High~Do
 $$
  
   
-####  2. Programming Steps of EAER
+## Programming Steps of EAER
 
-$(1)$ Data pretreatment
+- Data pretreatment: At the end of this step, adae is created.
 
-At the end of this step, adae is created.(See .Rmd file for codes)
+- Build a metadata: At the end of this step, 'meta' is created.
 
-$(2)$ Build a metadata
-
-At the end of this step, 'meta' is created.(See .Rmd file for codes)
-
-$(3)$ Call function prepare_ae_exp_adj() 
-
-This is a function of the following arguments --- meta, population, observation, parameter, and adj_unit. User can call the function as follows.
+- Call function `prepare_ae_exp_adj()`: This is a function of the following arguments --- meta, population, observation, parameter, and adj_unit. User can call the function as follows.
 
       x <- prepare_ae_exp_adj(meta,
                         population = "apat",
@@ -133,5 +112,3 @@ The output x will be a list of 11 as follows:
      $ adj_rate       :List of 3
      $ group_label    : Factor w/ 3 levels "Placebo","Low Dose",..: 1 3 2
      User can run x$adj_rate to obtain the EAER.
-  
-More detailed explanation on this part will be inroduced in separate document. 
