@@ -148,7 +148,7 @@ prepare_ae_specific <- function(meta,
   # Define SOC section
   if ("soc" %in% components && nrow(obs) > 0) {
     soc_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]],
-      na = "NULL", use_na = "always"
+      na = "NULL"
     )
 
     soc_n[[par_soc]] <- soc_n$name
@@ -164,7 +164,7 @@ prepare_ae_specific <- function(meta,
     u_soc <- unique(obs[order(obs[[par_soc]]), c(par_soc, par_var)])
 
     par_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]],
-      na = "NULL", use_na = "always"
+      na = "NULL"
     )
 
     par_n[[par_var]] <- par_n$name
