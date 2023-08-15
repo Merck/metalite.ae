@@ -147,7 +147,9 @@ prepare_ae_specific <- function(meta,
 
   # Define SOC section
   if ("soc" %in% components && nrow(obs) > 0) {
-    soc_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]])
+    soc_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]],
+      na = "NULL"
+    )
 
     soc_n[[par_soc]] <- soc_n$name
     soc_n[[par_var]] <- soc_n$name
@@ -161,11 +163,14 @@ prepare_ae_specific <- function(meta,
   if ("par" %in% components && nrow(obs) > 0) {
     u_soc <- unique(obs[order(obs[[par_soc]]), c(par_soc, par_var)])
 
-    par_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]])
+    par_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]],
+      na = "NULL"
+    )
 
     par_n[[par_var]] <- par_n$name
     par_n <- merge(u_soc, par_n, all.y = TRUE)
     par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
+    par_n$order[is.na(par_n$order)] <- max(soc_n$order) + 1
     par_n$name <- to_sentence(par_n$name)
   } else {
     par_n <- NULL
