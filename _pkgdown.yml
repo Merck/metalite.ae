@@ -79,6 +79,7 @@ articles:
     - ae-specific
     - ae-summary
     - ae-listing
+    - ae-specific-subgroup
 - title: Specification
   contents:
     - rate-compare
