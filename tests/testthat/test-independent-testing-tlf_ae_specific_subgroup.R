@@ -1,12 +1,11 @@
-
-
 library(metalite)
 meta <- meta_ae_example()
 outdata <- prepare_ae_specific_subgroup(meta,
-                                    population = "apat",
-                                    observation = "wk12",
-                                    parameter = "rel",
-                                    subgroup_var = "SEX")
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel",
+  subgroup_var = "SEX"
+)
 
 test_that("rtf output: n, and prop w/o total", {
   path_rtf <- file.path(tempdir(), "ednp_ae0specific1.rtf")
@@ -15,8 +14,7 @@ test_that("rtf output: n, and prop w/o total", {
   tbl <- outdata |>
     # extend_ae_specific_events() |>
     # extend_ae_specific_duration(duration_var = "ADURN") |>
-    format_ae_specific_subgroup(
-    ) |>
+    format_ae_specific_subgroup() |>
     tlf_ae_specific_subgroup(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
