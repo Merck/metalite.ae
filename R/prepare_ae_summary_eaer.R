@@ -95,7 +95,7 @@ prepare_ae_summary <- function(meta,
     names(res) <- NULL
   }
 
-  eaer = f_eaer(meta,population,observation)
+  eaer <- f_eaer(meta, population, observation)
 
   metalite::outdata(meta, population, observation, parameter,
     n = rbind(n_pop, tbl_num),
