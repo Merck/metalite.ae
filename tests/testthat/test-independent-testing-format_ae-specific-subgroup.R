@@ -2,11 +2,11 @@ library(metalite)
 library(metalite.ae)
 meta <- meta_ae_example()
 outdata <- prepare_ae_specific_subgroup(meta,
-                                        population = "apat",
-                                        observation = "wk12",
-                                        parameter = "rel",
-                                        subgroup_var = "SEX",
-                                        display_subgroup_total = FALSE
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel",
+  subgroup_var = "SEX",
+  display_subgroup_total = FALSE
 )
 
 test_that("When display is n, prop only display n and prop", {
@@ -15,9 +15,8 @@ test_that("When display is n, prop only display n and prop", {
     display = c("n", "prop"),
     mock = FALSE
   )
-  expect_equal(test1$display, c("n","prop"))
-  expect_true(all(c("Fn_1", "Fprop_1","Fn_2","Fprop_2","Fn_3","Fprop_3","Mn_1","Mprop_1","Mn_2","Mprop_2","Mn_3","Mprop_3"
-  ) %in% unique(unlist(names(test1$tbl)))))
+  expect_equal(test1$display, c("n", "prop"))
+  expect_true(all(c("Fn_1", "Fprop_1", "Fn_2", "Fprop_2", "Fn_3", "Fprop_3", "Mn_1", "Mprop_1", "Mn_2", "Mprop_2", "Mn_3", "Mprop_3") %in% unique(unlist(names(test1$tbl)))))
 })
 
 test_that("When display is n, prop, Total only display n, prop and Total", {
@@ -26,10 +25,8 @@ test_that("When display is n, prop, Total only display n, prop and Total", {
     display = c("n", "prop", "Total"),
     mock = FALSE
   )
-  expect_equal(test2$display, c("n","prop", "Total"))
-  expect_true(all(c("Fn_1", "Fprop_1","Fn_2","Fprop_2","Fn_3","Fprop_3","Fn_4","Fprop_4","Mn_1","Mprop_1","Mn_2","Mprop_2","Mn_3","Mprop_3","Mn_4","Mprop_4"
-  ) %in% unique(unlist(names(test2$tbl)))))
-
+  expect_equal(test2$display, c("n", "prop", "Total"))
+  expect_true(all(c("Fn_1", "Fprop_1", "Fn_2", "Fprop_2", "Fn_3", "Fprop_3", "Fn_4", "Fprop_4", "Mn_1", "Mprop_1", "Mn_2", "Mprop_2", "Mn_3", "Mprop_3", "Mn_4", "Mprop_4") %in% unique(unlist(names(test2$tbl)))))
 })
 
 test_that("When digits_prop = 2", {
@@ -39,15 +36,15 @@ test_that("When digits_prop = 2", {
     digits_prop = 2,
     mock = TRUE
   )
-  expect_equal(unlist(unique(test3$tbl$Fprop_1)), c(NA,"(xx.xx)", " (x.xx)"))
+  expect_equal(unlist(unique(test3$tbl$Fprop_1)), c(NA, "(xx.xx)", " (x.xx)"))
 })
 
 outdata1 <- prepare_ae_specific_subgroup(meta,
-                                         population = "apat",
-                                         observation = "wk12",
-                                         parameter = "rel",
-                                         subgroup_var = "SEX",
-                                         display_subgroup_total = TRUE
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel",
+  subgroup_var = "SEX",
+  display_subgroup_total = TRUE
 )
 
 test_that("When display is n, prop only display n and prop", {
@@ -56,9 +53,9 @@ test_that("When display is n, prop only display n and prop", {
     display = c("n", "prop"),
     mock = FALSE
   )
-  expect_equal(test4$display, c("n","prop"))
+  expect_equal(test4$display, c("n", "prop"))
 
-  x <- gsub('[n_1n_2n_3]','',names(test4$tbl))
-  x <- gsub('prop','',x)
-  expect_true(all(c("F", "M","Total") %in% unique(unlist(x))))
+  x <- gsub("[n_1n_2n_3]", "", names(test4$tbl))
+  x <- gsub("prop", "", x)
+  expect_true(all(c("F", "M", "Total") %in% unique(unlist(x))))
 })
