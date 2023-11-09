@@ -36,7 +36,7 @@
 #'   observation = "wk12",
 #'   parameter = "any;rel;ser"
 #' ) |>
-#' extend_ae_summary_eaer()
+#'   extend_ae_summary_eaer()
 extend_ae_summary_eaer <- function(outdata,
                                    duration_var = "TRTDUR",
                                    adj_unit = c("year", "month", "week", "day")) {
