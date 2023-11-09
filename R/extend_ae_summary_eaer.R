@@ -81,7 +81,7 @@ f_nae <- function(x, meta, observation) {
   } else {
     data <- meta$data_observation
     expr <- collect_adam_mapping(meta, x)$subset
-    data <- data %>% subset(eval(expr))
+    data <- data |> subset(eval(expr))
     num <- sapply(split(data, data[[obs_group]]), function(x) length(x[[obs_group]]))
   }
   return(num)
