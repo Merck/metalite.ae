@@ -33,5 +33,5 @@ prepare_ae_summary(
   observation = "wk12",
   parameter = "any;rel;ser"
 ) |>
-extend_ae_summary_eaer()
+  extend_ae_summary_eaer()
 }

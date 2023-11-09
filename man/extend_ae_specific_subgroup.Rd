@@ -7,6 +7,8 @@
 extend_ae_specific_subgroup(outdata, subgroup)
 }
 \arguments{
+\item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
+
 \item{subgroup}{a character string for subgroup variable name}
 }
 \description{
