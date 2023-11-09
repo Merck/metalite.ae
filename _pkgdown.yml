@@ -41,6 +41,7 @@ reference:
     - prepare_ae_summary
     - format_ae_summary
     - tlf_ae_summary
+    - extend_ae_summary_eaer
 - title: AE specification
   contents:
     - prepare_ae_specific
