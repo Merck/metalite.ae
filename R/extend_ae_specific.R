@@ -35,7 +35,6 @@
 #'   extend_ae_specific_inference() |>
 #'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
 #' head(tbl$tbl)
-
 extend_ae_specific_inference <- function(outdata, ci = 0.95) {
   res <- outdata
 
@@ -113,7 +112,6 @@ extend_ae_specific_inference <- function(outdata, ci = 0.95) {
 #'   extend_ae_specific_duration(duration_var = "ADURN") |>
 #'   format_ae_specific(display = c("n", "prop", "dur"))
 #' head(tbl$tbl)
-
 extend_ae_specific_duration <- function(outdata,
                                         duration_var,
                                         duration_unit = "Day") {
@@ -244,7 +242,6 @@ extend_ae_specific_duration <- function(outdata,
 #'   extend_ae_specific_events() |>
 #'   format_ae_specific(display = c("n", "prop", "events"))
 #' head(tbl$tbl)
-
 extend_ae_specific_events <- function(outdata) {
   meta <- outdata$meta
 

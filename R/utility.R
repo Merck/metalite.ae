@@ -44,9 +44,9 @@ to_mock <- function(df, mask = "x", n = 20) {
 #'
 #' @examples
 #' metalite.ae:::to_sentence("this is An Example")
-   to_sentence <- function(x) {
-   gsub("(^[[:alpha:]])", "\\U\\1", tolower(x), perl = TRUE)
-   }
+to_sentence <- function(x) {
+  gsub("(^[[:alpha:]])", "\\U\\1", tolower(x), perl = TRUE)
+}
 
 #' Save outputs for RTF generation
 #'
