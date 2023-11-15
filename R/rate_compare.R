@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Unstratified and stratified  Miettinen and Nurminen test
+#' Unstratified and stratified Miettinen and Nurminen test
 #'
-#' Unstratified and stratified  Miettinen and Nurminen test.
-#' Details can be found in `vignette("rate-compare")`.
+#' Unstratified and stratified Miettinen and Nurminen test details can be found
+#' in `vignette("rate-compare")`.
 #'
 #' @param formula A symbolic description of the model to be fitted,
 #'   which has the form `y ~ x`. Here, `y` is the numeric vector

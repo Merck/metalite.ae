@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -29,7 +29,7 @@
 #' @param reference_group An integer to indicate reference group.
 #'   Default is 2 if there are 2 groups, otherwise, the default is 1.
 #'
-#' @return A list of analysis raw datasets.
+#' @return A list of analysis datasets needed for AE specific analysis.
 #'
 #' @import metalite
 #'

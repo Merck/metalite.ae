@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Specific adverse events table
+#' Generate AE listing
 #'
 #' @param outdata An `outdata` object created by [prepare_ae_listing()].
 #' @param footnotes A character vector of table footnotes.
@@ -26,7 +26,7 @@
 #' @param path_outdata A character string of the outdata path.
 #' @param path_outtable A character string of the outtable path.
 #'
-#' @return RTF file and source dataset for AE listing.
+#' @return RTF file and a source dataset for AE listing.
 #'
 #' @export
 #'

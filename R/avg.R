@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -18,13 +18,15 @@
 
 #' Average number of events
 #'
-#' Calculates average number of records per group and, if requested, parameter.
-#' Returns a list of means and sd of counts of records per group, ordered in
+#' Calculates average number of records per group and, if requested, parameter
+#' returns a list of means and SD of counts of records per group, ordered in
 #' the same way as the input datasets.
 #'
 #' @inheritParams n_subject
 #'
 #' @importFrom stats sd reshape
+#'
+#' @return A list of means and SD of counts of records per group.
 #'
 #' @noRd
 #'
@@ -83,7 +85,7 @@ avg_event <- function(id, group, par = NULL) {
     tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
     if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
 
-    # Remove rownames.
+    # Remove row names.
     rownames(tmp) <- NULL
 
     # Extract avg and se into separate datasets.
@@ -106,7 +108,7 @@ avg_event <- function(id, group, par = NULL) {
 #' the same way as the input datasets.
 #'
 #' @inheritParams n_subject
-#' @param dur A numeric vector of AE duration.
+#' @param dur A numeric vector of adverse event duration.
 #'
 #' @importFrom stats sd reshape
 #'
@@ -156,11 +158,11 @@ avg_duration <- function(id, group, dur, par = NULL) {
     tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
     if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
 
-    # Set rownames to null.
+    # Set row names to null.
     rownames(tmp) <- NULL
 
 
-    # Extract avg and se into separate datasets.
+    # Extract avg and se into a separate datasets.
     avg <- cbind(par = tmp$par, tmp[, grepl(names(tmp), pattern = "^avg")])
     names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
     # Reorder columns (group) to be as input.

@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -16,25 +16,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Format AE specific analysis
+#' Format AE specific subgroup analysis
 #'
 #' @inheritParams format_ae_specific
 #' @param digits_prop A numeric value of number of digits for proportion value.
-#' @param digits_ci A numeric value of number of digits for confidence interval
-#' @param digits_p A numeric value of number of digits for p-value .
+#' @param digits_ci A numeric value of number of digits for confidence interval.
+#' @param digits_p A numeric value of number of digits for p-value.
 #' @param digits_dur A numeric value of number of digits for
-#'   average duration of AE.
+#'   average duration of adverse event.
 #' @param digits_events A numeric value of number of digits for
-#'   average of number of AE per subjects.
+#'   average of number of adverse event per subjects.
 #' @param display A character vector of measurement to be displayed.
-#'   - `n`: Number of subjects with AE.
-#'   - `prop`: Proportion of subjects with AE.
+#'   - `n`: Number of subjects with adverse event.
+#'   - `prop`: Proportion of subjects with adverse event.
 #'   - `total`: Total columns.
-#'   - `dur`: Average of AE duration.
-#'   - `events`: Average number of AE per subject.
+#'   - `dur`: Average of adverse event duration.
+#'   - `events`: Average number of adverse event per subject.
 #' @param mock Logical. Display mock table or not.
 #'
-#' @return A list of analysis raw datasets.
+#' @return A list of analysis raw datasets for subgroup analysis.
 #'
 #' @export
 #'
@@ -100,7 +100,7 @@ format_ae_specific_subgroup <- function(
     }
   }
 
-  # Need order column from Total Column for Ordering properly across tables
+  # Need order column from total column for ordering properly across tables
   tbl <- tbl[order(tbl$order), ]
 
   # If outdata$display_subgroup_total = FALSE, remove that part

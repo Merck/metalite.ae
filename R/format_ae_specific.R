@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -23,18 +23,18 @@
 #' @param digits_ci A numeric value of number of digits for confidence interval.
 #' @param digits_p A numeric value of number of digits for p-value.
 #' @param digits_dur A numeric value of number of digits for average
-#'   duration of AE.
+#'   duration of adverse event.
 #' @param digits_events A numeric value of number of digits for average of
-#'   number of AE per subjects.
+#'   number of adverse event per subjects.
 #' @param display A character vector of measurement to be displayed:
-#'   - `n`: Number of subjects with AE.
-#'   - `prop`: Proportion of subjects with AE.
+#'   - `n`: Number of subjects with adverse event.
+#'   - `prop`: Proportion of subjects with adverse event.
 #'   - `total`: Total columns.
 #'   - `diff`: Risk difference.
 #'   - `diff_ci`: 95% confidence interval of risk difference using M&N method.
 #'   - `diff_p`: p-value of risk difference using M&N method.
-#'   - `dur`: Average of AE duration.
-#'   - `events`: Average number of AE per subject.
+#'   - `dur`: Average of adverse event duration.
+#'   - `events`: Average number of adverse event per subject.
 #' @param mock A boolean value to display mock table.
 #'
 #' @return A list of analysis raw datasets.

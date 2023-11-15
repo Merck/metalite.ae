@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -48,7 +48,7 @@ fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
 #' Decimals will understand the number will be formatted as x.x (x.xx).
 #'
 #' @param mean A numeric vector of mean value.
-#' @param sd A numeric vector of sd value.
+#' @param sd A numeric vector of standard deviation value.
 #' @param digits Digits of each column, i.e., format as x.x (x.xx).
 #' @param width Width of each column.
 #'

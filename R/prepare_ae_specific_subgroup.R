@@ -3,7 +3,7 @@
 #
 # This file is part of the metalite.ae program.
 #
-# metalite.ae is free software: you can redistribute it and/or modify
+# metalite.ae is a free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Prepare datasets for AE specific analysis
+#' Prepare datasets for AE specific subgroup analysis
 #'
 #' @inheritParams prepare_ae_specific
 #' @param subgroup_var A character value of subgroup variable name in
@@ -27,7 +27,7 @@
 #' @param display_subgroup_total Logical. Display total column for
 #'   subgroup analysis or not.
 #'
-#' @return A list of analysis raw datasets.
+#' @return A list of analysis datasets needed for AE specific subgroup analysis.
 #'
 #' @export
 #'
