@@ -55,16 +55,19 @@ extend_ae_summary_eaer <- function(outdata,
 
   parameters <- unlist(strsplit(outdata$parameter, ";"))
 
-  res <- lapply(parameters, function(x) {
+  num <- lapply(parameters, function(x) {
     message(x)
-    den <- total_exposure
-    num <- f_nae(x, outdata$meta, outdata$population)
-    ans <- num * exp_factor / den
+    num <- f_nae(x, outdata$meta, outdata$observation)
   })
+  events_table <- do.call(rbind, num)
 
-  adj_rate_table <- do.call(rbind, res)
+  den <- total_exposure
+  rate <- lapply(num, function(x) x * exp_factor / den)
+  adj_rate_table <- do.call(rbind, rate)
   outdata$total_exp <- total_exposure
+  outdata$event_num <- events_table
   outdata$eaer <- adj_rate_table
+  outdata$adj_unit <- adj_unit
 
   outdata
 }
