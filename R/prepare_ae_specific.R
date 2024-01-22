@@ -95,7 +95,8 @@ prepare_ae_specific <- function(meta,
 
   if (!"factor" %in% class(obs[[obs_group]])) {
     warning("In observation level data, force group variable '", obs_group, "' be a factor")
-    obs[[obs_group]] <- factor(obs[[obs_group]], levels = levels(pop[[pop_group]]))
+    obs[[obs_group]] <- factor(obs[[obs_group]])
+    levels(obs[[obs_group]]) <- levels(pop[[pop_group]])
   }
 
   # Add a total group to display total column
