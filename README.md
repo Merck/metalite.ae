@@ -7,6 +7,22 @@
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/metalite.ae)](https://cran.r-project.org/package=metalite.ae)
 <!-- badges: end -->
 
+## Installation
+
+The easiest way to get metalite.ae is to install from CRAN:
+
+```r
+install.packages("metalite.ae")
+```
+
+Alternatively, to use a new feature or get a bug fix,
+you can install the development version of metalite.ae from GitHub:
+
+```r
+# install.packages("remotes")
+remotes::install_github("Merck/metalite.ae")
+```
+
 ## Overview
 
 metalite.ae is an R package designed for the analysis of adverse events (AE)

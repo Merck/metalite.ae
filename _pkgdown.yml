@@ -5,6 +5,7 @@ url: https://merck.github.io/metalite.ae/
 template:
   bootstrap: 5
   bslib:
+    preset: "bootstrap"
     primary: "#00857c"
     navbar-light-brand-color: "#fff"
     navbar-light-brand-hover-color: "#fff"
@@ -41,6 +42,7 @@ reference:
     - prepare_ae_summary
     - format_ae_summary
     - tlf_ae_summary
+    - extend_ae_summary_eaer
 - title: AE specification
   contents:
     - prepare_ae_specific
@@ -48,6 +50,7 @@ reference:
     - extend_ae_specific_duration
     - extend_ae_specific_events
     - extend_ae_specific_inference
+    - extend_ae_specific_subgroup
     - format_ae_specific
     - tlf_ae_specific
 - title: AE listing
