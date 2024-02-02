@@ -47,14 +47,14 @@
 #'   format_ae_exp_adj()
 #' head(tbl$tbl)
 format_ae_exp_adj <- function(outdata,
-                               display = c("n", "total_exp", "events", "eaer", "total"),
-                               digits_total_exp = 2,
-                               digits_eaer = 2,
-                               mock = FALSE) {
+                              display = c("n", "total_exp", "events", "eaer", "total"),
+                              digits_total_exp = 2,
+                              digits_eaer = 2,
+                              mock = FALSE) {
   display <- tolower(display)
   display <- match.arg(display,
-                       c("n", "total_exp", "events","eaer", "total"),
-                       several.ok = TRUE
+    c("n", "total_exp", "events", "eaer", "total"),
+    several.ok = TRUE
   )
 
   # Add "n"
@@ -122,7 +122,7 @@ format_ae_exp_adj <- function(outdata,
     }
 
     eaer <- outdata$eaer[, index_total]
-    eaer <- lapply(eaer, function(x, digits){
+    eaer <- lapply(eaer, function(x, digits) {
       x1 <- formatC(x, digits = digits, format = "f")
       paste0("(", x1, ")")
     }, digits = digits_eaer)
@@ -140,7 +140,7 @@ format_ae_exp_adj <- function(outdata,
     }
   }
 
-  if (length(tbl[["events"]]) > 0){
+  if (length(tbl[["events"]]) > 0) {
     parameter_name <- setdiff(outdata$name, c("Participants in population", "with no adverse events"))
     parameter_name <- gsub("^with (|one or more )", "", parameter_name)
     parameter_name <- gsub("\\^a", "\\^b", parameter_name)
@@ -156,7 +156,7 @@ format_ae_exp_adj <- function(outdata,
   n_group <- ncol(tbl[["n"]])
   within_tbl <- do.call(rbind, within_tbl)
   within_tbl <- within_tbl[, as.vector(matrix(1:n_group,
-                                              ncol = n_group, byrow = TRUE
+    ncol = n_group, byrow = TRUE
   ))]
 
   # Align format_ae_specific

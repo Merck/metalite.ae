@@ -73,7 +73,7 @@ extend_ae_summary_eaer <- function(outdata,
   den <- total_exposure
   rate <- lapply(num, function(x) x * exp_factor / den)
   adj_rate_table <- do.call(rbind, rate)
-  outdata$total_exp <- as.data.frame(t(total_exposure/time_unit[[adj_unit]]))
+  outdata$total_exp <- as.data.frame(t(total_exposure / time_unit[[adj_unit]]))
   outdata$event_num <- as.data.frame(events_table)
   outdata$eaer <- as.data.frame(adj_rate_table)
   outdata$adj_unit <- adj_unit

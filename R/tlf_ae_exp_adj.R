@@ -40,7 +40,6 @@
 #'     path_outdata = tempfile(fileext = ".Rdata"),
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
-
 tlf_ae_exp_adj <- function(outdata,
                            source,
                            col_rel_width = NULL,
@@ -50,7 +49,6 @@ tlf_ae_exp_adj <- function(outdata,
                            footnotes = NULL,
                            path_outdata = NULL,
                            path_outtable = NULL) {
-
   tbl <- outdata$tbl
   group <- outdata$group
   time_unit <- tolower(outdata$adj_unit)
@@ -64,28 +62,31 @@ tlf_ae_exp_adj <- function(outdata,
   # Define title
   if ("analysis" %in% title | "observation" %in% title | "population" %in% title) {
     title <- collect_title(outdata$meta,
-                           outdata$population,
-                           outdata$observation,
-                           parameters[1],
-                           analysis = "ae_exp_adj",
-                           title_order = title
+      outdata$population,
+      outdata$observation,
+      parameters[1],
+      analysis = "ae_exp_adj",
+      title_order = title
     )
   }
 
   # Footnotes
   footnote <-
-    paste0("{^a} Event rate per 100 person-",
-           time_unit,
-           " of exposure = event count *100/person-",
-           time_unit,
-           " of exposure.")
-  if ("rel" %in% parameters){
+    paste0(
+      "{^a} Event rate per 100 person-",
+      time_unit,
+      " of exposure = event count *100/person-",
+      time_unit,
+      " of exposure."
+    )
+  if ("rel" %in% parameters) {
     footnote <- paste(footnote,
-                      "{^b} Determined by the investigator to be related to the drug.",
-                      sep = "\n")
+      "{^b} Determined by the investigator to be related to the drug.",
+      sep = "\n"
+    )
   }
 
-  if (!is.null(footnotes)){
+  if (!is.null(footnotes)) {
     footnotes <- paste(footnote, footnotes, sep = "\n")
   } else {
     footnotes <- paste(footnote, sep = "\n")
@@ -160,14 +161,14 @@ tlf_ae_exp_adj <- function(outdata,
   if (!is.null(footnotes)) {
     outdata$rtf <- outdata$rtf |>
       r2rtf::rtf_footnote(footnotes,
-                          text_font_size = text_font_size
+        text_font_size = text_font_size
       )
   }
 
   if (!is.null(source)) {
     outdata$rtf <- outdata$rtf |>
       r2rtf::rtf_source(source,
-                        text_font_size = text_font_size
+        text_font_size = text_font_size
       )
   }
 
