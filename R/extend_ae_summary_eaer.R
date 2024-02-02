@@ -49,24 +49,33 @@ extend_ae_summary_eaer <- function(outdata,
   pop <- collect_population_record(outdata$meta, outdata$population, var = c(pop_var, duration_var))
   pop_group <- collect_adam_mapping(outdata$meta, outdata$population)$group
 
+  # Add a total group to display total column
+  if (nrow(pop) == 0) {
+    levels(pop[[pop_group]]) <- c(levels(pop[[pop_group]]), "Total")
+  } else {
+    pop_total <- pop
+    pop_total[[pop_group]] <- "Total"
+    pop <- rbind(pop, pop_total)
+  }
+
   # den: Total exposure in person-year/month/week/day
   total_exposure <- tapply(pop[[duration_var]], pop[[pop_group]], FUN = sum)
-
 
   parameters <- unlist(strsplit(outdata$parameter, ";"))
 
   num <- lapply(parameters, function(x) {
     message(x)
     num <- f_nae(x, outdata$meta, outdata$observation)
+    num <- c(num, Total = sum(num))
   })
   events_table <- do.call(rbind, num)
 
   den <- total_exposure
   rate <- lapply(num, function(x) x * exp_factor / den)
   adj_rate_table <- do.call(rbind, rate)
-  outdata$total_exp <- total_exposure
-  outdata$event_num <- events_table
-  outdata$eaer <- adj_rate_table
+  outdata$total_exp <- as.data.frame(t(total_exposure/time_unit[[adj_unit]]))
+  outdata$event_num <- as.data.frame(events_table)
+  outdata$eaer <- as.data.frame(adj_rate_table)
   outdata$adj_unit <- adj_unit
 
   outdata
