@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
+# Copyright (c) 2024 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
 # All rights reserved.
 #
 # This file is part of the metalite.ae program.
@@ -27,14 +27,14 @@
 #' @examples
 #' meta <- meta_ae_example()
 #' outdata <- meta |>
-#'   prepare_ae_summary(meta,
+#'   prepare_ae_summary(
 #'     population = "apat",
 #'     observation = "wk12",
 #'     parameter = "any;rel;ser"
 #'   ) |>
 #'   extend_ae_summary_eaer(adj_unit = "month")
 #' outdata |>
-#'   format_exp_adj????() |>
+#'   format_ae_exp_adj() |>
 #'   tlf_ae_exp_adj(
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
 #'     path_outdata = tempfile(fileext = ".Rdata"),
@@ -147,7 +147,7 @@ tlf_ae_exp_adj <- function(outdata,
       text_font_size = text_font_size
     ) |>
     r2rtf::rtf_body(
-      page_by = "var_label",
+      page_by = "row_label",
       col_rel_width = rel_width_body,
       border_left = border_left_body,
       text_justification = text_justification,
@@ -172,5 +172,5 @@ tlf_ae_exp_adj <- function(outdata,
   }
 
   # Prepare output
-  r2rtf::rtf_output(outdata, path_outdata, path_outtable)
+  rtf_output(outdata, path_outdata, path_outtable)
 }
