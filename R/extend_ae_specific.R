@@ -341,6 +341,7 @@ extend_ae_specific_events <- function(outdata) {
 
 #' Add subgroup analysis in AE specific analysis
 #'
+#' @param outdata  An `outdata` object created by [prepare_ae_specific()].
 #' @param subgroup A character string for subgroup variable name.
 #'
 #' @export
