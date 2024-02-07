@@ -67,6 +67,9 @@
     <loc>https://merck.github.io/metalite.ae/reference/fmt_pval.html</loc>
   </url>
   <url>
+    <loc>https://merck.github.io/metalite.ae/reference/format_ae_exp_adj.html</loc>
+  </url>
+  <url>
     <loc>https://merck.github.io/metalite.ae/reference/format_ae_specific.html</loc>
   </url>
   <url>
@@ -88,9 +91,6 @@
     <loc>https://merck.github.io/metalite.ae/reference/metalite_ae_adex.html</loc>
   </url>
   <url>
-    <loc>https://merck.github.io/metalite.ae/reference/prepare_ae_exp_adj.html</loc>
-  </url>
-  <url>
     <loc>https://merck.github.io/metalite.ae/reference/prepare_ae_listing.html</loc>
   </url>
   <url>
@@ -107,6 +107,9 @@
   </url>
   <url>
     <loc>https://merck.github.io/metalite.ae/reference/rate_compare_sum.html</loc>
+  </url>
+  <url>
+    <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_exp_adj.html</loc>
   </url>
   <url>
     <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_listing.html</loc>

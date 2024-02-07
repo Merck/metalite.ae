@@ -190,49 +190,59 @@ for High Dose}}
 created.</li>
 <li>Build a metadata object: At the end of this step, <code>meta</code>
 is created.</li>
-<li>Call the function <code><a href="../reference/prepare_ae_exp_adj.html">prepare_ae_exp_adj()</a></code>. This function
-has the following arguments: <code>meta</code>, <code>population</code>,
-<code>observation</code>, <code>parameter</code>, and
-<code>adj_unit</code>. The output will be a list:</li>
+<li>Call the function <code><a href="../reference/prepare_ae_summary.html">prepare_ae_summary()</a></code> and
+<code><a href="../reference/extend_ae_summary_eaer.html">extend_ae_summary_eaer()</a></code>. This extend function has the
+following arguments: <code>outdata</code>, <code>duration_var</code>,
+and <code>adj_unit</code>. The output will be a list:</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite.ae/">metalite.ae</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_ae_exp_adj.html">prepare_ae_exp_adj</a></span><span class="op">(</span></span>
-<span>  <span class="va">meta</span>,</span>
-<span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
-<span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
-<span>  parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span>,</span>
-<span>  adj_unit <span class="op">=</span> <span class="st">"month"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">x</span></span></code></pre></div>
-<pre><code><span><span class="co">## List of 11</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">meta</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span></span>
+<span>    population <span class="op">=</span> <span class="st">"apat"</span>,</span>
+<span>    observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
+<span>    parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span>,</span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/extend_ae_summary_eaer.html">extend_ae_summary_eaer</a></span><span class="op">(</span></span>
+<span>    duration_var <span class="op">=</span> <span class="st">"TRTDUR"</span>,</span>
+<span>    adj_unit <span class="op">=</span> <span class="st">"month"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## any</span></span></code></pre>
+<pre><code><span><span class="co">## rel</span></span></code></pre>
+<pre><code><span><span class="co">## ser</span></span></code></pre>
+<pre><code><span><span class="co">## any</span></span></code></pre>
+<pre><code><span><span class="co">## rel</span></span></code></pre>
+<pre><code><span><span class="co">## ser</span></span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span></span></code></pre></div>
+<pre><code><span><span class="co">## List of 17</span></span>
 <span><span class="co">##  $ meta           :List of 7</span></span>
 <span><span class="co">##  $ population     : chr "apat"</span></span>
 <span><span class="co">##  $ observation    : chr "wk12"</span></span>
 <span><span class="co">##  $ parameter      : chr "any;rel;ser"</span></span>
-<span><span class="co">##  $ n              :'data.frame': 1 obs. of  3 variables:</span></span>
-<span><span class="co">##  $ order          : NULL</span></span>
-<span><span class="co">##  $ group          : chr "TRTA"</span></span>
-<span><span class="co">##  $ reference_group: NULL</span></span>
-<span><span class="co">##  $ total_exposure : num [1:3(1d)] 12820 8318 8349</span></span>
-<span><span class="co">##  $ adj_rate       :List of 3</span></span>
-<span><span class="co">##  $ group_label    : Factor w/ 3 levels "Placebo","Low Dose",..: 1 3 2</span></span></code></pre>
-<p>Run <code>x$adj_rate</code> to get the EAER:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">adj_rate</span></span></code></pre></div>
-<pre><code><span><span class="co">## [[1]]</span></span>
-<span><span class="co">##   Placebo  Low Dose High Dose </span></span>
-<span><span class="co">##  110.1400  159.1725  166.4907 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## [[2]]</span></span>
-<span><span class="co">## [1]  48.66652 106.84679 102.08992</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## [[3]]</span></span>
-<span><span class="co">## [1] 0.0000000 0.3659137 0.7318274</span></span></code></pre>
+<span><span class="co">##  $ n              :'data.frame': 5 obs. of  4 variables:</span></span>
+<span><span class="co">##  $ order          : num [1:5] 1 100 200 300 400</span></span>
+<span><span class="co">##  $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"</span></span>
+<span><span class="co">##  $ reference_group: num 1</span></span>
+<span><span class="co">##  $ prop           :'data.frame': 5 obs. of  4 variables:</span></span>
+<span><span class="co">##  $ diff           :'data.frame': 5 obs. of  2 variables:</span></span>
+<span><span class="co">##  $ n_pop          :'data.frame': 1 obs. of  4 variables:</span></span>
+<span><span class="co">##  $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...</span></span>
+<span><span class="co">##  $ prepare_call   : language prepare_ae_summary(meta = meta, population = "apat", observation = "wk12",      parameter = "any;rel;ser", )</span></span>
+<span><span class="co">##  $ total_exp      :'data.frame': 1 obs. of  4 variables:</span></span>
+<span><span class="co">##  $ event_num      :'data.frame': 3 obs. of  4 variables:</span></span>
+<span><span class="co">##  $ eaer           :'data.frame': 3 obs. of  4 variables:</span></span>
+<span><span class="co">##  $ adj_unit       : chr "month"</span></span></code></pre>
+<p>Run <code>x$eaer</code> to get the EAER:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">eaer</span></span></code></pre></div>
+<pre><code><span><span class="co">##    Placebo    Low Dose   High Dose       Total</span></span>
+<span><span class="co">## 1 71.46214 159.1724513 165.8725416 122.9359029</span></span>
+<span><span class="co">## 2 31.57630 106.8467949 101.7108552  72.6674019</span></span>
+<span><span class="co">## 3  0.00000   0.3659137   0.7291101   0.3096622</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
