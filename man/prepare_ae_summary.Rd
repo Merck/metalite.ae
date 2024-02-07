@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_ae_summary.R
 \name{prepare_ae_summary}
 \alias{prepare_ae_summary}
-\title{Prepare datasets for AE specific analysis}
+\title{Prepare datasets for AE summary}
 \usage{
 prepare_ae_summary(meta, population, observation, parameter, ...)
 }
@@ -21,10 +21,10 @@ The term name is used as key to link information.}
 \item{...}{Additional arguments passed to \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 }
 \value{
-A list of analysis raw datasets.
+A list of analysis datasets needed for AE summary.
 }
 \description{
-Prepare datasets for AE specific analysis
+Prepare datasets for AE summary
 }
 \examples{
 meta <- meta_ae_example()

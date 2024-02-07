@@ -9,9 +9,9 @@ extend_ae_specific_duration(outdata, duration_var, duration_unit = "Day")
 \arguments{
 \item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{duration_var}{A character value of variable name for AE duration.}
+\item{duration_var}{A character value of variable name for adverse event duration.}
 
-\item{duration_unit}{A character value of AE duration unit.}
+\item{duration_unit}{A character value of adverse event duration unit.}
 }
 \value{
 A list of analysis raw datasets.

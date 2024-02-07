@@ -1,7 +1,9 @@
 #' Evaluate a call using outdata
 #'
-#' @param outdata a outdata object.
-#' @param call a function call that require `outdata` object as an input.
+#' @param outdata An outdata object.
+#' @param call A function call that require `outdata` object as an input.
+#'
+#' @return outdata object
 #'
 #' @noRd
 outdata_eval_extend_call <- function(outdata, call) {
@@ -11,8 +13,8 @@ outdata_eval_extend_call <- function(outdata, call) {
 
 #' Evaluate a call using outdata
 #'
-#' @param outdata a outdata object.
-#' @param call a function call that require `outdata` object as an input.
+#' @param outdata An outdata object.
+#' @param call A function call that require `outdata` object as an input.
 #'
 #' @noRd
 outdata_eval_prepare_call <- function(outdata) {

@@ -20,7 +20,7 @@
 #'
 #' @inheritParams tlf_ae_specific
 #'
-#' @return RTF file and source dataset for AE listing.
+#' @return RTF file and the source dataset for AE summary table.
 #'
 #' @export
 #'

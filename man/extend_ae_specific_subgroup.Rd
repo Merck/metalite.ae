@@ -2,15 +2,15 @@
 % Please edit documentation in R/extend_ae_specific.R
 \name{extend_ae_specific_subgroup}
 \alias{extend_ae_specific_subgroup}
-\title{Add Subgroup analysis in AE specific analysis}
+\title{Add subgroup analysis in AE specific analysis}
 \usage{
 extend_ae_specific_subgroup(outdata, subgroup)
 }
 \arguments{
 \item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
-\item{subgroup}{a character string for subgroup variable name}
+\item{subgroup}{A character string for subgroup variable name.}
 }
 \description{
-Add Subgroup analysis in AE specific analysis
+Add subgroup analysis in AE specific analysis
 }

@@ -16,12 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Prepare datasets for AE specific analysis
+#' Prepare datasets for AE summary
 #'
 #' @inheritParams prepare_ae_specific
 #' @param ... Additional arguments passed to [prepare_ae_specific()].
 #'
-#' @return A list of analysis raw datasets.
+#' @return A list of analysis datasets needed for AE summary.
 #'
 #' @export
 #'

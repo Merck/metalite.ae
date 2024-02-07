@@ -30,7 +30,8 @@ displayed e.g. c(9,20,40).}
 
 \item{orientation}{Orientation in 'portrait' or 'landscape'.}
 
-\item{title}{Term "analysis", "observation"and "population") for collecting title from metadata or a character vector of table titles.}
+\item{title}{Term "analysis", "observation"and "population") for collecting
+title from metadata or a character vector of table titles.}
 
 \item{footnotes}{A character vector of table footnotes.}
 

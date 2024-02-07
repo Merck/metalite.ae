@@ -4,5 +4,7 @@
 #'
 #' @format A data frame with 591 rows and 41 variables.
 #'
+#' @return An analysis data frame.
+#'
 #' @source \url{https://github.com/phuse-org/phuse-scripts/tree/master/data/sdtm/cdiscpilot01}
 "metalite_ae_adex"
