@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_ae_specific_subgroup.R
 \name{format_ae_specific_subgroup}
 \alias{format_ae_specific_subgroup}
-\title{Format AE specific analysis}
+\title{Format AE specific subgroup analysis}
 \usage{
 format_ae_specific_subgroup(
   outdata,
@@ -20,32 +20,32 @@ format_ae_specific_subgroup(
 
 \item{display}{A character vector of measurement to be displayed.
 \itemize{
-\item \code{n}: Number of subjects with AE.
-\item \code{prop}: Proportion of subjects with AE.
+\item \code{n}: Number of subjects with adverse event.
+\item \code{prop}: Proportion of subjects with adverse event.
 \item \code{total}: Total columns.
-\item \code{dur}: Average of AE duration.
-\item \code{events}: Average number of AE per subject.
+\item \code{dur}: Average of adverse event duration.
+\item \code{events}: Average number of adverse event per subject.
 }}
 
 \item{digits_prop}{A numeric value of number of digits for proportion value.}
 
-\item{digits_ci}{A numeric value of number of digits for confidence interval}
+\item{digits_ci}{A numeric value of number of digits for confidence interval.}
 
-\item{digits_p}{A numeric value of number of digits for p-value .}
+\item{digits_p}{A numeric value of number of digits for p-value.}
 
 \item{digits_dur}{A numeric value of number of digits for
-average duration of AE.}
+average duration of adverse event.}
 
 \item{digits_events}{A numeric value of number of digits for
-average of number of AE per subjects.}
+average of number of adverse event per subjects.}
 
 \item{mock}{Logical. Display mock table or not.}
 }
 \value{
-A list of analysis raw datasets.
+A list of analysis raw datasets for subgroup analysis.
 }
 \description{
-Format AE specific analysis
+Format AE specific subgroup analysis
 }
 \examples{
 meta <- meta_ae_example()

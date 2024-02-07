@@ -2,7 +2,7 @@
 % Please edit documentation in R/tlf_ae_listing.R
 \name{tlf_ae_listing}
 \alias{tlf_ae_listing}
-\title{Specific adverse events table}
+\title{Generate AE listing}
 \usage{
 tlf_ae_listing(
   outdata,
@@ -36,10 +36,10 @@ displayed e.g. c(9,20,40).}
 \item{path_outtable}{A character string of the outtable path.}
 }
 \value{
-RTF file and source dataset for AE listing.
+RTF file and the source dataset for AE listing.
 }
 \description{
-Specific adverse events table
+Generate AE listing
 }
 \examples{
 library(r2rtf)

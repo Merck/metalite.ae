@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_ae_specific_subgroup.R
 \name{prepare_ae_specific_subgroup}
 \alias{prepare_ae_specific_subgroup}
-\title{Prepare datasets for AE specific analysis}
+\title{Prepare datasets for AE specific subgroup analysis}
 \usage{
 prepare_ae_specific_subgroup(
   meta,
@@ -40,10 +40,10 @@ will be second level header.}
 subgroup analysis or not.}
 }
 \value{
-A list of analysis raw datasets.
+A list of analysis datasets needed for AE specific subgroup analysis.
 }
 \description{
-Prepare datasets for AE specific analysis
+Prepare datasets for AE specific subgroup analysis
 }
 \examples{
 meta <- meta_ae_example()

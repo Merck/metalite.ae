@@ -20,14 +20,14 @@ format_ae_specific(
 
 \item{display}{A character vector of measurement to be displayed:
 \itemize{
-\item \code{n}: Number of subjects with AE.
-\item \code{prop}: Proportion of subjects with AE.
+\item \code{n}: Number of subjects with adverse event.
+\item \code{prop}: Proportion of subjects with adverse event.
 \item \code{total}: Total columns.
 \item \code{diff}: Risk difference.
 \item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method.
 \item \code{diff_p}: p-value of risk difference using M&N method.
-\item \code{dur}: Average of AE duration.
-\item \code{events}: Average number of AE per subject.
+\item \code{dur}: Average of adverse event duration.
+\item \code{events}: Average number of adverse event per subject.
 }}
 
 \item{digits_prop}{A numeric value of number of digits for proportion value.}
@@ -37,10 +37,10 @@ format_ae_specific(
 \item{digits_p}{A numeric value of number of digits for p-value.}
 
 \item{digits_dur}{A numeric value of number of digits for average
-duration of AE.}
+duration of adverse event.}
 
 \item{digits_events}{A numeric value of number of digits for average of
-number of AE per subjects.}
+number of adverse events per subject.}
 
 \item{mock}{A boolean value to display mock table.}
 }

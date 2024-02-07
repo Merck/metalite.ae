@@ -30,7 +30,8 @@ displayed e.g. c(9,20,40).}
 
 \item{orientation}{Orientation in 'portrait' or 'landscape'.}
 
-\item{title}{Term "analysis", "observation"and "population") for collecting title from metadata or a character vector of table titles.}
+\item{title}{Term "analysis", "observation"and "population") for collecting
+title from metadata or a character vector of table titles.}
 
 \item{footnotes}{A character vector of table footnotes.}
 
@@ -39,7 +40,7 @@ displayed e.g. c(9,20,40).}
 \item{path_outtable}{A character string of the outtable path.}
 }
 \value{
-RTF file and source dataset for AE listing.
+RTF file and the source dataset for AE summary table.
 }
 \description{
 AE summary table
