@@ -353,10 +353,8 @@ extend_ae_specific_events <- function(outdata) {
 #'   observation = "wk12",
 #'   parameter = "rel"
 #' ) |>
-#'   extend_ae_specific_subgroup(subgroup_var= "SEX")
-
-
-extend_ae_specific_subgroup <- function(outdata,subgroup_var ) {
+#'   extend_ae_specific_subgroup(subgroup_var = "SEX")
+extend_ae_specific_subgroup <- function(outdata, subgroup_var) {
   outdata$subgroup_var <- subgroup_var
   outdata$subgroup_header <- c(outdata$meta$population[[outdata$population]]$group, outdata$subgroup_var)
   meta_subgroup <- metalite::meta_split(outdata$meta, outdata$subgroup_header[2])
