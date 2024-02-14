@@ -1,7 +1,3 @@
-library(dplyr)
-library(metalite.ae)
-library(metalite)
-
 adsl <- r2rtf::r2rtf_adsl
 adsl$TRTA <- adsl$TRT01A
 adsl$TRTA <- factor(adsl$TRTA,
@@ -68,8 +64,8 @@ meta_ae_listing_example <- function() {
     meta_build()
 }
 
-listing_ae <- full_join(
-  adsl |> select(USUBJID, TRT01AN, ITTFL), # Merge with adsl
+listing_ae <- dplyr::full_join(
+  adsl |> dplyr::select(USUBJID, TRT01AN, ITTFL), # Merge with adsl
   adae,
   by = "USUBJID",
   multiple = "all"
@@ -94,8 +90,8 @@ test_that("Checking Serious AE records at WK12", {
   rownames(prod_tbl) <- NULL
 
   listi <- listing_ae |>
-    filter(SAFFL == "Y" & AESER == "Y") |>
-    select(c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
+    dplyr::filter(SAFFL == "Y" & AESER == "Y") |>
+    dplyr::select(c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
 
   rownames(listi) <- NULL
   attr(listi$TRTA, "label") <- "TRTA"
@@ -118,8 +114,8 @@ test_that("Checking AE related records at WK12", {
 
 
   listi <- listing_ae |>
-    filter(SAFFL == "Y" & AEREL %in% c("POSSIBLE", "PROBABLE")) |>
-    select(c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
+    dplyr::filter(SAFFL == "Y" & AEREL %in% c("POSSIBLE", "PROBABLE")) |>
+    dplyr::select(c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT", "subline", "TRTA"))
 
   rownames(listi) <- NULL
   attr(listi$TRTA, "label") <- "TRTA"
