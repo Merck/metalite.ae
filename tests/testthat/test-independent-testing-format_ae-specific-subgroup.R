@@ -1,5 +1,3 @@
-library(metalite)
-library(metalite.ae)
 meta <- meta_ae_example()
 outdata <- prepare_ae_specific_subgroup(meta,
   population = "apat",
