@@ -25,11 +25,12 @@
 #' @inheritParams r2rtf::rtf_page
 #' @inheritParams r2rtf::rtf_body
 #' @param footnotes A character vector of table footnotes.
-#' @param title Term "analysis", "observation"and "population") for collecting title from metadata or a character vector of table titles.
+#' @param title Term "analysis", "observation"and "population") for collecting
+#'   title from metadata or a character vector of table titles.
 #' @param path_outdata A character string of the outdata path.
 #' @param path_outtable A character string of the outtable path.
 #'
-#' @return RTF file and source dataset for AE specific table.
+#' @return RTF file and the source dataset for AE specific table.
 #'
 #' @export
 #'

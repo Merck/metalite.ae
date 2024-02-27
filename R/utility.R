@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Create mock table
+#' Create a mock table
 #'
 #' @param df A data frame.
 #' @param mask A character string to mask the number.
@@ -37,6 +37,8 @@ to_mock <- function(df, mask = "x", n = 20) {
 #' Convert to sentence case
 #'
 #' @param x A character vector.
+#'
+#' @return A mock table.
 #'
 #' @noRd
 #'

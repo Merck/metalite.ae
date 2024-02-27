@@ -2,7 +2,7 @@
 % Please edit documentation in R/rate_compare.R
 \name{rate_compare}
 \alias{rate_compare}
-\title{Unstratified and stratified  Miettinen and Nurminen test}
+\title{Unstratified and stratified Miettinen and Nurminen test}
 \usage{
 rate_compare(
   formula,
@@ -55,8 +55,8 @@ bisection method. Default is 100.}
 A data frame with the test results.
 }
 \description{
-Unstratified and stratified  Miettinen and Nurminen test.
-Details can be found in \code{vignette("rate-compare")}.
+Unstratified and stratified Miettinen and Nurminen test details can be found
+in \code{vignette("rate-compare")}.
 }
 \examples{
 # Conduct the stratified MN analysis with sample size weights

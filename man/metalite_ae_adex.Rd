@@ -13,6 +13,9 @@ A data frame with 591 rows and 41 variables.
 \usage{
 metalite_ae_adex
 }
+\value{
+An analysis data frame.
+}
 \description{
 A dataset containing exposure details.
 }

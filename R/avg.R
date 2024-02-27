@@ -19,12 +19,14 @@
 #' Average number of events
 #'
 #' Calculates average number of records per group and, if requested, parameter.
-#' Returns a list of means and sd of counts of records per group, ordered in
+#' Returns a list of means and SD of counts of records per group, ordered in
 #' the same way as the input datasets.
 #'
 #' @inheritParams n_subject
 #'
 #' @importFrom stats sd reshape
+#'
+#' @return A list of means and SD of counts of records per group.
 #'
 #' @noRd
 #'
@@ -56,7 +58,7 @@ avg_event <- function(id, group, par = NULL) {
   } else {
     db <- data.frame(id = id, group = group, par = par)
 
-    # Count number of observations per group, par, and id.
+    # Count number of observations per group, par, and id
     tmp <- split(db, ~ group + par + id, drop = TRUE) |>
       lapply(FUN = function(X) {
         data.frame(
@@ -76,25 +78,25 @@ avg_event <- function(id, group, par = NULL) {
         )
       }) |>
       do.call(what = rbind) |>
-      # Spread to wide format so that group.statistics are column variables.
+      # Spread to wide format so that group.statistics are column variables
       reshape(timevar = "group", idvar = "par", direction = "wide", new.row.names = NULL)
 
-    # Sort the summarized data so that par is in the same order as input.
+    # Sort the summarized data so that par is in the same order as input
     tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
     if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
 
-    # Remove rownames.
+    # Remove row names
     rownames(tmp) <- NULL
 
-    # Extract avg and se into separate datasets.
+    # Extract avg and se into separate datasets
     avg <- tmp[, grepl(names(tmp), pattern = "^avg")]
     names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
-    # Reorder columns (group) to be as input.
+    # Reorder columns (group) to be as input
     avg <- avg[, u_group]
 
     se <- tmp[, grepl(names(tmp), pattern = "^se")]
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
-    # Reorder columns (group) to be as input.
+    # Reorder columns (group) to be as input
     se <- se[, u_group]
   }
 
@@ -106,7 +108,7 @@ avg_event <- function(id, group, par = NULL) {
 #' the same way as the input datasets.
 #'
 #' @inheritParams n_subject
-#' @param dur A numeric vector of AE duration.
+#' @param dur A numeric vector of adverse event duration.
 #'
 #' @importFrom stats sd reshape
 #'
@@ -121,7 +123,7 @@ avg_duration <- function(id, group, dur, par = NULL) {
   if (is.null(par)) {
     db <- data.frame(id = id, group = group, dur = dur)
 
-    # Compute average and se of dur by treatment group.
+    # Compute average and se of dur by treatment group
     res <- split(db, db$group) |>
       lapply(FUN = function(X) {
         data.frame(
@@ -140,7 +142,7 @@ avg_duration <- function(id, group, dur, par = NULL) {
   } else {
     db <- data.frame(id = id, group = group, dur = dur, par = par)
 
-    # summarize dur by group and par.
+    # summarize dur by group and par
     tmp <- split(db, ~ group + par, drop = TRUE) |>
       lapply(FUN = function(X) {
         data.frame(
@@ -152,23 +154,23 @@ avg_duration <- function(id, group, dur, par = NULL) {
       }) |>
       do.call(what = rbind) |>
       reshape(timevar = "group", idvar = "par", direction = "wide")
-    # Sort the summarized data so that par is in the same order as input.
+    # Sort the summarized data so that par is in the same order as input
     tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
     if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
 
-    # Set rownames to null.
+    # Set row names to null
     rownames(tmp) <- NULL
 
 
-    # Extract avg and se into separate datasets.
+    # Extract avg and se into separate datasets
     avg <- cbind(par = tmp$par, tmp[, grepl(names(tmp), pattern = "^avg")])
     names(avg) <- sub(names(avg), pattern = "avg\\.", replacement = "")
-    # Reorder columns (group) to be as input.
+    # Reorder columns (group) to be as input
     avg <- avg[, u_group]
 
     se <- cbind(par = tmp$par, tmp[, grepl(names(tmp), pattern = "^se")])
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
-    # Reorder columns (group) to be as input.
+    # Reorder columns (group) to be as input
     se <- se[, u_group]
   }
 

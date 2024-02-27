@@ -48,7 +48,7 @@ fmt_pct <- function(x, digits = 1, pre = "(", post = ")") {
 #' Decimals will understand the number will be formatted as x.x (x.xx).
 #'
 #' @param mean A numeric vector of mean value.
-#' @param sd A numeric vector of sd value.
+#' @param sd A numeric vector of standard deviation value.
 #' @param digits Digits of each column, i.e., format as x.x (x.xx).
 #' @param width Width of each column.
 #'

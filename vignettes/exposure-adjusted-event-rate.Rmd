@@ -88,8 +88,9 @@ $$
 
 - Data preprocessing: At the end of this step, `adae` is created.
 - Build a metadata object: At the end of this step, `meta` is created.
-- Call the function `prepare_ae_exp_adj()`. This function has the following
-  arguments: `meta`, `population`, `observation`, `parameter`, and `adj_unit`.
+- Call the function `prepare_ae_summary()` and `extend_ae_summary_eaer()`. 
+  This extend function has the following arguments: 
+  `outdata`, `duration_var`, and `adj_unit`.
   The output will be a list:
 
 ```{r}
@@ -99,19 +100,22 @@ library(metalite.ae)
 ```{r}
 meta <- meta_ae_example()
 
-x <- prepare_ae_exp_adj(
-  meta,
-  population = "apat",
-  observation = "wk12",
-  parameter = "any;rel;ser",
-  adj_unit = "month"
-)
+x <- meta |>
+  prepare_ae_summary(
+    population = "apat",
+    observation = "wk12",
+    parameter = "any;rel;ser",
+  ) |>
+  extend_ae_summary_eaer(
+    duration_var = "TRTDUR",
+    adj_unit = "month"
+  )
 
 x
 ```
 
-Run `x$adj_rate` to get the EAER:
+Run `x$eaer` to get the EAER:
 
 ```{r}
-x$adj_rate
+x$eaer
 ```

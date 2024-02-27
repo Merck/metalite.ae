@@ -20,7 +20,7 @@
 #'
 #' @inheritParams tlf_ae_specific
 #'
-#' @return RTF file and source dataset for subgroup analysis AE specific table.
+#' @return RTF file and the source dataset for AE specific subgroup analysis table.
 #'
 #' @export
 #'

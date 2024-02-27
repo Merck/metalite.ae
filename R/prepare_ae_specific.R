@@ -29,7 +29,7 @@
 #' @param reference_group An integer to indicate reference group.
 #'   Default is 2 if there are 2 groups, otherwise, the default is 1.
 #'
-#' @return A list of analysis raw datasets.
+#' @return A list of analysis datasets needed for AE specific analysis.
 #'
 #' @import metalite
 #'
@@ -95,7 +95,8 @@ prepare_ae_specific <- function(meta,
 
   if (!"factor" %in% class(obs[[obs_group]])) {
     warning("In observation level data, force group variable '", obs_group, "' be a factor")
-    obs[[obs_group]] <- factor(obs[[obs_group]], levels = levels(pop[[pop_group]]))
+    obs[[obs_group]] <- factor(obs[[obs_group]])
+    levels(obs[[obs_group]]) <- levels(pop[[pop_group]])
   }
 
   # Add a total group to display total column

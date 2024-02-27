@@ -4,7 +4,7 @@ test_that("Test different type of Mean, SD and Digits", {
   expect_equal(" 11.00 ( 5.666)", fmt_est(10.99999, 5.6656, digits = c(2, 3)))
 
   x <- datasets::iris |>
-    summarise(mean = mean(Petal.Width), n = n(), sd = sd(Petal.Width))
+    dplyr::summarize(mean = mean(Petal.Width), n = dplyr::n(), sd = sd(Petal.Width))
 
   expect_equal("  1.20 ( 0.762)", fmt_est(x$mean, x$sd, digits = c(2, 3)))
   expect_equal("1.20 (0.762)", fmt_est(x$mean, x$sd, digits = c(2, 3), width = c(1, 2)))

@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Prepare datasets for AE specific analysis
+#' Prepare datasets for AE listing
 #'
 #' @param meta A metadata object created by metalite.
 #' @param analysis Analysis name from `meta`.
@@ -27,7 +27,7 @@
 #' @param parameter A character value of parameter term name.
 #'   The term name is used as key to link information.
 #'
-#' @return A list of analysis raw datasets.
+#' @return A list of analysis datasets needed for AE listing.
 #'
 #' @import metalite
 #'

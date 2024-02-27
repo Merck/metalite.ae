@@ -95,8 +95,8 @@ extend_ae_specific_inference <- function(outdata, ci = 0.95) {
 #' Add average duration information for AE specific analysis
 #'
 #' @param outdata An `outdata` object created by [prepare_ae_specific()].
-#' @param duration_var A character value of variable name for AE duration.
-#' @param duration_unit A character value of AE duration unit.
+#' @param duration_var A character value of variable name for adverse event duration.
+#' @param duration_unit A character value of adverse event duration unit.
 #'
 #' @return A list of analysis raw datasets.
 #'
@@ -140,7 +140,7 @@ extend_ae_specific_duration <- function(outdata,
   par_var <- collect_adam_mapping(meta, parameter)$var
   par_soc <- collect_adam_mapping(meta, parameter)$soc
 
-  # Obtain Data
+  # Obtain data
   pop <- collect_population_record(meta, population, var = pop_var)
   obs <- collect_observation_record(meta, population, observation, parameter,
     var = unique(c(obs_var, par_var, par_soc, obs_dur))
@@ -181,7 +181,7 @@ extend_ae_specific_duration <- function(outdata,
   u_group <- levels(pop[[pop_group]])
   n_group <- length(u_group)
 
-  # Overall Duration
+  # Overall duration
   obs_duration <- avg_duration(obs[[obs_id]], obs[[obs_group]], obs[[obs_dur]])
   obs_order <- 1e2
 
@@ -204,7 +204,7 @@ extend_ae_specific_duration <- function(outdata,
     se <- rbind(se, par_duration$se)
   }
 
-  # Define Order and add blank row
+  # Define order and add a blank row
   index <- c(obs_order, soc_order, par_order)
   blank_order <- setdiff(outdata$order, index)
   blank_row <- data.frame(matrix(NA, nrow = length(blank_order), ncol = n_group))
@@ -255,7 +255,7 @@ extend_ae_specific_events <- function(outdata) {
   par_var <- collect_adam_mapping(meta, parameter)$var
   par_soc <- collect_adam_mapping(meta, parameter)$soc
 
-  # Obtain Data
+  # Obtain data
   pop <- collect_population_record(meta, population, var = pop_var)
   obs <- collect_observation_record(meta, population, observation, parameter,
     var = unique(c(obs_var, par_var, par_soc))
@@ -296,7 +296,7 @@ extend_ae_specific_events <- function(outdata) {
   u_group <- levels(pop[[pop_group]])
   n_group <- length(u_group)
 
-  # Overall Duration
+  # Overall duration
   obs_events <- avg_event(obs[[obs_id]], obs[[obs_group]])
   obs_order <- 1e2
 
@@ -319,7 +319,7 @@ extend_ae_specific_events <- function(outdata) {
     se <- rbind(se, par_events$se)
   }
 
-  # Define Order and add blank row
+  # Define order and add a blank row
   index <- c(obs_order, soc_order, par_order)
   blank_order <- setdiff(outdata$order, index)
   blank_row <- data.frame(matrix(NA, nrow = length(blank_order), ncol = n_group))
@@ -339,10 +339,12 @@ extend_ae_specific_events <- function(outdata) {
   outdata
 }
 
-#' Add Subgroup analysis in AE specific analysis
+#' Add subgroup analysis in AE specific analysis
 #'
 #' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #' @param subgroup_var a character string for subgroup variable name
+#' @param outdata  An `outdata` object created by [prepare_ae_specific()].
+#' @param subgroup A character string for subgroup variable name.
 #'
 #' @return A list of analysis raw datasets.
 #' @export

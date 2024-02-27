@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_ae_listing.R
 \name{prepare_ae_listing}
 \alias{prepare_ae_listing}
-\title{Prepare datasets for AE specific analysis}
+\title{Prepare datasets for AE listing}
 \usage{
 prepare_ae_listing(meta, analysis, population, observation, parameter)
 }
@@ -21,10 +21,10 @@ The term name is used as key to link information.}
 The term name is used as key to link information.}
 }
 \value{
-A list of analysis raw datasets.
+A list of analysis datasets needed for AE listing.
 }
 \description{
-Prepare datasets for AE specific analysis
+Prepare datasets for AE listing
 }
 \examples{
 meta <- meta_ae_example()

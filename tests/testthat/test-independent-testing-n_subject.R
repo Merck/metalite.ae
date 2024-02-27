@@ -1,6 +1,4 @@
-library(r2rtf)
-library(dplyr)
-library(tidyr)
+r2rtf_adae <- r2rtf::r2rtf_adae
 
 test_that("if group = ... is not a factor, throw errors", {
   expect_error(n_subject(r2rtf_adae$USUBJID, as.character(r2rtf_adae$TRTA)))

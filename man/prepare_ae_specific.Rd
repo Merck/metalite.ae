@@ -31,7 +31,7 @@ The term name is used as key to link information.}
 Default is 2 if there are 2 groups, otherwise, the default is 1.}
 }
 \value{
-A list of analysis raw datasets.
+A list of analysis datasets needed for AE specific analysis.
 }
 \description{
 Prepare datasets for AE specific analysis

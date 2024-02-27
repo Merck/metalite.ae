@@ -14,7 +14,7 @@ fmt_est(
 \arguments{
 \item{mean}{A numeric vector of mean value.}
 
-\item{sd}{A numeric vector of sd value.}
+\item{sd}{A numeric vector of standard deviation value.}
 
 \item{digits}{Digits of each column, i.e., format as x.x (x.xx).}
 
