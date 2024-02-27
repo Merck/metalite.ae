@@ -341,12 +341,39 @@ extend_ae_specific_events <- function(outdata) {
 
 #' Add subgroup analysis in AE specific analysis
 #'
+#' @param outdata An `outdata` object created by [prepare_ae_specific()].
+#' @param subgroup_var a character string for subgroup variable name
 #' @param outdata  An `outdata` object created by [prepare_ae_specific()].
 #' @param subgroup A character string for subgroup variable name.
 #'
+#' @return A list of analysis raw datasets.
 #' @export
-extend_ae_specific_subgroup <- function(outdata, subgroup) {
-  outdata$subgroup <- subgroup
+#' @examples
+#' meta <- meta_ae_example()
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_subgroup(subgroup_var = "SEX")
+extend_ae_specific_subgroup <- function(outdata, subgroup_var) {
+  outdata$subgroup_var <- subgroup_var
+  outdata$subgroup_header <- c(outdata$meta$population[[outdata$population]]$group, outdata$subgroup_var)
+  meta_subgroup <- metalite::meta_split(outdata$meta, outdata$subgroup_header[2])
+  outdata$components <- c("soc", "par")
 
-  outdata
+  subgrp_out <- lapply(meta_subgroup, function(subgroup) {
+    prepare_ae_specific(
+      meta = outdata$meta,
+      population = outdata$population,
+      observation = outdata$observation,
+      parameter = outdata$parameter,
+      components = outdata$components
+    )
+  })
+
+  out_all <- subgrp_out
+  out_all$Total <- outdata
+
+  return(out_all)
 }
