@@ -97,7 +97,7 @@ $$
 library(metalite.ae)
 ```
 
-```{r}
+```{r, message = FALSE}
 meta <- meta_ae_example()
 
 x <- meta |>
