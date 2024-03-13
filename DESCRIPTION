@@ -1,6 +1,6 @@
 Package: metalite.ae
 Title: Adverse Events Analysis Using 'metalite'
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person("Yilong", "Zhang", role = c("aut")),
     person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role = c("aut", "cre")),
@@ -12,6 +12,8 @@ Authors@R: c(
     person("Ruchitbhai", "Patel", role = c("aut")),
     person("Brian", "Lang", role = c("aut")),
     person("Xuan", "Deng", role = c("aut")),
+    person("Hiroaki", "Fukuda", role = c("aut")),
+    person("Bing", "Liu", role = c("aut")),
     person("Merck Sharp & Dohme Corp", role = c("cph"))
     )
 Description: Analyzes adverse events in clinical trials using the 'metalite'
