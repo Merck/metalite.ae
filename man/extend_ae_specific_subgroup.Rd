@@ -2,7 +2,7 @@
 % Please edit documentation in R/extend_ae_specific.R
 \name{extend_ae_specific_subgroup}
 \alias{extend_ae_specific_subgroup}
-\title{Add Subgroup analysis in AE specific analysis}
+\title{Add subgroup analysis in AE specific analysis}
 \usage{
 extend_ae_specific_subgroup(outdata, subgroup_var)
 }
@@ -15,7 +15,7 @@ extend_ae_specific_subgroup(outdata, subgroup_var)
 A list of analysis raw datasets.
 }
 \description{
-Add Subgroup analysis in AE specific analysis
+Add subgroup analysis in AE specific analysis
 }
 \examples{
 meta <- meta_ae_example()
@@ -24,5 +24,5 @@ tbl <- prepare_ae_specific(meta,
   observation = "wk12",
   parameter = "rel"
 ) |>
-  extend_ae_specific_subgroup(subgroup_var= "SEX")
+  extend_ae_specific_subgroup(subgroup_var = "SEX")
 }
