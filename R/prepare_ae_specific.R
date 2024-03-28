@@ -191,7 +191,7 @@ prepare_ae_specific <- function(meta,
   tbl <- rbind(tbl0, tbl)
   tbl <- tbl[order(tbl$order), ]
   soc_name <- tbl$soc_name
-  tbl <- tbl[,!(names(tbl) %in% "soc_name")]
+  tbl <- tbl[, !(names(tbl) %in% "soc_name")]
 
 
   # Calculate Proportion
@@ -213,7 +213,7 @@ prepare_ae_specific <- function(meta,
     prop = tbl_rate, diff = tbl_diff,
     n_pop = tbl_num[1, ],
     name = tbl$name,
-    soc_name =soc_name,
+    soc_name = soc_name,
     components = components,
     prepare_call = match.call()
   )
