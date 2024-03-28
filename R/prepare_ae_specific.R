@@ -172,7 +172,7 @@ prepare_ae_specific <- function(meta,
     par_n[[par_var]] <- par_n$name
     par_n <- merge(u_soc, par_n, all.y = TRUE)
     par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
-    par_n$order[is.na(par_n$order)] <- ifelse(!all(is.na(soc_n$order)), max(soc_n$order, na.rm=T), -Inf) + 1
+    par_n$order[is.na(par_n$order)] <- ifelse(!all(is.na(soc_n$order)), max(soc_n$order, na.rm = T), -Inf) + 1
     par_n$name <- to_sentence(par_n$name)
     par_n$soc_name <- par_n[[par_soc]]
   } else {
@@ -191,7 +191,7 @@ prepare_ae_specific <- function(meta,
   tbl <- rbind(tbl0, tbl)
   tbl <- tbl[order(tbl$order), ]
   soc_name <- tbl$soc_name
-  tbl <- tbl[,!(names(tbl) %in% "soc_name")]
+  tbl <- tbl[, !(names(tbl) %in% "soc_name")]
 
 
   # Calculate Proportion
@@ -213,7 +213,7 @@ prepare_ae_specific <- function(meta,
     prop = tbl_rate, diff = tbl_diff,
     n_pop = tbl_num[1, ],
     name = tbl$name,
-    soc_name =soc_name,
+    soc_name = soc_name,
     components = components,
     prepare_call = match.call()
   )
