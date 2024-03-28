@@ -7,10 +7,11 @@
 - Add `data/metalite_ae_adex.Rda`.
 - Add new vignettes: 'Subgroup Analysis for Specific AE' and 'Exposure Adjusted Event Rate'.
 - Add test cases for new functions.
+- Add system organ class(SOC) information to `outdata` in `prepare_ae_specific()`
 
 ## Bug fixes
 - Fix bug to avoid warning messages when no comparison variables are requested in `format_ae_specific()`.
-- Fix bug to align the row rder of output data with the input one in `avg_event()` and `avg_duration()`.
+- Fix bug to align the row order of output data with the input one in `avg_event()` and `avg_duration()`.
 - Fix bug to display item if AE term has `NA` in `prepare_ae_specific()`.
 - Fix bug to correctly assign treatment labels when a treatment variable has `NA`.
 
