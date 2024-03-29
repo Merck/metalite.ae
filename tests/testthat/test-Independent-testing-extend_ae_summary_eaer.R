@@ -1,4 +1,3 @@
-
 library(dplyr)
 library(tidyverse)
 library(tidyr)
@@ -6,33 +5,35 @@ library(metalite)
 
 meta <- meta_ae_example()
 outdata_year <- prepare_ae_summary(meta,
-                              population = "apat",
-                              observation = "wk12",
-                              parameter = "any"
-)%>%
+  population = "apat",
+  observation = "wk12",
+  parameter = "any"
+) %>%
   extend_ae_summary_eaer(adj_unit = "year")
 
 outdata_month <- prepare_ae_summary(meta,
-                                   population = "apat",
-                                   observation = "wk12",
-                                   parameter = "any"
-)%>%
+  population = "apat",
+  observation = "wk12",
+  parameter = "any"
+) %>%
   extend_ae_summary_eaer(adj_unit = "month")
 
-adsl <- r2rtf::r2rtf_adsl |> dplyr::mutate(TRTA = TRT01A, TRTAN=TRT01AN)
+adsl <- r2rtf::r2rtf_adsl |> dplyr::mutate(TRTA = TRT01A, TRTAN = TRT01AN)
 adae <- r2rtf::r2rtf_adae
 
 
-#output total in adsl
+# output total in adsl
 adsl_total <- adsl %>%
   group_by(USUBJID) %>%
   summarize(across(everything(), first)) %>%
-  mutate(TRTA = "Total",
-         TRTAN = 99)
+  mutate(
+    TRTA = "Total",
+    TRTAN = 99
+  )
 
-adsl_new <- bind_rows(adsl, adsl_total)%>% arrange(USUBJID)
+adsl_new <- bind_rows(adsl, adsl_total) %>% arrange(USUBJID)
 
-#output total in adae
+# output total in adae
 adae_total <- adae %>%
   mutate(TRTA = as.character(TRTA), TRTAN = as.integer(TRTAN)) %>%
   bind_rows(., mutate(., TRTA = "Total", TRTAN = 99))
@@ -48,19 +49,21 @@ a <- adsl_new %>%
 # Create table b
 b <- adae_new %>%
   dplyr::group_by(TRTA, TRTAN) %>%
-  dplyr::summarize(cnt =dplyr::n(), .groups = "drop")%>%
+  dplyr::summarize(cnt = dplyr::n(), .groups = "drop") %>%
   dplyr::arrange(TRTAN)
 
 # Merge table a and b
-ab <- merge(a, b, by = c("TRTA", "TRTAN"))%>%
-   dplyr::arrange(TRTAN)
+ab <- merge(a, b, by = c("TRTA", "TRTAN")) %>%
+  dplyr::arrange(TRTAN)
 
 # Calculate eaer value by month and year in table ab
 ab1 <- ab %>%
-  mutate(trty = tot / 365.24,
-         trtm = tot / 30.4367,
-         eaer_all_year = (cnt * 100) / trty,
-         eaer_all_month = (cnt * 100) / trtm)
+  mutate(
+    trty = tot / 365.24,
+    trtm = tot / 30.4367,
+    eaer_all_year = (cnt * 100) / trty,
+    eaer_all_month = (cnt * 100) / trtm
+  )
 
 ab2y <- data.frame(
   TRTA = c("Placebo", "Low Dose", "High Dose", "Total"),
@@ -79,7 +82,7 @@ eaer_yr <- as.data.frame(outdata_year$eaer)
 
 
 # TEST 1
-#Define a test using test_that
+# Define a test using test_that
 test_that("Comparing specific values from datasets", {
   # Check if the values are equal
   expect_equal(ab4y, eaer_yr)
@@ -110,18 +113,3 @@ test_that("Comparing specific values from datasets", {
   # Check if the values are equal
   expect_equal(ab4m, eaer_mo)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
