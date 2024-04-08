@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">metalite.ae</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,8 +55,43 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="metaliteae-012">metalite.ae 0.1.2<a class="anchor" aria-label="anchor" href="#metaliteae-012"></a></h2>
-<ul><li>Updated <code>format_ae_specific</code> to avoid warning when no comparison variables are requested.</li>
+<div class="section level3">
+<h3 id="new-features-0-1-2">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-2"></a></h3>
+<ul><li>
+<code><a href="../reference/tlf_ae_summary.html">tlf_ae_summary()</a></code> now has a new argument <code>title</code> for a user-customized title (<a href="https://github.com/Merck/metalite.ae/issues/133" class="external-link">#133</a>).</li>
+<li>Add new functions: <code><a href="../reference/extend_ae_specific_subgroup.html">extend_ae_specific_subgroup()</a></code>, <code><a href="../reference/prepare_ae_specific_subgroup.html">prepare_ae_specific_subgroup()</a></code>, <code><a href="../reference/format_ae_specific_subgroup.html">format_ae_specific_subgroup()</a></code>, <code><a href="../reference/tlf_ae_specific_subgroup.html">tlf_ae_specific_subgroup()</a></code>, <code><a href="../reference/extend_ae_summary_eaer.html">extend_ae_summary_eaer()</a></code>, <code><a href="../reference/format_ae_exp_adj.html">format_ae_exp_adj()</a></code> and <code><a href="../reference/tlf_ae_exp_adj.html">tlf_ae_exp_adj()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/150" class="external-link">#150</a>, <a href="https://github.com/Merck/metalite.ae/issues/161" class="external-link">#161</a>, <a href="https://github.com/Merck/metalite.ae/issues/174" class="external-link">#174</a>, <a href="https://github.com/Merck/metalite.ae/issues/180" class="external-link">#180</a>).</li>
+<li>Add <code>data/metalite_ae_adex.rda</code> (<a href="https://github.com/Merck/metalite.ae/issues/164" class="external-link">#164</a>).</li>
+<li>Add new vignettes: <code><a href="../articles/ae-specific-subgroup.html">vignette("ae-specific-subgroup")</a></code> and <code><a href="../articles/exposure-adjusted-event-rate.html">vignette("exposure-adjusted-event-rate")</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/167" class="external-link">#167</a>, <a href="https://github.com/Merck/metalite.ae/issues/169" class="external-link">#169</a>).</li>
+<li>Add System Organ Classes (SOC) information to <code>outdata</code> in <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/186" class="external-link">#186</a>).</li>
 </ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-2"></a></h3>
+<ul><li>Fix bug to avoid warning messages when no comparison variables are requested in <code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/135" class="external-link">#135</a>).</li>
+<li>Fix bug to align the row order of output data with the input one in <code>avg_event()</code> and <code>avg_duration()</code> (<a href="https://github.com/Merck/metalite.ae/issues/136" class="external-link">#136</a>).</li>
+<li>Fix bug to check missing grouping variable after a subset of input data in <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/137" class="external-link">#137</a>).</li>
+<li>Fix bug to display item if AE term has <code>NA</code> in <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/166" class="external-link">#166</a>).</li>
+<li>Fix bug to correctly assign treatment labels when a treatment variable has <code>NA</code> (<a href="https://github.com/Merck/metalite.ae/issues/179" class="external-link">#179</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-0-1-2">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-1-2"></a></h3>
+<ul><li>Update GitHub Actions workflow (<a href="https://github.com/Merck/metalite.ae/issues/131" class="external-link">#131</a>, <a href="https://github.com/Merck/metalite.ae/issues/163" class="external-link">#163</a>, <a href="https://github.com/Merck/metalite.ae/issues/181" class="external-link">#181</a>).</li>
+<li>Add styler workflow (<a href="https://github.com/Merck/metalite.ae/issues/134" class="external-link">#134</a>).</li>
+<li>Add CRAN download badge (<a href="https://github.com/Merck/metalite.ae/issues/140" class="external-link">#140</a>).</li>
+<li>Remove dependencies on <code>dplyr</code> and <code>tidyr</code> from <code>avg_event()</code>, <code>avg_duration()</code> and <code>fmt_val()</code> (<a href="https://github.com/Merck/metalite.ae/issues/136" class="external-link">#136</a>).</li>
+<li>Change the default value of the <code>title</code> argument in <code><a href="../reference/tlf_ae_specific.html">tlf_ae_specific()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/138" class="external-link">#138</a>).</li>
+<li>Remove <code>R/n_subject.R</code> and change to use <code><a href="https://merck.github.io/metalite/reference/n_subject.html" class="external-link">metalite::n_subject()</a></code> in <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/144" class="external-link">#144</a>).</li>
+<li>Race values for adsl and adae are converted to title case in <code>meta_ae_exmple()</code> (<a href="https://github.com/Merck/metalite.ae/issues/158" class="external-link">#158</a>).</li>
+<li>Organize files for utility functions (<a href="https://github.com/Merck/metalite.ae/issues/159" class="external-link">#159</a>)
+<ul><li>Rename <code>R/rtf_output.R</code> to <code>R/utility.R</code>.</li>
+<li>Remove <code>rate_compare_sum.R</code>, <code>R/to_mock.R</code> and <code>R/to_sentence.R</code>.</li>
+<li>Move <code>to_rate_compare_sum()</code> to <code>R/rate_compare.R</code>, and move <code>to_mock()</code> and <code>to_sentence()</code> to <code>R/utility.R</code>.</li>
+</ul></li>
+<li>Remove library calls from tests (<a href="https://github.com/Merck/metalite.ae/issues/183" class="external-link">#183</a>).</li>
+<li>Add <code>R/outdata.R</code> to control <code>outdata</code> object (<a href="https://github.com/Merck/metalite.ae/issues/161" class="external-link">#161</a>).</li>
+<li>Add an installation section to <code>README.md</code> (<a href="https://github.com/Merck/metalite.ae/issues/177" class="external-link">#177</a>).</li>
+<li>Improve style and formatting for vignettes and code (<a href="https://github.com/Merck/metalite.ae/issues/158" class="external-link">#158</a>, <a href="https://github.com/Merck/metalite.ae/issues/168" class="external-link">#168</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="metaliteae-011">metalite.ae 0.1.1<a class="anchor" aria-label="anchor" href="#metaliteae-011"></a></h2><p class="text-muted">CRAN release: 2023-02-24</p>
 <ul><li>Updated the <code>DESCRIPTION</code> file to reformat the reference.</li>
@@ -72,7 +107,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Yilong Zhang, Yujie Zhao, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2023 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p></p><p>Developed by Yilong Zhang, Yujie Zhao, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng, Hiroaki Fukuda, Bing Liu. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
