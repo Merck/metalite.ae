@@ -343,8 +343,6 @@ extend_ae_specific_events <- function(outdata) {
 #'
 #' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #' @param subgroup_var a character string for subgroup variable name
-#' @param outdata  An `outdata` object created by [prepare_ae_specific()].
-#' @param subgroup A character string for subgroup variable name.
 #'
 #' @return A list of analysis raw datasets.
 #' @export

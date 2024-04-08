@@ -156,6 +156,7 @@ prepare_ae_specific <- function(meta,
     soc_n[[par_var]] <- soc_n$name
     soc_n$order <- 1e3 * seq_len(nrow(soc_n))
     soc_n$name <- to_sentence(soc_n$name)
+    soc_n$soc_name <- soc_n$name
   } else {
     soc_n <- NULL
   }
@@ -173,6 +174,7 @@ prepare_ae_specific <- function(meta,
     par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
     par_n$order[is.na(par_n$order)] <- (if (!all(is.na(soc_n$order))) max(soc_n$order, na.rm = TRUE) else -Inf) + 1
     par_n$name <- to_sentence(par_n$name)
+    par_n$soc_name <- par_n[[par_soc]]
   } else {
     par_n <- NULL
   }
@@ -183,8 +185,14 @@ prepare_ae_specific <- function(meta,
   names(blank_row) <- names(pop_n[, col])
 
   # Combine count values
-  tbl <- rbind(pop_n[, col], obs_n[, col], blank_row, par_n[, col], soc_n[, col])
+  tbl0 <- rbind(pop_n[, col], obs_n[, col], blank_row)
+  tbl0$soc_name <- NA
+  tbl <- rbind(par_n[, c(col, "soc_name")], soc_n[, c(col, "soc_name")])
+  tbl <- rbind(tbl0, tbl)
   tbl <- tbl[order(tbl$order), ]
+  soc_name <- tbl$soc_name
+  tbl <- tbl[, !(names(tbl) %in% "soc_name")]
+
 
   # Calculate Proportion
   tbl_num <- tbl[, u_group]
@@ -205,6 +213,7 @@ prepare_ae_specific <- function(meta,
     prop = tbl_rate, diff = tbl_diff,
     n_pop = tbl_num[1, ],
     name = tbl$name,
+    soc_name = soc_name,
     components = components,
     prepare_call = match.call()
   )

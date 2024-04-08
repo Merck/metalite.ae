@@ -32,6 +32,8 @@ Authors:
   \item Ruchitbhai Patel
   \item Brian Lang
   \item Xuan Deng
+  \item Hiroaki Fukuda
+  \item Bing Liu
 }
 
 Other contributors:
