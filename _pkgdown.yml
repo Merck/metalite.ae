@@ -77,6 +77,7 @@ reference:
   contents:
     - meta_ae_example
     - metalite_ae_adex
+    - metalite_ae_adexsum
 articles:
 - title: Get started
   contents:
