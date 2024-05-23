@@ -19,4 +19,3 @@
 #'
 #' @source \url{https://github.com/phuse-org/phuse-scripts/tree/master/data/sdtm/cdiscpilot01}
 "metalite_ae_adexsum"
-
