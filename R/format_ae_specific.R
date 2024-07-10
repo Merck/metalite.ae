@@ -234,7 +234,6 @@ format_ae_specific <- function(outdata,
 
   # Specific process for prepare_ae_specific
   if ("prepare_ae_specific" %in% as.character(outdata$prepare_call)) {
-
     if ("soc_name" %in% names(outdata)) {
       soc_name <- outdata$soc_name
     }
@@ -262,8 +261,10 @@ format_ae_specific <- function(outdata,
     if (toupper(sort_order) %in% c("COUNTDES", "COUNTASC")) {
       index_group <- which(outdata$group == sort_column)
       if (length(index_group) == 0) {
-        message(paste('If `sort_order` = "countdes" or "countasc", `sort_column` should be specified as an existing column name.',
-                      'The table is sorted by the first group column.'))
+        message(paste(
+          'If `sort_order` = "countdes" or "countasc", `sort_column` should be specified as an existing column name.',
+          "The table is sorted by the first group column."
+        ))
         index_group <- 1
       }
     }
