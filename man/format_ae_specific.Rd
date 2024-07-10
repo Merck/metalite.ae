@@ -12,6 +12,10 @@ format_ae_specific(
   digits_p = 3,
   digits_dur = c(1, 1),
   digits_events = c(1, 1),
+  filter_method = c("percent", "count"),
+  filter_criteria = 0,
+  sort_order = c("alpha", "countdes", "countasc"),
+  sort_column = NULL,
   mock = FALSE
 )
 }
@@ -41,6 +45,22 @@ duration of adverse event.}
 
 \item{digits_events}{A numeric value of number of digits for average of
 number of adverse events per subject.}
+
+\item{filter_method}{A character value to specify whether rows will be filtered
+based on participant count or percent incidence.}
+
+\item{filter_criteria}{A numeric value to display rows where at least
+one therapy group has a percent incidence or participant count
+greater than or equal to the specified value.}
+
+\item{sort_order}{A character value to specify sorting order:
+\itemize{
+\item \code{alpha}: Sort by alphabetical order.
+\item \code{countdes}: Sort by count in descending order.
+\item \code{countasc}: Sort by count in ascending order.
+}}
+
+\item{sort_column}{A character value of \code{group} in \code{outdata} used to sort a table with.}
 
 \item{mock}{A boolean value to display mock table.}
 }

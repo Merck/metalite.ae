@@ -94,13 +94,32 @@ tlf_ae_specific <- function(outdata,
 
   # Define title
   if ("analysis" %in% title | "observation" %in% title | "population" %in% title) {
-    title <- collect_title(outdata$meta,
-      outdata$population,
-      outdata$observation,
-      outdata$parameter,
-      analysis = "ae_specific",
-      title_order = title
+    title_key <- title
+    title_text <- collect_title(outdata$meta,
+                                outdata$population,
+                                outdata$observation,
+                                outdata$parameter,
+                                analysis = "ae_specific",
+                                title_order = title
     )
+
+    filter_criteria_text <- paste0(ifelse(outdata$filter_criteria > 0, "\\geq ", "> "),
+                                   outdata$filter_criteria)
+    filter_method_text <- ifelse(outdata$filter_method == "percent", "%", "Participants with an Adverse Event")
+    filter_text <- paste("(Incidence", filter_criteria_text, filter_method_text)
+    filter_text <- ifelse(n_group > 1,
+                          paste(filter_text, "in One or More Treatment Groups)"),
+                          paste(filter_text, ")"))
+
+    if ("analysis" %in% title_key) {
+      title <- sapply(seq(title_key), function(x) {
+        if (title_key[[x]] == "analysis") {
+          c(title_text[[x]], filter_text)
+        } else {
+          title_text[[x]]
+        }
+      }) |> unlist()
+    }
   }
 
   footnotes <- vapply(footnotes, glue::glue_data,
