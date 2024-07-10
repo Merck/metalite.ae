@@ -232,7 +232,7 @@ format_ae_specific <- function(outdata,
 
   res <- data.frame(name = outdata$name, res)
 
-  # Specific process for prepare_ae_specific
+  # Additional options for AE specific
   if ("prepare_ae_specific" %in% as.character(outdata$prepare_call)) {
     if ("soc_name" %in% names(outdata)) {
       soc_name <- outdata$soc_name
