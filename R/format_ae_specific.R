@@ -274,28 +274,29 @@ format_ae_specific <- function(outdata,
       # Divide head and body for sorting
       res_head <- res[1:4, ]
       res_body <- res[5:nrow(res), ]
-      soc_name <- soc_name[5:length(soc_name)]
+      soc_name <- toupper(soc_name[5:length(soc_name)])
+      soc_order <- ifelse(outdata$order %% 1000 == 0, 0, 1)[5:length(outdata$order)]
 
       if (toupper(sort_order) == "COUNTDES") {
         if (all(c("soc", "par") %in% outdata$components)) {
-          res_body <- cbind(res_body, soc_name)
+          res_body <- cbind(res_body, soc_name, soc_order)
           res_body <- res_body[order(res_body[[paste0("n_", index_group)]], decreasing = TRUE), ]
-          res_body <- res_body[order(res_body$soc_name), names(res_head)]
+          res_body <- res_body[order(res_body$soc_name, res_body$soc_order), names(res_head)]
         } else {
           res_body <- res_body[order(res_body$name), ]
           res_body <- res_body[order(res_body[[paste0("n_", index_group)]], decreasing = TRUE), ]
         }
       } else if (toupper(sort_order) == "COUNTASC") {
         if (all(c("soc", "par") %in% outdata$components)) {
-          res_body <- cbind(res_body, soc_name)
-          res_body <- res_body[order(res_body$soc_name, res_body[[paste0("n_", index_group)]]), names(res_head)]
+          res_body <- cbind(res_body, soc_name, soc_order)
+          res_body <- res_body[order(res_body$soc_name, res_body$soc_order, res_body[[paste0("n_", index_group)]]), names(res_head)]
         } else {
           res_body <- res_body[order(res_body$name, res_body[[paste0("n_", index_group)]]), ]
         }
       } else {
         if (all(c("soc", "par") %in% outdata$components)) {
-          res_body <- cbind(res_body, soc_name)
-          res_body <- res_body[order(res_body$soc_name, res_body$name), names(res_head)]
+          res_body <- cbind(res_body, soc_name, soc_order)
+          res_body <- res_body[order(res_body$soc_name, res_body$soc_order, res_body$name), names(res_head)]
         } else {
           res_body <- res_body[order(res_body$name), ]
         }
