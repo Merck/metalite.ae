@@ -35,15 +35,18 @@
 #'   - `diff_p`: p-value of risk difference using M&N method.
 #'   - `dur`: Average of adverse event duration.
 #'   - `events`: Average number of adverse event per subject.
-#' @param filter_method A character value to specify whether rows will be filtered
-#'    based on participant count or percent incidence.
+#' @param filter_method A character value to specify how to filter rows:
+#'  - `count`: Filtered based on participant count.
+#'  - `percent`: Filtered based percent incidence.
 #' @param filter_criteria A numeric value to display rows where at least
 #'    one therapy group has a percent incidence or participant count
 #'    greater than or equal to the specified value.
+#'    If `filter_method` is `percent`, the value should be between 0 and 100.
+#'    If `filter_method` is `count`, the value should be greater than 0.
 #' @param sort_order A character value to specify sorting order:
-#'  - `alpha`: Sort by alphabetical order.
-#'  - `countdes`: Sort by count in descending order.
-#'  - `countasc`: Sort by count in ascending order.
+#'  - `alphabetical`: Sort by alphabetical order.
+#'  - `count_des`: Sort by count in descending order.
+#'  - `count_asc`: Sort by count in ascending order.
 #' @param sort_column A character value of `group` in `outdata` used to sort a table with.
 #' @param mock A boolean value to display mock table.
 #'
@@ -65,6 +68,14 @@
 #'   format_ae_specific()
 #' head(tbl$tbl)
 #'
+#' # Filtering
+#' tbl <- outdata |>
+#'   format_ae_specific(
+#'     filter_method = "percent",
+#'     filter_criteria = 10
+#'   )
+#' head(tbl$tbl)
+#'
 #' # Display different measurements
 #' tbl <- outdata |>
 #'   extend_ae_specific_events() |>
@@ -79,7 +90,7 @@ format_ae_specific <- function(outdata,
                                digits_events = c(1, 1),
                                filter_method = c("percent", "count"),
                                filter_criteria = 0,
-                               sort_order = c("alpha", "countdes", "countasc"),
+                               sort_order = c("alphabetical", "count_des", "count_asc"),
                                sort_column = NULL,
                                mock = FALSE) {
   display <- tolower(display)
@@ -88,7 +99,7 @@ format_ae_specific <- function(outdata,
     several.ok = TRUE
   )
   filter_method <- match.arg(filter_method, c("percent", "count"))
-  sort_order <- match.arg(sort_order, c("alpha", "countdes", "countasc"))
+  sort_order <- match.arg(sort_order, c("alphabetical", "count_des", "count_asc"))
 
   # Add "n"
   display <- unique(c("n", display))
@@ -240,7 +251,7 @@ format_ae_specific <- function(outdata,
 
     # Filtering by criteria
     if (filter_criteria > 0) {
-      if (toupper(filter_method) == "PERCENT") {
+      if (filter_method == "percent") {
         # Round before filtering
         filter_index <- round(outdata$prop[, index_total], digits_prop)
       } else {
@@ -258,11 +269,11 @@ format_ae_specific <- function(outdata,
     }
 
     # Get index of sort column
-    if (toupper(sort_order) %in% c("COUNTDES", "COUNTASC")) {
+    if (sort_order %in% c("count_des", "count_asc")) {
       index_group <- which(outdata$group == sort_column)
       if (length(index_group) == 0) {
         message(paste(
-          'If `sort_order` = "countdes" or "countasc", `sort_column` should be specified as an existing column name.',
+          'If `sort_order` = "count_des" or "count_asc", `sort_column` should be specified as an existing column name.',
           "The table is sorted by the first group column."
         ))
         index_group <- 1
@@ -277,7 +288,7 @@ format_ae_specific <- function(outdata,
       soc_name <- toupper(soc_name[5:length(soc_name)])
       soc_order <- ifelse(outdata$order %% 1000 == 0, 0, 1)[5:length(outdata$order)]
 
-      if (toupper(sort_order) == "COUNTDES") {
+      if (sort_order == "count_des") {
         if (all(c("soc", "par") %in% outdata$components)) {
           res_body <- cbind(res_body, soc_name, soc_order)
           res_body <- res_body[order(res_body[[paste0("n_", index_group)]], decreasing = TRUE), ]
@@ -286,7 +297,7 @@ format_ae_specific <- function(outdata,
           res_body <- res_body[order(res_body$name), ]
           res_body <- res_body[order(res_body[[paste0("n_", index_group)]], decreasing = TRUE), ]
         }
-      } else if (toupper(sort_order) == "COUNTASC") {
+      } else if (sort_order == "count_asc") {
         if (all(c("soc", "par") %in% outdata$components)) {
           res_body <- cbind(res_body, soc_name, soc_order)
           res_body <- res_body[order(res_body$soc_name, res_body$soc_order, res_body[[paste0("n_", index_group)]]), names(res_head)]
