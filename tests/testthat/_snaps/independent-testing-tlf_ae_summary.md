@@ -3,7 +3,7 @@
     Code
       tbl
     Output
-      List of 16
+      List of 18
        $ meta           :List of 7
        $ population     : chr "apat"
        $ observation    : chr "wk12"
@@ -19,5 +19,7 @@
        $ prepare_call   : language prepare_ae_summary(meta = meta, population = "apat", observation = "wk12",      parameter = "any;rel;ser")
        $ tbl            :'data.frame':	5 obs. of  9 variables:
        $ extend_call    :List of 1
+       $ filter_method  : chr "percent"
+       $ filter_criteria: num 0
        $ rtf            :Classes 'rtf_text', 'rtf_border' and 'data.frame':	5 obs. of  9 variables:
 
