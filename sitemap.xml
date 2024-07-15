@@ -1,129 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://merck.github.io/metalite.ae/404.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/ae-listing.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/ae-specific-subgroup.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/ae-specific.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/ae-summary.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/exposure-adjusted-event-rate.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/metalite-ae.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/articles/rate-compare.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_duration.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_events.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_subgroup.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/extend_ae_summary_eaer.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/fmt_ci.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/fmt_est.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/fmt_pct.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/fmt_pval.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/format_ae_exp_adj.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/format_ae_specific.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/format_ae_specific_subgroup.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/format_ae_summary.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/meta_ae_example.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/metalite.ae-package.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/metalite_ae_adex.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/metalite_ae_adexsum.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/prepare_ae_listing.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/prepare_ae_specific.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/prepare_ae_specific_subgroup.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/prepare_ae_summary.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/rate_compare.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/rate_compare_sum.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_exp_adj.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_listing.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_specific.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_specific_subgroup.html</loc>
-  </url>
-  <url>
-    <loc>https://merck.github.io/metalite.ae/reference/tlf_ae_summary.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://merck.github.io/metalite.ae/404.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/LICENSE.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-listing.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-specific-subgroup.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-specific.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-summary.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/exposure-adjusted-event-rate.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/index.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/metalite-ae.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/rate-compare.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/authors.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/index.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/news/index.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_duration.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_events.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/extend_ae_specific_subgroup.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/extend_ae_summary_eaer.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/fmt_ci.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/fmt_est.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/fmt_pct.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/fmt_pval.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/format_ae_exp_adj.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/format_ae_specific.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/format_ae_specific_subgroup.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/format_ae_summary.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/index.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/meta_ae_example.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/metalite.ae-package.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/metalite_ae_adex.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/metalite_ae_adexsum.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/prepare_ae_listing.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/prepare_ae_specific.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/prepare_ae_specific_subgroup.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/prepare_ae_summary.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/rate_compare.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/rate_compare_sum.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/tlf_ae_exp_adj.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/tlf_ae_listing.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/tlf_ae_specific.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/tlf_ae_specific_subgroup.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/tlf_ae_summary.html</loc></url>
 </urlset>
+
