@@ -259,7 +259,7 @@ format_ae_specific <- function(outdata,
       }
 
       # Create filter text
-      filter_text <- paste0("filter_index[", index_total, "] > ", filter_criteria, collapse = " | ")
+      filter_text <- paste0("filter_index[", index_total, "] >= ", filter_criteria, collapse = " | ")
       filter_logic <- eval(parse(text = filter_text))
       # Keep fixed rows
       filter_logic[1:4] <- rep(TRUE, 4)
