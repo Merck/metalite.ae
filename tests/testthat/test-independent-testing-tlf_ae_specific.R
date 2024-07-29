@@ -93,6 +93,30 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
   testthat::expect_snapshot_file(path_rtf)
 })
 
+
+test_that("rtf output: events, dur, n, and prop w/ total", {
+  path_rtf <- file.path(tempdir(), "incprop_ae0specific1.rtf")
+  path_rdata <- tempfile(fileext = ".Rdata")
+
+  tbl <- outdata |>
+    extend_ae_specific_events() |>
+    extend_ae_specific_duration(duration_var = "ADURN") |>
+    format_ae_specific(
+      display = c("events", "dur", "n", "prop", "total"),
+      filter_method = "percent",
+      filter_criteria = 2,
+      mock = TRUE
+    ) |>
+    tlf_ae_specific(
+      meddra_version = "24.0",
+      source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      path_outdata = path_rdata,
+      path_outtable = path_rtf
+    )
+
+  testthat::expect_snapshot_file(path_rtf)
+})
+
 #
 # test_that("rtf output: diff, n, and prop w/ total", {
 #   path_rtf <- file.path(tempdir(), "dinpt_ae0specific1.rtf")
