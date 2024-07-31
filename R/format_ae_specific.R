@@ -34,7 +34,8 @@
 #'   - `diff_ci`: 95% confidence interval of risk difference using M&N method.
 #'   - `diff_p`: p-value of risk difference using M&N method.
 #'   - `dur`: Average of adverse event duration.
-#'   - `events`: Average number of adverse event per subject.
+#'   - `events_avg`: Average number of adverse event per subject.
+#'   - `events_count`: Count number of adverse event per subject.
 #' @param filter_method A character value to specify how to filter rows:
 #'  - `count`: Filtered based on participant count.
 #'  - `percent`: Filtered based percent incidence.
@@ -79,7 +80,7 @@
 #' # Display different measurements
 #' tbl <- outdata |>
 #'   extend_ae_specific_events() |>
-#'   format_ae_specific(display = c("n", "prop", "events"))
+#'   format_ae_specific(display = c("n", "prop", "events_count"))
 #' head(tbl$tbl)
 format_ae_specific <- function(outdata,
                                display = c("n", "prop", "total"),
@@ -95,7 +96,7 @@ format_ae_specific <- function(outdata,
                                mock = FALSE) {
   display <- tolower(display)
   display <- match.arg(display,
-    c("n", "prop", "total", "diff", "diff_ci", "diff_p", "dur", "events"),
+    c("n", "prop", "total", "diff", "diff_ci", "diff_p", "dur", "events_avg", "events_count"),
     several.ok = TRUE
   )
   filter_method <- match.arg(filter_method, c("percent", "count"))
@@ -191,25 +192,36 @@ format_ae_specific <- function(outdata,
     tbl[["dur"]] <- dur
   }
 
-  if ("events" %in% display) {
-    if (is.null(outdata$events)) {
+  if ("events_avg" %in% display) {
+    if (is.null(outdata$events_avg)) {
       stop(
         "Please use `extend_ae_specific_events()` to get events.",
         call. = FALSE
       )
     }
 
-    events <- outdata$events[, index_total] * NA
+    events_avg <- outdata$events_avg[, index_total] * NA
     for (i in seq(index_total)) {
-      m <- outdata$events[[i]]
+      m <- outdata$events_avg[[i]]
       se <- outdata$events_se[[i]]
-      events[, i] <- fmt_est(m, se, digits = digits_dur)
+      events_avg[, i] <- fmt_est(m, se, digits = digits_dur)
     }
-    tbl[["events"]] <- events
+    tbl[["events_avg"]] <- events_avg
+  }
+
+  if ("events_count" %in% display) {
+    if (is.null(outdata$events_count)) {
+      stop(
+        "Please use `extend_ae_specific_events()` to get events.",
+        call. = FALSE
+      )
+    }
+
+    tbl[["events_count"]] <- outdata$events_count[, index_total]
   }
 
   # Arrange Within Group information
-  within_var <- names(tbl)[names(tbl) %in% c("n", "prop", "dur", "events")]
+  within_var <- names(tbl)[names(tbl) %in% c("n", "prop", "dur", "events_avg", "events_count")]
   within_tbl <- tbl[within_var]
 
   names(within_tbl) <- NULL

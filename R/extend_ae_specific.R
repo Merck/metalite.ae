@@ -308,15 +308,18 @@ extend_ae_specific_events <- function(outdata) {
 
   avg <- obs_events$avg
   se <- obs_events$se
+  count <- obs_events$count
 
   if (length(soc_order) > 0) {
     avg <- rbind(avg, soc_events$avg)
     se <- rbind(se, soc_events$se)
+    count <- rbind(count, soc_events$count)
   }
 
   if (length(par_order) > 0) {
     avg <- rbind(avg, par_events$avg)
     se <- rbind(se, par_events$se)
+    count <- rbind(count, par_events$count)
   }
 
   # Define order and add a blank row
@@ -327,13 +330,17 @@ extend_ae_specific_events <- function(outdata) {
   index <- c(index, blank_order)
 
   avg <- rbind(avg, blank_row)[order(index), ]
-  names(avg) <- paste0("events_", seq_len(ncol(avg)))
+  names(avg) <- paste0("eventsavg_", seq_len(ncol(avg)))
 
   se <- rbind(se, blank_row)[order(index), ]
   names(se) <- paste0("events_se", seq_len(ncol(se)))
 
-  outdata$events <- avg
+  count <- rbind(count, blank_row)[order(index), ]
+  names(count) <- paste0("eventscount_", seq_len(ncol(count)))
+
+  outdata$events_avg <- avg
   outdata$events_se <- se
+  outdata$events_count <- count
   outdata$extend_call <- c(outdata$extend_call, match.call())
 
   outdata

@@ -55,6 +55,10 @@ avg_event <- function(id, group, par = NULL) {
       function(x) sd(x$Freq, na.rm = TRUE) / sqrt(nrow(x)),
       FUN.VALUE = numeric(1)
     )
+    count <- vapply(split(res, res$Var2),
+                    function(x) nrow(x),
+                    FUN.VALUE = numeric(1)
+    )
   } else {
     db <- data.frame(id = id, group = group, par = par)
 
@@ -74,7 +78,8 @@ avg_event <- function(id, group, par = NULL) {
           group = unique(X$group),
           par = unique(X$par),
           avg = mean(X$n, na.rm = TRUE),
-          se = sd(X$n, na.rm = TRUE) / sqrt(nrow(X))
+          se = sd(X$n, na.rm = TRUE) / sqrt(nrow(X)),
+          count = nrow(X)
         )
       }) |>
       do.call(what = rbind) |>
@@ -98,9 +103,13 @@ avg_event <- function(id, group, par = NULL) {
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
     # Reorder columns (group) to be as input
     se <- se[, u_group]
+
+    count <- tmp[, grepl(names(tmp), pattern = "^count")]
+    names(count) <- sub(names(count), pattern = "count\\.", replacement = "")
+    count <- count[, u_group]
   }
 
-  list(avg = avg, se = se)
+  list(avg = avg, se = se, count = count)
 }
 
 #' Calculates average duration per group and, if requested, parameter.
