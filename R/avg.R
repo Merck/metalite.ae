@@ -56,8 +56,8 @@ avg_event <- function(id, group, par = NULL) {
       FUN.VALUE = numeric(1)
     )
     count <- vapply(split(res, res$Var2),
-                    function(x) nrow(x),
-                    FUN.VALUE = numeric(1)
+      function(x) nrow(x),
+      FUN.VALUE = numeric(1)
     )
   } else {
     db <- data.frame(id = id, group = group, par = par)
