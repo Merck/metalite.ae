@@ -36,9 +36,19 @@
 #'   extend_ae_specific_inference() |>
 #'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
 #' head(tbl$tbl)
+#'
+#' # use other options passed on to [metalite.ae::rate_compare_sum()]
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_inference(eps = 1e-6, bisection = 200) |>
+#'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
+#' head(tbl$tbl)
 extend_ae_specific_inference <- function(outdata,
-                                         ci = 0.95,
-                                         ...) {
+                                         ...,
+                                         ci = 0.95) {
   res <- outdata
 
   if (!(is.numeric(ci) && length(ci) == 1 && (0 <= ci && ci <= 1))) {
