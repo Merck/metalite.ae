@@ -41,7 +41,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extend_ae_specific_inference</span><span class="op">(</span><span class="va">outdata</span>, ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extend_ae_specific_inference</span><span class="op">(</span><span class="va">outdata</span>, <span class="va">...</span>, ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -50,6 +50,10 @@
 
 <dl><dt id="arg-outdata">outdata<a class="anchor" aria-label="anchor" href="#arg-outdata"></a></dt>
 <dd><p>An <code>outdata</code> object created by <code><a href="prepare_ae_specific.html">prepare_ae_specific()</a></code>.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Other options passed on to <code><a href="rate_compare_sum.html">rate_compare_sum()</a></code></p></dd>
 
 
 <dt id="arg-ci">ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
@@ -81,6 +85,30 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     prop_3 diff_2           ci_2 diff_3           ci_3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     &lt;NA&gt;     NA   (-4.4,  0.0)     NA   (-4.4,  0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   (83.3)   35.7   (22.4, 48.0)   32.2   (18.4, 44.8)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   (16.7)  -35.7 (-48.0, -22.4)  -32.2 (-44.8, -18.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     &lt;NA&gt;     NA           &lt;NA&gt;     NA           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  (4.8)    1.4   (-7.3, 10.2)   -2.2  (-10.3,  5.6)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   (2.4)   -1.2   (-6.3,  3.3)    1.2   (-4.2,  7.3)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># use other options passed on to [metalite.ae::rate_compare_sum()]</span></span></span>
+<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_ae_specific.html">prepare_ae_specific</a></span><span class="op">(</span><span class="va">meta</span>,</span></span>
+<span class="r-in"><span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
+<span class="r-in"><span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
+<span class="r-in"><span>  parameter <span class="op">=</span> <span class="st">"rel"</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">extend_ae_specific_inference</span><span class="op">(</span>eps <span class="op">=</span> <span class="fl">1e-6</span>, bisection <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span>, <span class="st">"diff_ci"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                             name n_1 prop_1 n_2 prop_2 n_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                 NA   &lt;NA&gt;  NA   &lt;NA&gt;  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     prop_3 diff_2           ci_2 diff_3           ci_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     &lt;NA&gt;     NA   (-4.4, -0.0)     NA   (-4.4, -0.0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   (83.3)   35.7   (22.4, 48.0)   32.2   (18.4, 44.8)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3   (16.7)  -35.7 (-48.0, -22.4)  -32.2 (-44.8, -18.4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4     &lt;NA&gt;     NA           &lt;NA&gt;     NA           &lt;NA&gt;</span>
