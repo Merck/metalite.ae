@@ -20,6 +20,7 @@
 #'
 #' @param outdata An `outdata` object created by [prepare_ae_specific()].
 #' @param ci A numeric value for the percentile of confidence interval.
+#' @param ... Other options passed on to [metalite.ae::rate_compare_sum()]
 #'
 #' @return A list of analysis raw datasets.
 #'
@@ -35,7 +36,19 @@
 #'   extend_ae_specific_inference() |>
 #'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
 #' head(tbl$tbl)
-extend_ae_specific_inference <- function(outdata, ci = 0.95) {
+#'
+#' # use other options passed on to [metalite.ae::rate_compare_sum()]
+#' tbl <- prepare_ae_specific(meta,
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' ) |>
+#'   extend_ae_specific_inference(eps = 1e-6, bisection = 200) |>
+#'   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
+#' head(tbl$tbl)
+extend_ae_specific_inference <- function(outdata,
+                                         ...,
+                                         ci = 0.95) {
   res <- outdata
 
   if (!(is.numeric(ci) && length(ci) == 1 && (0 <= ci && ci <= 1))) {
@@ -66,7 +79,9 @@ extend_ae_specific_inference <- function(outdata, ci = 0.95) {
         x0 = x0[i],
         x1 = x1[i],
         n0 = n0[i],
-        n1 = n1[i], alpha = 1 - ci
+        n1 = n1[i],
+        alpha = 1 - ci,
+        ...
       )
     }
     tmp <- bind_rows2(tmp)
