@@ -25,7 +25,7 @@ test_that("if par = NULL, return the average number of events in each group (tak
     split(res, res$Var2),
     function(x) nrow(x),
     FUN.VALUE = numeric(1)
-)
+  )
 
   avg1 <- list(avg = avg, se = se, count = count)
   avg2 <- avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA)
@@ -70,8 +70,8 @@ test_that("if par = NULL, return the average number of events in each group (tak
   names(se) <- sub(x = names(se), pattern = "se_", replacement = "")
 
   count <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
-                         tmp,
-                         by = dplyr::join_by(par)
+    tmp,
+    by = dplyr::join_by(par)
   ) |>
     dplyr::select(par, starts_with("count"))
   names(count) <- sub(x = names(count), pattern = "count_", replacement = "")
@@ -83,7 +83,7 @@ test_that("if par = NULL, return the average number of events in each group (tak
     avg = avg,
     se = se |>
       dplyr::select(-par),
-    count = count|>
+    count = count |>
       dplyr::select(-par)
   )
   avg2 <- avg_event(r2rtf_adae$USUBJID, r2rtf_adae$TRTA, r2rtf_adae$AEDECOD)
