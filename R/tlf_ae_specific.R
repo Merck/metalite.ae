@@ -133,7 +133,7 @@ tlf_ae_specific <- function(outdata,
   # Within (group statistics)
   col_tbl_within <- strsplit(names(tbl), "_") |>
     unlist() |>
-    (\(list) list[list %in% c("n", "prop", "dur", "events")])() |>
+    (\(list) list[list %in% c("n", "prop", "dur", "eventsavg", "eventscount")])() |>
     unique()
 
   colhead_within <- paste(
@@ -144,7 +144,8 @@ tlf_ae_specific <- function(outdata,
       "n" = "n",
       "prop" = "(%)",
       "dur" = "Mean Duration (SE)",
-      "events" = "Mean Events per Participant (SE)"
+      "eventsavg" = "Mean Events per Participant (SE)",
+      "eventscount" = "Number of Events"
     ),
     collapse = " | "
   )
@@ -159,7 +160,8 @@ tlf_ae_specific <- function(outdata,
     "n" = "single",
     "prop" = "",
     "dur" = "single",
-    "events" = "single",
+    "eventsavg" = "single",
+    "eventscount" = "",
     USE.NAMES = FALSE
   )
 

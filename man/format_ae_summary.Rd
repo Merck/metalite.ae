@@ -31,7 +31,8 @@ format_ae_summary(
 \item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method.
 \item \code{diff_p}: p-value of risk difference using M&N method.
 \item \code{dur}: Average of adverse event duration.
-\item \code{events}: Average number of adverse event per subject.
+\item \code{events_avg}: Average number of adverse event per subject.
+\item \code{events_count}: Count number of adverse event per subject.
 }}
 
 \item{digits_prop}{A numeric value of number of digits for proportion value.}
