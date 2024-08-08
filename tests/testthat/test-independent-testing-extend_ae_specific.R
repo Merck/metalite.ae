@@ -67,5 +67,5 @@ test_that("specific_duration: duration_var must be string", {
 
 test_that("specific_events: average number of events gives correct list entries", {
   expect_silent(ae_spec_event <- extend_ae_specific_events(test))
-  expect_true(all(c("events", "events_se") %in% names(ae_spec_event)))
+  expect_true(all(c("events_avg", "events_se", "events_count") %in% names(ae_spec_event)))
 })
