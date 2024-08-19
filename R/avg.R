@@ -56,7 +56,7 @@ avg_event <- function(id, group, par = NULL) {
       FUN.VALUE = numeric(1)
     )
     count <- vapply(split(res, res$Var2),
-      nrow,
+      function(x) sum(x$Freq, na.rm = TRUE),
       FUN.VALUE = numeric(1)
     )
   } else {
@@ -79,7 +79,7 @@ avg_event <- function(id, group, par = NULL) {
           par = unique(X$par),
           avg = mean(X$n, na.rm = TRUE),
           se = sd(X$n, na.rm = TRUE) / sqrt(nrow(X)),
-          count = nrow(X)
+          count = sum(X$n)
         )
       }) |>
       do.call(what = rbind) |>

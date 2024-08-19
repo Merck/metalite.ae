@@ -240,7 +240,7 @@ extend_ae_specific_duration <- function(outdata,
 #'   parameter = "rel"
 #' ) |>
 #'   extend_ae_specific_events() |>
-#'   format_ae_specific(display = c("n", "prop", "events"))
+#'   format_ae_specific(display = c("n", "prop", "events_avg"))
 #' head(tbl$tbl)
 extend_ae_specific_events <- function(outdata) {
   meta <- outdata$meta
@@ -338,9 +338,11 @@ extend_ae_specific_events <- function(outdata) {
   count <- rbind(count, blank_row)[order(index), ]
   names(count) <- paste0("eventscount_", seq_len(ncol(count)))
 
+  # fill NA value with zero
   outdata$events_avg <- avg
   outdata$events_se <- se
-  outdata$events_count <- count
+  # fill NA value with zero
+  outdata$events_count <- replace(count, is.na(count), 0)
   outdata$extend_call <- c(outdata$extend_call, match.call())
 
   outdata
