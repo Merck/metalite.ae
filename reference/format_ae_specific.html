@@ -73,7 +73,8 @@
 <li><p><code>diff_ci</code>: 95% confidence interval of risk difference using M&amp;N method.</p></li>
 <li><p><code>diff_p</code>: p-value of risk difference using M&amp;N method.</p></li>
 <li><p><code>dur</code>: Average of adverse event duration.</p></li>
-<li><p><code>events</code>: Average number of adverse event per subject.</p></li>
+<li><p><code>events_avg</code>: Average number of adverse event per subject.</p></li>
+<li><p><code>events_count</code>: Count number of adverse event per subject.</p></li>
 </ul></dd>
 
 
@@ -187,22 +188,22 @@ If <code>filter_method</code> is <code>count</code>, the value should be greater
 <span class="r-in"><span><span class="co"># Display different measurements</span></span></span>
 <span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="extend_ae_specific_events.html">extend_ae_specific_events</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">format_ae_specific</span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"events"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">format_ae_specific</span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"events_count"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             name n_1 prop_1     events_1 n_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     Participants in population  86   &lt;NA&gt;           NA  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   with one or more drug-related adverse events  44 (51.2)   0.7 ( 0.1)  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            with no drug-related adverse events  42 (48.8)           NA  11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                 NA   &lt;NA&gt;           NA  NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122                            Cardiac disorders   6  (7.0)   2.3 ( 0.4)   7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25                           Atrial fibrillation   1  (1.2)   1.0 ( 0.0)   0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     prop_2     events_2 n_3 prop_3     events_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     &lt;NA&gt;           NA  84   &lt;NA&gt;           NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   (86.9)   1.6 ( 0.2)  70 (83.3)   1.5 ( 0.2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   (13.1)           NA  14 (16.7)           NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     &lt;NA&gt;           NA  NA   &lt;NA&gt;           NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122  (8.3)   2.5 ( 0.3)   4  (4.8)   3.2 ( 0.3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   (0.0)   1.7 ( 0.1)   2  (2.4)   1.5 ( 0.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                             name n_1 prop_1 eventscount_1 n_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     Participants in population  86   &lt;NA&gt;            NA  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   with one or more drug-related adverse events  44 (51.2)           133  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            with no drug-related adverse events  42 (48.8)            NA  11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                 NA   &lt;NA&gt;            NA  NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122                            Cardiac disorders   6  (7.0)            14   7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25                           Atrial fibrillation   1  (1.2)             1   0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     prop_2 eventscount_2 n_3 prop_3 eventscount_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     &lt;NA&gt;            NA  84   &lt;NA&gt;            NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   (86.9)           292  70 (83.3)           279</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   (13.1)            NA  14 (16.7)            NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     &lt;NA&gt;            NA  NA   &lt;NA&gt;            NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  (8.3)            13   4  (4.8)             5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   (0.0)             0   2  (2.4)             3</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
