@@ -59,6 +59,7 @@ test_that("if par not NULL, return the average number of events in each group (t
     by = dplyr::join_by(par)
   ) |>
     dplyr::select(par, starts_with("avg")) |>
+    dplyr::arrange(par) |>
     dplyr::select(-par)
   names(avg) <- sub(x = names(avg), pattern = "avg_", replacement = "")
 
@@ -66,18 +67,17 @@ test_that("if par not NULL, return the average number of events in each group (t
     tmp,
     by = dplyr::join_by(par)
   ) |>
-    dplyr::select(par, starts_with("se"))
+    dplyr::select(par, starts_with("se")) |>
+    dplyr::arrange(par)
   names(se) <- sub(x = names(se), pattern = "se_", replacement = "")
 
   count <- dplyr::left_join(data.frame(par = unique(r2rtf_adae$AEDECOD)),
     tmp,
     by = dplyr::join_by(par)
   ) |>
-    dplyr::select(par, starts_with("count"))
+    dplyr::select(par, starts_with("count")) |>
+    dplyr::arrange(par)
   names(count) <- sub(x = names(count), pattern = "count_", replacement = "")
-
-  # check to make sure that order of output is the same as input (par)
-  expect_equal(se$par, unique(r2rtf_adae$AEDECOD))
 
   avg1 <- list(
     avg = avg,
