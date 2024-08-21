@@ -87,8 +87,7 @@ avg_event <- function(id, group, par = NULL) {
       reshape(timevar = "group", idvar = "par", direction = "wide", new.row.names = NULL)
 
     # Sort the summarized data so that par is in the same order as input
-    tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
-    if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
+    tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = TRUE)
 
     # Remove row names
     rownames(tmp) <- NULL

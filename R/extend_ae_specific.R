@@ -301,10 +301,14 @@ extend_ae_specific_events <- function(outdata) {
   obs_order <- 1e2
 
   soc_events <- avg_event(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]])
+  soc_events$count <- replace(soc_events$count, is.na(soc_events$count), 0)
   soc_order <- outdata$order[outdata$order %% 1e3 == 0]
+  soc_order <- soc_order[order(outdata$name[outdata$order %% 1e3 == 0])]
 
   par_events <- avg_event(obs[[obs_id]], obs[[obs_group]], obs[[par_var]])
+  par_events$count <- replace(par_events$count, is.na(par_events$count), 0)
   par_order <- outdata$order[outdata$order > 1e3 & outdata$order %% 1e3 > 0]
+  par_order <- par_order[order(outdata$name[outdata$order > 1e3 & outdata$order %% 1e3 > 0])]
 
   avg <- obs_events$avg
   se <- obs_events$se
@@ -342,7 +346,7 @@ extend_ae_specific_events <- function(outdata) {
   outdata$events_avg <- avg
   outdata$events_se <- se
   # fill NA value with zero
-  outdata$events_count <- replace(count, is.na(count), 0)
+  outdata$events_count <- count
   outdata$extend_call <- c(outdata$extend_call, match.call())
 
   outdata
