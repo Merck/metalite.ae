@@ -55,6 +55,10 @@ avg_event <- function(id, group, par = NULL) {
       function(x) sd(x$Freq, na.rm = TRUE) / sqrt(nrow(x)),
       FUN.VALUE = numeric(1)
     )
+    count <- vapply(split(res, res$Var2),
+      function(x) sum(x$Freq, na.rm = TRUE),
+      FUN.VALUE = numeric(1)
+    )
   } else {
     db <- data.frame(id = id, group = group, par = par)
 
@@ -74,7 +78,8 @@ avg_event <- function(id, group, par = NULL) {
           group = unique(X$group),
           par = unique(X$par),
           avg = mean(X$n, na.rm = TRUE),
-          se = sd(X$n, na.rm = TRUE) / sqrt(nrow(X))
+          se = sd(X$n, na.rm = TRUE) / sqrt(nrow(X)),
+          count = sum(X$n)
         )
       }) |>
       do.call(what = rbind) |>
@@ -82,8 +87,7 @@ avg_event <- function(id, group, par = NULL) {
       reshape(timevar = "group", idvar = "par", direction = "wide", new.row.names = NULL)
 
     # Sort the summarized data so that par is in the same order as input
-    tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = FALSE)
-    if (any(unique(tmp$par) != unique(db$par))) stop("sorting is broken, try again")
+    tmp <- merge(data.frame(par = unique(db$par)), tmp, by = "par", sort = TRUE)
 
     # Remove row names
     rownames(tmp) <- NULL
@@ -98,9 +102,13 @@ avg_event <- function(id, group, par = NULL) {
     names(se) <- sub(names(se), pattern = "se\\.", replacement = "")
     # Reorder columns (group) to be as input
     se <- se[, u_group]
+
+    count <- tmp[, grepl(names(tmp), pattern = "^count")]
+    names(count) <- sub(names(count), pattern = "count\\.", replacement = "")
+    count <- count[, u_group]
   }
 
-  list(avg = avg, se = se)
+  list(avg = avg, se = se, count = count)
 }
 
 #' Calculates average duration per group and, if requested, parameter.

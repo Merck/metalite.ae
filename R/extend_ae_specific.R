@@ -255,7 +255,7 @@ extend_ae_specific_duration <- function(outdata,
 #'   parameter = "rel"
 #' ) |>
 #'   extend_ae_specific_events() |>
-#'   format_ae_specific(display = c("n", "prop", "events"))
+#'   format_ae_specific(display = c("n", "prop", "events_avg"))
 #' head(tbl$tbl)
 extend_ae_specific_events <- function(outdata) {
   meta <- outdata$meta
@@ -316,22 +316,29 @@ extend_ae_specific_events <- function(outdata) {
   obs_order <- 1e2
 
   soc_events <- avg_event(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]])
+  soc_events$count <- replace(soc_events$count, is.na(soc_events$count), 0)
   soc_order <- outdata$order[outdata$order %% 1e3 == 0]
+  soc_order <- soc_order[order(outdata$name[outdata$order %% 1e3 == 0])]
 
   par_events <- avg_event(obs[[obs_id]], obs[[obs_group]], obs[[par_var]])
+  par_events$count <- replace(par_events$count, is.na(par_events$count), 0)
   par_order <- outdata$order[outdata$order > 1e3 & outdata$order %% 1e3 > 0]
+  par_order <- par_order[order(outdata$name[outdata$order > 1e3 & outdata$order %% 1e3 > 0])]
 
   avg <- obs_events$avg
   se <- obs_events$se
+  count <- obs_events$count
 
   if (length(soc_order) > 0) {
     avg <- rbind(avg, soc_events$avg)
     se <- rbind(se, soc_events$se)
+    count <- rbind(count, soc_events$count)
   }
 
   if (length(par_order) > 0) {
     avg <- rbind(avg, par_events$avg)
     se <- rbind(se, par_events$se)
+    count <- rbind(count, par_events$count)
   }
 
   # Define order and add a blank row
@@ -342,13 +349,19 @@ extend_ae_specific_events <- function(outdata) {
   index <- c(index, blank_order)
 
   avg <- rbind(avg, blank_row)[order(index), ]
-  names(avg) <- paste0("events_", seq_len(ncol(avg)))
+  names(avg) <- paste0("eventsavg_", seq_len(ncol(avg)))
 
   se <- rbind(se, blank_row)[order(index), ]
   names(se) <- paste0("events_se", seq_len(ncol(se)))
 
-  outdata$events <- avg
+  count <- rbind(count, blank_row)[order(index), ]
+  names(count) <- paste0("eventscount_", seq_len(ncol(count)))
+
+  # fill NA value with zero
+  outdata$events_avg <- avg
   outdata$events_se <- se
+  # fill NA value with zero
+  outdata$events_count <- count
   outdata$extend_call <- c(outdata$extend_call, match.call())
 
   outdata

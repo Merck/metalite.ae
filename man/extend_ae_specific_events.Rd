@@ -23,6 +23,6 @@ tbl <- prepare_ae_specific(meta,
   parameter = "rel"
 ) |>
   extend_ae_specific_events() |>
-  format_ae_specific(display = c("n", "prop", "events"))
+  format_ae_specific(display = c("n", "prop", "events_avg"))
 head(tbl$tbl)
 }

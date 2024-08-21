@@ -31,7 +31,8 @@ format_ae_specific(
 \item \code{diff_ci}: 95\% confidence interval of risk difference using M&N method.
 \item \code{diff_p}: p-value of risk difference using M&N method.
 \item \code{dur}: Average of adverse event duration.
-\item \code{events}: Average number of adverse event per subject.
+\item \code{events_avg}: Average number of adverse event per subject.
+\item \code{events_count}: Count number of adverse event per subject.
 }}
 
 \item{digits_prop}{A numeric value of number of digits for proportion value.}
@@ -100,6 +101,6 @@ head(tbl$tbl)
 # Display different measurements
 tbl <- outdata |>
   extend_ae_specific_events() |>
-  format_ae_specific(display = c("n", "prop", "events"))
+  format_ae_specific(display = c("n", "prop", "events_count"))
 head(tbl$tbl)
 }

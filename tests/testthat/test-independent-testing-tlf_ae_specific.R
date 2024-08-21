@@ -14,7 +14,7 @@ test_that("rtf output: events, dur, n, and prop w/o total", {
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(
-      display = c("events", "dur", "n", "prop"),
+      display = c("events_avg", "dur", "n", "prop"),
       mock = TRUE
     ) |>
     tlf_ae_specific(
@@ -35,7 +35,7 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(
-      display = c("events", "dur", "n", "prop", "total"),
+      display = c("events_avg", "dur", "n", "prop", "total"),
       mock = TRUE
     ) |>
     tlf_ae_specific(
@@ -58,7 +58,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/o total", {
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(display = c(
-      "events", "dur", "n", "prop",
+      "events_avg", "dur", "n", "prop",
       "diff", "diff_p", "diff_ci"
     ), mock = TRUE) |>
     tlf_ae_specific(
@@ -80,12 +80,13 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(display = c(
-      "events", "dur", "n", "prop", "total",
+      "events_avg", "dur", "n", "prop", "total",
       "diff", "diff_p", "diff_ci"
     ), mock = TRUE) |>
     tlf_ae_specific(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      col_rel_width = c(5, rep(c(1, 2, 3, 3), 4), 1, 2, 3, 1, 2, 3),
       path_outdata = path_rdata,
       path_outtable = path_rtf
     )
@@ -102,7 +103,7 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
     extend_ae_specific_events() |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
     format_ae_specific(
-      display = c("events", "dur", "n", "prop", "total"),
+      display = c("events_avg", "events_count", "dur", "n", "prop", "total"),
       filter_method = "percent",
       filter_criteria = 2,
       mock = TRUE

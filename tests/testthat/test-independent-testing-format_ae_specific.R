@@ -111,7 +111,7 @@ test_that("When display contains n, prop and diff_ci then one has an additional 
 })
 
 test_that("Between and Within are properly ordered when total is specified", {
-  disp <- c("n", "prop", "dur", "events", "diff", "diff_ci", "diff_p", "total")
+  disp <- c("n", "prop", "dur", "events_avg", "diff", "diff_ci", "diff_p", "total")
 
   tbl <- test |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
@@ -122,10 +122,10 @@ test_that("Between and Within are properly ordered when total is specified", {
   expect_equal(
     c(
       "name",
-      "n_1", "prop_1", "dur_1", "events_1",
-      "n_2", "prop_2", "dur_2", "events_2",
-      "n_3", "prop_3", "dur_3", "events_3",
-      "n_4", "prop_4", "dur_4", "events_4",
+      "n_1", "prop_1", "dur_1", "eventsavg_1",
+      "n_2", "prop_2", "dur_2", "eventsavg_2",
+      "n_3", "prop_3", "dur_3", "eventsavg_3",
+      "n_4", "prop_4", "dur_4", "eventsavg_4",
       "diff_2", "ci_2", "p_2",
       "diff_3", "ci_3", "p_3"
     ),
@@ -134,7 +134,7 @@ test_that("Between and Within are properly ordered when total is specified", {
 })
 
 test_that("Between and Within are properly ordered when total is not specified", {
-  disp <- c("n", "prop", "dur", "events", "diff", "diff_ci", "diff_p")
+  disp <- c("n", "prop", "dur", "events_count", "diff", "diff_ci", "diff_p")
 
   tbl <- test |>
     extend_ae_specific_duration(duration_var = "ADURN") |>
@@ -145,9 +145,9 @@ test_that("Between and Within are properly ordered when total is not specified",
   expect_equal(
     c(
       "name",
-      "n_1", "prop_1", "dur_1", "events_1",
-      "n_2", "prop_2", "dur_2", "events_2",
-      "n_3", "prop_3", "dur_3", "events_3",
+      "n_1", "prop_1", "dur_1", "eventscount_1",
+      "n_2", "prop_2", "dur_2", "eventscount_2",
+      "n_3", "prop_3", "dur_3", "eventscount_3",
       "diff_2", "ci_2", "p_2",
       "diff_3", "ci_3", "p_3"
     ),
@@ -195,7 +195,7 @@ test_that("When display contains n,prop and dur then one has an additional colum
 
 
 test_that("When display contains n, prop and events then one has an additional column on the average number of AE ", {
-  disp <- c("n", "prop", "events")
+  disp <- c("n", "prop", "events_avg")
   tbl <- test |>
     extend_ae_specific_events() |>
     format_ae_specific(display = disp)
@@ -203,9 +203,9 @@ test_that("When display contains n, prop and events then one has an additional c
   expect_equal(
     c(
       "name",
-      "n_1", "prop_1", "events_1",
-      "n_2", "prop_2", "events_2",
-      "n_3", "prop_3", "events_3"
+      "n_1", "prop_1", "eventsavg_1",
+      "n_2", "prop_2", "eventsavg_2",
+      "n_3", "prop_3", "eventsavg_3"
     ),
     names(tbl$tbl)
   )
