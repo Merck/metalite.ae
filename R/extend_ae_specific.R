@@ -202,9 +202,11 @@ extend_ae_specific_duration <- function(outdata,
 
   soc_duration <- avg_duration(obs[[obs_id]], obs[[obs_group]], obs[[obs_dur]], obs[[par_soc]])
   soc_order <- outdata$order[outdata$order %% 1e3 == 0]
+  soc_order <- soc_order[order(outdata$name[outdata$order %% 1e3 == 0])]
 
   par_duration <- avg_duration(obs[[obs_id]], obs[[obs_group]], obs[[obs_dur]], obs[[par_var]])
   par_order <- outdata$order[outdata$order > 1e3 & outdata$order %% 1e3 > 0]
+  par_order <- par_order[order(outdata$name[outdata$order > 1e3 & outdata$order %% 1e3 > 0])]
 
   avg <- obs_duration$avg
   se <- obs_duration$se
