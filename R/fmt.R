@@ -72,7 +72,7 @@ fmt_est <- function(mean,
                     sd = rep(NA, length(mean)),
                     digits = c(1, 1),
                     width = c(4, 3) + digits) {
-  .mean <- formatC(mean, digits = digits[1], format = "f", width = width[1])
+  .mean <- ifelse(is.na(mean), mean, formatC(mean, digits = digits[1], format = "f", width = width[1]))
   ifelse(is.na(sd),
     .mean,
     {
