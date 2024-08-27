@@ -276,13 +276,13 @@ the risk difference.</p>
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">outdata</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span></span>
 <span><span class="co">#&gt;                                    name n_1 prop_1 n_2 prop_2 n_3 prop_3 diff_2</span></span>
-<span><span class="co">#&gt; 1            Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84   &lt;NA&gt;     NA</span></span>
+<span><span class="co">#&gt; 1            Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84   &lt;NA&gt;   &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2       with one or more adverse events  69 (80.2)  77 (91.7)  79 (94.0)   11.4</span></span>
 <span><span class="co">#&gt; 3                with no adverse events  17 (19.8)   7  (8.3)   5  (6.0)   35.7</span></span>
 <span><span class="co">#&gt; 21 with drug-related{^a} adverse events  44 (51.2)  73 (86.9)  70 (83.3)    1.2</span></span>
 <span><span class="co">#&gt; 22          with serious adverse events   0  (0.0)   1  (1.2)   2  (2.4)  -11.4</span></span>
 <span><span class="co">#&gt;    diff_3</span></span>
-<span><span class="co">#&gt; 1      NA</span></span>
+<span><span class="co">#&gt; 1    &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2    13.8</span></span>
 <span><span class="co">#&gt; 3    32.2</span></span>
 <span><span class="co">#&gt; 21    2.4</span></span>
@@ -300,13 +300,13 @@ compare vignette</a>.</p>
 <span></span>
 <span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span></span>
 <span><span class="co">#&gt;                                    name n_1 prop_1 n_2 prop_2 n_3 prop_3 diff_2</span></span>
-<span><span class="co">#&gt; 1            Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84   &lt;NA&gt;     NA</span></span>
+<span><span class="co">#&gt; 1            Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84   &lt;NA&gt;   &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2       with one or more adverse events  69 (80.2)  77 (91.7)  79 (94.0)   11.4</span></span>
 <span><span class="co">#&gt; 3                with no adverse events  17 (19.8)   7  (8.3)   5  (6.0)   35.7</span></span>
 <span><span class="co">#&gt; 21 with drug-related{^a} adverse events  44 (51.2)  73 (86.9)  70 (83.3)    1.2</span></span>
 <span><span class="co">#&gt; 22          with serious adverse events   0  (0.0)   1  (1.2)   2  (2.4)  -11.4</span></span>
 <span><span class="co">#&gt;             ci_2 diff_3          ci_3</span></span>
-<span><span class="co">#&gt; 1   (-4.4,  0.0)     NA  (-4.4,  0.0)</span></span>
+<span><span class="co">#&gt; 1   (-4.4,  0.0)   &lt;NA&gt;  (-4.4,  0.0)</span></span>
 <span><span class="co">#&gt; 2   ( 1.0, 22.2)   13.8  ( 4.0, 24.3)</span></span>
 <span><span class="co">#&gt; 3  (-22.2, -1.0)   32.2 (-24.3, -4.0)</span></span>
 <span><span class="co">#&gt; 21  (22.4, 48.0)    2.4  (18.4, 44.8)</span></span>
