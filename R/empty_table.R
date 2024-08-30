@@ -32,7 +32,6 @@
 #'   orientation = "portrait",
 #'   text_font_size = 8
 #' )
-
 empty_table <- function(title, orientation, text_font_size) {
   # Create an empty table to be displayed
   tbl <- data.frame(
