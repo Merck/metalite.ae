@@ -179,17 +179,19 @@ extend_ae_specific_duration <- function(outdata,
   }
 
   # Add a total group to display total column
-  pop_total <- pop
-  pop_total[[pop_group]] <- "Total"
-  pop <- rbind(pop, pop_total)
   if (nrow(pop) == 0) {
     levels(pop[[pop_group]]) <- c(levels(pop[[pop_group]]), "Total")
+  } else {
+    pop_total <- pop
+    pop_total[[pop_group]] <- "Total"
+    pop <- rbind(pop, pop_total)
   }
-  obs_total <- obs
-  obs_total[[obs_group]] <- "Total"
-  obs <- rbind(obs, obs_total)
   if (nrow(obs) == 0) {
     levels(obs[[obs_group]]) <- c(levels(obs[[obs_group]]), "Total")
+  } else {
+    obs_total <- obs
+    obs_total[[obs_group]] <- "Total"
+    obs <- rbind(obs, obs_total)
   }
 
   # Group information
@@ -296,17 +298,19 @@ extend_ae_specific_events <- function(outdata) {
   }
 
   # Add a total group to display total column
-  pop_total <- pop
-  pop_total[[pop_group]] <- "Total"
-  pop <- rbind(pop, pop_total)
   if (nrow(pop) == 0) {
     levels(pop[[pop_group]]) <- c(levels(pop[[pop_group]]), "Total")
+  } else {
+    pop_total <- pop
+    pop_total[[pop_group]] <- "Total"
+    pop <- rbind(pop, pop_total)
   }
-  obs_total <- obs
-  obs_total[[obs_group]] <- "Total"
-  obs <- rbind(obs, obs_total)
   if (nrow(obs) == 0) {
     levels(obs[[obs_group]]) <- c(levels(obs[[obs_group]]), "Total")
+  } else {
+    obs_total <- obs
+    obs_total[[obs_group]] <- "Total"
+    obs <- rbind(obs, obs_total)
   }
 
   # Group information
