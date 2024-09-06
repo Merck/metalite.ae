@@ -101,6 +101,7 @@ format_ae_specific_subgroup <- function(
   }
 
   # Need order column from total column for ordering properly across tables
+  tbl <- tbl[!(is.na(tbl$order)), ]
   tbl <- tbl[order(tbl$order), ]
 
   # If outdata$display_subgroup_total = FALSE, remove that part
