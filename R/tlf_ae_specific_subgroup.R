@@ -98,7 +98,9 @@ tlf_ae_specific_subgroup <- function(
     )
   }
 
-  if (!all(sapply(out_all, function(x) {all(x$n_pop == 0)}))){
+  if (!all(sapply(out_all, function(x) {
+    all(x$n_pop == 0)
+  }))) {
     col_tbl_within <- outdata$display
 
     col_tbl_within <- col_tbl_within |>
@@ -242,7 +244,8 @@ tlf_ae_specific_subgroup <- function(
     outdata$rtf <- empty_table(
       title = title,
       orientation = orientation,
-      text_font_size = text_font_size)
+      text_font_size = text_font_size
+    )
   }
 
   if (!is.null(footnotes)) {

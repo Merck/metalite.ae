@@ -120,8 +120,8 @@ tlf_ae_listing <- function(outdata,
       r2rtf::rtf_page(orientation = orientation) |>
       r2rtf::rtf_title(title) |>
       r2rtf::rtf_colheader(colheader,
-                           col_rel_width = rel_width1,
-                           text_font_size = text_font_size
+        col_rel_width = rel_width1,
+        text_font_size = text_font_size
       ) |>
       r2rtf::rtf_body(
         col_rel_width = rel_width,

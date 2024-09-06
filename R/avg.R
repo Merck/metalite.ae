@@ -61,9 +61,15 @@ avg_event <- function(id, group, par = NULL) {
         FUN.VALUE = numeric(1)
       )
     } else {
-      avg <- vapply(u_group, function (x) {c(x = NA)}, FUN.VALUE = numeric(1))
-      se <- vapply(u_group, function (x) {c(x = NA)}, FUN.VALUE = numeric(1))
-      count <- vapply(u_group, function (x) {c(x = 0)}, FUN.VALUE = numeric(1))
+      avg <- vapply(u_group, function(x) {
+        c(x = NA)
+      }, FUN.VALUE = numeric(1))
+      se <- vapply(u_group, function(x) {
+        c(x = NA)
+      }, FUN.VALUE = numeric(1))
+      count <- vapply(u_group, function(x) {
+        c(x = 0)
+      }, FUN.VALUE = numeric(1))
     }
   } else {
     db <- data.frame(id = id, group = group, par = par)
