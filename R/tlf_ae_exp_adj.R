@@ -98,65 +98,73 @@ tlf_ae_exp_adj <- function(outdata,
   # })
   # footnotes <- c(unlist(x), footnotes)
 
-  # Define column header
-  colheader <- c(
-    paste0(" | Event Count and Rate (Events/100 person-", time_unit, "){^a}"),
-    paste0(" | ", paste(group, collapse = " | "))
-  )
+  if (!all(outdata$n_pop == 0)) {
+    # Define column header
+    colheader <- c(
+      paste0(" | Event Count and Rate (Events/100 person-", time_unit, "){^a}"),
+      paste0(" | ", paste(group, collapse = " | "))
+    )
 
-  # Relative width
-  if (is.null(col_rel_width)) {
-    rel_width_body <- c(3, rep(2, n_group), 1)
+    # Relative width
+    if (is.null(col_rel_width)) {
+      rel_width_body <- c(3, rep(2, n_group), 1)
+    } else {
+      rel_width_body <- col_rel_width
+    }
+
+    rel_width_head <- rel_width_body[1:(length(rel_width_body) - 1)]
+    rel_width_head <- list(
+      c(3, sum(rep(2, n_group))),
+      rel_width_head
+    )
+
+    # column boarder
+    border_top_head <- c("", rep("single", n_group))
+    border_top_body <- c(rep("", 1 + n_group), "single")
+    border_left_head <- c("single", rep("single", n_group))
+    border_left_body <- c(border_left_head, "single")
+
+    text_format <- c(rep("", 1 + n_group), "b")
+
+    # using order number to customize row format
+    text_justification <- c("l", rep("c", n_group), "l")
+    text_indent <- matrix(0, nrow = n_row, ncol = n_col)
+    text_indent[, 1] <- ifelse(FALSE, 0, 100)
+    text_indent[1:2, 1] <- 0
+
+    # Use r2rtf
+    outdata$rtf <- tbl |>
+      r2rtf::rtf_page(orientation = orientation) |>
+      r2rtf::rtf_title(title) |>
+      r2rtf::rtf_colheader(
+        colheader = colheader[1],
+        col_rel_width = rel_width_head[[1]],
+        text_font_size = text_font_size
+      ) |>
+      r2rtf::rtf_colheader(
+        colheader = colheader[2],
+        border_top = border_top_head,
+        border_left = border_left_head,
+        col_rel_width = rel_width_head[[2]],
+        text_font_size = text_font_size
+      ) |>
+      r2rtf::rtf_body(
+        page_by = "row_label",
+        col_rel_width = rel_width_body,
+        border_left = border_left_body,
+        text_justification = text_justification,
+        text_indent_first = text_indent,
+        text_indent_left = text_indent,
+        text_format = text_format,
+        text_font_size = text_font_size
+      )
   } else {
-    rel_width_body <- col_rel_width
-  }
-
-  rel_width_head <- rel_width_body[1:(length(rel_width_body) - 1)]
-  rel_width_head <- list(
-    c(3, sum(rep(2, n_group))),
-    rel_width_head
-  )
-
-  # column boarder
-  border_top_head <- c("", rep("single", n_group))
-  border_top_body <- c(rep("", 1 + n_group), "single")
-  border_left_head <- c("single", rep("single", n_group))
-  border_left_body <- c(border_left_head, "single")
-
-  text_format <- c(rep("", 1 + n_group), "b")
-
-  # using order number to customize row format
-  text_justification <- c("l", rep("c", n_group), "l")
-  text_indent <- matrix(0, nrow = n_row, ncol = n_col)
-  text_indent[, 1] <- ifelse(FALSE, 0, 100)
-  text_indent[1:2, 1] <- 0
-
-  # Use r2rtf
-  outdata$rtf <- tbl |>
-    r2rtf::rtf_page(orientation = orientation) |>
-    r2rtf::rtf_title(title) |>
-    r2rtf::rtf_colheader(
-      colheader = colheader[1],
-      col_rel_width = rel_width_head[[1]],
-      text_font_size = text_font_size
-    ) |>
-    r2rtf::rtf_colheader(
-      colheader = colheader[2],
-      border_top = border_top_head,
-      border_left = border_left_head,
-      col_rel_width = rel_width_head[[2]],
-      text_font_size = text_font_size
-    ) |>
-    r2rtf::rtf_body(
-      page_by = "row_label",
-      col_rel_width = rel_width_body,
-      border_left = border_left_body,
-      text_justification = text_justification,
-      text_indent_first = text_indent,
-      text_indent_left = text_indent,
-      text_format = text_format,
+    outdata$rtf <- empty_table(
+      title = title,
+      orientation = orientation,
       text_font_size = text_font_size
     )
+  }
 
   if (!is.null(footnotes)) {
     outdata$rtf <- outdata$rtf |>

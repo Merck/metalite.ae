@@ -74,74 +74,82 @@ tlf_ae_summary <- function(outdata,
   })
   footnotes <- c(unlist(x), footnotes)
 
-  # Define column header
-  colheader_n <- c(
-    paste0(" | ", paste(group, collapse = " | ")),
-    paste0(" | ", paste(rep("n | (%)", n_group), collapse = " | "))
-  )
+  if (!all(outdata$n_pop == 0)) {
+    # Define column header
+    colheader_n <- c(
+      paste0(" | ", paste(group, collapse = " | ")),
+      paste0(" | ", paste(rep("n | (%)", n_group), collapse = " | "))
+    )
 
-  # TODO: add logic for CI and p-value with multipel groups following WMA mock up table.
-  # colheader_ci <- c(paste("Difference in % vs", group[reference_group]),
-  # "Estimate (95% CI)")
+    # TODO: add logic for CI and p-value with multipel groups following WMA mock up table.
+    # colheader_ci <- c(paste("Difference in % vs", group[reference_group]),
+    # "Estimate (95% CI)")
 
-  # colheader_p <- c("", "p-value")
-  # colheader <- paste(colheader_n, colheader_ci, colheader_p, sep = " | ")
+    # colheader_p <- c("", "p-value")
+    # colheader <- paste(colheader_n, colheader_ci, colheader_p, sep = " | ")
 
-  colheader <- colheader_n
+    colheader <- colheader_n
 
-  # Relative width
-  if (is.null(col_rel_width)) {
-    rel_width <- c(3, rep(1, 2 * n_group))
+    # Relative width
+    if (is.null(col_rel_width)) {
+      rel_width <- c(3, rep(1, 2 * n_group))
+    } else {
+      rel_width <- col_rel_width
+    }
+
+    n_col <- length(rel_width)
+
+    rel_width1 <- c(
+      rel_width[1],
+      tapply(rel_width[2:(n_group * 2 + 1)], c(rep(1:n_group, each = 2)), sum),
+      rel_width[-(1:(n_group * 2 + 1))]
+    )
+
+    # Column boarder
+    border_top <- c("", rep("single", n_col - 1))
+    border_left <- c("single", rep(c("single", ""), n_group), rep("single", n_col - n_group * 2 - 1))
+
+    # Using order number to customize row format
+    text_justification <- c("l", rep("c", n_col - 1))
+
+    text_format <- ""
+    text_format <- matrix(text_format, nrow = n_row, ncol = n_col)
+
+    text_indent <- matrix(0, nrow = n_row, ncol = n_col)
+    text_indent[, 1] <- ifelse(outdata$order == 1, 0, 100)
+
+    # Use r2rtf
+    outdata$rtf <- tbl |>
+      r2rtf::rtf_page(orientation = orientation) |>
+      r2rtf::rtf_title(title) |>
+      r2rtf::rtf_colheader(
+        colheader = colheader[1],
+        col_rel_width = rel_width1,
+        text_font_size = text_font_size
+      ) |>
+      r2rtf::rtf_colheader(
+        colheader = colheader[2],
+        border_top = border_top,
+        border_left = border_left,
+        col_rel_width = rel_width,
+        text_font_size = text_font_size
+      ) |>
+      r2rtf::rtf_body(
+        col_rel_width = rel_width,
+        border_left = border_left,
+        text_justification = text_justification,
+        text_indent_first = text_indent,
+        text_indent_left = text_indent,
+        text_format = text_format,
+        text_font_size = text_font_size
+      )
   } else {
-    rel_width <- col_rel_width
-  }
-
-  n_col <- length(rel_width)
-
-  rel_width1 <- c(
-    rel_width[1],
-    tapply(rel_width[2:(n_group * 2 + 1)], c(rep(1:n_group, each = 2)), sum),
-    rel_width[-(1:(n_group * 2 + 1))]
-  )
-
-  # Column boarder
-  border_top <- c("", rep("single", n_col - 1))
-  border_left <- c("single", rep(c("single", ""), n_group), rep("single", n_col - n_group * 2 - 1))
-
-  # Using order number to customize row format
-  text_justification <- c("l", rep("c", n_col - 1))
-
-  text_format <- ""
-  text_format <- matrix(text_format, nrow = n_row, ncol = n_col)
-
-  text_indent <- matrix(0, nrow = n_row, ncol = n_col)
-  text_indent[, 1] <- ifelse(outdata$order == 1, 0, 100)
-
-  # Use r2rtf
-  outdata$rtf <- tbl |>
-    r2rtf::rtf_page(orientation = orientation) |>
-    r2rtf::rtf_title(title) |>
-    r2rtf::rtf_colheader(
-      colheader = colheader[1],
-      col_rel_width = rel_width1,
-      text_font_size = text_font_size
-    ) |>
-    r2rtf::rtf_colheader(
-      colheader = colheader[2],
-      border_top = border_top,
-      border_left = border_left,
-      col_rel_width = rel_width,
-      text_font_size = text_font_size
-    ) |>
-    r2rtf::rtf_body(
-      col_rel_width = rel_width,
-      border_left = border_left,
-      text_justification = text_justification,
-      text_indent_first = text_indent,
-      text_indent_left = text_indent,
-      text_format = text_format,
+    outdata$rtf <- empty_table(
+      title = title,
+      orientation = orientation,
       text_font_size = text_font_size
     )
+  }
 
   if (!is.null(footnotes)) {
     outdata$rtf <- outdata$rtf |>

@@ -64,76 +64,84 @@ tlf_ae_listing <- function(outdata,
   # Define title
   title <- collect_title(outdata$meta, outdata$population, outdata$observation, outdata$parameter, analysis = "ae_listing")
 
-  res <- as.data.frame(res)
-  res <- res[do.call(what = order, args = res[, c(page_by, group_by, ae_var)]), ]
+  if (!nrow(res) == 0) {
+    res <- as.data.frame(res)
+    res <- res[do.call(what = order, args = res[, c(page_by, group_by, ae_var)]), ]
 
-  # Relative width
-  n_col <- ncol(res)
-  if (is.null(col_rel_width)) {
-    rel_width <- rep(1, n_col)
+    # Relative width
+    n_col <- ncol(res)
+    if (is.null(col_rel_width)) {
+      rel_width <- rep(1, n_col)
+    } else {
+      rel_width <- col_rel_width
+    }
+
+    rel_width1 <- c()
+    for (i in 1:n_col) {
+      if (names(res)[i] %in% var_name) {
+        rel_width1 <- c(rel_width1, col_rel_width[i])
+      }
+    }
+
+    # Text justification
+    text_justification <- c()
+    for (i in 1:n_col) {
+      if (i == 1) {
+        text_justification <- c(text_justification, "l")
+      } else if (names(res)[i] %in% var_name) {
+        text_justification <- c(text_justification, "c")
+      } else if (names(res)[i] %in% subline_by) {
+        text_justification <- c(text_justification, "l")
+      } else {
+        text_justification <- c(text_justification, "l")
+      }
+    }
+
+    # Text format
+    text_format <- c()
+    for (i in 1:n_col) {
+      if (names(res)[i] %in% var_name) {
+        text_format <- c(text_format, "")
+      } else if (names(res)[i] %in% page_by[2:length(page_by)]) {
+        text_format <- c(text_format, "")
+      } else {
+        text_format <- c(text_format, "b")
+      }
+    }
+
+    # Define column header
+    colheader_display <- col_name[!names(res) %in% c(page_by, subline_by)]
+
+    colheader <- paste(colheader_display, collapse = " | ")
+    colheader <- gsub("_", " ", colheader)
+
+    # Use r2rtf
+    outdata$rtf <- res |>
+      r2rtf::rtf_page(orientation = orientation) |>
+      r2rtf::rtf_title(title) |>
+      r2rtf::rtf_colheader(colheader,
+                           col_rel_width = rel_width1,
+                           text_font_size = text_font_size
+      ) |>
+      r2rtf::rtf_body(
+        col_rel_width = rel_width,
+        text_justification = text_justification,
+        text_format = text_format,
+        # border_top = c(rep("", 6), "single","single"),
+        # border_bottom = c(rep("", 6), "single","single"),
+        # border_left = c(rep(c("single"), 11) ),
+        page_by = page_by,
+        group_by = group_by,
+        subline_by = subline_by,
+        text_font_size = text_font_size
+      )
   } else {
-    rel_width <- col_rel_width
-  }
-
-  rel_width1 <- c()
-  for (i in 1:n_col) {
-    if (names(res)[i] %in% var_name) {
-      rel_width1 <- c(rel_width1, col_rel_width[i])
-    }
-  }
-
-  # Text justification
-  text_justification <- c()
-  for (i in 1:n_col) {
-    if (i == 1) {
-      text_justification <- c(text_justification, "l")
-    } else if (names(res)[i] %in% var_name) {
-      text_justification <- c(text_justification, "c")
-    } else if (names(res)[i] %in% subline_by) {
-      text_justification <- c(text_justification, "l")
-    } else {
-      text_justification <- c(text_justification, "l")
-    }
-  }
-
-  # Text format
-  text_format <- c()
-  for (i in 1:n_col) {
-    if (names(res)[i] %in% var_name) {
-      text_format <- c(text_format, "")
-    } else if (names(res)[i] %in% page_by[2:length(page_by)]) {
-      text_format <- c(text_format, "")
-    } else {
-      text_format <- c(text_format, "b")
-    }
-  }
-
-  # Define column header
-  colheader_display <- col_name[!names(res) %in% c(page_by, subline_by)]
-
-  colheader <- paste(colheader_display, collapse = " | ")
-  colheader <- gsub("_", " ", colheader)
-
-  # Use r2rtf
-  outdata$rtf <- res |>
-    r2rtf::rtf_page(orientation = orientation) |>
-    r2rtf::rtf_title(title) |>
-    r2rtf::rtf_colheader(colheader,
-      col_rel_width = rel_width1,
-      text_font_size = text_font_size
-    ) |>
-    r2rtf::rtf_body(
-      col_rel_width = rel_width,
-      text_justification = text_justification,
-      text_format = text_format,
-      # border_top = c(rep("", 6), "single","single"),
-      # border_bottom = c(rep("", 6), "single","single"),
-      # border_left = c(rep(c("single"), 11) ),
-      page_by = page_by,
-      group_by = group_by,
-      subline_by = subline_by,
+    outdata$rtf <- empty_table(
+      title = title,
+      orientation = orientation,
       text_font_size = text_font_size
     )
+  }
 
   if (!is.null(footnotes)) {
     outdata$rtf <- outdata$rtf |>
