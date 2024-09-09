@@ -1,13 +1,11 @@
-
-
 meta <- meta_ae_example()
 
 meta
 
 
-meta$data_observation <- meta$data_observation[0,]
+meta$data_observation <- meta$data_observation[0, ]
 
-meta$data_population <- meta$data_population[0,]
+meta$data_population <- meta$data_population[0, ]
 
 meta
 
@@ -85,8 +83,3 @@ test_that("RTF output: empty table or analysis table.", {
     expect_snapshot_file(path_rtf)
   }
 })
-
-
-
-
-
