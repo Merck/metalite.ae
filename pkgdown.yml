@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   ae-listing: ae-listing.html
@@ -9,7 +9,7 @@ articles:
   exposure-adjusted-event-rate: exposure-adjusted-event-rate.html
   metalite-ae: metalite-ae.html
   rate-compare: rate-compare.html
-last_built: 2024-08-27T15:42Z
+last_built: 2024-09-24T14:12Z
 urls:
   reference: https://merck.github.io/metalite.ae/reference
   article: https://merck.github.io/metalite.ae/articles
