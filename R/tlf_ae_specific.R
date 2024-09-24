@@ -130,183 +130,191 @@ tlf_ae_specific <- function(outdata,
   )
   names(footnotes) <- NULL
 
-  # Within (group statistics)
-  col_tbl_within <- strsplit(names(tbl), "_") |>
-    unlist() |>
-    (\(list) list[list %in% c("n", "prop", "dur", "eventsavg", "eventscount")])() |>
-    unique()
+  if (!all(outdata$n_pop == 0)) {
+    # Within (group statistics)
+    col_tbl_within <- strsplit(names(tbl), "_") |>
+      unlist() |>
+      (\(list) list[list %in% c("n", "prop", "dur", "eventsavg", "eventscount")])() |>
+      unique()
 
-  colhead_within <- paste(
-    vapply(
-      X = col_tbl_within,
-      FUN.VALUE = "character",
-      FUN = switch,
-      "n" = "n",
-      "prop" = "(%)",
-      "dur" = "Mean Duration (SE)",
-      "eventsavg" = "Mean Events per Participant (SE)",
-      "eventscount" = "Number of Events"
-    ),
-    collapse = " | "
-  )
-
-  colhead_1_within <- paste(group, collapse = " | ")
-  colhead_2_within <- paste(rep(colhead_within, n_group), collapse = " | ")
-
-  colborder_within <- vapply(
-    X = col_tbl_within,
-    FUN.VALUE = "character",
-    FUN = switch,
-    "n" = "single",
-    "prop" = "",
-    "dur" = "single",
-    "eventsavg" = "single",
-    "eventscount" = "",
-    USE.NAMES = FALSE
-  )
-
-  rwidth_2_within <- rep(1, length(col_tbl_within) * n_group)
-
-  rwidth_1_within <- tapply(
-    rwidth_2_within,
-    c(rep(1:n_group, each = length(col_tbl_within))),
-    sum
-  )
-
-  colborder_within <- rep(colborder_within, n_group)
-
-  # Between (comparison statistics)
-  col_tbl_between <- strsplit(names(tbl), "_") |>
-    unlist() |>
-    (\(list) list[list %in% c("diff", "ci", "p")])() |>
-    unique()
-
-  if (length(col_tbl_between) > 0) {
-    colhead_between <- paste(
+    colhead_within <- paste(
       vapply(
-        X = col_tbl_between,
+        X = col_tbl_within,
         FUN.VALUE = "character",
         FUN = switch,
-        "diff" = "Estimate",
-        "ci" = paste0("(", outdata$ci_level * 100, "% CI)"),
-        "p" = "p-value",
+        "n" = "n",
+        "prop" = "(%)",
+        "dur" = "Mean Duration (SE)",
+        "eventsavg" = "Mean Events per Participant (SE)",
+        "eventscount" = "Number of Events"
       ),
       collapse = " | "
     )
 
-    colhead_1_between <- paste("Difference in %",
-      outdata$group[between_total[-reference_group]],
-      "vs.",
-      outdata$group[reference_group],
-      collapse = " | "
-    )
+    colhead_1_within <- paste(group, collapse = " | ")
+    colhead_2_within <- paste(rep(colhead_within, n_group), collapse = " | ")
 
-    colhead_2_between <- paste(rep(colhead_between, n_comparisons), collapse = " | ")
-
-    colborder_between <- vapply(
-      X = col_tbl_between,
+    colborder_within <- vapply(
+      X = col_tbl_within,
       FUN.VALUE = "character",
       FUN = switch,
-      "diff" = "single",
-      "ci" = "",
-      "p" = "single",
+      "n" = "single",
+      "prop" = "",
+      "dur" = "single",
+      "eventsavg" = "single",
+      "eventscount" = "",
       USE.NAMES = FALSE
     )
 
-    rwidth_2_between <- rep(1, length(col_tbl_between) * n_comparisons)
+    rwidth_2_within <- rep(1, length(col_tbl_within) * n_group)
 
-    rwidth_1_between <- tapply(
-      rwidth_2_between,
-      c(rep(1:n_comparisons, each = length(col_tbl_between))),
+    rwidth_1_within <- tapply(
+      rwidth_2_within,
+      c(rep(1:n_group, each = length(col_tbl_within))),
       sum
     )
 
-    colborder_between <- rep(colborder_between, n_comparisons)
-  } else {
-    colhead_between <- colhead_1_between <- colhead_2_between <- NULL
-    rwidth_1_between <- rwidth_2_between <- colborder_between <- NULL
-  }
+    colborder_within <- rep(colborder_within, n_group)
 
-  # Column headers
-  colheader <- c(
-    paste0(" | ", paste0(c(colhead_1_within, colhead_1_between), collapse = " | ")),
-    paste0(" | ", paste0(c(colhead_2_within, colhead_2_between), collapse = " | "))
-  )
+    # Between (comparison statistics)
+    col_tbl_between <- strsplit(names(tbl), "_") |>
+      unlist() |>
+      (\(list) list[list %in% c("diff", "ci", "p")])() |>
+      unique()
 
-  # Relative width
-  if (is.null(col_rel_width)) {
-    rwidth_2 <- c(3, rwidth_2_within, rwidth_2_between)
-    rwidth_1 <- c(3, rwidth_1_within, rwidth_1_between)
-  } else {
-    rwidth_2 <- col_rel_width
-
-    rw_1_recalc_w <- tapply(
-      col_rel_width[2:(n_group * length(col_tbl_within) + 1)],
-      c(rep(1:n_group, each = length(col_tbl_within))), sum
-    )
-
-    rw_1_recalc_b <- if (length(col_tbl_between) > 0) {
-      tapply(
-        col_rel_width[(n_group * length(col_tbl_within) + 2):n_col],
-        c(rep(1:n_comparisons, each = length(col_tbl_between))), sum
+    if (length(col_tbl_between) > 0) {
+      colhead_between <- paste(
+        vapply(
+          X = col_tbl_between,
+          FUN.VALUE = "character",
+          FUN = switch,
+          "diff" = "Estimate",
+          "ci" = paste0("(", outdata$ci_level * 100, "% CI)"),
+          "p" = "p-value",
+        ),
+        collapse = " | "
       )
+
+      colhead_1_between <- paste("Difference in %",
+        outdata$group[between_total[-reference_group]],
+        "vs.",
+        outdata$group[reference_group],
+        collapse = " | "
+      )
+
+      colhead_2_between <- paste(rep(colhead_between, n_comparisons), collapse = " | ")
+
+      colborder_between <- vapply(
+        X = col_tbl_between,
+        FUN.VALUE = "character",
+        FUN = switch,
+        "diff" = "single",
+        "ci" = "",
+        "p" = "single",
+        USE.NAMES = FALSE
+      )
+
+      rwidth_2_between <- rep(1, length(col_tbl_between) * n_comparisons)
+
+      rwidth_1_between <- tapply(
+        rwidth_2_between,
+        c(rep(1:n_comparisons, each = length(col_tbl_between))),
+        sum
+      )
+
+      colborder_between <- rep(colborder_between, n_comparisons)
     } else {
-      NULL
+      colhead_between <- colhead_1_between <- colhead_2_between <- NULL
+      rwidth_1_between <- rwidth_2_between <- colborder_between <- NULL
     }
 
-    rwidth_1 <- c(
-      rwidth_2[1],
-      rw_1_recalc_w,
-      rw_1_recalc_b
+    # Column headers
+    colheader <- c(
+      paste0(" | ", paste0(c(colhead_1_within, colhead_1_between), collapse = " | ")),
+      paste0(" | ", paste0(c(colhead_2_within, colhead_2_between), collapse = " | "))
     )
-  }
 
-  if (sum(rwidth_1) != sum(rwidth_2)) {
-    stop("Width calculation breaks, please contact developer.", call. = FALSE)
-  }
+    # Relative width
+    if (is.null(col_rel_width)) {
+      rwidth_2 <- c(3, rwidth_2_within, rwidth_2_between)
+      rwidth_1 <- c(3, rwidth_1_within, rwidth_1_between)
+    } else {
+      rwidth_2 <- col_rel_width
 
-  # Column border
-  border_top <- c("", rep("single", n_col - 1))
-  border_left <- c("single", colborder_within, colborder_between)
+      rw_1_recalc_w <- tapply(
+        col_rel_width[2:(n_group * length(col_tbl_within) + 1)],
+        c(rep(1:n_group, each = length(col_tbl_within))), sum
+      )
 
-  # Use order number to customize row format
-  text_justification <- c("l", rep("c", n_col - 1))
+      rw_1_recalc_b <- if (length(col_tbl_between) > 0) {
+        tapply(
+          col_rel_width[(n_group * length(col_tbl_within) + 2):n_col],
+          c(rep(1:n_comparisons, each = length(col_tbl_between))), sum
+        )
+      } else {
+        NULL
+      }
 
-  if (length(outdata$components) == 2) {
-    text_format <- ifelse(outdata$order %% 1000 == 0, "b", "")
+      rwidth_1 <- c(
+        rwidth_2[1],
+        rw_1_recalc_w,
+        rw_1_recalc_b
+      )
+    }
+
+    if (sum(rwidth_1) != sum(rwidth_2)) {
+      stop("Width calculation breaks, please contact developer.", call. = FALSE)
+    }
+
+    # Column border
+    border_top <- c("", rep("single", n_col - 1))
+    border_left <- c("single", colborder_within, colborder_between)
+
+    # Use order number to customize row format
+    text_justification <- c("l", rep("c", n_col - 1))
+
+    if (length(outdata$components) == 2) {
+      text_format <- ifelse(outdata$order %% 1000 == 0, "b", "")
+    } else {
+      text_format <- ""
+    }
+    text_format <- matrix(text_format, nrow = n_row, ncol = n_col)
+
+    text_indent <- matrix(0, nrow = n_row, ncol = n_col)
+    text_indent[, 1] <- ifelse(outdata$order %% 1000 == 0 | outdata$order == 1, 0, 100)
+
+    # Use r2rtf
+    outdata$rtf <- tbl |>
+      r2rtf::rtf_page(orientation = orientation) |>
+      r2rtf::rtf_title(title) |>
+      r2rtf::rtf_colheader(
+        colheader = colheader[1],
+        col_rel_width = rwidth_1,
+        text_font_size = text_font_size
+      ) |>
+      r2rtf::rtf_colheader(
+        colheader = colheader[2],
+        border_top = border_top,
+        border_left = border_left,
+        col_rel_width = rwidth_2,
+        text_font_size = text_font_size
+      ) |>
+      r2rtf::rtf_body(
+        col_rel_width = rwidth_2,
+        border_left = border_left,
+        text_justification = text_justification,
+        text_indent_first = text_indent,
+        text_indent_left = text_indent,
+        text_format = text_format,
+        text_font_size = text_font_size
+      )
   } else {
-    text_format <- ""
-  }
-  text_format <- matrix(text_format, nrow = n_row, ncol = n_col)
-
-  text_indent <- matrix(0, nrow = n_row, ncol = n_col)
-  text_indent[, 1] <- ifelse(outdata$order %% 1000 == 0 | outdata$order == 1, 0, 100)
-
-  # Use r2rtf
-  outdata$rtf <- tbl |>
-    r2rtf::rtf_page(orientation = orientation) |>
-    r2rtf::rtf_title(title) |>
-    r2rtf::rtf_colheader(
-      colheader = colheader[1],
-      col_rel_width = rwidth_1,
-      text_font_size = text_font_size
-    ) |>
-    r2rtf::rtf_colheader(
-      colheader = colheader[2],
-      border_top = border_top,
-      border_left = border_left,
-      col_rel_width = rwidth_2,
-      text_font_size = text_font_size
-    ) |>
-    r2rtf::rtf_body(
-      col_rel_width = rwidth_2,
-      border_left = border_left,
-      text_justification = text_justification,
-      text_indent_first = text_indent,
-      text_indent_left = text_indent,
-      text_format = text_format,
+    outdata$rtf <- empty_table(
+      title = title,
+      orientation = orientation,
       text_font_size = text_font_size
     )
+  }
 
   if (!is.null(footnotes)) {
     outdata$rtf <- outdata$rtf |>

@@ -325,6 +325,11 @@ format_ae_specific <- function(outdata,
         }
       }
       res <- rbind(res_head, res_body)
+    } else {
+      # delete the last blank row if no events
+      res <- res[1:3, ]
+      outdata$order <- outdata$order[1:3]
+      soc_name <- soc_name[1:3]
     }
   }
 
