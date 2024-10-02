@@ -19,6 +19,7 @@
 #' Format AE specific analysis
 #'
 #' @inheritParams extend_ae_specific_inference
+#' @param hide_soc_stats A boolean value to hide stats for SOC rows.
 #' @param digits_prop A numeric value of number of digits for proportion value.
 #' @param digits_ci A numeric value of number of digits for confidence interval.
 #' @param digits_p A numeric value of number of digits for p-value.
@@ -84,6 +85,7 @@
 #' head(tbl$tbl)
 format_ae_specific <- function(outdata,
                                display = c("n", "prop", "total"),
+                               hide_soc_stats = FALSE,
                                digits_prop = 1,
                                digits_ci = 1,
                                digits_p = 3,
@@ -331,6 +333,11 @@ format_ae_specific <- function(outdata,
       outdata$order <- outdata$order[1:3]
       soc_name <- soc_name[1:3]
     }
+  }
+
+  # Control SOC stats
+  if (hide_soc_stats) {
+    res[outdata$order %% 1000 == 0, names(res)[!names(res) == "name"]] <- NA
   }
 
   # Transfer to Mock
