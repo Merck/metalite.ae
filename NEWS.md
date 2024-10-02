@@ -2,7 +2,7 @@
 
 ## New features
 
--   `format_ae_specific()` now has new arguments `filter_method` and `filter_criteria` to control displayed rows in a table, and `sort_order` and `sort_column` to sort an output table (#191, #192).
+-   `format_ae_specific()` now has new arguments `filter_method` and `filter_criteria` to control displayed rows in a table, `sort_order` and `sort_column` to sort an output table, and `hide_soc_stats` to control display of statistics for SOC rows (#191, #192, #203).
 -   Add `data/metalite_ae_adesxum.rda` (#189).
 -   Add event counts to `avg_count()` and `extend_ae_specific_events()` (#194).
 -   Add `empty_table()` to return an empty table object when data has no population (#200).
