@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metalite.ae</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,28 @@
       <small>Source: <a href="https://github.com/Merck/metalite.ae/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.3" id="metaliteae-013">metalite.ae 0.1.3<a class="anchor" aria-label="anchor" href="#metaliteae-013"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-3">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-3"></a></h3>
+<ul><li>
+<code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> now has new arguments <code>filter_method</code> and <code>filter_criteria</code> to control displayed rows in a table, <code>sort_order</code> and <code>sort_column</code> to sort an output table, and <code>hide_soc_stats</code> to control display of statistics for SOC rows (<a href="https://github.com/Merck/metalite.ae/issues/191" class="external-link">#191</a>, <a href="https://github.com/Merck/metalite.ae/issues/192" class="external-link">#192</a>, <a href="https://github.com/Merck/metalite.ae/issues/203" class="external-link">#203</a>).</li>
+<li>Add <code>data/metalite_ae_adesxum.rda</code> (<a href="https://github.com/Merck/metalite.ae/issues/189" class="external-link">#189</a>).</li>
+<li>Add event counts to <code>avg_count()</code> and <code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/194" class="external-link">#194</a>).</li>
+<li>Add <code>empty_table()</code> to return an empty table object when data has no population (<a href="https://github.com/Merck/metalite.ae/issues/200" class="external-link">#200</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-3"></a></h3>
+<ul><li>Fix bug to correctly display the order of means of duration and means of event count in <code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code> and <code><a href="../reference/extend_ae_specific_duration.html">extend_ae_specific_duration()</a></code>(<a href="https://github.com/Merck/metalite.ae/issues/194" class="external-link">#194</a>, <a href="https://github.com/Merck/metalite.ae/issues/199" class="external-link">#199</a>).</li>
+<li>Fix bug to avoid an error when a treatment group has no observation to calculate event counts and duration in <code>avg_event()</code> and <code>avg_duration()</code> (<a href="https://github.com/Merck/metalite.ae/issues/199" class="external-link">#199</a>).</li>
+<li>Fix bug to avoid an error when there is no observation to summarize event counts and duration in <code>avg_event()</code>, <code>avg_duration()</code>, <code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code> and <code><a href="../reference/extend_ae_specific_duration.html">extend_ae_specific_duration()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/200" class="external-link">#200</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-0-1-3">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-1-3"></a></h3>
+<ul><li>Update <code><a href="../reference/fmt_est.html">fmt_est()</a></code> to change display of missing values from a character string of “NA” to a blank in an output table (<a href="https://github.com/Merck/metalite.ae/issues/194" class="external-link">#194</a>).</li>
+<li>Update <code><a href="../reference/extend_ae_specific_inference.html">extend_ae_specific_inference()</a></code> to pass additional arguments to <code><a href="../reference/rate_compare_sum.html">rate_compare_sum()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/197" class="external-link">#197</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="metaliteae-012">metalite.ae 0.1.2<a class="anchor" aria-label="anchor" href="#metaliteae-012"></a></h2><p class="text-muted">CRAN release: 2024-04-16</p>
 <div class="section level3">
@@ -88,7 +110,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yilong Zhang, Yujie Zhao, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng, Hiroaki Fukuda, Bing Liu. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p>Developed by Yilong Zhang, Yujie Zhao, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng, Hiroaki Fukuda, Bing Liu, Jeetender Chauhan. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">

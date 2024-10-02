@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metalite.ae</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">format_ae_specific</span><span class="op">(</span></span>
 <span>  <span class="va">outdata</span>,</span>
 <span>  display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"total"</span><span class="op">)</span>,</span>
+<span>  hide_soc_stats <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  digits_prop <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  digits_ci <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  digits_p <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -76,6 +77,10 @@
 <li><p><code>events_avg</code>: Average number of adverse event per subject.</p></li>
 <li><p><code>events_count</code>: Count number of adverse event per subject.</p></li>
 </ul></dd>
+
+
+<dt id="arg-hide-soc-stats">hide_soc_stats<a class="anchor" aria-label="anchor" href="#arg-hide-soc-stats"></a></dt>
+<dd><p>A boolean value to hide stats for SOC rows.</p></dd>
 
 
 <dt id="arg-digits-prop">digits_prop<a class="anchor" aria-label="anchor" href="#arg-digits-prop"></a></dt>
@@ -211,7 +216,7 @@ If <code>filter_method</code> is <code>count</code>, the value should be greater
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yilong Zhang, Yujie Zhao, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng, Hiroaki Fukuda, Bing Liu. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p>Developed by Yilong Zhang, Yujie Zhao, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng, Hiroaki Fukuda, Bing Liu, Jeetender Chauhan. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
