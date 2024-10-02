@@ -7,6 +7,7 @@
 format_ae_specific(
   outdata,
   display = c("n", "prop", "total"),
+  hide_soc_stats = FALSE,
   digits_prop = 1,
   digits_ci = 1,
   digits_p = 3,
@@ -34,6 +35,8 @@ format_ae_specific(
 \item \code{events_avg}: Average number of adverse event per subject.
 \item \code{events_count}: Count number of adverse event per subject.
 }}
+
+\item{hide_soc_stats}{A boolean value to hide stats for SOC rows.}
 
 \item{digits_prop}{A numeric value of number of digits for proportion value.}
 

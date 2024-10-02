@@ -172,12 +172,12 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-We can use `extend_ae_specific_events()` to add average number of AE per subject.
+We can use `extend_ae_specific_events()` to add number of AE and/or average of it per subject.
 
 ```{r}
 tbl <- outdata |>
   extend_ae_specific_events() |>
-  format_ae_specific(display = c("n", "prop", "events"))
+  format_ae_specific(display = c("n", "prop", "events_count", "events_avg"))
 
 head(tbl$tbl)
 ```

@@ -34,11 +34,13 @@ Authors:
   \item Xuan Deng
   \item Hiroaki Fukuda
   \item Bing Liu
+  \item Jeetender Chauhan
 }
 
 Other contributors:
 \itemize{
   \item Venkatesh Burla [contributor]
+  \item Li Ma [contributor]
   \item Merck Sharp & Dohme Corp [copyright holder]
 }
 
