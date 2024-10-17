@@ -18,15 +18,13 @@ knitr::opts_chunk$set(
 
 ```{r}
 library(metalite.ae)
-devtools::load_all(".")  # load package in development and testing phases, need to be removed in production
+devtools::load_all(".") # load package in development and testing phases, need to be removed in production
 ```
 
 ```{r, include=FALSE}
-
 ```
 
 ```{r, include=FALSE}
-
 ```
 
 ## Overview
@@ -205,12 +203,13 @@ We can use `filter_method` and `filter_criteria` parameters to filter informatio
 ```{r}
 tbl <- outdata |>
   extend_ae_specific_events() |>
-  format_ae_specific(display = c("n", "prop", "events_count", "events_avg"),
-                     filter_method = "percent",
-                     filter_criteria = 6)
+  format_ae_specific(
+    display = c("n", "prop", "events_count", "events_avg"),
+    filter_method = "percent",
+    filter_criteria = 6
+  )
 
 head(tbl$tbl)
-
 ```
 In results above, rows having any one of "prop_x" values are greater than 6 get kept in the output.
 
@@ -225,14 +224,14 @@ We can use `sort_order` and `sort_column` parameters to sort results based on th
 
 ```{r}
 tbl <- outdata |>
-    extend_ae_specific_events() |>
-    format_ae_specific(
-      display = c("n", "prop", "events_count", "events_avg"),
-      sort_order = c("count_des"),
-      sort_column = c("Placebo")) 
+  extend_ae_specific_events() |>
+  format_ae_specific(
+    display = c("n", "prop", "events_count", "events_avg"),
+    sort_order = c("count_des"),
+    sort_column = c("Placebo")
+  )
 
 head(tbl$tbl)
-
 ```
 
 ### Mock data preparation
