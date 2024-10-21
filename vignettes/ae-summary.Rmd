@@ -213,6 +213,14 @@ outdata |>
 knitr::include_graphics("pdf/ae0summary2.pdf")
 ```
 
+
+The empty table can be generated if there is not result to display.
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("pdf/empty_ae0specific.pdf")
+```
+
+
 The mock table can also be generated.
 
 ```{r}
