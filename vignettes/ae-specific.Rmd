@@ -182,6 +182,51 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
+We can use `filter_method` and `filter_criteria` parameters to filter information based on the specified criteria:
+
+- `filter_method`: A character value to specify how to filter rows (by `count` or `percent`).
+    - `count`: Filter based on participant count.
+    - `percent`: Filter based on percent incidence.
+- `filter_criteria`: A numeric value to display rows where at least one therapy group has:
+    - a percent incidence or participant count greater than or equal to the specified value.
+    - If `filter_method` is `percent`, the value should be between 0 and 100.
+    - If `filter_method` is `count`, the value should be greater than 0.
+
+
+```{r}
+tbl <- outdata |>
+  extend_ae_specific_events() |>
+  format_ae_specific(
+    display = c("n", "prop", "events_count", "events_avg"),
+    filter_method = "percent",
+    filter_criteria = 6
+  )
+
+head(tbl$tbl)
+```
+In results above, rows having any one of "prop_x" values are greater than 6 get kept in the output.
+
+
+We can use `sort_order` and `sort_column` parameters to sort results based on the specified criteria:
+
+- `sort_order` A character value to specify sorting order:
+    - `alphabetical`: Sort by alphabetical order.
+    - `count_des`: Sort by count in descending order.
+    - `count_asc`: Sort by count in ascending order.
+- `sort_column A` character value of `group` in `outdata` used to sort a table with.
+
+```{r}
+tbl <- outdata |>
+  extend_ae_specific_events() |>
+  format_ae_specific(
+    display = c("n", "prop", "events_count", "events_avg"),
+    sort_order = c("count_des"),
+    sort_column = c("Placebo")
+  )
+
+head(tbl$tbl)
+```
+
 ### Mock data preparation
 
 The `mock` argument facilitates the creation of a mock table with ease.
