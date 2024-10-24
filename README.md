@@ -3,7 +3,7 @@
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/Merck/metalite.ae/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Merck/metalite.ae?branch=main)
 [![R-CMD-check](https://github.com/Merck/metalite.ae/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Merck/metalite.ae/actions/workflows/R-CMD-check.yaml)
-[![status](https://tinyverse.netlify.com/badge/metalite.ae)](https://tinyverse.netlify.app/)
+[![status](https://tinyverse.netlify.app/badge/metalite.ae)](https://cran.r-project.org/package=metalite.ae)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/metalite.ae)](https://cran.r-project.org/package=metalite.ae)
 <!-- badges: end -->
 
