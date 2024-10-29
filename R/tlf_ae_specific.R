@@ -22,6 +22,7 @@
 #' @param meddra_version A character value of the MedDRA version
 #'   for this dataset.
 #' @param source A character value of the data source.
+#' @param analysis One of analysis name existing at `outdata$meta$analysis`
 #' @inheritParams r2rtf::rtf_page
 #' @inheritParams r2rtf::rtf_body
 #' @param footnotes A character vector of table footnotes.
@@ -53,6 +54,7 @@
 tlf_ae_specific <- function(outdata,
                             meddra_version,
                             source,
+                            analysis,
                             col_rel_width = NULL,
                             text_font_size = 9,
                             orientation = "portrait",
@@ -99,7 +101,7 @@ tlf_ae_specific <- function(outdata,
       outdata$population,
       outdata$observation,
       outdata$parameter,
-      analysis = "ae_specific",
+      analysis = analysis,
       title_order = title
     )
 

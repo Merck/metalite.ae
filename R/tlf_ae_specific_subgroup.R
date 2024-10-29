@@ -20,6 +20,8 @@
 #'
 #' @inheritParams tlf_ae_specific
 #'
+#' @param analysis One of analysis name existing at `outdata$meta$analysis`
+#'
 #' @return RTF file and the source dataset for AE specific subgroup analysis table.
 #'
 #' @export
@@ -43,6 +45,7 @@ tlf_ae_specific_subgroup <- function(
     outdata,
     meddra_version,
     source,
+    analysis,
     col_rel_width = NULL,
     text_font_size = 9,
     orientation = "landscape",
@@ -94,7 +97,7 @@ tlf_ae_specific_subgroup <- function(
       outdata$population,
       outdata$observation,
       outdata$parameter,
-      analysis = "ae_specific"
+      analysis = analysis
     )
   }
 

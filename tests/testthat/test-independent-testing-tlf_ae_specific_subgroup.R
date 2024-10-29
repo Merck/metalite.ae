@@ -18,6 +18,7 @@ test_that("rtf output: n, and prop w/o total", {
     tlf_ae_specific_subgroup(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_specific",
       # path_outdata = path_rdata,
       path_outtable = path_rtf
     )

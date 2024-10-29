@@ -14,6 +14,7 @@ tbl <- outdata |>
   format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_summary",
     path_outtable = path_rtf,
     path_outdata = path_rdata
   )

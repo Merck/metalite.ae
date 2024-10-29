@@ -20,6 +20,8 @@
 #'
 #' @inheritParams tlf_ae_specific
 #'
+#' @param analysis One of analysis name existing at `outdata$meta$analysis`
+#'
 #' @return RTF file and the source dataset for AE summary table.
 #'
 #' @export
@@ -40,6 +42,7 @@
 #'   )
 tlf_ae_summary <- function(outdata,
                            source,
+                           analysis,
                            col_rel_width = NULL,
                            text_font_size = 9,
                            orientation = "portrait",
@@ -63,7 +66,7 @@ tlf_ae_summary <- function(outdata,
       outdata$population,
       outdata$observation,
       parameters[1],
-      analysis = "ae_summary",
+      analysis = analysis,
       title_order = title
     )
   }

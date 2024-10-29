@@ -15,6 +15,7 @@ tbl <- outdata |>
   tlf_ae_listing(
     footnotes = "footnote1",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_listing",
     path_outdata = path_rdata,
     path_outtable = path_rtf
   )
