@@ -39,6 +39,7 @@
 #'   tlf_ae_specific_subgroup(
 #'     meddra_version = "24.0",
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     analysis = "ae_specific",
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_specific_subgroup <- function(
@@ -88,6 +89,15 @@ tlf_ae_specific_subgroup <- function(
       length(col_rel_width),
       ") as as outdata$tbl has number of columns (has ",
       n_col, ")."
+    )
+  }
+
+  # Check if the parameter analysis contains the correct analysis that should exist in "outdata$meta$analysis"
+  analysis_name <- names(outdata$meta$analysis)
+  if (!(analysis %in% analysis_name))  {
+    stop(
+      "Please provide a valid analysis that matches with what being defined in 'outdata$meta$analysis'",
+      call. = FALSE
     )
   }
 

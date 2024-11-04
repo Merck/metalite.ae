@@ -39,6 +39,7 @@
 #'   format_ae_exp_adj() |>
 #'   tlf_ae_exp_adj(
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     analysis = "ae_exp_adj",
 #'     path_outdata = tempfile(fileext = ".Rdata"),
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
@@ -58,6 +59,15 @@ tlf_ae_exp_adj <- function(outdata,
   n_group <- length(outdata$group)
   n_row <- nrow(tbl)
   n_col <- ncol(tbl)
+
+  # Check if the parameter analysis contains the correct analysis that should exist in "outdata$meta$analysis"
+  analysis_name <- names(outdata$meta$analysis)
+  if (!(analysis %in% analysis_name))  {
+    stop(
+      "Please provide a valid analysis that matches with what being defined in 'outdata$meta$analysis'",
+      call. = FALSE
+    )
+  }
 
   parameters <- unlist(strsplit(outdata$parameter, ";"))
 

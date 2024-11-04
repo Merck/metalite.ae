@@ -39,6 +39,7 @@ generate_analysis_or_empty <- function(meta, outdata) {
       ) |>
       tlf_ae_specific(
         source = "Source: [CDISCpilot: adam-adsl; adae]",
+        analysis = "ae_specific",
         meddra_version = "24.0",
         path_outdata = path_rdata,
         path_outtable = path_rtf
@@ -74,6 +75,7 @@ test_that("RTF output: empty table or analysis table.", {
       ) |>
       tlf_ae_specific(
         source = "Source: [CDISCpilot: adam-adsl; adae]",
+        analysis = "ae_specific",
         meddra_version = "24.0",
         path_outdata = path_rdata,
         path_outtable = path_rtf

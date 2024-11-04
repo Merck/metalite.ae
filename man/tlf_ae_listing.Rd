@@ -8,6 +8,7 @@ tlf_ae_listing(
   outdata,
   footnotes = NULL,
   source = NULL,
+  analysis,
   col_rel_width = NULL,
   text_font_size = 9,
   orientation = "landscape",
@@ -21,6 +22,8 @@ tlf_ae_listing(
 \item{footnotes}{A character vector of table footnotes.}
 
 \item{source}{A character value of the data source.}
+
+\item{analysis}{One of analysis name existing at \code{outdata$meta$analysis}}
 
 \item{col_rel_width}{Column relative width in a vector e.g. c(2,1,1) refers to 2:1:1.
 Default is NULL for equal column width.}
@@ -50,6 +53,7 @@ prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
   tlf_ae_listing(
     footnotes = "footnote1",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_listing",
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )

@@ -40,6 +40,7 @@
 #'   tlf_ae_listing(
 #'     footnotes = "footnote1",
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     analysis = "ae_listing",
 #'     path_outdata = tempfile(fileext = ".Rdata"),
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
@@ -53,6 +54,15 @@ tlf_ae_listing <- function(outdata,
                            path_outdata = NULL,
                            path_outtable = NULL) {
   res <- outdata$tbl
+
+  # Check if the parameter analysis contains the correct analysis that should exist in "outdata$meta$analysis"
+  analysis_name <- names(outdata$meta$analysis)
+  if (!(analysis %in% analysis_name))  {
+    stop(
+      "Please provide a valid analysis that matches with what being defined in 'outdata$meta$analysis'",
+      call. = FALSE
+    )
+  }
 
   mapping <- collect_adam_mapping(outdata$meta, analysis)
   var_name <- eval(mapping$var_name)
