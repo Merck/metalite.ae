@@ -161,7 +161,7 @@ outdata |>
   tlf_ae_specific_subgroup(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_specific",  # Provide analysis type defined in meta$analysis
+    analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     path_outtable = "rtf/ae0specific0sub0gender1.rtf"
   )
 ```

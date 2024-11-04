@@ -255,7 +255,7 @@ outdata |>
   tlf_ae_specific(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_specific",   # Provide analysis type defined in meta$analysis
+    analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     path_outtable = "rtf/ae0specific1.rtf"
   )
 ```
@@ -273,7 +273,7 @@ outdata |>
   tlf_ae_specific(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_specific",   # Provide analysis type defined in meta$analysis
+    analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     col_rel_width = c(6, rep(1, 8)),
     text_font_size = 8,
     orientation = "landscape",
@@ -293,7 +293,7 @@ outdata |>
   tlf_ae_specific(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_specific",   # Provide analysis type defined in meta$analysis
+    analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     path_outtable = "rtf/mock_ae0specific1.rtf"
   )
 ```

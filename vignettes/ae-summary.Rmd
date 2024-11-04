@@ -187,7 +187,7 @@ outdata |>
   format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_summary",  # Provide analysis type defined in meta$analysis
+    analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     path_outtable = "rtf/ae0summary1.rtf"
   )
 ```
@@ -203,7 +203,7 @@ outdata |>
   format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_summary",  # Provide analysis type defined in meta$analysis
+    analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     col_rel_width = c(6, rep(1, 8)),
     text_font_size = 8,
     orientation = "landscape",
@@ -230,7 +230,7 @@ outdata |>
   format_ae_summary(mock = TRUE) |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_summary",   # Provide analysis type defined in meta$analysis
+    analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     path_outtable = "rtf/mock_ae0summary1.rtf"
   )
 ```

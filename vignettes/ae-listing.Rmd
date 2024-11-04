@@ -101,7 +101,7 @@ tbl |> tlf_ae_listing(
   footnotes = footnote,
   orientation = "portrait",
   source = "Source:  [CDISCpilot: adam-adsl; adae]",
-  analysis = "ae_listing",  # Provide analysis type defined in meta$analysis
+  analysis = "ae_listing", # Provide analysis type defined in meta$analysis
   path_outtable = "rtf/ae0listing0ser0wk12.rtf",
   path_outdata = NULL
 )
