@@ -20,6 +20,7 @@ test_that("rtf output: events, dur, n, and prop w/o total", {
     tlf_ae_specific(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_specific",
       path_outdata = path_rdata,
       path_outtable = path_rtf
     )
@@ -41,6 +42,7 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
     tlf_ae_specific(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_specific",
       path_outdata = path_rdata,
       path_outtable = path_rtf
     )
@@ -64,6 +66,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/o total", {
     tlf_ae_specific(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_specific",
       path_outdata = path_rdata,
       path_outtable = path_rtf
     )
@@ -86,6 +89,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
     tlf_ae_specific(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_specific",
       col_rel_width = c(5, rep(c(1, 2, 3, 3), 4), 1, 2, 3, 1, 2, 3),
       path_outdata = path_rdata,
       path_outtable = path_rtf
@@ -111,6 +115,7 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
     tlf_ae_specific(
       meddra_version = "24.0",
       source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_specific",
       path_outdata = path_rdata,
       path_outtable = path_rtf
     )
@@ -166,6 +171,7 @@ test_that("relative width 'works'", {
         tlf_ae_specific(
           meddra_version = "24.0",
           source = "Source:  [CDISCpilot: adam-adsl; adae]",
+          analysis = "ae_specific",
           path_outdata = path_rdata,
           path_outtable = path_rtf,
           col_rel_width = c(rep(1, 8))
@@ -181,6 +187,7 @@ test_that("relative width 'works'", {
         tlf_ae_specific(
           meddra_version = "24.0",
           source = "Source:  [CDISCpilot: adam-adsl; adae]",
+          analysis = "ae_specific",
           path_outdata = path_rdata,
           path_outtable = path_rtf,
           col_rel_width = c(rep(1, 7))

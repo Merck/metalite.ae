@@ -7,6 +7,7 @@
 tlf_ae_summary(
   outdata,
   source,
+  analysis,
   col_rel_width = NULL,
   text_font_size = 9,
   orientation = "portrait",
@@ -20,6 +21,8 @@ tlf_ae_summary(
 \item{outdata}{An \code{outdata} object created by \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 
 \item{source}{A character value of the data source.}
+
+\item{analysis}{One of analysis name existing at \code{outdata$meta$analysis}}
 
 \item{col_rel_width}{Column relative width in a vector e.g. c(2,1,1) refers to 2:1:1.
 Default is NULL for equal column width.}
@@ -56,6 +59,7 @@ outdata |>
   format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_summary",
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )

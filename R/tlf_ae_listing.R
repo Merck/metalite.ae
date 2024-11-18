@@ -21,6 +21,7 @@
 #' @param outdata An `outdata` object created by [prepare_ae_listing()].
 #' @param footnotes A character vector of table footnotes.
 #' @param source A character value of the data source.
+#' @param analysis One of analysis name existing at `outdata$meta$analysis`
 #' @inheritParams r2rtf::rtf_page
 #' @inheritParams r2rtf::rtf_body
 #' @param path_outdata A character string of the outdata path.
@@ -39,12 +40,14 @@
 #'   tlf_ae_listing(
 #'     footnotes = "footnote1",
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     analysis = "ae_listing",
 #'     path_outdata = tempfile(fileext = ".Rdata"),
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_listing <- function(outdata,
                            footnotes = NULL,
                            source = NULL,
+                           analysis,
                            col_rel_width = NULL,
                            text_font_size = 9,
                            orientation = "landscape",
@@ -52,7 +55,16 @@ tlf_ae_listing <- function(outdata,
                            path_outtable = NULL) {
   res <- outdata$tbl
 
-  mapping <- collect_adam_mapping(outdata$meta, "ae_listing")
+  # Check if the parameter analysis contains the correct analysis that should exist in "outdata$meta$analysis"
+  analysis_name <- names(outdata$meta$analysis)
+  if (!(analysis %in% analysis_name)) {
+    stop(
+      "Please provide a valid analysis that matches with what being defined in 'outdata$meta$analysis'",
+      call. = FALSE
+    )
+  }
+
+  mapping <- collect_adam_mapping(outdata$meta, analysis)
   var_name <- eval(mapping$var_name)
   subline <- eval(mapping$subline)
   subline_by <- eval(mapping$subline_by)
@@ -62,7 +74,7 @@ tlf_ae_listing <- function(outdata,
   col_name <- outdata$col_name
 
   # Define title
-  title <- collect_title(outdata$meta, outdata$population, outdata$observation, outdata$parameter, analysis = "ae_listing")
+  title <- collect_title(outdata$meta, outdata$population, outdata$observation, outdata$parameter, analysis = analysis)
 
   if (!nrow(res) == 0) {
     res <- as.data.frame(res)

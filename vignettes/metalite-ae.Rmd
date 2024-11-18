@@ -89,6 +89,7 @@ meta_ae_example() |> # Example AE data created using metalite
   format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]", # Define data source
+    analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     path_outtable = "ae0summary.rtf" # Define output
   )
 ```

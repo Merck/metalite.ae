@@ -8,6 +8,7 @@ tlf_ae_specific_subgroup(
   outdata,
   meddra_version,
   source,
+  analysis,
   col_rel_width = NULL,
   text_font_size = 9,
   orientation = "landscape",
@@ -24,6 +25,8 @@ tlf_ae_specific_subgroup(
 for this dataset.}
 
 \item{source}{A character value of the data source.}
+
+\item{analysis}{One of analysis name existing at \code{outdata$meta$analysis}}
 
 \item{col_rel_width}{Column relative width in a vector e.g. c(2,1,1) refers to 2:1:1.
 Default is NULL for equal column width.}
@@ -62,6 +65,7 @@ prepare_ae_specific_subgroup(meta,
   tlf_ae_specific_subgroup(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
     path_outtable = tempfile(fileext = ".rtf")
   )
 }

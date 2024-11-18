@@ -8,6 +8,7 @@ tlf_ae_specific(
   outdata,
   meddra_version,
   source,
+  analysis,
   col_rel_width = NULL,
   text_font_size = 9,
   orientation = "portrait",
@@ -24,6 +25,8 @@ tlf_ae_specific(
 for this dataset.}
 
 \item{source}{A character value of the data source.}
+
+\item{analysis}{One of analysis name existing at \code{outdata$meta$analysis}}
 
 \item{col_rel_width}{Column relative width in a vector e.g. c(2,1,1) refers to 2:1:1.
 Default is NULL for equal column width.}
@@ -61,6 +64,7 @@ meta |>
   format_ae_specific() |>
   tlf_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
     meddra_version = "24.0",
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")

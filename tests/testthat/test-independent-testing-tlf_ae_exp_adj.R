@@ -21,6 +21,7 @@ test_that("rtf output: n, total_exp, events, eaer, total", {
     ) |>
     tlf_ae_exp_adj(
       source = "Source: [CDISCpilot: adam-adsl]",
+      analysis = "ae_exp_adj",
       path_outdata = path_rdata,
       path_outtable = path_rtf
     )
@@ -51,6 +52,7 @@ test_that("rtf output: n, total_exp, events, eaer, total", {
     ) |>
     tlf_ae_exp_adj(
       source = "Source: [CDISCpilot: adam-adsl]",
+      analysis = "ae_exp_adj",
       path_outdata = path_rdata,
       path_outtable = path_rtf
     )

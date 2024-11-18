@@ -20,6 +20,8 @@
 #'
 #' @inheritParams tlf_ae_specific
 #'
+#' @param analysis One of analysis name existing at `outdata$meta$analysis`
+#'
 #' @return RTF file and the source dataset for AE specific subgroup analysis table.
 #'
 #' @export
@@ -37,12 +39,14 @@
 #'   tlf_ae_specific_subgroup(
 #'     meddra_version = "24.0",
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     analysis = "ae_specific",
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_specific_subgroup <- function(
     outdata,
     meddra_version,
     source,
+    analysis,
     col_rel_width = NULL,
     text_font_size = 9,
     orientation = "landscape",
@@ -88,13 +92,22 @@ tlf_ae_specific_subgroup <- function(
     )
   }
 
+  # Check if the parameter analysis contains the correct analysis that should exist in "outdata$meta$analysis"
+  analysis_name <- names(outdata$meta$analysis)
+  if (!(analysis %in% analysis_name)) {
+    stop(
+      "Please provide a valid analysis that matches with what being defined in 'outdata$meta$analysis'",
+      call. = FALSE
+    )
+  }
+
   # Define title
   if (is.null(title)) {
     title <- collect_title(outdata$meta,
       outdata$population,
       outdata$observation,
       outdata$parameter,
-      analysis = "ae_specific"
+      analysis = analysis
     )
   }
 

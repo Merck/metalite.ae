@@ -22,6 +22,7 @@
 #' @param meddra_version A character value of the MedDRA version
 #'   for this dataset.
 #' @param source A character value of the data source.
+#' @param analysis One of analysis name existing at `outdata$meta$analysis`
 #' @inheritParams r2rtf::rtf_page
 #' @inheritParams r2rtf::rtf_body
 #' @param footnotes A character vector of table footnotes.
@@ -46,6 +47,7 @@
 #'   format_ae_specific() |>
 #'   tlf_ae_specific(
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]",
+#'     analysis = "ae_specific",
 #'     meddra_version = "24.0",
 #'     path_outdata = tempfile(fileext = ".Rdata"),
 #'     path_outtable = tempfile(fileext = ".rtf")
@@ -53,6 +55,7 @@
 tlf_ae_specific <- function(outdata,
                             meddra_version,
                             source,
+                            analysis,
                             col_rel_width = NULL,
                             text_font_size = 9,
                             orientation = "portrait",
@@ -92,6 +95,15 @@ tlf_ae_specific <- function(outdata,
     )
   }
 
+  # Check if the parameter analysis contains the correct analysis that should exist in "outdata$meta$analysis"
+  analysis_name <- names(outdata$meta$analysis)
+  if (!(analysis %in% analysis_name)) {
+    stop(
+      "Please provide a valid analysis that matches with what being defined in 'outdata$meta$analysis'",
+      call. = FALSE
+    )
+  }
+
   # Define title
   if ("analysis" %in% title | "observation" %in% title | "population" %in% title) {
     title_key <- title
@@ -99,7 +111,7 @@ tlf_ae_specific <- function(outdata,
       outdata$population,
       outdata$observation,
       outdata$parameter,
-      analysis = "ae_specific",
+      analysis = analysis,
       title_order = title
     )
 
