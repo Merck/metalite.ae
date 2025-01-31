@@ -73,18 +73,18 @@ meta_ae_example <- function() {
   adae$AEACN <- sample(
     x = c("DOSE NOT CHANGED", "DRUG INTERRUPTED", "DRUG WITHDRAWN", "NOT APPLICABLE", "UNKNOWN"),
     size = length(adae$USUBJID),
-    prob = c(0.7, 0.1,0.05,0.1,0.05), replace = TRUE
+    prob = c(0.7, 0.1, 0.05, 0.1, 0.05), replace = TRUE
   )
 
   for (i in seq_along(adae$AEACN)) {
-  adae$action_taken[i] <- switch(adae$AEACN[i],
-                                  "DOSE NOT CHANGED" = "None",
-                                  "DRUG INTERRUPTED" = "Interrupted",
-                                  "DRUG WITHDRAWN" = "Discontinued",
-                                  "NOT APPLICABLE" = "N/A",
-                                  "UNKNOWN" = "Unknown",
-                                  "''" = "None",
-                                  tools::toTitleCase(tolower(adae$AEACN[i]))
+    adae$action_taken[i] <- switch(adae$AEACN[i],
+      "DOSE NOT CHANGED" = "None",
+      "DRUG INTERRUPTED" = "Interrupted",
+      "DRUG WITHDRAWN" = "Discontinued",
+      "NOT APPLICABLE" = "N/A",
+      "UNKNOWN" = "Unknown",
+      "''" = "None",
+      tools::toTitleCase(tolower(adae$AEACN[i]))
     )
   }
 
