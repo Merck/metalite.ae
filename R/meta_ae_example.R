@@ -70,14 +70,17 @@ meta_ae_example <- function() {
   }
 
   # AE action
-  adae$AEACN <- gsub("", "DOSE NOT CHANGED", adae$AEACN)
+  adae$AEACN <- sample(
+    x = c("DOSE NOT CHANGED", "DRUG INTERRUPTED", "DRUG WITHDRAWN", "NOT APPLICABLE", "UNKNOWN"),
+    size = length(adae$USUBJID),
+    prob = c(0.7, 0.1, 0.05, 0.1, 0.05), replace = TRUE
+  )
 
   for (i in seq_along(adae$AEACN)) {
     adae$action_taken[i] <- switch(adae$AEACN[i],
       "DOSE NOT CHANGED" = "None",
-      "DOSE REDUCED" = "Reduced",
       "DRUG INTERRUPTED" = "Interrupted",
-      "DOSE INCREASED" = "Increased",
+      "DRUG WITHDRAWN" = "Discontinued",
       "NOT APPLICABLE" = "N/A",
       "UNKNOWN" = "Unknown",
       "''" = "None",
