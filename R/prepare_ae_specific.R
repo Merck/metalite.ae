@@ -154,7 +154,18 @@ prepare_ae_specific <- function(meta,
 
     soc_n[[par_soc]] <- soc_n$name
     soc_n[[par_var]] <- soc_n$name
-    soc_n$order <- 1e3 * seq_len(nrow(soc_n))
+
+    overall_max <- obs %>%
+      group_by(across(all_of(c(par_var, par_soc)))) %>%
+      summarise(record_count = n(), .groups = "drop") %>%
+      group_by(across(all_of(par_soc))) %>%
+      summarise(max_record_count = max(record_count), .groups = "drop") %>%
+      summarise(max_record_count = max(max_record_count))
+
+    ck <- 10 ^ (floor(log10(overall_max$max_record_count))+2)
+    soc_n$order <- ck * seq_len(nrow(soc_n))
+
+    print(soc_n$order)
     soc_n$name <- to_sentence(soc_n$name)
     soc_n$soc_name <- soc_n$name
   } else {
@@ -171,7 +182,8 @@ prepare_ae_specific <- function(meta,
 
     par_n[[par_var]] <- par_n$name
     par_n <- merge(u_soc, par_n, all.y = TRUE)
-    par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
+    par_n$order <- ck * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
+    print(par_n$order)
     par_n$order[is.na(par_n$order)] <- (if (!all(is.na(soc_n$order))) max(soc_n$order, na.rm = TRUE) else -Inf) + 1
     par_n$name <- to_sentence(par_n$name)
     par_n$soc_name <- par_n[[par_soc]]
