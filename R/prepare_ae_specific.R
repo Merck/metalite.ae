@@ -162,7 +162,7 @@ prepare_ae_specific <- function(meta,
       summarise(max_record_count = max(record_count), .groups = "drop") %>%
       summarise(max_record_count = max(max_record_count))
 
-    ck <- 10 ^ (floor(log10(overall_max$max_record_count))+2)
+    ck <- 10^(floor(log10(overall_max$max_record_count)) + 2)
     soc_n$order <- ck * seq_len(nrow(soc_n))
     soc_n$name <- to_sentence(soc_n$name)
     soc_n$soc_name <- soc_n$name
