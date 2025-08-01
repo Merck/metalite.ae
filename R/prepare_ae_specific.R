@@ -155,14 +155,11 @@ prepare_ae_specific <- function(meta,
     soc_n[[par_soc]] <- soc_n$name
     soc_n[[par_var]] <- soc_n$name
 
-    overall_max <- obs %>%
-      group_by(across(all_of(c(par_var, par_soc)))) %>%
-      summarise(record_count = n(), .groups = "drop") %>%
-      group_by(across(all_of(par_soc))) %>%
-      summarise(max_record_count = max(record_count), .groups = "drop") %>%
-      summarise(max_record_count = max(max_record_count))
+    counts <- table(do.call(paste, obs[c(par_var, par_soc)]))
+    max_per_soc <- tapply(counts, sapply(strsplit(names(counts), " "), function(x) paste(tail(x, length(par_soc)), collapse = " ")), max)
+    overall_max <- max(max_per_soc)
 
-    ck <- 10^(floor(log10(overall_max$max_record_count)) + 2)
+    ck <- 10^(floor(log10(overall_max)) + 2)
     soc_n$order <- ck * seq_len(nrow(soc_n))
     soc_n$name <- to_sentence(soc_n$name)
     soc_n$soc_name <- soc_n$name
