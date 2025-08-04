@@ -147,8 +147,16 @@ prepare_ae_specific <- function(meta,
   obs_n$order <- 1e2 * seq_len(nrow(obs_n))
 
   counts <- table(do.call(paste, obs[c(par_var, par_soc)]))
-  max_per_soc <- tapply(counts, sapply(strsplit(names(counts), " "), function(x) paste(tail(x, length(par_soc)), collapse = " ")), max)
-  overall_max <- max(max_per_soc)
+  if (length(counts) == 0) {
+    max_per_soc <- numeric(0)  # empty numeric vector
+    overall_max <- NA          # or 0, depending on your preference
+  } else {
+    # Extract the suffix part for grouping
+    groups <- sapply(strsplit(names(counts), " "), function(x) paste(tail(x, length(par_soc)), collapse = " "))
+
+    max_per_soc <- tapply(counts, groups, max)
+    overall_max <- max(max_per_soc)
+  }
 
   ck <- 10^(floor(log10(overall_max)) + 2)
 

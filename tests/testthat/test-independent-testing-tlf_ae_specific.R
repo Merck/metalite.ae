@@ -123,42 +123,6 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
   testthat::expect_snapshot_file(path_rtf)
 })
 
-#
-# test_that("rtf output: diff, n, and prop w/ total", {
-#   path_rtf <- file.path(tempdir(), "dinpt_ae0specific1.rtf")
-#   path_rdata <- tempfile(fileext = '.Rdata')
-#
-#   tbl <- outdata |>
-#     extend_ae_specific_inference() |>
-#     format_ae_specific(display = c("n", "prop", "total",
-#       "diff", "diff_p", "diff_ci")) |>
-#     tlf_ae_specific(
-#       meddra_version = "24.0",
-#       source = "Source:  [CDISCpilot: adam-adsl; adae]",
-#       path_outdata =  path_rdata,
-#       path_outtable =  path_rtf
-#     )
-#
-#   testthat::expect_snapshot_file(path_rtf)
-# })
-#
-# test_that("rtf output: diff, n, and prop w/o total", {
-#   path_rtf <- file.path(tempdir(), "dinp_ae0specific1.rtf")
-#   path_rdata <- tempfile(fileext = '.Rdata')
-#
-#   tbl <- outdata |>
-#     extend_ae_specific_inference() |>
-#     format_ae_specific(display = c("n", "prop", "total",
-#       "diff", "diff_p", "diff_ci")) |>
-#     tlf_ae_specific(
-#       meddra_version = "24.0",
-#       source = "Source:  [CDISCpilot: adam-adsl; adae]",
-#       path_outdata =  path_rdata,
-#       path_outtable =  path_rtf
-#     )
-#
-#   testthat::expect_snapshot_file(path_rtf)
-# })
 
 test_that("relative width 'works'", {
   path_rtf <- file.path(tempdir(), "dinp_ae0specific1.rtf")
