@@ -148,8 +148,8 @@ prepare_ae_specific <- function(meta,
 
   counts <- table(do.call(paste, obs[c(par_var, par_soc)]))
   if (length(counts) == 0) {
-    max_per_soc <- numeric(0)  # empty numeric vector
-    overall_max <- NA          # or 0, depending on your preference
+    max_per_soc <- numeric(0) # empty numeric vector
+    overall_max <- NA # or 0, depending on your preference
   } else {
     # Extract the suffix part for grouping
     groups <- sapply(strsplit(names(counts), " "), function(x) paste(tail(x, length(par_soc)), collapse = " "))
