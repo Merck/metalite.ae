@@ -146,6 +146,20 @@ prepare_ae_specific <- function(meta,
 
   obs_n$order <- 1e2 * seq_len(nrow(obs_n))
 
+  counts <- table(do.call(paste, obs[c(par_var, par_soc)]))
+  if (length(counts) == 0) {
+    max_per_soc <- numeric(0) # empty numeric vector
+    overall_max <- NA # or 0, depending on your preference
+  } else {
+    # Extract the suffix part for grouping
+    groups <- sapply(strsplit(names(counts), " "), function(x) paste(tail(x, length(par_soc)), collapse = " "))
+
+    max_per_soc <- tapply(counts, groups, max)
+    overall_max <- max(max_per_soc)
+  }
+
+  ck <- 10^(floor(log10(overall_max)) + 2)
+
   # Define SOC section
   if ("soc" %in% components && nrow(obs) > 0) {
     soc_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_soc]],
@@ -154,7 +168,7 @@ prepare_ae_specific <- function(meta,
 
     soc_n[[par_soc]] <- soc_n$name
     soc_n[[par_var]] <- soc_n$name
-    soc_n$order <- 1e3 * seq_len(nrow(soc_n))
+    soc_n$order <- ck * seq_len(nrow(soc_n))
     soc_n$name <- to_sentence(soc_n$name)
     soc_n$soc_name <- soc_n$name
   } else {
@@ -171,7 +185,7 @@ prepare_ae_specific <- function(meta,
 
     par_n[[par_var]] <- par_n$name
     par_n <- merge(u_soc, par_n, all.y = TRUE)
-    par_n$order <- 1e3 * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
+    par_n$order <- ck * as.numeric(factor(par_n[[par_soc]])) + seq_len(nrow(par_n))
     par_n$order[is.na(par_n$order)] <- (if (!all(is.na(soc_n$order))) max(soc_n$order, na.rm = TRUE) else -Inf) + 1
     par_n$name <- to_sentence(par_n$name)
     par_n$soc_name <- par_n[[par_soc]]
