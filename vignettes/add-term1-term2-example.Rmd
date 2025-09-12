@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  message = FALSE, 
+  message = FALSE,
   warning = FALSE,
   out.width = "100%",
   dpi = 150
@@ -49,31 +49,27 @@ Since AEOSI is missing in the current ADAE dataset, we need to create it manuall
  
 
 ```{r}
-
 adae_modified <- meta$data_observation
 
 special_interest_terms <- c(
-  "DIARRHOEA", "NAUSEA", "VOMITING", "HEADACHE", 
+  "DIARRHOEA", "NAUSEA", "VOMITING", "HEADACHE",
   "DIZZINESS", "SOMNOLENCE", "TREMOR"
 )
 
 adae_modified$AEOSI <- ifelse(
-  adae_modified$AEDECOD %in% special_interest_terms, 
-  "Y", 
+  adae_modified$AEDECOD %in% special_interest_terms,
+  "Y",
   "N"
 )
 
 meta$data_observation <- adae_modified
-
 ```
 
 Verify that the AEOSI variable now exists and count the number of records flagged as "Y".
 
 ```{r}
-
 "AEOSI" %in% names(meta$data_observation)
 table(meta$data_observation$AEOSI)
-
 ```
 Next, verify whether `term1` and `term2` values are already assigned in the `meta_ae_example()` metadata.  
 Extract the parameter mapping for `aeosi0rel` and review the existing values of `term1` and `term2`.
@@ -95,7 +91,7 @@ new_plan <- plan(
   add_plan(
     analysis = "ae_specific", population = "apat",
     observation = c("wk12", "wk24"),
-    parameter = c("any", "aeosi", "rel", "ser", "dtc0rel", "aeosi0rel") 
+    parameter = c("any", "aeosi", "rel", "ser", "dtc0rel", "aeosi0rel")
   ) |>
   add_plan(
     analysis = "ae_listing", population = "apat",
@@ -183,7 +179,7 @@ new_plan <- plan(
   add_plan(
     analysis = "ae_specific", population = "apat",
     observation = c("wk12", "wk24"),
-    parameter = c("any", "aeosi", "rel", "ser", "dtc0rel", "aeosi0rel") 
+    parameter = c("any", "aeosi", "rel", "ser", "dtc0rel", "aeosi0rel")
   ) |>
   add_plan(
     analysis = "ae_listing", population = "apat",
