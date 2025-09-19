@@ -134,7 +134,7 @@ meta_ae_example <- function() {
     add_plan(
       analysis = "ae_specific", population = "apat",
       observation = c("wk12", "wk24"),
-      parameter = c("any", "aeosi", "rel", "ser")
+      parameter = c("any", "aeosi", "rel", "ser", "dtc0rel")
     ) |>
     add_plan(
       analysis = "ae_listing", population = "apat",
@@ -181,6 +181,15 @@ meta_ae_example <- function() {
       term2 = "of special interest",
       label = "adverse events of special interest"
     ) |>
+    define_parameter(
+      name = "dtc0rel",
+      subset = quote(AESDTH == "Y" & AEREL == "Y"),
+      var = "AEDECOD",
+      soc = "AEBODSYS",
+      term1 = "Drug-Related",
+      term2 = "Resulting in Death",
+      label = "drug-related adverse events result in death"
+    ) |>
     define_analysis(
       name = "ae_summary",
       title = "Summary of Adverse Events"
@@ -204,3 +213,4 @@ meta_ae_example <- function() {
 
   meta_adam
 }
+
