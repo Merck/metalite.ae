@@ -24,7 +24,6 @@ The objective of this tutorial is to explain how users can add term1 and term2 p
 Load the metalite.ae package
 
 ```{r setup, message=FALSE, warning=FALSE}
-
 library(metalite.ae)
 library(metalite)
 ```

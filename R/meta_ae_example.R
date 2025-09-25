@@ -213,4 +213,3 @@ meta_ae_example <- function() {
 
   meta_adam
 }
-
