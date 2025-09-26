@@ -115,7 +115,7 @@ Click to show the output
 <span><span class="co">#&gt; ADaM metadata: </span></span>
 <span><span class="co">#&gt;    .$data_population     Population data with 254 subjects </span></span>
 <span><span class="co">#&gt;    .$data_observation    Observation data with 1191 records </span></span>
-<span><span class="co">#&gt;    .$plan    Analysis plan with 18 plans </span></span>
+<span><span class="co">#&gt;    .$plan    Analysis plan with 20 plans </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis population type:</span></span>
@@ -130,16 +130,18 @@ Click to show the output
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis parameter type:</span></span>
-<span><span class="co">#&gt;      name                                label</span></span>
-<span><span class="co">#&gt; 1   'rel'        'drug-related adverse events'</span></span>
-<span><span class="co">#&gt; 2 'aeosi' 'adverse events of special interest'</span></span>
-<span><span class="co">#&gt; 3   'any'                 'any adverse events'</span></span>
-<span><span class="co">#&gt; 4   'ser'             'serious adverse events'</span></span>
+<span><span class="co">#&gt;        name                                         label</span></span>
+<span><span class="co">#&gt; 1     'rel'                 'drug-related adverse events'</span></span>
+<span><span class="co">#&gt; 2   'aeosi'          'adverse events of special interest'</span></span>
+<span><span class="co">#&gt; 3 'dtc0rel' 'drug-related adverse events result in death'</span></span>
+<span><span class="co">#&gt; 4     'any'                          'any adverse events'</span></span>
+<span><span class="co">#&gt; 5     'ser'                      'serious adverse events'</span></span>
 <span><span class="co">#&gt;                                 subset</span></span>
 <span><span class="co">#&gt; 1 AEREL %in% c('POSSIBLE', 'PROBABLE')</span></span>
 <span><span class="co">#&gt; 2                         AEOSI == 'Y'</span></span>
-<span><span class="co">#&gt; 3                                     </span></span>
-<span><span class="co">#&gt; 4                         AESER == 'Y'</span></span>
+<span><span class="co">#&gt; 3         AESDTH == 'Y' &amp; AEREL == 'Y'</span></span>
+<span><span class="co">#&gt; 4                                     </span></span>
+<span><span class="co">#&gt; 5                         AESER == 'Y'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis function:</span></span>

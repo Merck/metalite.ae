@@ -289,12 +289,12 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "label")= chr "Duration"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ subline     : chr [1:1191] "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1015, Gender = F, Race = WHITE, AGE = 63 Years, TRT = Placebo" "Subject ID = 01-701-1023, Gender = M, Race = WHITE, AGE = 64 Years, TRT = Placebo" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "data_name")= chr "adae"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ plan            :Classes ‘meta_plan’ and 'data.frame':	18 obs. of  5 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ mock       : num [1:18] 1 1 2 2 2 2 2 2 2 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ analysis   : chr [1:18] "ae_summary" "ae_summary" "ae_specific" "ae_specific" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ population : chr [1:18] "apat" "apat" "apat" "apat" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ observation: chr [1:18] "wk12" "wk24" "wk12" "wk24" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parameter  : chr [1:18] "any;rel;ser" "any;rel;ser" "any" "any" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ plan            :Classes ‘meta_plan’ and 'data.frame':	20 obs. of  5 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ mock       : num [1:20] 1 1 2 2 2 2 2 2 2 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ analysis   : chr [1:20] "ae_summary" "ae_summary" "ae_specific" "ae_specific" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ population : chr [1:20] "apat" "apat" "apat" "apat" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ observation: chr [1:20] "wk12" "wk24" "wk12" "wk24" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ parameter  : chr [1:20] "any;rel;ser" "any;rel;ser" "any" "any" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "out.attrs")=List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ dim     : Named int [1:5] 1 1 1 2 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "names")= chr [1:5] "mock" "analysis" "population" "observation" ...</span>
@@ -330,8 +330,8 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset: language SAFFL == "Y"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label : chr "All Participants as Treated"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ parameter       :List of 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ rel  :List of 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ parameter       :List of 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ rel    :List of 12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name     : chr "rel"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id       : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group    : NULL</span>
@@ -345,7 +345,7 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row : chr "with drug-related{^a} adverse events"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_foot: chr "{^a}Determined by the investigator to be related to the drug."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ aeosi:List of 9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ aeosi  :List of 9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name  : chr "aeosi"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id    : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group : NULL</span>
@@ -356,7 +356,20 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term1 : chr ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2 : chr "of special interest"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ any  :List of 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ dtc0rel:List of 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name    : chr "dtc0rel"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id      : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group   : NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ var     : chr "AEDECOD"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ subset  : language AESDTH == "Y" &amp; AEREL == "Y"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ label   : chr "drug-related adverse events result in death"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ soc     : chr "AEBODSYS"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term1   : chr "Drug-Related"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2   : chr "Resulting in Death"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ seq     : num 601</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row: chr "who died due to a drug-related adverse event"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ any    :List of 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name    : chr "any"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id      : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group   : NULL</span>
@@ -369,7 +382,7 @@ The term name is used as key to link information.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ term2   : chr ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ summ_row: chr "with one or more adverse events"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "class")= chr "adam_mapping"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ser  :List of 11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ ser    :List of 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ name    : chr "ser"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ id      : NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..$ group   : NULL</span>
