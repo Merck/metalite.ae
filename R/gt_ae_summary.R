@@ -37,7 +37,6 @@
 #'   format_ae_summary() |>
 #'   gt_ae_summary(
 #'     analysis = "ae_summary",
-#'     footnotes = "Test",
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]"
 #'   )
 gt_ae_summary <- function(outdata,
@@ -57,10 +56,7 @@ gt_ae_summary <- function(outdata,
   n_group <- length(outdata$group)
   n_row <- nrow(tbl)
   n_col <- ncol(tbl)
-  # analysis <- "ae_summary"
-  # source = "Source:  [CDISCpilot: adam-adsl; adae]"
 
-  # Check if the parameter analysis contains the correct analysis that should exist in "outdata$meta$analysis"
   analysis_name <- names(outdata$meta$analysis)
   if (!(analysis %in% analysis_name)) {
     stop(
@@ -71,33 +67,21 @@ gt_ae_summary <- function(outdata,
 
   parameters <- unlist(strsplit(outdata$parameter, ";"))
 
-  # Title
-  # Define title
   if ("analysis" %in% title | "observation" %in% title | "population" %in% title) {
     title <- collect_title(outdata$meta,
-      outdata$population,
-      outdata$observation,
-      "any",
-      analysis = "ae_summary"
+                           outdata$population,
+                           outdata$observation,
+                           "any",
+                           analysis = "ae_summary"
     )
     print(title)
   }
 
-  # Footnotes
   x <- lapply(parameters, function(x) {
     collect_adam_mapping(outdata$meta, x)$summ_foot
   })
   footnotes <- c(unlist(x), footnotes)
-  # footnotes <- paste(footnotes, collapse = "  \n")
-  tbl
   combined_title_md <- paste(title, collapse = "  \n")
-
-  # Function to create dynamic cols_label named vector
-  create_cols_label <- function(num_groups) {
-    n_labels <- setNames(rep("n", num_groups), paste0("n_", seq_len(num_groups)))
-    prop_labels <- setNames(rep("(%)", num_groups), paste0("prop_", seq_len(num_groups)))
-    c(name = "", n_labels, prop_labels)
-  }
 
   # Create spanner functions list
   spanner_funs <- lapply(seq_along(group), function(i) {
@@ -109,19 +93,45 @@ gt_ae_summary <- function(outdata,
     }
   })
 
-  n_labels <- setNames(rep("n", num_groups), paste0("n_", seq_len(num_groups)))
-  prop_labels <- setNames(rep("(%)", num_groups), paste0("prop_", seq_len(num_groups)))
-
   name_col <- colnames(tbl)[1] # first column, e.g. "name"
   n_cols <- paste0("n_", 1:num_groups)
   prop_cols <- paste0("prop_", 1:num_groups)
 
   cols_label_vec <- c(
-    setNames("", name_col), # first column label is empty string
+    setNames("", name_col),
     setNames(rep("n", num_groups), n_cols),
     setNames(rep("(%)", num_groups), prop_cols)
   )
 
+  # -------------------------
+  # Helper: convert {^text} to <sup>text</sup>
+  convert_caret_sup <- function(x) {
+    if (is.null(x)) return(x)
+    if (is.factor(x)) x <- as.character(x)
+    # handle vector input (character vector)
+    x_char <- as.character(x)
+    na_idx <- is.na(x_char)
+
+    # Escape existing angle brackets to avoid accidental HTML being interpreted,
+    # then insert <sup> tags for {^...} patterns
+    x_char <- gsub("<", "&lt;", x_char, fixed = TRUE)
+    x_char <- gsub(">", "&gt;", x_char, fixed = TRUE)
+
+    # Replace {^...} with <sup>...</sup>, allow multiple occurrences
+    x_char <- gsub("\\{\\^([^}]+)\\}", "<sup>\\1</sup>", x_char, perl = TRUE)
+
+    x_char[na_idx] <- NA_character_
+    x_char
+  }
+
+  # Apply conversion to the name column (first column)
+  if (name_col %in% colnames(tbl)) {
+    tbl[[name_col]] <- convert_caret_sup(tbl[[name_col]])
+  }
+
+  # Convert footnotes vector and source string
+  footnotes <- if (!is.null(footnotes)) md(convert_caret_sup(footnotes)) else md(footnotes)
+  source <- if (!is.null(source)) md(convert_caret_sup(source)) else md(source)
 
   gt_tbl <- tbl |>
     gt() |>
@@ -129,9 +139,16 @@ gt_ae_summary <- function(outdata,
     fmt_markdown(columns = 1) |>
     tab_header(title = gt::md(combined_title_md)) |>
     (\(gt_tbl) Reduce(function(acc, f) f(acc), spanner_funs, init = gt_tbl))() |>
-    cols_label(!!!cols_label_vec) |>
-    tab_source_note(footnotes) |>
-    tab_source_note(source)
+    cols_label(!!!cols_label_vec)
 
-  gtsave(gt_tbl, filename = "~/my_table.png")
+  # Add footnotes and source (if present). gt::tab_source_note accepts a character vector;
+  # we pass the (possibly converted) footnotes and source.
+  if (!is.null(footnotes) && length(footnotes) > 0) {
+    gt_tbl <- gt_tbl %>% tab_source_note(footnotes)
+  }
+  if (!is.null(source) && nzchar(source)) {
+    gt_tbl <- gt_tbl %>% tab_source_note(source)
+  }
+
+  return(gt_tbl)
 }
