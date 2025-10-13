@@ -69,10 +69,10 @@ gt_ae_summary <- function(outdata,
 
   if ("analysis" %in% title | "observation" %in% title | "population" %in% title) {
     title <- collect_title(outdata$meta,
-                           outdata$population,
-                           outdata$observation,
-                           "any",
-                           analysis = "ae_summary"
+      outdata$population,
+      outdata$observation,
+      "any",
+      analysis = "ae_summary"
     )
     print(title)
   }
@@ -106,7 +106,9 @@ gt_ae_summary <- function(outdata,
   # -------------------------
   # Helper: convert {^text} to <sup>text</sup>
   convert_caret_sup <- function(x) {
-    if (is.null(x)) return(x)
+    if (is.null(x)) {
+      return(x)
+    }
     if (is.factor(x)) x <- as.character(x)
     # handle vector input (character vector)
     x_char <- as.character(x)
