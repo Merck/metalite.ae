@@ -130,8 +130,8 @@ gt_ae_summary <- function(outdata,
   }
 
   # Convert footnotes vector and source string
-  footnotes <- if (!is.null(footnotes)) md(convert_caret_sup(footnotes)) else md(footnotes)
-  source <- if (!is.null(source)) md(convert_caret_sup(source)) else md(source)
+  footnotes <- if (!is.null(footnotes)) gt::md(convert_caret_sup(footnotes)) else gt::md(footnotes)
+  source <- if (!is.null(source)) gt::md(convert_caret_sup(source)) else gt::md(source)
 
   gt_tbl <- tbl |>
     gt() |>
