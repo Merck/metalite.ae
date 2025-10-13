@@ -86,7 +86,7 @@ gt_ae_summary <- function(outdata,
   # Create spanner functions list
   spanner_funs <- lapply(seq_along(group), function(i) {
     function(gt_tbl) {
-      gt_tbl %>% tab_spanner(
+      gt_tbl |> tab_spanner(
         label = group[i],
         columns = c(paste0("n_", i), paste0("prop_", i))
       )
@@ -146,10 +146,10 @@ gt_ae_summary <- function(outdata,
   # Add footnotes and source (if present). gt::tab_source_note accepts a character vector;
   # we pass the (possibly converted) footnotes and source.
   if (!is.null(footnotes) && length(footnotes) > 0) {
-    gt_tbl <- gt_tbl %>% tab_source_note(footnotes)
+    gt_tbl <- gt_tbl |> tab_source_note(footnotes)
   }
   if (!is.null(source) && nzchar(source)) {
-    gt_tbl <- gt_tbl %>% tab_source_note(source)
+    gt_tbl <- gt_tbl |> tab_source_note(source)
   }
 
   return(gt_tbl)
