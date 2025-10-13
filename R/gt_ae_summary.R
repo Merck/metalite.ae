@@ -27,6 +27,7 @@
 #' @export
 #'
 #' @examples
+#' library(gt)
 #' meta <- meta_ae_example()
 #' outdata <- prepare_ae_summary(meta,
 #'   population = "apat",

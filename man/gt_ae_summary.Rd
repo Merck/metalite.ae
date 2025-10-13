@@ -49,6 +49,7 @@ RTF file and the source dataset for AE summary table.
 AE summary table
 }
 \examples{
+library(gt)
 meta <- meta_ae_example()
 outdata <- prepare_ae_summary(meta,
   population = "apat",
