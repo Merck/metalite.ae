@@ -71,19 +71,13 @@ adexsum$TRTA <- factor(adexsum$TRT01A,
   labels = c("Placebo", "Low Dose", "High Dose")
 )
 
-
-# # Ungrouped grouped ADEX1 data frames because ADEXSUM is not a grouped one
-# adex1 <- dplyr::ungroup(adex1)
-
-# To row combine both ADEX1 and ADEXSUM, need to handle the following:
+# To combine both ADEX1 and ADEXSUM, need to handle the following:
 # Ungrouped grouped data frames
 # Normalized only numeric labelled columns
 # Preserved character-labelled columns as character
 # Added missing columns without overwriting existing ones (some vars in ADEX1 only and some in ADEXSUM only)
 
-# library(haven)
 library(dplyr)
-
 
 safe_bind_rows <- function(df1, df2) {
   # Remove grouping
@@ -128,13 +122,6 @@ safe_bind_rows <- function(df1, df2) {
 
 # Use the function
 metalite_ae_adexsum <- safe_bind_rows(adex1, adexsum)
-
-# combine only common variables:
-# common_cols <- intersect(names(adex1), names(adexsum))
-# metalite_ae_adexsum <- dplyr::bind_rows(adex1[common_cols], adexsum[common_cols])
-
-# Combine both datasets
-# metalite_ae_adexsum <- dplyr::bind_rows(adex1, adexsum)
 
 # Save the extended dataset
 usethis::use_data(metalite_ae_adexsum, overwrite = TRUE)
