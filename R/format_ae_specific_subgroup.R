@@ -49,14 +49,15 @@
 #' ) |>
 #'   format_ae_specific_subgroup()
 format_ae_specific_subgroup <- function(
-    outdata,
-    display = c("n", "prop"),
-    digits_prop = 1,
-    digits_ci = 1,
-    digits_p = 3,
-    digits_dur = c(1, 1),
-    digits_events = c(1, 1),
-    mock = FALSE) {
+  outdata,
+  display = c("n", "prop"),
+  digits_prop = 1,
+  digits_ci = 1,
+  digits_p = 3,
+  digits_dur = c(1, 1),
+  digits_events = c(1, 1),
+  mock = FALSE
+) {
   if ("total" %in% display) {
     display <- display[!display %in% "total"]
     message("total is not supported within Sub-Group")

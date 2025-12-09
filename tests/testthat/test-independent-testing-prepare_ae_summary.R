@@ -396,7 +396,6 @@ test_that("with drug-related adverse event count", {
 })
 
 
-
 test_that("non-serious adverse events count", {
   adae_itt <- dplyr::full_join(
     adsl |> dplyr::select(USUBJID, TRT01AN, ITTFL), # Merge with adsl to get percentage

@@ -46,8 +46,9 @@ outdata_eval_prepare_call <- function(outdata) {
 #'
 #' @noRd
 outdata_population_subgroup <- function(
-    outdata,
-    subgroup) {
+  outdata,
+  subgroup
+) {
   meta <- outdata$meta
 
   # define subgroup
