@@ -42,6 +42,7 @@ reference:
     - prepare_ae_summary
     - format_ae_summary
     - tlf_ae_summary
+    - gt_ae_summary
     - extend_ae_summary_eaer
     - format_ae_exp_adj
     - tlf_ae_exp_adj
