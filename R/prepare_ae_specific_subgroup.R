@@ -35,14 +35,15 @@
 #' meta <- meta_ae_example()
 #' prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
 prepare_ae_specific_subgroup <- function(
-    meta,
-    population,
-    observation,
-    parameter,
-    subgroup_var,
-    subgroup_header = c(meta$population[[population]]$group, subgroup_var),
-    components = c("soc", "par"),
-    display_subgroup_total = TRUE) {
+  meta,
+  population,
+  observation,
+  parameter,
+  subgroup_var,
+  subgroup_header = c(meta$population[[population]]$group, subgroup_var),
+  components = c("soc", "par"),
+  display_subgroup_total = TRUE
+) {
   meta_original <- meta
 
   meta$data_population[[subgroup_var]] <- factor(

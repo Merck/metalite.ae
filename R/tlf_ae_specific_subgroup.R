@@ -43,17 +43,18 @@
 #'     path_outtable = tempfile(fileext = ".rtf")
 #'   )
 tlf_ae_specific_subgroup <- function(
-    outdata,
-    meddra_version,
-    source,
-    analysis,
-    col_rel_width = NULL,
-    text_font_size = 9,
-    orientation = "landscape",
-    footnotes = NULL,
-    title = NULL,
-    path_outdata = NULL,
-    path_outtable = NULL) {
+  outdata,
+  meddra_version,
+  source,
+  analysis,
+  col_rel_width = NULL,
+  text_font_size = 9,
+  orientation = "landscape",
+  footnotes = NULL,
+  title = NULL,
+  path_outdata = NULL,
+  path_outtable = NULL
+) {
   if (is.null(footnotes)) {
     footnotes <- c(
       "Every participant is counted a single time for each applicable row and column.",
