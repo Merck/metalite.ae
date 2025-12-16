@@ -105,9 +105,9 @@ normalize_rtf_charset <- function(rtf_path) {
 #' @param path Path to RTF file
 #' @noRd
 expect_snapshot_rtf <- function(path) {
+  # Normalize the RTF file in place
   normalized <- normalize_rtf_charset(path)
-  # Write to temp file and use expect_snapshot_file
-  temp_normalized <- tempfile(fileext = ".rtf")
-  writeLines(normalized, temp_normalized)
-  testthat::expect_snapshot_file(temp_normalized, name = basename(path))
+  writeLines(normalized, path)
+  # Now use expect_snapshot_file on the normalized file
+  testthat::expect_snapshot_file(path, name = basename(path))
 }
