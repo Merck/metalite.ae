@@ -88,3 +88,26 @@ prop_test_mn <- function(x0, n0, x1, n1,
 
   ci
 }
+
+#' Normalize RTF font charset values for cross-platform testing
+#'
+#' @param rtf_path Path to RTF file
+#' @return Normalized RTF content as character vector
+#' @noRd
+normalize_rtf_charset <- function(rtf_path) {
+  rtf_content <- readLines(rtf_path, warn = FALSE)
+  rtf_content <- gsub("\\\\fcharset[0-9]+", "\\\\fcharset0", rtf_content)
+  rtf_content
+}
+
+#' Expect snapshot of RTF file with normalized charset
+#'
+#' @param path Path to RTF file
+#' @noRd
+expect_snapshot_rtf <- function(path) {
+  normalized <- normalize_rtf_charset(path)
+  testthat::expect_snapshot(
+    cat(normalized, sep = "\n"),
+    cran = TRUE
+  )
+}
