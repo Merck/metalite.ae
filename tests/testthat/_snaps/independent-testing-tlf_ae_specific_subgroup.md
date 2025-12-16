@@ -16,29 +16,30 @@
       [1] TRUE
       
       $meta
-      ADaM metadata: 
-         .$data_population 	Population data with 254 subjects 
-         .$data_observation 	Observation data with 1191 records 
-         .$plan 	Analysis plan with 18 plans 
-      
-      
+      ADaM metadata:
+         .$data_population 	Population data with 254 subjects
+         .$data_observation 	Observation data with 1191 records
+         .$plan 	Analysis plan with 20 plans
+
+
         Analysis population type:
           name        id  group var       subset                         label
       1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'
-      
-      
+
+
         Analysis observation type:
           name        id  group var          subset           label
       1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'
       2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'
-      
-      
+
+
         Analysis parameter type:
-           name                                label
-      1   'rel'        'drug-related adverse events'
-      2 'aeosi' 'adverse events of special interest'
-      3   'any'                 'any adverse events'
-      4   'ser'             'serious adverse events'
+              name                                         label
+      1     'rel'                 'drug-related adverse events'
+      2   'aeosi'          'adverse events of special interest'
+      3 'dtc0rel' 'drug-related adverse events result in death'
+      4     'any'                          'any adverse events'
+      5     'ser'                      'serious adverse events'
                                       subset
       1 AEREL %in% c('POSSIBLE', 'PROBABLE')
       2                         AEOSI == 'Y'
