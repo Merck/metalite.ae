@@ -25,7 +25,7 @@ test_that("rtf output: events, dur, n, and prop w/o total", {
       path_outtable = path_rtf
     )
 
-  testthat::expect_snapshot_file(path_rtf)
+  expect_snapshot_rtf(path_rtf)
 })
 
 test_that("rtf output: events, dur, n, and prop w/ total", {
@@ -47,7 +47,7 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
       path_outtable = path_rtf
     )
 
-  testthat::expect_snapshot_file(path_rtf)
+  expect_snapshot_rtf(path_rtf)
 })
 
 
@@ -71,7 +71,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/o total", {
       path_outtable = path_rtf
     )
 
-  testthat::expect_snapshot_file(path_rtf)
+  expect_snapshot_rtf(path_rtf)
 })
 
 test_that("rtf output: diff, events, dur, n, and prop w/ total", {
@@ -95,7 +95,7 @@ test_that("rtf output: diff, events, dur, n, and prop w/ total", {
       path_outtable = path_rtf
     )
 
-  testthat::expect_snapshot_file(path_rtf)
+  expect_snapshot_rtf(path_rtf)
 })
 
 
@@ -120,7 +120,7 @@ test_that("rtf output: events, dur, n, and prop w/ total", {
       path_outtable = path_rtf
     )
 
-  testthat::expect_snapshot_file(path_rtf)
+  expect_snapshot_rtf(path_rtf)
 })
 
 
