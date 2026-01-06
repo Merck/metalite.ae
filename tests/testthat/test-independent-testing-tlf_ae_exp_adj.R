@@ -26,7 +26,7 @@ test_that("rtf output: n, total_exp, events, eaer, total", {
       path_outtable = path_rtf
     )
 
-  expect_snapshot_file(path_rtf)
+  expect_snapshot_rtf(path_rtf)
 })
 
 test_that("rtf output: n, total_exp, events, eaer, total", {
@@ -57,5 +57,5 @@ test_that("rtf output: n, total_exp, events, eaer, total", {
       path_outtable = path_rtf
     )
 
-  expect_snapshot_file(path_rtf)
+  expect_snapshot_rtf(path_rtf)
 })

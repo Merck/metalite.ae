@@ -56,9 +56,10 @@ to_sentence <- function(x) {
 #'
 #' @noRd
 rtf_output <- function(
-    outdata,
-    path_outdata,
-    path_outtable) {
+  outdata,
+  path_outdata,
+  path_outtable
+) {
   if (!is.null(path_outdata)) {
     save(outdata, file = path_outdata)
     message("The outdata is saved in", normalizePath(path_outdata))

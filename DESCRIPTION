@@ -35,7 +35,8 @@ Imports:
     glue,
     metalite,
     r2rtf,
-    stats
+    stats,
+    gt
 Suggests:
     DescTools,
     covr,

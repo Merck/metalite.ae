@@ -19,7 +19,7 @@
       ADaM metadata: 
          .$data_population 	Population data with 254 subjects 
          .$data_observation 	Observation data with 1191 records 
-         .$plan 	Analysis plan with 18 plans 
+         .$plan 	Analysis plan with 20 plans 
       
       
         Analysis population type:
@@ -34,16 +34,18 @@
       
       
         Analysis parameter type:
-           name                                label
-      1   'rel'        'drug-related adverse events'
-      2 'aeosi' 'adverse events of special interest'
-      3   'any'                 'any adverse events'
-      4   'ser'             'serious adverse events'
+             name                                         label
+      1     'rel'                 'drug-related adverse events'
+      2   'aeosi'          'adverse events of special interest'
+      3 'dtc0rel' 'drug-related adverse events result in death'
+      4     'any'                          'any adverse events'
+      5     'ser'                      'serious adverse events'
                                       subset
       1 AEREL %in% c('POSSIBLE', 'PROBABLE')
       2                         AEOSI == 'Y'
-      3                                     
-      4                         AESER == 'Y'
+      3         AESDTH == 'Y' & AEREL == 'Y'
+      4                                     
+      5                         AESER == 'Y'
       
       
         Analysis function:
