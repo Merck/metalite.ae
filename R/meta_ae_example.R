@@ -61,11 +61,11 @@ meta_ae_example <- function() {
   # AE outcome
   for (i in seq_along(adae$AEOUT)) {
     adae$outcome <- switch(adae$AEOUT[i],
-      "RECOVERED/RESOLVED" = "Resolved",
-      "RECOVERING/RESOLVING" = "Resolving",
-      "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
-      "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-      tools::toTitleCase(tolower(adae$AEOUT[i]))
+                           "RECOVERED/RESOLVED" = "Resolved",
+                           "RECOVERING/RESOLVING" = "Resolving",
+                           "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
+                           "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
+                           tools::toTitleCase(tolower(adae$AEOUT[i]))
     )
   }
 
@@ -78,13 +78,13 @@ meta_ae_example <- function() {
 
   for (i in seq_along(adae$AEACN)) {
     adae$action_taken[i] <- switch(adae$AEACN[i],
-      "DOSE NOT CHANGED" = "None",
-      "DRUG INTERRUPTED" = "Interrupted",
-      "DRUG WITHDRAWN" = "Discontinued",
-      "NOT APPLICABLE" = "N/A",
-      "UNKNOWN" = "Unknown",
-      "''" = "None",
-      tools::toTitleCase(tolower(adae$AEACN[i]))
+                                   "DOSE NOT CHANGED" = "None",
+                                   "DRUG INTERRUPTED" = "Interrupted",
+                                   "DRUG WITHDRAWN" = "Discontinued",
+                                   "NOT APPLICABLE" = "N/A",
+                                   "UNKNOWN" = "Unknown",
+                                   "''" = "None",
+                                   tools::toTitleCase(tolower(adae$AEACN[i]))
     )
   }
 
@@ -134,7 +134,7 @@ meta_ae_example <- function() {
     add_plan(
       analysis = "ae_specific", population = "apat",
       observation = c("wk12", "wk24"),
-      parameter = c("any", "aeosi", "rel", "ser")
+      parameter = c("any", "aeosi", "rel", "ser", "dtc0rel")
     ) |>
     add_plan(
       analysis = "ae_listing", population = "apat",
@@ -180,6 +180,15 @@ meta_ae_example <- function() {
       term1 = "",
       term2 = "of special interest",
       label = "adverse events of special interest"
+    ) |>
+    define_parameter(
+      name = "dtc0rel",
+      subset = quote(AESDTH == "Y" & AEREL == "Y"),
+      var = "AEDECOD",
+      soc = "AEBODSYS",
+      term1 = "Drug-Related",
+      term2 = "Resulting in Death",
+      label = "drug-related adverse events result in death"
     ) |>
     define_analysis(
       name = "ae_summary",
