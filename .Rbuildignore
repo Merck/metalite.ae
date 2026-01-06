@@ -6,7 +6,6 @@
 ^LICENSE\.md$
 ^LICENSES_THIRD_PARTY$
 ^codecov\.yml$
-^tests/testthat/_snaps$
 ^\.github$
 ^cran-comments\.md$
 ^data-raw$
