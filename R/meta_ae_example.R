@@ -61,11 +61,11 @@ meta_ae_example <- function() {
   # AE outcome
   for (i in seq_along(adae$AEOUT)) {
     adae$outcome <- switch(adae$AEOUT[i],
-                           "RECOVERED/RESOLVED" = "Resolved",
-                           "RECOVERING/RESOLVING" = "Resolving",
-                           "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
-                           "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-                           tools::toTitleCase(tolower(adae$AEOUT[i]))
+      "RECOVERED/RESOLVED" = "Resolved",
+      "RECOVERING/RESOLVING" = "Resolving",
+      "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
+      "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
+      tools::toTitleCase(tolower(adae$AEOUT[i]))
     )
   }
 
@@ -78,13 +78,13 @@ meta_ae_example <- function() {
 
   for (i in seq_along(adae$AEACN)) {
     adae$action_taken[i] <- switch(adae$AEACN[i],
-                                   "DOSE NOT CHANGED" = "None",
-                                   "DRUG INTERRUPTED" = "Interrupted",
-                                   "DRUG WITHDRAWN" = "Discontinued",
-                                   "NOT APPLICABLE" = "N/A",
-                                   "UNKNOWN" = "Unknown",
-                                   "''" = "None",
-                                   tools::toTitleCase(tolower(adae$AEACN[i]))
+      "DOSE NOT CHANGED" = "None",
+      "DRUG INTERRUPTED" = "Interrupted",
+      "DRUG WITHDRAWN" = "Discontinued",
+      "NOT APPLICABLE" = "N/A",
+      "UNKNOWN" = "Unknown",
+      "''" = "None",
+      tools::toTitleCase(tolower(adae$AEACN[i]))
     )
   }
 
