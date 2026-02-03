@@ -11,8 +11,7 @@ adex1 <- adex |>
     PARAM = "Duration of Exposure(days)",
     PARAMCD = "EXPODUR"
   ) |>
-
-dplyr::distinct(USUBJID, .keep_all = TRUE)
+  dplyr::distinct(USUBJID, .keep_all = TRUE)
 
 # using attr() to assign labels
 attr(adex1$AVAL, "label") <- "Analysis Value"
@@ -40,7 +39,7 @@ attr(adex1$EXNUMDOS, "label") <- "Number of Daily Doses"
 #   - Get the exposure duration `adexsum$AVAL` for all participants.
 #   - Assign duration category `adexsum$EXDURGR` i.e.">=1 day", ">=7 days",">=28 days", ">=12 weeks" and ">=24 weeks".
 
-set.seed(123)  # For reproducibility, keeping the rest of the code unchanged
+set.seed(123) # For reproducibility, keeping the rest of the code unchanged
 
 adexsum <- r2rtf::r2rtf_adsl |>
   dplyr::select(USUBJID, TRT01A, TRT01P, AGE, AGEU, AGEGR1, SEX, RACE, RACEN, TRTSDT, SAFFL) |>
@@ -54,21 +53,20 @@ adexsum <- r2rtf::r2rtf_adsl |>
     EXDURGR = dplyr::case_when(
       AVAL >= 24 * 7 ~ ">=24 weeks",
       AVAL >= 12 * 7 ~ ">=12 weeks",
-      AVAL >= 28     ~ ">=28 days",
-      AVAL >= 7      ~ ">=7 days",
-      AVAL >= 1      ~ ">=1 day"
+      AVAL >= 28 ~ ">=28 days",
+      AVAL >= 7 ~ ">=7 days",
+      AVAL >= 1 ~ ">=1 day"
     )
   )
 
 adexsum$EXDURGR <- factor(adexsum$EXDURGR,
-                          levels = c("not treated", ">=1 day", ">=7 days", ">=28 days", ">=12 weeks", ">=24 weeks")
+  levels = c("not treated", ">=1 day", ">=7 days", ">=28 days", ">=12 weeks", ">=24 weeks")
 )
 
 adexsum$TRTA <- factor(adexsum$TRT01A,
-                       levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-                       labels = c("Placebo", "Low Dose", "High Dose")
+  levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+  labels = c("Placebo", "Low Dose", "High Dose")
 )
-
 
 
 # # Ungrouped grouped ADEX1 data frames because ADEXSUM is not a grouped one
@@ -80,9 +78,8 @@ adexsum$TRTA <- factor(adexsum$TRT01A,
 # Preserved character-labelled columns as character
 # Added missing columns without overwriting existing ones (some vars in ADEX1 only and some in ADEXSUM only)
 
-#library(haven)
+# library(haven)
 library(dplyr)
-
 
 
 safe_bind_rows <- function(df1, df2) {
@@ -93,8 +90,8 @@ safe_bind_rows <- function(df1, df2) {
   normalize_labelled <- function(df) {
     df[] <- lapply(df, function(x) {
       if (inherits(x, "labelled")) {
-        base <- unclass(x)  # remove haven_labelled class
-        lbl  <- attr(x, "label", exact = TRUE)
+        base <- unclass(x) # remove haven_labelled class
+        lbl <- attr(x, "label", exact = TRUE)
 
         # Preserve type and label
         if (is.numeric(base)) {
