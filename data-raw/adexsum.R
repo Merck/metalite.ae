@@ -2,6 +2,7 @@
 load("data/metalite_ae_adex.rda")
 adex <- metalite_ae_adex
 
+
 # Summarize exposure duration
 adex1 <- adex |>
   dplyr::group_by(USUBJID) |>
@@ -10,11 +11,8 @@ adex1 <- adex |>
     PARAM = "Duration of Exposure(days)",
     PARAMCD = "EXPODUR"
   ) |>
-  dplyr::select(
-    -VISIT, -VISITDY, -VISITNUM, -EXSTDTC, -EXENDTC, -EXENDY, -EXSTDY,
-    -ASTDT, -AENDT, -ASTDTM, -AENDTM, -ASTDY, -AENDY, -EXDURDD
-  ) |>
-  dplyr::distinct(USUBJID, .keep_all = TRUE)
+
+dplyr::distinct(USUBJID, .keep_all = TRUE)
 
 # using attr() to assign labels
 attr(adex1$AVAL, "label") <- "Analysis Value"
@@ -42,7 +40,7 @@ attr(adex1$EXNUMDOS, "label") <- "Number of Daily Doses"
 #   - Get the exposure duration `adexsum$AVAL` for all participants.
 #   - Assign duration category `adexsum$EXDURGR` i.e.">=1 day", ">=7 days",">=28 days", ">=12 weeks" and ">=24 weeks".
 
-set.seed(123) # For reproducibility, keeping the rest of the code unchanged
+set.seed(123)  # For reproducibility, keeping the rest of the code unchanged
 
 adexsum <- r2rtf::r2rtf_adsl |>
   dplyr::select(USUBJID, TRT01A, TRT01P, AGE, AGEU, AGEGR1, SEX, RACE, RACEN, TRTSDT, SAFFL) |>
@@ -56,28 +54,36 @@ adexsum <- r2rtf::r2rtf_adsl |>
     EXDURGR = dplyr::case_when(
       AVAL >= 24 * 7 ~ ">=24 weeks",
       AVAL >= 12 * 7 ~ ">=12 weeks",
-      AVAL >= 28 ~ ">=28 days",
-      AVAL >= 7 ~ ">=7 days",
-      AVAL >= 1 ~ ">=1 day"
+      AVAL >= 28     ~ ">=28 days",
+      AVAL >= 7      ~ ">=7 days",
+      AVAL >= 1      ~ ">=1 day"
     )
   )
 
 adexsum$EXDURGR <- factor(adexsum$EXDURGR,
-  levels = c("not treated", ">=1 day", ">=7 days", ">=28 days", ">=12 weeks", ">=24 weeks")
+                          levels = c("not treated", ">=1 day", ">=7 days", ">=28 days", ">=12 weeks", ">=24 weeks")
 )
 
 adexsum$TRTA <- factor(adexsum$TRT01A,
-  levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
-  labels = c("Placebo", "Low Dose", "High Dose")
+                       levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"),
+                       labels = c("Placebo", "Low Dose", "High Dose")
 )
 
-# To combine both ADEX1 and ADEXSUM, need to handle the following:
+
+
+# # Ungrouped grouped ADEX1 data frames because ADEXSUM is not a grouped one
+# adex1 <- dplyr::ungroup(adex1)
+
+# To row combine both ADEX1 and ADEXSUM, need to handle the following:
 # Ungrouped grouped data frames
 # Normalized only numeric labelled columns
 # Preserved character-labelled columns as character
 # Added missing columns without overwriting existing ones (some vars in ADEX1 only and some in ADEXSUM only)
 
+#library(haven)
 library(dplyr)
+
+
 
 safe_bind_rows <- function(df1, df2) {
   # Remove grouping
@@ -87,8 +93,8 @@ safe_bind_rows <- function(df1, df2) {
   normalize_labelled <- function(df) {
     df[] <- lapply(df, function(x) {
       if (inherits(x, "labelled")) {
-        base <- unclass(x) # remove haven_labelled class
-        lbl <- attr(x, "label", exact = TRUE)
+        base <- unclass(x)  # remove haven_labelled class
+        lbl  <- attr(x, "label", exact = TRUE)
 
         # Preserve type and label
         if (is.numeric(base)) {
@@ -122,6 +128,13 @@ safe_bind_rows <- function(df1, df2) {
 
 # Use the function
 metalite_ae_adexsum <- safe_bind_rows(adex1, adexsum)
+
+# combine only common variables:
+# common_cols <- intersect(names(adex1), names(adexsum))
+# metalite_ae_adexsum <- dplyr::bind_rows(adex1[common_cols], adexsum[common_cols])
+
+# Combine both datasets
+# metalite_ae_adexsum <- dplyr::bind_rows(adex1, adexsum)
 
 # Save the extended dataset
 usethis::use_data(metalite_ae_adexsum, overwrite = TRUE)
