@@ -288,7 +288,6 @@ rate_compare_sum <- function(
 
       # Skip intervals where fa or fb are NA/NaN/Inf
       if (is.finite(fa) && is.finite(fb) && (fa * fb < 0)) {
-
         repeat {
           if (abs(b1 - a1) < eps) {
             break
