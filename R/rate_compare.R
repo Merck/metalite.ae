@@ -277,31 +277,52 @@ rate_compare_sum <- function(
     j <- 0
     a1 <- b1 <- 0
     roots <- c()
+
     while (i <= bisection) {
       a1 <- a + i * h
       b1 <- a1 + h
-      if (f(a1) * f(b1) < 0) {
+
+      # Evaluate function safely
+      fa <- f(a1)
+      fb <- f(b1)
+
+      # Skip intervals where fa or fb are NA/NaN/Inf
+      if (is.finite(fa) && is.finite(fb) && (fa * fb < 0)) {
+
         repeat {
           if (abs(b1 - a1) < eps) {
             break
           }
+
           x <- (a1 + b1) / 2
-          if (f(a1) * f(x) < 0) {
+          fx <- f(x)
+
+          # If fx is NA/NaN/Inf, break and skip this interval
+          if (!is.finite(fx)) break
+
+          if (fa * fx < 0) {
             b1 <- x
+            fb <- fx
           } else {
             a1 <- x
+            fa <- fx
           }
         }
+
         j <- j + 1
         roots[j] <- (a1 + b1) / 2
       }
+
       i <- i + 1
     }
+
     if (j == 0) {
-      print(paste(
-        "After", bisection,
-        "loops lower or uppder limit was not found: change initial lower or upper bound."
-      ))
+      message(
+        "After ", bisection,
+        " intervals, no lower or upper CI limit was found. ",
+        "Try increasing `bisection` or adjusting the search interval (a, b) for lower or uppder limit."
+      )
+      return(NA)
     } else {
       return(roots)
     }
