@@ -430,7 +430,7 @@ str(prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser"))
 #>   ..$ related     : chr [1:3] "Possible" "Probable" "None"
 #>   .. ..- attr(*, "label")= Named chr "Related"
 #>   .. .. ..- attr(*, "names")= chr "related"
-#>   ..$ action_taken: chr [1:3] "None" "N/A" "None"
+#>   ..$ action_taken: chr [1:3] "None" "Interrupted" "Discontinued"
 #>   .. ..- attr(*, "label")= Named chr "Action Taken"
 #>   .. .. ..- attr(*, "names")= chr "action_taken"
 #>   ..$ outcome     : chr [1:3] "Resolved" "Resolved" "Resolved"
