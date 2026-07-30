@@ -1,6 +1,7 @@
 # Subgroup Analysis for Specific AE
 
 ``` r
+
 library(metalite.ae)
 ```
 
@@ -25,6 +26,7 @@ function is designed to be used for multiple purposes. The input of the
 function is a `meta` object created by the metalite package.
 
 ``` r
+
 meta <- meta_ae_example()
 ```
 
@@ -33,6 +35,7 @@ analysis raw datasets. Key arguments are `subgroup_var`,
 `subgroup_header`, and `display_subgroup_total`.
 
 ``` r
+
 outdata <- prepare_ae_specific_subgroup(
   meta,
   population = "apat",
@@ -45,6 +48,7 @@ outdata <- prepare_ae_specific_subgroup(
 ```
 
 ``` r
+
 outdata
 #> $components
 #> [1] "soc" "par"
@@ -168,6 +172,7 @@ The output dataset contains commonly used statistics within each
 `subgroup_var`.
 
 ``` r
+
 outdata$out_all$F
 #> List of 15
 #>  $ meta           :List of 7
@@ -225,6 +230,7 @@ The variable is indexed by the order of `outdata$group` and
 `outdata$subgroup` within each `subgroup_var`.
 
 ``` r
+
 outdata$group
 #> [1] "Placebo"   "Low Dose"  "High Dose"
 outdata$subgroup
@@ -235,6 +241,7 @@ The row is indexed by the order of `name` within each `subgroup_var`
 analysis output.
 
 ``` r
+
 head(data.frame(outdata$out_all$Total$order, outdata$out_all$Total$name))
 #>   outdata.out_all.Total.order                   outdata.out_all.Total.name
 #> 1                           1                   Participants in population
@@ -248,6 +255,7 @@ head(data.frame(outdata$out_all$Total$order, outdata$out_all$Total$name))
 - `n_pop`: participants in population within each `subgroup_var`.
 
 ``` r
+
 outdata$out_all$F$n_pop
 #>   n_1 n_2 n_3 n_4
 #> 1  53  50  40 143
@@ -262,6 +270,7 @@ outdata$out_all$Total$n_pop
 - `n`: number of subjects with AE within each `subgroup_var`.
 
 ``` r
+
 head(outdata$out_all$F$n)
 #>     n_1 n_2 n_3 n_4
 #> 1    53  50  40 143
@@ -291,6 +300,7 @@ head(outdata$out_all$Total$n)
 - `prop`: proportion of subjects with AE within each `subgroup_var`.
 
 ``` r
+
 head(outdata$out_all$F$prop)
 #>        prop_1 prop_2 prop_3    prop_4
 #> 1          NA     NA     NA        NA
@@ -321,6 +331,7 @@ head(outdata$out_all$Total$prop)
   each `subgroup_var`.
 
 ``` r
+
 head(outdata$out_all$Total$diff)
 #>         diff_2     diff_3
 #> 1           NA         NA
@@ -338,6 +349,7 @@ After we have the raw analysis results, we can use
 to prepare the outdata to create RTF tables.
 
 ``` r
+
 tbl <- outdata |> format_ae_specific_subgroup()
 head(tbl$tbl)
 #>                                             name Fn_1 Fprop_1 Fn_2 Fprop_2 Fn_3
@@ -366,6 +378,7 @@ head(tbl$tbl)
 We can hide the total column:
 
 ``` r
+
 tbl <- outdata |> format_ae_specific_subgroup(display = c("n", "prop"))
 head(tbl$tbl)
 #>                                             name Fn_1 Fprop_1 Fn_2 Fprop_2 Fn_3
@@ -394,6 +407,7 @@ head(tbl$tbl)
 Adding risk difference:
 
 ``` r
+
 tbl <- outdata |> format_ae_specific_subgroup(display = c("n", "prop", "diff"))
 head(tbl$tbl)
 #>                                             name Fn_1 Fprop_1 Fn_2 Fprop_2 Fn_3
@@ -440,6 +454,7 @@ Additional work is required to develop a flexible mock table generation
 tool (for example, a dedicated mock table generation package).
 
 ``` r
+
 tbl <- outdata |> format_ae_specific_subgroup(mock = FALSE)
 head(tbl$tbl)
 #>                                             name Fn_1 Fprop_1 Fn_2 Fprop_2 Fn_3
@@ -474,6 +489,7 @@ we can transfer the output from
 to an RTF or PDF table.
 
 ``` r
+
 outdata |>
   format_ae_specific_subgroup() |>
   tlf_ae_specific_subgroup(

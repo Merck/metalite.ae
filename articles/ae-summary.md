@@ -1,6 +1,7 @@
 # AE Summary
 
 ``` r
+
 library(metalite.ae)
 ```
 
@@ -39,12 +40,14 @@ package
 website](https://merck.github.io/metalite/articles/metalite.html).
 
 ``` r
+
 meta <- meta_ae_example()
 ```
 
 Click to show the output
 
 ``` r
+
 meta
 #> ADaM metadata: 
 #>    .$data_population     Population data with 254 subjects 
@@ -97,6 +100,7 @@ The resulting output of the function is an outdata object, which
 comprises a collection of raw datasets for analysis and reporting.
 
 ``` r
+
 outdata <- prepare_ae_summary(
   meta,
   population = "apat",
@@ -106,6 +110,7 @@ outdata <- prepare_ae_summary(
 ```
 
 ``` r
+
 outdata
 #> List of 13
 #>  $ meta           :List of 7
@@ -127,6 +132,7 @@ The resulting dataset contains frequently used statistics, with
 variables indexed according to the order specified in `outdata$group`.
 
 ``` r
+
 outdata$group
 #> [1] "Placebo"   "Low Dose"  "High Dose" "Total"
 ```
@@ -134,6 +140,7 @@ outdata$group
 The row is indexed according to the order of `outdata$name`.
 
 ``` r
+
 head(data.frame(outdata$order, outdata$name))
 #>   outdata.order                         outdata.name
 #> 1             1           Participants in population
@@ -146,6 +153,7 @@ head(data.frame(outdata$order, outdata$name))
 - `n_pop`: number of participants in population.
 
 ``` r
+
 outdata$n_pop
 #>   n_1 n_2 n_3 n_4
 #> 1  86  84  84 254
@@ -154,6 +162,7 @@ outdata$n_pop
 - `n`: number of subjects with AE.
 
 ``` r
+
 head(outdata$n)
 #>    n_1 n_2 n_3 n_4
 #> 1   86  84  84 254
@@ -166,6 +175,7 @@ head(outdata$n)
 - `prop`: proportion of subjects with AE.
 
 ``` r
+
 head(outdata$prop)
 #>      prop_1    prop_2    prop_3    prop_4
 #> 1        NA        NA        NA        NA
@@ -178,6 +188,7 @@ head(outdata$prop)
 - `diff`: risk difference compared with the `reference_group`.
 
 ``` r
+
 head(outdata$diff)
 #>        diff_2     diff_3
 #> 1          NA         NA
@@ -195,6 +206,7 @@ function can be employed to prepare the outdata, ensuring its
 compatibility with production-ready RTF tables.
 
 ``` r
+
 tbl <- outdata |> format_ae_summary()
 tbl$tbl
 #>                                    name n_1 prop_1 n_2 prop_2 n_3 prop_3 n_4
@@ -218,6 +230,7 @@ include. For instance, we have the option to incorporate the risk
 difference.
 
 ``` r
+
 tbl <- outdata |> format_ae_summary(display = c("n", "prop", "diff"))
 tbl$tbl
 #>                                    name n_1 prop_1 n_2 prop_2 n_3 prop_3 diff_2
@@ -242,6 +255,7 @@ information regarding the M&N method can be found in the [rate compare
 vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html).
 
 ``` r
+
 tbl <- outdata |>
   extend_ae_specific_inference() |>
   format_ae_summary(display = c("n", "prop", "diff", "diff_ci"))
@@ -274,6 +288,7 @@ potentially involve the creation of a dedicated mock table generation
 package or similar solutions.
 
 ``` r
+
 tbl <- outdata |> format_ae_summary(mock = TRUE)
 tbl$tbl
 #>                                   name n_1 prop_1 n_2 prop_2 n_3 prop_3 n_4
@@ -296,6 +311,7 @@ The last step is to prepare the RTF table using
 [`tlf_ae_summary()`](https://merck.github.io/metalite.ae/reference/tlf_ae_summary.md).
 
 ``` r
+
 outdata |>
   format_ae_summary() |>
   tlf_ae_summary(
@@ -312,6 +328,7 @@ function also provides some commonly used argument to customize the
 table.
 
 ``` r
+
 outdata |>
   format_ae_summary() |>
   tlf_ae_summary(
@@ -330,6 +347,7 @@ The empty table can be generated if there is not result to display.
 The mock table can also be generated.
 
 ``` r
+
 outdata |>
   format_ae_summary(mock = TRUE) |>
   tlf_ae_summary(

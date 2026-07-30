@@ -5,6 +5,7 @@
 The easiest way to get metalite.ae is to install from CRAN:
 
 ``` r
+
 install.packages("metalite.ae")
 ```
 
@@ -12,6 +13,7 @@ Alternatively, to use a new feature or get a bug fix, you can install
 the development version of metalite.ae from GitHub:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("Merck/metalite.ae")
 ```
@@ -50,6 +52,7 @@ the following components:
 ## Example
 
 ``` r
+
 meta_ae_example() |> # Example AE data created using metalite
   prepare_ae_summary(
     population = "apat", # Select population by keywords

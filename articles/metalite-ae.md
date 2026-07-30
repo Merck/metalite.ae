@@ -52,6 +52,7 @@ For instance, we can illustrate the creation of a straightforward AE
 summary table as shown below.
 
 ``` r
+
 meta_ae_example() |> # Example AE data created using metalite
   prepare_ae_summary(
     population = "apat", # Select population by keywords

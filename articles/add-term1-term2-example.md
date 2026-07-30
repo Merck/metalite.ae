@@ -12,6 +12,7 @@ being analyzed.
 Load the metalite.ae package
 
 ``` r
+
 library(metalite.ae)
 library(metalite)
 ```
@@ -23,6 +24,7 @@ exists in the observation dataset
 - Check if AEOSI exists
 
 ``` r
+
 meta <- meta_ae_example()
 "AEOSI" %in% names(meta$data_observation)
 ```
@@ -40,6 +42,7 @@ manually:
 modified dataset that now includes `AEOSI`
 
 ``` r
+
 adae_modified <- meta$data_observation
 
 special_interest_terms <- c(
@@ -60,6 +63,7 @@ Verify that the AEOSI variable now exists and count the number of
 records flagged as “Y”.
 
 ``` r
+
 "AEOSI" %in% names(meta$data_observation)
 #> [1] TRUE
 table(meta$data_observation$AEOSI)
@@ -76,6 +80,7 @@ Extract the parameter mapping for `aeosi0rel` and review the existing
 values of `term1` and `term2`.
 
 ``` r
+
 param_info <- metalite::collect_adam_mapping(meta, "aeosi0rel")
 print(param_info$term1)
 #> NULL
@@ -91,6 +96,7 @@ definitions:
 analysis parameters
 
 ``` r
+
 new_plan <- plan(
   analysis = "ae_summary", population = "apat",
   observation = c("wk12", "wk24"), parameter = "any;rel;ser"
@@ -114,6 +120,7 @@ Update the meta object with the new plan and define the `aeosi0rel`
 parameter
 
 ``` r
+
 meta <- meta |>
   define_plan(plan = new_plan) |>
   define_parameter(
@@ -134,6 +141,7 @@ serves as the “before” example, which will later be compared against a
 version with fully specified terms.
 
 ``` r
+
 param_info <- metalite::collect_adam_mapping(meta, "aeosi0rel")
 print(param_info$term1)
 #> [1] " "
@@ -152,6 +160,7 @@ The resulting output of the function is an `outdata` object, which
 comprises a collection of raw datasets for analysis and reporting.
 
 ``` r
+
 outdata <- prepare_ae_specific(
   meta,
   population = "apat",
@@ -166,6 +175,7 @@ The last step is to prepare the RTF table using
 [`tlf_ae_specific()`](https://merck.github.io/metalite.ae/reference/tlf_ae_specific.md).
 
 ``` r
+
 outdata |>
   format_ae_specific() |>
   tlf_ae_specific(
@@ -192,6 +202,7 @@ version to see how proper values change the table titles and row/column
 labels.
 
 ``` r
+
 new_plan <- plan(
   analysis = "ae_summary", population = "apat",
   observation = c("wk12", "wk24"), parameter = "any;rel;ser"
@@ -228,6 +239,7 @@ Retrieve the parameter mapping for `aeosi0rel` and display `term1` and
 `term2` to confirm they match the values defined in the previous step.
 
 ``` r
+
 param_info <- metalite::collect_adam_mapping(meta, "aeosi0rel")
 print(param_info$term1)
 #> [1] " Drug-Related"
@@ -245,6 +257,7 @@ This function applies the predefined keywords in `meta` and produces an
 and reporting.
 
 ``` r
+
 outdata <- prepare_ae_specific(
   meta,
   population = "apat",
@@ -259,6 +272,7 @@ The last step is to prepare the RTF table using
 [`tlf_ae_summary()`](https://merck.github.io/metalite.ae/reference/tlf_ae_summary.md).
 
 ``` r
+
 outdata |>
   format_ae_specific() |>
   tlf_ae_specific(

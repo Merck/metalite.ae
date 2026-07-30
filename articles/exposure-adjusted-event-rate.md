@@ -10,19 +10,25 @@ calculation.
 
 ### EAER formula
 
-$$\begin{aligned}
-{EAER_{j}\left( {\text{EAER for}\mspace{6mu}}Trt_{j} \right)} & {= \frac{{\text{total number of events for}\mspace{6mu}}Trt_{j}}{{\text{total person-days for}\mspace{6mu}}Trt_{j}/\left( \text{exp factor} \right)}} \\
- & {= \frac{{\text{total number of events for}\mspace{6mu}}Trt_{j} \times \text{exp factor}}{{\text{total person-days for}\mspace{6mu}}Trt_{j}}}
-\end{aligned}$$
+``` math
+\begin{aligned}
+EAER_j (\text{EAER for } Trt_j)
+&= \frac{\text{total number of events for } Trt_j}{\text{total person-days for } Trt_j/(\text{exp factor})}  \\
+&= \frac{\text{total number of events for } Trt_j \times \text{exp factor}}{\text{total person-days for } Trt_j}
+\end{aligned}
+```
 
 The exposure factor (exp factor) will be adjusted depending on the
 adjustment unit defined by users. For instance, when the adjustment unit
 is ‘100 person-month’, EAER will be computed as follows:
 
-$$\begin{aligned}
-{EAER_{j}\left( \text{100 person-months} \right)} & {= \frac{{\text{total number of events for}\mspace{6mu}}Trt_{j} \times \text{exp factor}( = 100 \times 30.4367)}{{\text{total person-days for}\mspace{6mu}}Trt_{j}}} \\
- & {= \frac{{\text{total number of events for}\mspace{6mu}}Trt_{j} \times 3043.67}{{\text{total person-days for}\mspace{6mu}}Trt_{j}}}
-\end{aligned}$$
+``` math
+\begin{aligned}
+EAER_j (\text{100 person-months})
+&= \frac{\text{total number of events for } Trt_j \times \text{exp factor} (=100\times30.4367)}{\text{total person-days for } Trt_j}  \\
+&= \frac{\text{total number of events for } Trt_j \times 3043.67}{\text{total person-days for } Trt_j}
+\end{aligned}
+```
 
 ### EAER for different types of AEs
 
@@ -31,27 +37,45 @@ using three treatment groups (PBO, Low Dose, High Dose).
 
 #### ANY AE adj rate
 
-$$EAER_{PBO}\left( \text{100 person-months} \right) = \frac{\text{total number of AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}$$
+``` math
+EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
+```
 
-$$EAER_{LD}\left( \text{100 person-months} \right) = \frac{\text{total number of AEs for Low Dose} \times 3043.67}{\text{total person-days for Low Dose}}$$
+``` math
+EAER_{LD} (\text{100 person-months}) =\frac{\text{total number of AEs for Low Dose} \times 3043.67}{\text{total person-days for Low Dose}}
+```
 
-$$EAER_{HD}\left( \text{100 person-months} \right) = \frac{\text{total number of AEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}$$
+``` math
+EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of AEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}
+```
 
 #### Serious AE adj rate
 
-$$EAER_{PBO}\left( \text{100 person-months} \right) = \frac{\text{total number of SAEs for PBO} \times 3043.67}{\text{total person-days for PBO}}$$
+``` math
+EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of SAEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
+```
 
-$$EAER_{LD}\left( \text{100 person-months} \right) = \frac{\text{total number of SAEs for Low Dose} \times 3043.67}{\text{total person-days for Low Dose}}$$
+``` math
+EAER_{LD} (\text{100 person-months}) =\frac{\text{total number of SAEs for Low Dose} \times 3043.67}{\text{total person-days for Low Dose}}
+```
 
-$$EAER_{HD}\left( \text{100 person-months} \right) = \frac{\text{total number of SAEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}$$
+``` math
+EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of SAEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}
+```
 
 #### REL AE adj rate
 
-$$EAER_{PBO}\left( \text{100 person-months} \right) = \frac{\text{total number of Drug-Related AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}$$
+``` math
+EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of Drug-Related AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
+```
 
-$$EAER_{LD}\left( \text{100 person-months} \right) = \frac{\text{total number of Drug-Related AEs for Low Dose} \times 3043.67}{\text{total person-days for Low Dose}}$$
+``` math
+EAER_{LD} (\text{100 person-months}) =\frac{\text{total number of Drug-Related AEs for Low Dose} \times 3043.67}{\text{total person-days for Low Dose}}
+```
 
-$$EAER_{HD}\left( \text{100 person-months} \right) = \frac{\text{total number of Drug-Related AEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}$$
+``` math
+EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of Drug-Related AEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}
+```
 
 ## Programming steps of EAER
 
@@ -65,10 +89,12 @@ $$EAER_{HD}\left( \text{100 person-months} \right) = \frac{\text{total number of
   `duration_var`, and `adj_unit`. The output will be a list:
 
 ``` r
+
 library(metalite.ae)
 ```
 
 ``` r
+
 meta <- meta_ae_example()
 
 x <- meta |>
@@ -107,6 +133,7 @@ x
 Run `x$eaer` to get the EAER:
 
 ``` r
+
 x$eaer
 ```
 

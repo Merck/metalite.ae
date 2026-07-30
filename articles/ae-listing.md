@@ -1,6 +1,7 @@
 # AE Listing
 
 ``` r
+
 library(metalite.ae)
 ```
 
@@ -30,12 +31,14 @@ package
 website](https://merck.github.io/metalite/articles/metalite.html).
 
 ``` r
+
 meta <- meta_ae_example()
 ```
 
 Click to show the output
 
 ``` r
+
 meta
 #> ADaM metadata: 
 #>    .$data_population     Population data with 254 subjects 
@@ -88,6 +91,7 @@ The resulting output of the function is an `outdata` object, which
 comprises a collection of raw datasets for analysis and reporting.
 
 ``` r
+
 tbl <- prepare_ae_listing(
   meta,
   analysis = "ae_listing",
@@ -98,6 +102,7 @@ tbl <- prepare_ae_listing(
 ```
 
 ``` r
+
 head(tbl$tbl)
 #>          USUBJID ASTDY                                        AEDECOD duration
 #> 689  01-709-1424     5                                        SYNCOPE    1 Day
@@ -114,6 +119,7 @@ head(tbl$tbl)
 ```
 
 ``` r
+
 head(tbl$col_name)
 #>                       USUBJID                         ASTDY 
 #>   "Unique Subject Identifier" "Analysis Start Relative Day" 
@@ -129,6 +135,7 @@ The last step is to prepare the RTF table using
 [`tlf_ae_listing()`](https://merck.github.io/metalite.ae/reference/tlf_ae_listing.md).
 
 ``` r
+
 footnote <- c(
   "Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED",
   "Action Taken: Discontinued = DRUG WITHDRAWN, Interrupted = DRUG INTERRUPTED, Reduced = DOSE REDUCED, Increased = DOSE INCREASED, None = DOSE NOT CHANGED, N/A = NOT APPLICABLE.",
@@ -138,6 +145,7 @@ footnote <- c(
 ```
 
 ``` r
+
 tbl |> tlf_ae_listing(
   footnotes = footnote,
   orientation = "portrait",

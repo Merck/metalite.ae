@@ -94,6 +94,6 @@ meta |>
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The outdata is saved in/tmp/RtmpcVSTF0/file1d3d66f82a11.Rdata
-#> The output is saved in/tmp/RtmpcVSTF0/file1d3d4fcdb917.rtf
+#> The outdata is saved in/tmp/RtmpLMLYOZ/file1bcc5eb4531.Rdata
+#> The output is saved in/tmp/RtmpLMLYOZ/file1bcc37c19589.rtf
 ```

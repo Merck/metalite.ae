@@ -24,73 +24,79 @@ clinical design without stratification. Also this approach is applicable
 to the case when the data are collected using a stratified clinical
 design and the statistician would like to ignore stratification by
 pooling the data over strata assuming two independent binomial samples.
-Assume $P_{i}$ is the proportion of success responses in the test
-($i = 1$) or control ($i = 0$) group.
+Assume $`P_i`$ is the proportion of success responses in the test
+($`i=1`$) or control ($`i=0`$) group.
 
 #### Confidence interval
 
 The confidence interval is based on the M&N method and given by the
-roots for $PD = P_{1} - P_{0}$ of the equation:
+roots for $`PD=P_1-P_0`$ of the equation:
 
-$$\chi_{\alpha}^{2} = \frac{\left( {\widehat{p}}_{1} - {\widehat{p}}_{0} - PD \right)^{2}}{\widetilde{V}}$$,
+``` math
+\chi_\alpha^2 = \frac{(\hat{p}_1-\hat{p}_0-PD)^2}{\tilde{V}}
+```
+,
 
-where ${\widehat{p}}_{1}$ and ${\widehat{p}}_{0}$ are the observed
-values of $P_{1}$ and $P_{0}$, respectively;
+where $`\hat{p}_1`$ and $`\hat{p}_0`$ are the observed values of $`P_1`$
+and $`P_0`$, respectively;
 
-- $\chi_{\alpha}^{2}$ = the upper cut point of size $\alpha$ from the
+- $`\chi_\alpha^2`$ = the upper cut point of size $`\alpha`$ from the
   central chi-square distribution with 1 degree of freedom
-  ($\chi_{\alpha}^{2} = 3.84$ for $95$% confidence interval);
+  ($`\chi_\alpha^2 = 3.84`$ for $`95`$% confidence interval);
 
-- $PD$ = the difference between two population proportions
-  ($PD = P_{1} - P_{0}$);
+- $`PD`$ = the difference between two population proportions
+  ($`PD=P_1-P_0`$);
 
-$$\widetilde{V} = \lbrack\frac{{\widetilde{p}}_{1}\left( 1 - {\widetilde{p}}_{1} \right)}{n_{1}} + \frac{{\widetilde{p}}_{0}\left( 1 - {\widetilde{p}}_{0} \right)}{n_{0}}\rbrack\frac{n_{1} + n_{0}}{n_{1} + n_{0} - 1}$$;
+``` math
+\tilde{V}=\bigg[\frac{\tilde{p}_1(1-\tilde{p}_1)}{n_1}+
+\frac{\tilde{p}_0(1-\tilde{p}_0)}{n_0}\bigg]\frac{n_1+n_0}{n_1+n_0-1}
+```
+;
 
-- $n_{1}$ and $n_{0}$ are the sample sizes for the test and control
+- $`n_1`$ and $`n_0`$ are the sample sizes for the test and control
   group, respectively;
 
-- ${\widetilde{p}}_{1}$ = maximum likelihood estimate of proportion on
-  test computed as ${\widetilde{p}}_{0} + PD$;
+- $`\tilde{p}_1`$ = maximum likelihood estimate of proportion on test
+  computed as $`\tilde{p}_0+PD`$;
 
-- ${\widetilde{p}}_{0}$ = maximum likelihood estimate of proportion on
-  control under the constraint
-  ${\widetilde{p}}_{1} - {\widetilde{p}}_{0} = PD$.
+- $`\tilde{p}_0`$ = maximum likelihood estimate of proportion on control
+  under the constraint $`\tilde{p}_1-\tilde{p}_0=PD`$.
 
-As stated above the 2-sided $100(1 - \alpha)$% CI is given by the roots
-for $PD = P_{1} - P_{0}$. The bisection algorithm is used in the
-function to obtain the two roots (confidence interval) for $PD$.
+As stated above the 2-sided $`100(1-\alpha)`$% CI is given by the roots
+for $`PD=P_1-P_0`$. The bisection algorithm is used in the function to
+obtain the two roots (confidence interval) for $`PD`$.
 
 #### p-value and Z-statistic
 
 The Z-statistic is computed as:
 
-$$Z_{\text{diff}} = \frac{{\widehat{p}}_{1} - {\widehat{p}}_{0} + S_{0}}{\sqrt{\widetilde{V}}}$$
-where ${\widehat{p}}_{1}$ and ${\widehat{p}}_{0}$ are the observed
-values for $P_{1}$ and $P_{0}$ respectively, $S_{0}$ is pre-specified
-proportion difference under the null;
+``` math
+Z_\text{diff}=\frac{\hat{p}_1-\hat{p}_0+S_0}{\sqrt{\tilde{V}}}
+```
+where $`\hat{p}_1`$ and $`\hat{p}_0`$ are the observed values for
+$`P_1`$ and $`P_0`$ respectively, $`S_0`$ is pre-specified proportion
+difference under the null;
 
-- ${\widetilde{p}}_{1}$ = maximum likelihood estimate of proportion on
-  test computed as ${\widetilde{p}}_{0} + S_{0}$;
+- $`\tilde{p}_1`$ = maximum likelihood estimate of proportion on test
+  computed as $`\tilde{p}_0+S_0`$;
 
-- ${\widetilde{p}}_{0}$ = maximum likelihood estimate of proportion on
-  control under the constraint
-  ${\widetilde{p}}_{1} - {\widetilde{p}}_{0} = S_{0}$.
-
-- For non-inferiority or one-sided equivalence hypothesis with
-  $S_{0} > 0$, the p-value,
-  $\Pr\left( Z \geq Z_{\text{diff}}\,|\, H_{0} \right)$, is computed
-  based on $Z_{\text{diff}}$ using the standard normal distribution.
+- $`\tilde{p}_0`$ = maximum likelihood estimate of proportion on control
+  under the constraint $`\tilde{p}_1-\tilde{p}_0=S_0`$.
 
 - For non-inferiority or one-sided equivalence hypothesis with
-  $S_{0} < 0$, the p-value,
-  $\Pr\left( Z \leq Z_{\text{diff}}\,|\, H_{0} \right)$, is computed
-  based on $Z_{\text{diff}}$ using the standard normal distribution.
+  $`S_0>0`$, the p-value, $`\Pr(Z \geq Z_\text{diff} \, | \, H_0)`$, is
+  computed based on $`Z_\text{diff}`$ using the standard normal
+  distribution.
+
+- For non-inferiority or one-sided equivalence hypothesis with
+  $`S_0<0`$, the p-value, $`\Pr(Z \leq Z_\text{diff} \, | \, H_0)`$, is
+  computed based on $`Z_\text{diff}`$ using the standard normal
+  distribution.
 
 - For two-sided superiority test, the p-value
-  $\Pr\left( \chi_{\text{diff}}^{2} \leq \chi_{1}^{2}\,|\, H_{0} \right)$,
-  is computed based on $\chi_{\text{diff}}^{2}$ using the chi-square
-  distribution with 1 degree of freedom, where
-  $\chi_{\text{diff}}^{2} = Z_{\text{diff}}^{2}$.
+  $`\Pr(\chi_\text{diff}^2 \leq \chi_1^2 \, | \, H_0)`$, is computed
+  based on $`\chi_\text{diff}^2`$ using the chi-square distribution with
+  1 degree of freedom, where $`\chi_\text{diff}^2=Z_\text{diff}^2`$.
 
 ### Stratified analysis of M&N method
 
@@ -105,41 +111,48 @@ stratifying variables.
 #### Confidence interval
 
 The confidence interval is based on the M&N method and given by the
-roots for $PD = P_{1} - P_{0}$ of the equation:
+roots for $`PD=P_1-P_0`$ of the equation:
 
-$$\chi_{\alpha}^{2} = \frac{\left( {\widehat{p}}_{1}^{*} - {\widehat{p}}_{0}^{*} - PD \right)^{2}}{\sum\limits_{i = 1}^{I}\left( W_{i}/\sum\limits_{k = 1}^{K}W_{k} \right)^{2}{\widetilde{V}}_{i}}$$,
+``` math
+\chi_\alpha^2 = \frac{(\hat{p}_1^*-\hat{p}_0^*-PD)^2}{\sum_{i=1}^I(W_i/\sum_{k=1}^{K}W_k)^2\tilde{V}_i}
+```
+,
 
-where
-${\widehat{p}}_{s}^{*} = \sum_{i = 1}^{I}\left( W_{i}/\sum_{k = 1}^{K}W_{k} \right){\widehat{p}}_{si}$
-for $s = 0,1$;
+where $`\hat{p}_s^* = \sum_{i=1}^I(W_i/\sum_{k=1}^KW_k)\hat{p}_{s i}`$
+for $`s = 0, 1`$;
 
-$${\widetilde{V}}_{i} = \lbrack\frac{{\widetilde{p}}_{1i}\left( 1 - {\widetilde{p}}_{1i} \right)}{n_{1i}} + \frac{{\widetilde{p}}_{0i}\left( 1 - {\widetilde{p}}_{0i} \right)}{n_{0i}}\rbrack\frac{n_{1i} + n_{0i}}{n_{1i} + n_{0i} - 1}$$;
+``` math
+\tilde{V}_i=\bigg[\frac{\tilde{p}_{1i}(1-\tilde{p}_{1i})}{n_{1i}}+\frac{\tilde{p}_{0i}(1-\tilde{p}_{0i})}{n_{0i}}\bigg]\frac{n_{1i}+n_{0i}}{n_{1i}+n_{0i}-1}
+```
+;
 
-- $W_{i}$ is the weight for the $i$-th strata;
-- \$I = K = \$ number of strata, $i = k =$ strata;
-- $n_{1i}$ and $n_{0i}$ are the sample sizes in $i$-th strata for the
-  test and control group, respectively;
-- ${\widehat{p}}_{1i}$ and ${\widehat{p}}_{0i}$ = observed proportion in
-  $i$-th strata for the test and control, respectively;
-- ${\widetilde{p}}_{0i}$ and ${\widetilde{p}}_{1i}$ are MLE for $P_{0i}$
-  and $P_{1i}$, respectively, computed under the constraint
-  ${\widetilde{p}}_{1i} = {\widetilde{p}}_{0i} + PD$.
+- $`W_i`$ is the weight for the $`i`$-th strata;
+- \$I = K = \$ number of strata, $`i=k=`$ strata;
+- $`n_{1i}`$ and $`n_{0i}`$ are the sample sizes in $`i`$-th strata for
+  the test and control group, respectively;
+- $`\hat{p}_{1i}`$ and $`\hat{p}_{0i}`$ = observed proportion in
+  $`i`$-th strata for the test and control, respectively;
+- $`\tilde{p}_{0i}`$ and $`\tilde{p}_{1i}`$ are MLE for $`P_{0i}`$ and
+  $`P_{1i}`$, respectively, computed under the constraint
+  $`\tilde{p}_{1i}=\tilde{p}_{0i}+PD`$.
 
-Similarly as for unstratified analysis,the 2-sided $100(1 - \alpha)$% CI
-is given by the roots for $PD = P_{1} - P_{0}$, and the bisection
+Similarly as for unstratified analysis,the 2-sided $`100(1 - \alpha)`$%
+CI is given by the roots for $`PD = P_1 - P_0`$, and the bisection
 algorithm is used in the function to obtain the two roots (confidence
-interval) for $PD$.
+interval) for $`PD`$.
 
 #### p-value and Z-statistic
 
 The Z-statistic is computed as:
 
-$$Z_{\text{diff}} = \frac{{\widehat{p}}_{1}^{*} - {\widehat{p}}_{0}^{*} + S_{0}}{\sqrt{\sum\limits_{i = 1}^{I}\left( W_{i}/\sum\limits_{k = 1}^{K}W_{k} \right)^{2}{\widetilde{V}}_{i}}}$$
-where $S_{0}$ is pre-specified proportion difference under the null;
+``` math
+Z_\text{diff}=\frac{\hat{p}_1^*-\hat{p}^*_0+S_0}{\sqrt{\sum_{i=1}^I(W_i/\sum_{k=1}^{K}W_k)^2\tilde{V}_i}}
+```
+where $`S_0`$ is pre-specified proportion difference under the null;
 
-- ${\widetilde{p}}_{0i}$ and ${\widetilde{p}}_{1i}$ are MLE for $P_{0i}$
-  and $P_{1i}$, respectively, computed under the constraint
-  ${\widetilde{p}}_{1i} = {\widetilde{p}}_{0i} + S_{0}$.
+- $`\tilde{p}_{0i}`$ and $`\tilde{p}_{1i}`$ are MLE for $`P_{0i}`$ and
+  $`P_{1i}`$, respectively, computed under the constraint
+  $`\tilde{p}_{1i} = \tilde{p}_{0i} + S_0`$.
 
 The p-value can be calculated as stated above.
 
@@ -148,6 +161,7 @@ The p-value can be calculated as stated above.
 ### Load package
 
 ``` r
+
 library(metalite.ae)
 ```
 
@@ -157,6 +171,7 @@ We simulated a dataset with 2 treatment group for binary output. If
 stratum is used, we considered 4 stratum.
 
 ``` r
+
 ana <- data.frame(
   treatment = c(rep(0, 100), rep(1, 100)),
   response  = c(rep(0, 80), rep(1, 20), rep(0, 40), rep(1, 60)),
@@ -176,10 +191,11 @@ head(ana)
 ### Unstratified analysis
 
 The function computes the risk difference, Z-statistic, p-value given
-the type of test, and two-sided $100(1 - \alpha)$% confidence interval
+the type of test, and two-sided $`100(1 - \alpha)`$% confidence interval
 of difference between two rates.
 
 ``` r
+
 rate_compare(response ~ treatment, data = ana)
 #>   est  z_score            p    lower     upper
 #> 1 0.4 5.759051 4.229411e-09 0.269662 0.5165743
@@ -196,6 +212,7 @@ found in the
 documentation.
 
 ``` r
+
 rate_compare(
   formula = response ~ treatment, strata = stratum, data = ana,
   weight = "ss"
