@@ -107,23 +107,3 @@ prepare_ae_summary <- function(meta,
     prepare_call = match.call()
   )
 }
-
-#' Format AE summary analysis
-#'
-#' @inheritParams format_ae_specific
-#'
-#' @return A list of analysis raw datasets.
-#'
-#' @export
-#'
-#' @examples
-#' meta <- meta_ae_example()
-#' outdata <- prepare_ae_summary(meta,
-#'   population = "apat",
-#'   observation = "wk12",
-#'   parameter = "any;rel;ser"
-#' )
-#' tbl <- outdata |>
-#'   format_ae_summary()
-#' head(tbl$tbl)
-format_ae_summary <- format_ae_specific
