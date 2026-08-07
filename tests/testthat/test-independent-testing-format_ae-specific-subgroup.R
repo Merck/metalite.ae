@@ -1,4 +1,4 @@
-meta <- meta_ae_example()
+meta <- meta_ae_test()
 outdata <- prepare_ae_specific_subgroup(meta,
   population = "apat",
   observation = "wk12",

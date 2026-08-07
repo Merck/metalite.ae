@@ -2,7 +2,7 @@ test_that("rtf output: n, total_exp, events, eaer, total", {
   adsl <- r2rtf::r2rtf_adsl
   adae <- r2rtf::r2rtf_adae |> dplyr::mutate(TRT01A = TRTA)
 
-  meta <- meta_ae_example()
+  meta <- meta_ae_test()
 
   outdata <- prepare_ae_summary(
     meta,
@@ -33,7 +33,7 @@ test_that("rtf output: n, total_exp, events, eaer, total", {
   adsl <- r2rtf::r2rtf_adsl
   adae <- r2rtf::r2rtf_adae |> dplyr::mutate(TRT01A = TRTA)
 
-  meta <- meta_ae_example()
+  meta <- meta_ae_test()
 
   outdata <- prepare_ae_summary(
     meta,
