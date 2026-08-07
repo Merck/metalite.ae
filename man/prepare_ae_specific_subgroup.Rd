@@ -46,11 +46,11 @@ A list of analysis datasets needed for AE specific subgroup analysis.
 Prepare datasets for AE specific subgroup analysis
 }
 \examples{
-#' # Define metadata
+# Define metadata
 adsl <- forestly::forestly_adsl
 adae <- forestly::forestly_adae
 
-adsl$TRT01A <- factor(
+adsl$TRTA <- factor(
   adsl$TRT01A,
   levels = c("Xanomeline Low Dose", "Placebo"),
   labels = c("Low Dose", "Placebo")
@@ -68,18 +68,12 @@ analysis_plan <- metalite::plan(
   parameter = "rel"
 )
 
-analysis_plan <- metalite::plan(
-  analysis = "ae_specific",
-  population = "apat",
-  observation = "wk12",
-  parameter = "rel"
-)
 meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::define_plan(analysis_plan) |>
   metalite::define_population(
     name = "apat",
-    var = c("USUBJID", "SAFFL", "TRT01A", "SITEID", "SEX", "RACE", "AGE"),
-    group = "TRT01A",
+    var = c("USUBJID", "SAFFL", "TRTA", "SITEID", "SEX", "RACE", "AGE"),
+    group = "TRTA",
     subset = SAFFL == "Y",
     label = "All Participants as Treated"
   ) |>
@@ -107,5 +101,9 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     title = "Participants With Drug-Related Adverse Events"
   ) |>
   metalite::meta_build()
-prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
+
+outdata <- prepare_ae_specific_subgroup(
+  meta, "apat", "wk12", "rel", subgroup_var = "SEX"
+)
+names(outdata$out_all)
 }

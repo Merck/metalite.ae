@@ -31,7 +31,7 @@
 #' adsl <- forestly::forestly_adsl
 #' adae <- forestly::forestly_adae
 #'
-#' adsl$TRT01A <- factor(
+#' adsl$TRTA <- factor(
 #'   adsl$TRT01A,
 #'   levels = c("Xanomeline Low Dose", "Placebo"),
 #'   labels = c("Low Dose", "Placebo")
@@ -49,18 +49,12 @@
 #'   parameter = "rel"
 #' )
 #'
-#' analysis_plan <- metalite::plan(
-#'   analysis = "ae_specific",
-#'   population = "apat",
-#'   observation = "wk12",
-#'   parameter = "rel"
-#' )
 #' meta <- metalite::meta_adam(observation = adae, population = adsl) |>
 #'   metalite::define_plan(analysis_plan) |>
 #'   metalite::define_population(
 #'     name = "apat",
-#'     var = c("USUBJID", "SAFFL", "TRT01A", "SITEID", "SEX", "RACE", "AGE"),
-#'     group = "TRT01A",
+#'     var = c("USUBJID", "SAFFL", "TRTA", "SITEID", "SEX", "RACE", "AGE"),
+#'     group = "TRTA",
 #'     subset = SAFFL == "Y",
 #'     label = "All Participants as Treated"
 #'   ) |>
