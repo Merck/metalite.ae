@@ -40,7 +40,7 @@ The input of the function is a `meta` object created by the metalite package.
 adsl <- forestly::forestly_adsl
 adae <- forestly::forestly_adae
 
-adsl$TRT01A <- factor(
+adsl$TRTA <- factor(
   adsl$TRT01A,
   levels = c("Xanomeline Low Dose", "Placebo"),
   labels = c("Low Dose", "Placebo")
@@ -63,17 +63,17 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::define_population(
     name = "apat",
     var = c(
-      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "USUBJID", "SAFFL", "TRTA", "TRTDUR",
       "SITEID", "SEX", "RACE", "AGE"
     ),
-    group = "TRT01A",
+    group = "TRTA",
     subset = SAFFL == "Y",
     label = "All Participants as Treated"
   ) |>
   metalite::define_observation(
     name = "wk12",
     var = c(
-      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "USUBJID", "SAFFL", "TRTA", "SEX", "AEDECOD", "AEBODSYS", "AEREL",
       "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
     ),
     group = "TRTA",
