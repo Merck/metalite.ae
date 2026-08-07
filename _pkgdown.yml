@@ -76,7 +76,6 @@ reference:
     - rate_compare_sum
 - title: Example data
   contents:
-    - meta_ae_example
     - metalite_ae_adex
     - metalite_ae_adexsum
 articles:
