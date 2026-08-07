@@ -102,7 +102,7 @@
 #'     title = "Adverse Event Summary"
 #'   ) |>
 #'   metalite::meta_build()
-#' 
+#'
 #' outdata <- prepare_ae_summary(meta,
 #'   population = "apat",
 #'   observation = "wk12",

@@ -78,7 +78,7 @@
 #'   observation = "wk12",
 #'   parameter = "rel"
 #' )
-#' 
+#'
 #' analysis_plan <- metalite::plan(
 #'   analysis = "ae_specific",
 #'   population = "apat",

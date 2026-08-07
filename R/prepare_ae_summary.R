@@ -101,7 +101,7 @@
 #'     title = "Adverse Event Summary"
 #'   ) |>
 #'   metalite::meta_build()
-#' 
+#'
 #' prepare_ae_summary(
 #'   meta,
 #'   population = "apat",

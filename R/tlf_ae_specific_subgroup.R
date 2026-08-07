@@ -48,7 +48,7 @@
 #'   observation = "wk12",
 #'   parameter = "rel"
 #' )
-#' 
+#'
 #' analysis_plan <- metalite::plan(
 #'   analysis = "ae_specific",
 #'   population = "apat",
@@ -88,7 +88,7 @@
 #'     title = "Participants With Drug-Related Adverse Events"
 #'   ) |>
 #'   metalite::meta_build()
-#' 
+#'
 #' prepare_ae_specific_subgroup(meta,
 #'   population = "apat",
 #'   observation = "wk12",

@@ -55,7 +55,7 @@
 #'   observation = "wk12",
 #'   parameter = "any;rel;ser"
 #' )
-#' 
+#'
 #' analysis_plan <- metalite::plan(
 #'   analysis = "ae_summary",
 #'   population = "apat",
@@ -124,7 +124,7 @@
 #'     parameter = "any;rel;ser"
 #'   ) |>
 #'   extend_ae_summary_eaer(adj_unit = "month")
-#' 
+#'
 #' tbl <- outdata |>
 #'   format_ae_exp_adj()
 #' head(tbl$tbl)
