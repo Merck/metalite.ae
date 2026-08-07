@@ -47,12 +47,6 @@ analysis_plan <- metalite::plan(
   observation = "wk12", parameter = "ser"
 )
 
-analysis_plan <- metalite::plan(
-  analysis = "ae_specific",
-  population = "apat",
-  observation = "wk12",
-  parameter = "rel"
-)
 meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::define_plan(analysis_plan) |>
   metalite::define_population(
@@ -73,15 +67,15 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     label = "Weeks 0 to 12"
   ) |>
   metalite::define_parameter(
-    name = "rel",
-    term1 = "Drug-Related",
+    name = "ser",
+    term1 = "Serious",
     term2 = "",
-    subset = AEREL \%in\% c("POSSIBLE", "PROBABLE"),
+    subset = AESER == "Y",
     var = "AEDECOD",
     soc = "AEBODSYS",
-    label = "Drug-related AEs"
+    label = "Serious AEs"
   ) |>
-  metalite::metalite::define_analysis(
+  metalite::define_analysis(
     name = "ae_listing",
     var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
     group_by = c("USUBJID", "ASTDY"),
