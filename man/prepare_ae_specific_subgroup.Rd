@@ -103,7 +103,8 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::meta_build()
 
 outdata <- prepare_ae_specific_subgroup(
-  meta, "apat", "wk12", "rel", subgroup_var = "SEX"
+  meta, "apat", "wk12", "rel",
+  subgroup_var = "SEX"
 )
 names(outdata$out_all)
 }
