@@ -1,34 +1,4 @@
-# Copyright (c) 2023 Merck & Co., Inc., Rahway, NJ, USA and its affiliates.
-# All rights reserved.
-#
-# This file is part of the metalite.ae program.
-#
-# metalite.ae is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-#' Create an example `meta_adam` object
-#'
-#' This function is only for illustration purpose.
-#' r2rtf is required.
-#'
-#' @return A metadata object.
-#'
-#' @export
-#'
-#' @examples
-#' meta <- meta_ae_example()
-meta_ae_example <- function() {
-  # Create adsl ----
+meta_ae_test <- function() {
   adsl <- r2rtf::r2rtf_adsl
   adsl$TRTA <- adsl$TRT01A
   adsl$TRTA <- factor(
@@ -38,7 +8,6 @@ meta_ae_example <- function() {
   )
   adsl$RACE <- tools::toTitleCase(adsl$RACE)
 
-  # Create adae ----
   adae <- r2rtf::r2rtf_adae
   adae$TRTA <- factor(
     adae$TRTA,
@@ -47,7 +16,6 @@ meta_ae_example <- function() {
   )
   adae$RACE <- tools::toTitleCase(adae$RACE)
 
-  # Drug-related AE values
   adae$related <- ifelse(
     adae$AEREL == "RELATED",
     "Y",
@@ -58,37 +26,34 @@ meta_ae_example <- function() {
     )
   )
 
-  # AE outcome
-  for (i in seq_along(adae$AEOUT)) {
-    adae$outcome <- switch(adae$AEOUT[i],
+  for (index in seq_along(adae$AEOUT)) {
+    adae$outcome <- switch(adae$AEOUT[index],
       "RECOVERED/RESOLVED" = "Resolved",
       "RECOVERING/RESOLVING" = "Resolving",
       "RECOVERED/RESOLVED WITH SEQUELAE" = "Sequelae",
       "NOT RECOVERED/NOT RESOLVED" = "Not Resolved",
-      tools::toTitleCase(tolower(adae$AEOUT[i]))
+      tools::toTitleCase(tolower(adae$AEOUT[index]))
     )
   }
 
-  # AE action
   adae$AEACN <- sample(
     x = c("DOSE NOT CHANGED", "DRUG INTERRUPTED", "DRUG WITHDRAWN", "NOT APPLICABLE", "UNKNOWN"),
     size = length(adae$USUBJID),
     prob = c(0.7, 0.1, 0.05, 0.1, 0.05), replace = TRUE
   )
 
-  for (i in seq_along(adae$AEACN)) {
-    adae$action_taken[i] <- switch(adae$AEACN[i],
+  for (index in seq_along(adae$AEACN)) {
+    adae$action_taken[index] <- switch(adae$AEACN[index],
       "DOSE NOT CHANGED" = "None",
       "DRUG INTERRUPTED" = "Interrupted",
       "DRUG WITHDRAWN" = "Discontinued",
       "NOT APPLICABLE" = "N/A",
       "UNKNOWN" = "Unknown",
       "''" = "None",
-      tools::toTitleCase(tolower(adae$AEACN[i]))
+      tools::toTitleCase(tolower(adae$AEACN[index]))
     )
   }
 
-  # AE duration with unit
   adae$duration <- paste(
     ifelse(
       is.na(adae$ADURN),
@@ -99,18 +64,17 @@ meta_ae_example <- function() {
     sep = " "
   )
 
-  for (i in seq_along(adae$duration)) {
-    if (is.na(adae$ADURN[i])) {
-      adae$duration[i] <- ifelse(
-        charmatch(toupper(adae$AEOUT[i]), "RECOVERING/RESOLVING") > 0 |
-          charmatch(toupper(adae$AEOUT[i]), "NOT RECOVERED/NOT RESOLVED") > 0,
+  for (index in seq_along(adae$duration)) {
+    if (is.na(adae$ADURN[index])) {
+      adae$duration[index] <- ifelse(
+        charmatch(toupper(adae$AEOUT[index]), "RECOVERING/RESOLVING") > 0 |
+          charmatch(toupper(adae$AEOUT[index]), "NOT RECOVERED/NOT RESOLVED") > 0,
         "Continuing",
         "Unknown"
       )
     }
   }
 
-  # AE subject line
   adae$subline <- paste0(
     "Subject ID = ", adae$USUBJID,
     ", Gender = ", adae$SEX,
@@ -119,15 +83,13 @@ meta_ae_example <- function() {
     ", TRT = ", adae$TRTA
   )
 
-  # Assign label
   adae <- metalite::assign_label(
     adae,
     var = c("related", "outcome", "duration", "AESEV", "AESER", "AEDECOD", "action_taken"),
     label = c("Related", "Outcome", "Duration", "Intensity", "Serious", "Adverse Event", "Action Taken")
   )
 
-  # Define plan ----
-  plan <- plan(
+  analysis_plan <- plan(
     analysis = "ae_summary", population = "apat",
     observation = c("wk12", "wk24"), parameter = "any;rel;ser"
   ) |>
@@ -145,12 +107,11 @@ meta_ae_example <- function() {
       observation = c("wk12", "wk24"), parameter = "any;rel;ser"
     )
 
-  # Create meta_adam ----
-  meta_adam <- meta_adam(
+  meta_adam(
     population = adsl,
     observation = adae
   ) |>
-    define_plan(plan = plan) |>
+    define_plan(plan = analysis_plan) |>
     define_population(
       name = "apat",
       group = "TRTA",
@@ -165,7 +126,7 @@ meta_ae_example <- function() {
     define_observation(
       name = "wk24",
       group = "TRTA",
-      subset = quote(AOCC01FL == "Y"), # Just for demo, another flag should be used
+      subset = quote(AOCC01FL == "Y"),
       label = "Weeks 0 to 24"
     ) |>
     define_parameter(
@@ -210,6 +171,4 @@ meta_ae_example <- function() {
       title = "Exposure-Adjusted Adverse Event Summary"
     ) |>
     meta_build()
-
-  meta_adam
 }

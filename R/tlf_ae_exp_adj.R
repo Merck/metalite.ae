@@ -27,7 +27,20 @@
 #' @export
 #'
 #' @examples
-#' meta <- meta_ae_example()
+#' meta <- metalite::meta_example()
+#' meta <- meta |>
+#'   metalite::define_plan(
+#'     plan = metalite::add_plan(meta$plan,
+#'       analysis = "ae_exp_adj", population = "apat",
+#'       observation = "wk12", parameter = "any"
+#'     )
+#'   ) |>
+#'   metalite::define_analysis(
+#'     name = "ae_exp_adj",
+#'     label = "Exposure Adjusted Incident Rate",
+#'     title = "Exposure-Adjusted Adverse Event Summary"
+#'   ) |>
+#'   metalite::meta_build()
 #' outdata <- meta |>
 #'   prepare_ae_summary(
 #'     population = "apat",

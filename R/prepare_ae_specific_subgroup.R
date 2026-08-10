@@ -32,8 +32,67 @@
 #' @export
 #'
 #' @examples
-#' meta <- meta_ae_example()
-#' prepare_ae_specific_subgroup(meta, "apat", "wk12", "rel", subgroup_var = "SEX")$data
+#' # Define metadata
+#' adsl <- forestly::forestly_adsl
+#' adae <- forestly::forestly_adae
+#'
+#' adsl$TRTA <- factor(
+#'   adsl$TRT01A,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#' adae$TRTA <- factor(
+#'   adae$TRTA,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#'
+#' analysis_plan <- metalite::plan(
+#'   analysis = "ae_specific",
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' )
+#'
+#' meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+#'   metalite::define_plan(analysis_plan) |>
+#'   metalite::define_population(
+#'     name = "apat",
+#'     var = c("USUBJID", "SAFFL", "TRTA", "SITEID", "SEX", "RACE", "AGE"),
+#'     group = "TRTA",
+#'     subset = SAFFL == "Y",
+#'     label = "All Participants as Treated"
+#'   ) |>
+#'   metalite::define_observation(
+#'     name = "wk12",
+#'     var = c(
+#'       "USUBJID", "SAFFL", "TRTA", "SEX", "AEDECOD", "AEBODSYS",
+#'       "AEREL", "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+#'     ),
+#'     group = "TRTA",
+#'     subset = SAFFL == "Y",
+#'     label = "Weeks 0 to 12"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "rel",
+#'     term1 = "Drug-Related",
+#'     term2 = "",
+#'     subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "Drug-related AEs"
+#'   ) |>
+#'   metalite::define_analysis(
+#'     name = "ae_specific",
+#'     title = "Participants With Drug-Related Adverse Events"
+#'   ) |>
+#'   metalite::meta_build()
+#'
+#' outdata <- prepare_ae_specific_subgroup(
+#'   meta, "apat", "wk12", "rel",
+#'   subgroup_var = "SEX"
+#' )
+#' names(outdata$out_all)
 prepare_ae_specific_subgroup <- function(
   meta,
   population,
