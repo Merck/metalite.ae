@@ -129,7 +129,7 @@ prepare_ae_listing(
     orientation = "portrait",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_listing", # Provide analysis type defined in meta$analysis
-    path_outtable = "./vignettes/rtf/ae0listing1.rtf"
+    path_outtable = "rtf/ae0listing1.rtf"
   )
 ```
 

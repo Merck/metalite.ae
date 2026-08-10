@@ -154,7 +154,7 @@ prepare_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     col_rel_width = c(3, rep(1, 6)),
-    path_outtable = "./vignettes/rtf/ae0summary2.rtf"
+    path_outtable = "rtf/ae0summary2.rtf"
   )
 ```
 
