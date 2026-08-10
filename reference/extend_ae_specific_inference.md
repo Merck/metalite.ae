@@ -31,7 +31,63 @@ A list of analysis raw datasets.
 ## Examples
 
 ``` r
-meta <- meta_ae_example()
+# Define metadata
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_specific",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c("USUBJID", "SAFFL", "TRT01A", "SITEID", "SEX", "RACE", "AGE"),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL == "RELATED",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_specific",
+    title = "Participants With {term1} Adverse Events {term2}"
+  ) |>
+  metalite::meta_build()
+
+# Calculate AE specific analysis and format it
 tbl <- prepare_ae_specific(meta,
   population = "apat",
   observation = "wk12",
@@ -40,18 +96,12 @@ tbl <- prepare_ae_specific(meta,
   extend_ae_specific_inference(eps = 1e-6, bisection = 200) |>
   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
 head(tbl$tbl)
-#>                                             name n_1 prop_1 n_2 prop_2 n_3
-#> 1                     Participants in population  86   <NA>  84   <NA>  84
-#> 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70
-#> 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14
-#> 4                                                 NA   <NA>  NA   <NA>  NA
-#> 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4
-#> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2
-#>     prop_3 diff_2           ci_2 diff_3           ci_3
-#> 1     <NA>   <NA>   (-4.4,  4.3)   <NA>   (-4.4,  4.3)
-#> 2   (83.3)   35.7   (22.4, 48.0)   32.2   (18.4, 44.8)
-#> 3   (16.7)  -35.7 (-48.0, -22.4)  -32.2 (-44.8, -18.4)
-#> 4     <NA>   <NA>           <NA>   <NA>           <NA>
-#> 122  (4.8)    1.4   (-7.3, 10.2)   -2.2  (-10.3,  5.6)
-#> 25   (2.4)   -1.2   (-6.3,  3.3)    1.2   (-4.2,  7.3)
+#>                                           name n_1  prop_1 n_2  prop_2 diff_1
+#> 1                   Participants in population  84    <NA>  86    <NA>   <NA>
+#> 2 with one or more drug-related adverse events   0   (0.0)   0   (0.0)    0.0
+#> 3          with no drug-related adverse events  84 (100.0)  86 (100.0)    0.0
+#>           ci_1
+#> 1 (-4.4,  4.3)
+#> 2         <NA>
+#> 3 (-4.4,  4.3)
 ```

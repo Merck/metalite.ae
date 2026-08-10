@@ -73,7 +73,20 @@ RTF file and source dataset for exposure-adjusted AE summary table.
 ## Examples
 
 ``` r
-meta <- meta_ae_example()
+meta <- metalite::meta_example()
+meta <- meta |>
+  metalite::define_plan(
+    plan = metalite::add_plan(meta$plan,
+      analysis = "ae_exp_adj", population = "apat",
+      observation = "wk12", parameter = "any"
+    )
+  ) |>
+  metalite::define_analysis(
+    name = "ae_exp_adj",
+    label = "Exposure Adjusted Incident Rate",
+    title = "Exposure-Adjusted Adverse Event Summary"
+  ) |>
+  metalite::meta_build()
 outdata <- meta |>
   prepare_ae_summary(
     population = "apat",
@@ -95,6 +108,6 @@ outdata |>
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The outdata is saved in/tmp/RtmpCeNoFt/file1a9c6da8c840.Rdata
-#> The output is saved in/tmp/RtmpCeNoFt/file1a9c7e43ed08.rtf
+#> The outdata is saved in/tmp/RtmpliytUL/file1a4f724721ac.Rdata
+#> The output is saved in/tmp/RtmpliytUL/file1a4f59be6b29.rtf
 ```

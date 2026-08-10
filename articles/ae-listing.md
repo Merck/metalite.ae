@@ -32,7 +32,91 @@ website](https://merck.github.io/metalite/articles/metalite.html).
 
 ``` r
 
-meta <- meta_ae_example()
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_listing",
+  population = "apat",
+  observation = "wk12",
+  parameter = "ser"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "any",
+    term1 = "",
+    term2 = "",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "All AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "ser",
+    term1 = "Serious",
+    term2 = "",
+    subset = AESER == "Y",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Serious AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_listing",
+    var_name = c(
+      "USUBJID", "ASTDY", "AEDECOD", "ADURN",
+      "AESEV", "AESER", "AEREL", "AEOUT"
+    ),
+    group_by = c("USUBJID", "ASTDY"),
+    page_by = "TRTA"
+  ) |>
+  metalite::meta_build()
+#> Warning in
+#> metalite::define_parameter(metalite::define_observation(metalite::define_population(metalite::define_plan(metalite::meta_adam(observation
+#> = adae, : any is not in .$plan
+#> Warning in
+#> metalite::define_parameter(metalite::define_parameter(metalite::define_observation(metalite::define_population(metalite::define_plan(metalite::meta_adam(observation
+#> = adae, : rel is not in .$plan
 ```
 
 Click to show the output
@@ -41,43 +125,39 @@ Click to show the output
 
 meta
 #> ADaM metadata: 
-#>    .$data_population     Population data with 254 subjects 
-#>    .$data_observation    Observation data with 1191 records 
-#>    .$plan    Analysis plan with 20 plans 
+#>    .$data_population     Population data with 170 subjects 
+#>    .$data_observation    Observation data with 736 records 
+#>    .$plan    Analysis plan with 1 plans 
 #> 
 #> 
 #>   Analysis population type:
-#>     name        id  group var       subset                         label
-#> 1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'
+#>     name        id    group
+#> 1 'apat' 'USUBJID' 'TRT01A'
+#>                                                      var       subset
+#> 1 USUBJID, SAFFL, TRT01A, TRTDUR, SITEID, SEX, RACE, AGE SAFFL == 'Y'
+#>                           label
+#> 1 'All Participants as Treated'
 #> 
 #> 
 #>   Analysis observation type:
-#>     name        id  group var          subset           label
-#> 1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'
-#> 2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'
+#>     name        id  group
+#> 1 'wk12' 'USUBJID' 'TRTA'
+#>                                                                                         var
+#> 1 USUBJID, SAFFL, TRTA, AEDECOD, AEBODSYS, AEREL, AESER, AEOUT, AEACN, AESDTH, ASTDT, AENDT
+#>         subset           label
+#> 1 SAFFL == 'Y' 'Weeks 0 to 12'
 #> 
 #> 
 #>   Analysis parameter type:
-#>        name                                         label
-#> 1     'rel'                 'drug-related adverse events'
-#> 2   'aeosi'          'adverse events of special interest'
-#> 3 'dtc0rel' 'drug-related adverse events result in death'
-#> 4     'any'                          'any adverse events'
-#> 5     'ser'                      'serious adverse events'
-#>                                 subset
-#> 1 AEREL %in% c('POSSIBLE', 'PROBABLE')
-#> 2                         AEOSI == 'Y'
-#> 3         AESDTH == 'Y' & AEREL == 'Y'
-#> 4                                     
-#> 5                         AESER == 'Y'
+#>    name              label                               subset
+#> 1 'any'          'All AEs'                                     
+#> 2 'rel' 'Drug-related AEs' AEREL %in% c('POSSIBLE', 'PROBABLE')
+#> 3 'ser'      'Serious AEs'                         AESER == 'Y'
 #> 
 #> 
 #>   Analysis function:
-#>            name                             label
-#> 1  'ae_summary'    'Table: adverse event summary'
-#> 2  'ae_listing'          'Listing: adverse event'
-#> 3  'ae_exp_adj' 'Exposure Adjusted Incident Rate'
-#> 4 'ae_specific'   'Table: specific adverse event'
+#>           name                    label
+#> 1 'ae_listing' 'Listing: adverse event'
 ```
 
 ## Analysis preparation
@@ -104,18 +184,10 @@ tbl <- prepare_ae_listing(
 ``` r
 
 head(tbl$tbl)
-#>          USUBJID ASTDY                                        AEDECOD duration
-#> 689  01-709-1424     5                                        SYNCOPE    1 Day
-#> 1131 01-718-1170    27                                        SYNCOPE    2 Day
-#> 1173 01-718-1371    38 PARTIAL SEIZURES WITH SECONDARY GENERALISATION    4 Day
-#>         AESEV AESER  related action_taken  outcome      TRTA
-#> 689  MODERATE     Y Possible         None Resolved High Dose
-#> 1131   SEVERE     Y Probable         None Resolved  Low Dose
-#> 1173   SEVERE     Y     None  Interrupted Resolved High Dose
-#>                                                                                  subline
-#> 689  Subject ID = 01-709-1424, Gender = M, Race = WHITE, AGE = 77 Years, TRT = High Dose
-#> 1131  Subject ID = 01-718-1170, Gender = F, Race = WHITE, AGE = 80 Years, TRT = Low Dose
-#> 1173 Subject ID = 01-718-1371, Gender = F, Race = WHITE, AGE = 69 Years, TRT = High Dose
+#>          USUBJID ASTDY AEDECOD ADURN  AESEV AESER    AEREL              AEOUT
+#> 1131 01-718-1170    27 SYNCOPE     2 SEVERE     Y PROBABLE RECOVERED/RESOLVED
+#>          TRTA
+#> 1131 Low Dose
 ```
 
 ``` r
@@ -123,10 +195,10 @@ head(tbl$tbl)
 head(tbl$col_name)
 #>                       USUBJID                         ASTDY 
 #>   "Unique Subject Identifier" "Analysis Start Relative Day" 
-#>                       AEDECOD                      duration 
-#>               "Adverse Event"                    "Duration" 
+#>                       AEDECOD                         ADURN 
+#>     "Dictionary-Derived Term"             "AE Duration (N)" 
 #>                         AESEV                         AESER 
-#>                   "Intensity"                     "Serious"
+#>          "Severity/Intensity"               "Serious Event"
 ```
 
 ## RTF tables

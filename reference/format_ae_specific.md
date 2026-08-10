@@ -119,7 +119,67 @@ A list of analysis raw datasets.
 ## Examples
 
 ``` r
-meta <- meta_ae_example()
+# Define metadata
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_specific",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_specific",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c("USUBJID", "SAFFL", "TRT01A", "SITEID", "SEX", "RACE", "AGE"),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "SEX", "AEDECOD", "AEBODSYS",
+      "AEREL", "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_specific",
+    title = "Participants With Drug-Related Adverse Events"
+  ) |>
+  metalite::meta_build()
 
 outdata <- prepare_ae_specific(meta,
   population = "apat",
@@ -131,20 +191,20 @@ outdata <- prepare_ae_specific(meta,
 tbl <- outdata |>
   format_ae_specific()
 head(tbl$tbl)
-#>                                             name n_1 prop_1 n_2 prop_2 n_3
-#> 1                     Participants in population  86   <NA>  84   <NA>  84
-#> 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70
-#> 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14
-#> 4                                                 NA   <NA>  NA   <NA>  NA
-#> 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4
-#> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2
-#>     prop_3 n_4 prop_4
-#> 1     <NA> 254   <NA>
-#> 2   (83.3) 187 (73.6)
-#> 3   (16.7)  67 (26.4)
-#> 4     <NA>  NA   <NA>
-#> 122  (4.8)  17  (6.7)
-#> 25   (2.4)   3  (1.2)
+#>                                            name n_1 prop_1 n_2 prop_2 n_3
+#> 1                    Participants in population  84   <NA>  86   <NA> 170
+#> 2  with one or more drug-related adverse events  73 (86.9)  44 (51.2) 117
+#> 3           with no drug-related adverse events  11 (13.1)  42 (48.8)  53
+#> 4                                                NA   <NA>  NA   <NA>  NA
+#> 98                            Cardiac disorders   7  (8.3)   6  (7.0)  13
+#> 22                          Atrial fibrillation   0  (0.0)   1  (1.2)   1
+#>    prop_3
+#> 1    <NA>
+#> 2  (68.8)
+#> 3  (31.2)
+#> 4    <NA>
+#> 98  (7.6)
+#> 22  (0.6)
 
 # Filtering
 tbl <- outdata |>
@@ -154,37 +214,37 @@ tbl <- outdata |>
   )
 head(tbl$tbl)
 #>                                                     name n_1 prop_1 n_2 prop_2
-#> 1                             Participants in population  86   <NA>  84   <NA>
-#> 2           with one or more drug-related adverse events  44 (51.2)  73 (86.9)
-#> 3                    with no drug-related adverse events  42 (48.8)  11 (13.1)
+#> 1                             Participants in population  84   <NA>  86   <NA>
+#> 2           with one or more drug-related adverse events  73 (86.9)  44 (51.2)
+#> 3                    with no drug-related adverse events  11 (13.1)  42 (48.8)
 #> 4                                                         NA   <NA>  NA   <NA>
-#> 126                           Gastrointestinal disorders   4  (4.7)   8  (9.5)
-#> 127 General disorders and administration site conditions  18 (20.9)  43 (51.2)
-#>     n_3 prop_3 n_4 prop_4
-#> 1    84   <NA> 254   <NA>
-#> 2    70 (83.3) 187 (73.6)
-#> 3    14 (16.7)  67 (26.4)
-#> 4    NA   <NA>  NA   <NA>
-#> 126  10 (11.9)  22  (8.7)
-#> 127  35 (41.7)  96 (37.8)
+#> 103 General disorders and administration site conditions  43 (51.2)  18 (20.9)
+#> 9                            Application site dermatitis   9 (10.7)   5  (5.8)
+#>     n_3 prop_3
+#> 1   170   <NA>
+#> 2   117 (68.8)
+#> 3    53 (31.2)
+#> 4    NA   <NA>
+#> 103  61 (35.9)
+#> 9    14  (8.2)
 
 # Display different measurements
 tbl <- outdata |>
   extend_ae_specific_events() |>
   format_ae_specific(display = c("n", "prop", "events_count"))
 head(tbl$tbl)
-#>                                             name n_1 prop_1 eventscount_1 n_2
-#> 1                     Participants in population  86   <NA>            NA  84
-#> 2   with one or more drug-related adverse events  44 (51.2)           133  73
-#> 3            with no drug-related adverse events  42 (48.8)            NA  11
-#> 4                                                 NA   <NA>            NA  NA
-#> 122                            Cardiac disorders   6  (7.0)            14   7
-#> 25                           Atrial fibrillation   1  (1.2)             1   0
-#>     prop_2 eventscount_2 n_3 prop_3 eventscount_3
-#> 1     <NA>            NA  84   <NA>            NA
-#> 2   (86.9)           292  70 (83.3)           279
-#> 3   (13.1)            NA  14 (16.7)            NA
-#> 4     <NA>            NA  NA   <NA>            NA
-#> 122  (8.3)            13   4  (4.8)             5
-#> 25   (0.0)             0   2  (2.4)             3
+#>                                            name n_1 prop_1 eventscount_1 n_2
+#> 1                    Participants in population  84   <NA>            NA  86
+#> 2  with one or more drug-related adverse events  73 (86.9)           292  44
+#> 3           with no drug-related adverse events  11 (13.1)            NA  42
+#> 4                                                NA   <NA>            NA  NA
+#> 98                            Cardiac disorders   7  (8.3)            13   6
+#> 22                          Atrial fibrillation   0  (0.0)             0   1
+#>    prop_2 eventscount_2
+#> 1    <NA>            NA
+#> 2  (51.2)           133
+#> 3  (48.8)            NA
+#> 4    <NA>            NA
+#> 98  (7.0)            14
+#> 22  (1.2)             1
 ```

@@ -119,7 +119,82 @@ A list of analysis raw datasets.
 ## Examples
 
 ``` r
-meta <- meta_ae_example()
+# Define metadata
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_summary",
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "any",
+    term1 = "",
+    term2 = "",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "All AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "ser",
+    term1 = "Serious",
+    term2 = "",
+    subset = AESER == "Y",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Serious AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_summary",
+    title = "Adverse Event Summary"
+  ) |>
+  metalite::meta_build()
+
 outdata <- prepare_ae_summary(meta,
   population = "apat",
   observation = "wk12",
@@ -131,16 +206,10 @@ outdata <- prepare_ae_summary(meta,
 tbl <- outdata |>
   format_ae_summary()
 head(tbl$tbl)
-#>                                    name n_1 prop_1 n_2 prop_2 n_3 prop_3 n_4
-#> 1            Participants in population  86   <NA>  84   <NA>  84   <NA> 254
-#> 2       with one or more adverse events  69 (80.2)  77 (91.7)  79 (94.0) 225
-#> 3                with no adverse events  17 (19.8)   7  (8.3)   5  (6.0)  29
-#> 21 with drug-related{^a} adverse events  44 (51.2)  73 (86.9)  70 (83.3) 187
-#> 22          with serious adverse events   0  (0.0)   1  (1.2)   2  (2.4)   3
-#>    prop_4
-#> 1    <NA>
-#> 2  (88.6)
-#> 3  (11.4)
-#> 21 (73.6)
-#> 22  (1.2)
+#>                                    name n_1 prop_1 n_2 prop_2 n_3 prop_3
+#> 1            Participants in population  84   <NA>  86   <NA> 170   <NA>
+#> 2       with one or more adverse events  77 (91.7)  69 (80.2) 146 (85.9)
+#> 3                with no adverse events   7  (8.3)  17 (19.8)  24 (14.1)
+#> 21 with drug-related{^a} adverse events  73 (86.9)  44 (51.2) 117 (68.8)
+#> 22          with serious adverse events   1  (1.2)   0  (0.0)   1  (0.6)
 ```

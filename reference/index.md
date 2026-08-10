@@ -71,13 +71,7 @@
 
 ## Example data
 
-- [`meta_ae_example()`](https://merck.github.io/metalite.ae/reference/meta_ae_example.md)
-  :
-
-  Create an example `meta_adam` object
-
 - [`metalite_ae_adex`](https://merck.github.io/metalite.ae/reference/metalite_ae_adex.md)
   : ADEX dataset
-
 - [`metalite_ae_adexsum`](https://merck.github.io/metalite.ae/reference/metalite_ae_adexsum.md)
   : ADEXSUM dataset

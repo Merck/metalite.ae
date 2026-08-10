@@ -95,7 +95,80 @@ library(metalite.ae)
 
 ``` r
 
-meta <- meta_ae_example()
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_summary",
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "any",
+    term1 = "",
+    term2 = "",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "All AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "ser",
+    term1 = "Serious",
+    term2 = "",
+    subset = AESER == "Y",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Serious AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_summary",
+    title = "Adverse Event Summary"
+  ) |>
+  metalite::meta_build()
 
 x <- meta |>
   prepare_ae_summary(
@@ -116,18 +189,18 @@ x
     ##  $ population     : chr "apat"
     ##  $ observation    : chr "wk12"
     ##  $ parameter      : chr "any;rel;ser"
-    ##  $ n              :'data.frame': 5 obs. of  4 variables:
+    ##  $ n              :'data.frame': 5 obs. of  3 variables:
     ##  $ order          : num [1:5] 1 100 200 300 400
-    ##  $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"
-    ##  $ reference_group: num 1
-    ##  $ prop           :'data.frame': 5 obs. of  4 variables:
-    ##  $ diff           :'data.frame': 5 obs. of  2 variables:
-    ##  $ n_pop          :'data.frame': 1 obs. of  4 variables:
+    ##  $ group          : chr [1:3] "Low Dose" "Placebo" "Total"
+    ##  $ reference_group: num 2
+    ##  $ prop           :'data.frame': 5 obs. of  3 variables:
+    ##  $ diff           : num [1:5, 1] NA 11.43 35.74 1.19 -11.43
+    ##  $ n_pop          :'data.frame': 1 obs. of  3 variables:
     ##  $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...
     ##  $ prepare_call   : language prepare_ae_summary(meta = meta, population = "apat", observation = "wk12",      parameter = "any;rel;ser", )
-    ##  $ total_exp      :'data.frame': 1 obs. of  4 variables:
-    ##  $ event_num      :'data.frame': 3 obs. of  4 variables:
-    ##  $ eaer           :'data.frame': 3 obs. of  4 variables:
+    ##  $ total_exp      :'data.frame': 1 obs. of  3 variables:
+    ##  $ event_num      :'data.frame': 3 obs. of  3 variables:
+    ##  $ eaer           :'data.frame': 3 obs. of  3 variables:
     ##  $ adj_unit       : chr "month"
 
 Run `x$eaer` to get the EAER:
@@ -137,7 +210,7 @@ Run `x$eaer` to get the EAER:
 x$eaer
 ```
 
-    ##    Placebo    Low Dose   High Dose       Total
-    ## 1 71.46214 159.1724513 165.8725416 122.9359029
-    ## 2 31.57630 106.8467949 101.7108552  72.6674019
-    ## 3  0.00000   0.3659137   0.7291101   0.3096622
+    ##      Low Dose  Placebo       Total
+    ## 1 159.1724513 71.46214 105.9769666
+    ## 2 106.8467949 31.57630  61.1959386
+    ## 3   0.3659137  0.00000   0.1439904

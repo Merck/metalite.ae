@@ -70,7 +70,21 @@ RTF file and the source dataset for AE listing.
 library(r2rtf)
 library(metalite)
 
-meta <- meta_ae_example()
+meta <- metalite::meta_example()
+meta <- meta |>
+  metalite::define_plan(
+    plan = metalite::add_plan(meta$plan,
+      analysis = "ae_listing", population = "apat",
+      observation = "wk12", parameter = "ser"
+    )
+  ) |>
+  metalite::define_analysis(
+    name = "ae_listing",
+    var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
+    group_by = c("USUBJID", "ASTDY"),
+    page_by = "TRTA"
+  ) |>
+  metalite::meta_build()
 prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
   tlf_ae_listing(
     footnotes = "footnote1",
@@ -79,6 +93,6 @@ prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The outdata is saved in/tmp/RtmpCeNoFt/file1a9c2cee2fb.Rdata
-#> The output is saved in/tmp/RtmpCeNoFt/file1a9c15d37df.rtf
+#> The outdata is saved in/tmp/RtmpliytUL/file1a4f75d1fedb.Rdata
+#> The output is saved in/tmp/RtmpliytUL/file1a4f75e46942.rtf
 ```

@@ -103,7 +103,63 @@ average of number of adverse event per subjects.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Define metadata</span></span></span>
+<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adsl.html" class="external-link">forestly_adsl</a></span></span></span>
+<span class="r-in"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adae.html" class="external-link">forestly_adae</a></span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adsl</span><span class="op">$</span><span class="va">TRTA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adsl</span><span class="op">$</span><span class="va">TRT01A</span>,</span></span>
+<span class="r-in"><span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span>,</span></span>
+<span class="r-in"><span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">analysis_plan</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  analysis <span class="op">=</span> <span class="st">"ae_specific"</span>,</span></span>
+<span class="r-in"><span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
+<span class="r-in"><span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
+<span class="r-in"><span>  parameter <span class="op">=</span> <span class="st">"rel"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_adam.html" class="external-link">meta_adam</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="va">adae</span>, population <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_plan.html" class="external-link">define_plan</a></span><span class="op">(</span><span class="va">analysis_plan</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_population.html" class="external-link">define_population</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRTA"</span>, <span class="st">"SITEID"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    group <span class="op">=</span> <span class="st">"TRTA"</span>,</span></span>
+<span class="r-in"><span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"All Participants as Treated"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_observation.html" class="external-link">define_observation</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRTA"</span>, <span class="st">"SEX"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"AEBODSYS"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"AEREL"</span>, <span class="st">"AESER"</span>, <span class="st">"AEOUT"</span>, <span class="st">"AEACN"</span>, <span class="st">"AESDTH"</span>, <span class="st">"ASTDT"</span>, <span class="st">"AENDT"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    group <span class="op">=</span> <span class="st">"TRTA"</span>,</span></span>
+<span class="r-in"><span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Weeks 0 to 12"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"rel"</span>,</span></span>
+<span class="r-in"><span>    term1 <span class="op">=</span> <span class="st">"Drug-Related"</span>,</span></span>
+<span class="r-in"><span>    term2 <span class="op">=</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>    subset <span class="op">=</span> <span class="va">AEREL</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span></span>
+<span class="r-in"><span>    soc <span class="op">=</span> <span class="st">"AEBODSYS"</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Drug-related AEs"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_analysis.html" class="external-link">define_analysis</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"ae_specific"</span>,</span></span>
+<span class="r-in"><span>    title <span class="op">=</span> <span class="st">"Participants With Drug-Related Adverse Events"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_build.html" class="external-link">meta_build</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Prepare and format subgroup analysis</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="prepare_ae_specific_subgroup.html">prepare_ae_specific_subgroup</a></span><span class="op">(</span><span class="va">meta</span>,</span></span>
 <span class="r-in"><span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
 <span class="r-in"><span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
@@ -116,7 +172,7 @@ average of number of adverse event per subjects.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "soc" "par"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Placebo"   "Low Dose"  "High Dose"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Low Dose" "Placebo" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $subgroup</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "f" "m"</span>
@@ -126,43 +182,35 @@ average of number of adverse event per subjects.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $meta</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ADaM metadata: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .$data_population 	Population data with 254 subjects </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .$data_observation 	Observation data with 1191 records </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .$plan 	Analysis plan with 20 plans </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .$data_population 	Population data with 170 subjects </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .$data_observation 	Observation data with 736 records </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .$plan 	Analysis plan with 1 plans </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis population type:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     name        id  group var       subset                         label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     name        id  group                                          var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'apat' 'USUBJID' 'TRTA' USUBJID, SAFFL, TRTA, SITEID, SEX, RACE, AGE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         subset                         label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SAFFL == 'Y' 'All Participants as Treated'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis observation type:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     name        id  group var          subset           label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     name        id  group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'wk12' 'USUBJID' 'TRTA'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                              var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 USUBJID, SAFFL, TRTA, SEX, AEDECOD, AEBODSYS, AEREL, AESER, AEOUT, AEACN, AESDTH, ASTDT, AENDT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         subset           label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 SAFFL == 'Y' 'Weeks 0 to 12'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis parameter type:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        name                                         label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     'rel'                 'drug-related adverse events'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   'aeosi'          'adverse events of special interest'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 'dtc0rel' 'drug-related adverse events result in death'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     'any'                          'any adverse events'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     'ser'                      'serious adverse events'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 subset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 AEREL %in% c('POSSIBLE', 'PROBABLE')</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         AEOSI == 'Y'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         AESDTH == 'Y' &amp; AEREL == 'Y'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                         AESER == 'Y'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    name              label                               subset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'rel' 'Drug-related AEs' AEREL %in% c('POSSIBLE', 'PROBABLE')</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Analysis function:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            name                             label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  'ae_summary'    'Table: adverse event summary'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  'ae_listing'          'Listing: adverse event'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  'ae_exp_adj' 'Exposure Adjusted Incident Rate'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 'ae_specific'   'Table: specific adverse event'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            name                           label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 'ae_specific' 'Table: specific adverse event'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $population</span>
@@ -181,15 +229,15 @@ average of number of adverse event per subjects.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ population     : chr "apat"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ observation    : chr "wk12"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ parameter      : chr "rel"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	138 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:138] 1 100 200 900 1000 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	138 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	138 obs. of  2 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n_pop          :'data.frame':	1 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ soc_name       : chr [1:138] NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	114 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:114] 1 100 200 900 1000 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : chr [1:3] "Low Dose" "Placebo" "Total"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: num 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	114 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	114 obs. of  1 variable:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n_pop          :'data.frame':	1 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:114] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ soc_name       : chr [1:114] NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ components     : chr [1:2] "soc" "par"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ prepare_call   : language FUN(meta = X[[i]], population = ..1, observation = ..2, parameter = ..3,      components = ..4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -199,15 +247,15 @@ average of number of adverse event per subjects.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ population     : chr "apat"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ observation    : chr "wk12"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ parameter      : chr "rel"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	138 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:138] 1 100 200 900 1000 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	138 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	138 obs. of  2 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n_pop          :'data.frame':	1 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ soc_name       : chr [1:138] NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	114 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:114] 1 100 200 900 1000 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : chr [1:3] "Low Dose" "Placebo" "Total"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: num 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	114 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	114 obs. of  1 variable:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n_pop          :'data.frame':	1 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:114] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ soc_name       : chr [1:114] NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ components     : chr [1:2] "soc" "par"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ prepare_call   : language FUN(meta = X[[i]], population = ..1, observation = ..2, parameter = ..3,      components = ..4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -217,437 +265,365 @@ average of number of adverse event per subjects.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ population     : chr "apat"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ observation    : chr "wk12"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ parameter      : chr "rel"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	138 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:138] 1 100 200 900 10000 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	138 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	138 obs. of  2 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n_pop          :'data.frame':	1 obs. of  4 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ soc_name       : chr [1:138] NA NA NA NA ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n              :'data.frame':	114 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ order          : num [1:114] 1 100 200 900 1000 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ group          : chr [1:3] "Low Dose" "Placebo" "Total"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ reference_group: num 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ prop           :'data.frame':	114 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ diff           :'data.frame':	114 obs. of  1 variable:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ n_pop          :'data.frame':	1 obs. of  3 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ name           : chr [1:114] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ soc_name       : chr [1:114] NA NA NA NA ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ components     : chr [1:2] "soc" "par"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ prepare_call   : language prepare_ae_specific(meta = meta, population = population, observation = observation,      parameter = parameter, | __truncated__</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tbl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                     name Fn_1 Fprop_1 Fn_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96                            Participants in population   53    &lt;NA&gt;   50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 138         with one or more drug-related adverse events   28  (52.8)   41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 137                  with no drug-related adverse events   25  (47.2)    9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78                            Participants in population   50    &lt;NA&gt;   53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114         with one or more drug-related adverse events   41  (82.0)   28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113                  with no drug-related adverse events    9  (18.0)   25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                          NA    &lt;NA&gt;   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33                                     Cardiac disorders    4   (7.5)    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22                                   Atrial fibrillation    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23                                        Atrial flutter    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24                   Atrioventricular block first degree    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25                  Atrioventricular block second degree    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30                                           Bradycardia    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31                             Bundle branch block right    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34                            Cardiac failure congestive    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 86                                 Myocardial infarction    2   (3.8)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 93                                          Palpitations    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 112                                     Sinus arrhythmia    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 113                                    Sinus bradycardia    2   (3.8)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122                       Supraventricular extrasystoles    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 129                            Ventricular extrasystoles    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 134                       Wolff-parkinson-white syndrome    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40            Congenital, familial and genetic disorders    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 130                            Ventricular septal defect    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50                           Ear and labyrinth disorders    0   (0.0)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 125                                             Tinnitus    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 131                                              Vertigo    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57                                         Eye disorders    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 132                                       Vision blurred    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62                            Gastrointestinal disorders    1   (1.9)    6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                         Abdominal pain    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46                                             Diarrhoea    0   (0.0)    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48                                             Dyspepsia    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63                      Gastrooesophageal reflux disease    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 87                                                Nausea    0   (0.0)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 110                              Salivary hypersecretion    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 120                                   Stomach discomfort    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 133                                             Vomiting    0   (0.0)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64  General disorders and administration site conditions   11  (20.8)   23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                              Application site bleeding    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                            Application site dermatitis    2   (3.8)    5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29                                     Cardiac disorders    4   (8.0)    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                                   Atrial fibrillation    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20                                        Atrial flutter    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                   Atrioventricular block first degree    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22                  Atrioventricular block second degree    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27                                           Bradycardia    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28                             Bundle branch block right    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30                            Cardiac failure congestive    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70                                 Myocardial infarction    1   (2.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76                                          Palpitations    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91                                      Sinus arrhythmia    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92                                     Sinus bradycardia    1   (2.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100                       Supraventricular extrasystoles    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106                            Ventricular extrasystoles    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111                       Wolff-parkinson-white syndrome    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35            Congenital, familial and genetic disorders    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107                            Ventricular septal defect    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44                           Ear and labyrinth disorders    2   (4.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102                                             Tinnitus    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108                                              Vertigo    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49                                         Eye disorders    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109                                       Vision blurred    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53                            Gastrointestinal disorders    6  (12.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                         Abdominal pain    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40                                             Diarrhoea    3   (6.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42                                             Dyspepsia    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54                      Gastrooesophageal reflux disease    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71                                                Nausea    2   (4.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110                                             Vomiting    2   (4.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55  General disorders and administration site conditions   23  (46.0)   11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                              Application site bleeding    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                            Application site dermatitis    5  (10.0)    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7                          Application site desquamation    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                             Application site discharge    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                        Application site discolouration    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                             Application site erythema    2   (3.8)    5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                           Application site induration    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12                           Application site irritation    3   (5.7)    6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                                 Application site pain    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14                         Application site perspiration    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15                             Application site pruritus    4   (7.5)   12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16                             Application site reaction    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17                             Application site swelling    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                            Application site urticaria    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19                             Application site vesicles    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20                               Application site warmth    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21                                              Asthenia    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35                                      Chest discomfort    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36                                                Chills    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59                                               Fatigue    1   (1.9)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60                                      Feeling abnormal    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81                                               Malaise    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 89                                                Oedema    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 90                                     Oedema peripheral    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 92                                                  Pain    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74        Injury, poisoning and procedural complications    0   (0.0)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56                                           Excoriation    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58                                                  Fall    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 117                                      Skin laceration    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 135                                                Wound    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 76                                        Investigations    2   (3.8)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28                Blood creatine phosphokinase increased    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29                            Body temperature increased    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51               Electrocardiogram st segment depression    1   (1.9)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52                    Electrocardiogram t wave inversion    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67                                  Heart rate increased    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68                                  Heart rate irregular    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 82                    Metabolism and nutrition disorders    3   (5.7)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42                                    Decreased appetite    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61                                          Food craving    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73                                    Increased appetite    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 84       Musculoskeletal and connective tissue disorders    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 85                                               Myalgia    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 111                                        Shoulder pain    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 88                              Nervous system disorders    3   (5.7)    8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26                                      Balance disorder    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32                                     Burning sensation    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38                              Complex partial seizures    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41                                 Coordination abnormal    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47                                             Dizziness    1   (1.9)    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66                                              Headache    2   (3.8)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70                                           Hypersomnia    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 78                                              Lethargy    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 94                                     Paraesthesia oral    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95                                              Parosmia    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 119                                           Somnolence    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 121                                               Stupor    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 123                                              Syncope    0   (0.0)    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 124                                    Syncope vasovagal    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 126                           Transient ischaemic attack    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100                                Psychiatric disorders    1   (1.9)    6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                              Agitation    0   (0.0)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                Anxiety    0   (0.0)    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39                                     Confusional state    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43                                              Delirium    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44                                        Depressed mood    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65                                 Hallucination, visual    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75                                              Insomnia    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 77                                          Irritability    1   (1.9)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 79                                      Libido decreased    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80                                              Listless    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 109                                         Restlessness    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 106                          Renal and urinary disorders    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54                                              Enuresis    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 83                                   Micturition urgency    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 107             Reproductive system and breast disorders    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97                                           Pelvic pain    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 108      Respiratory, thoracic and mediastinal disorders    2   (3.8)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49                                              Dyspnoea    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53                                             Emphysema    1   (1.9)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 114               Skin and subcutaneous tissue disorders   12  (22.6)   21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27                                               Blister    0   (0.0)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37                                            Cold sweat    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45                                    Dermatitis contact    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55                                              Erythema    6  (11.3)    7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69                                         Hyperhidrosis    1   (1.9)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98                                              Pruritus    6  (11.3)   12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99                                  Pruritus generalised    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 101                                                 Rash    2   (3.8)    6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 102                                    Rash erythematous    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 103                                  Rash maculo-papular    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 104                                         Rash papular    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 105                                        Rash pruritic    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 115                                     Skin exfoliation    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 116                                      Skin irritation    2   (3.8)    5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 118                                           Skin ulcer    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 127                                            Urticaria    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 128                                   Vascular disorders    0   (0.0)    2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71                                          Hypertension    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72                                           Hypotension    0   (0.0)    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 91                               Orthostatic hypotension    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 136                                    Wound haemorrhage    0   (0.0)    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Fprop_2 Fn_3 Fprop_3 Mn_1 Mprop_1 Mn_2 Mprop_2 Mn_3 Mprop_3 Totaln_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96     &lt;NA&gt;   40    &lt;NA&gt;   33    &lt;NA&gt;   34    &lt;NA&gt;   44    &lt;NA&gt;       86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 138  (82.0)   32  (80.0)   16  (48.5)   32  (94.1)   38  (86.4)       44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 137  (18.0)    8  (20.0)   17  (51.5)    2   (5.9)    6  (13.6)       42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      &lt;NA&gt;   NA    &lt;NA&gt;   NA    &lt;NA&gt;   NA    &lt;NA&gt;   NA    &lt;NA&gt;       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33    (8.0)    4  (10.0)    2   (6.1)    3   (8.8)    0   (0.0)        6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22    (0.0)    2   (5.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25    (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 86    (2.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 93    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 112   (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 113   (2.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122   (2.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 129   (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 134   (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 130   (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50    (4.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 125   (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 131   (2.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57    (0.0)    1   (2.5)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 132   (0.0)    1   (2.5)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62   (12.0)    3   (7.5)    3   (9.1)    2   (5.9)    7  (15.9)        4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     (2.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46    (6.0)    0   (0.0)    3   (9.1)    0   (0.0)    2   (4.5)        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 87    (4.0)    2   (5.0)    0   (0.0)    1   (2.9)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 110   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    3   (6.8)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 120   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 133   (4.0)    0   (0.0)    0   (0.0)    0   (0.0)    3   (6.8)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64   (46.0)   17  (42.5)    7  (21.2)   20  (58.8)   18  (40.9)       18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    (10.0)    4  (10.0)    3   (9.1)    4  (11.8)    3   (6.8)        5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   (10.0)    5  (12.5)    1   (3.0)    7  (20.6)   10  (22.7)        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   (12.0)    5  (12.5)    0   (0.0)    3   (8.8)    4   (9.1)        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    (0.0)    2   (5.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    2   (4.5)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   (24.0)   10  (25.0)    2   (6.1)   10  (29.4)   12  (27.3)        6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16    (0.0)    1   (2.5)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17    (0.0)    1   (2.5)    0   (0.0)    1   (2.9)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18    (0.0)    1   (2.5)    0   (0.0)    2   (5.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19    (2.0)    3   (7.5)    1   (3.0)    3   (8.8)    3   (6.8)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36    (0.0)    0   (0.0)    1   (3.0)    1   (2.9)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59    (2.0)    4  (10.0)    0   (0.0)    1   (2.9)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 89    (2.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 90    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 92    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74    (4.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56    (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 117   (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 135   (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 76    (4.0)    1   (2.5)    2   (6.1)    0   (0.0)    0   (0.0)        4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28    (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52    (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67    (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 82    (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42    (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 84    (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    1   (2.3)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 85    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 111   (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 88   (16.0)    7  (17.5)    2   (6.1)    4  (11.8)    8  (18.2)        5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    2   (4.5)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47    (6.0)    2   (5.0)    1   (3.0)    3   (8.8)    4   (9.1)        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66    (0.0)    1   (2.5)    0   (0.0)    1   (2.9)    0   (0.0)        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70    (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 78    (0.0)    1   (2.5)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 94    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 119   (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 121   (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 123   (8.0)    2   (5.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 124   (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 126   (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100  (12.0)    1   (2.5)    1   (3.0)    3   (8.8)    4   (9.1)        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     (4.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     (6.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39    (2.0)    0   (0.0)    1   (3.0)    1   (2.9)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65    (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    2   (4.5)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 77    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 79    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 109   (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 106   (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 83    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 107   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 108   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53    (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 114  (42.0)   13  (32.5)    5  (15.2)   18  (52.9)   26  (59.1)       17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27    (4.0)    0   (0.0)    0   (0.0)    3   (8.8)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37    (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55   (14.0)    7  (17.5)    3   (9.1)    6  (17.6)    7  (15.9)        9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69    (2.0)    2   (5.0)    0   (0.0)    3   (8.8)    6  (13.6)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98   (24.0)   11  (27.5)    1   (3.0)    9  (26.5)   15  (34.1)        7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99    (0.0)    0   (0.0)    0   (0.0)    1   (2.9)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 101  (12.0)    2   (5.0)    1   (3.0)    5  (14.7)    5  (11.4)        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 102   (2.0)    0   (0.0)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 103   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 104   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 105   (2.0)    1   (2.5)    0   (0.0)    0   (0.0)    1   (2.3)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 115   (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 116  (10.0)    1   (2.5)    0   (0.0)    1   (2.9)    4   (9.1)        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 118   (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 127   (0.0)    1   (2.5)    0   (0.0)    1   (2.9)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 128   (4.0)    1   (2.5)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71    (2.0)    0   (0.0)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72    (2.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 91    (0.0)    0   (0.0)    1   (3.0)    0   (0.0)    0   (0.0)        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 136   (0.0)    1   (2.5)    0   (0.0)    0   (0.0)    0   (0.0)        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Totalprop_1 Totaln_2 Totalprop_2 Totaln_3 Totalprop_3  order</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96         &lt;NA&gt;       84        &lt;NA&gt;       84        &lt;NA&gt;      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 138      (51.2)       73      (86.9)       70      (83.3)    100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 137      (48.8)       11      (13.1)       14      (16.7)    200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          &lt;NA&gt;       NA        &lt;NA&gt;       NA        &lt;NA&gt;    900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33        (7.0)        7       (8.3)        4       (4.8)  10000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22        (1.2)        0       (0.0)        2       (2.4)  10021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23        (0.0)        1       (1.2)        0       (0.0)  10022</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24        (1.2)        0       (0.0)        0       (0.0)  10023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25        (1.2)        0       (0.0)        0       (0.0)  10024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30        (1.2)        0       (0.0)        0       (0.0)  10029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31        (0.0)        1       (1.2)        0       (0.0)  10030</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34        (1.2)        0       (0.0)        0       (0.0)  10032</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 86        (2.3)        1       (1.2)        1       (1.2)  10075</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 93        (0.0)        1       (1.2)        0       (0.0)  10081</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 112       (1.2)        0       (0.0)        0       (0.0)  10095</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 113       (2.3)        2       (2.4)        0       (0.0)  10096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122       (0.0)        1       (1.2)        1       (1.2)  10104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 129       (0.0)        1       (1.2)        0       (0.0)  10110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 134       (0.0)        1       (1.2)        0       (0.0)  10115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40        (0.0)        1       (1.2)        0       (0.0)  20000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 130       (0.0)        1       (1.2)        0       (0.0)  20111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50        (0.0)        2       (2.4)        1       (1.2)  30000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 125       (0.0)        1       (1.2)        0       (0.0)  30107</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 131       (0.0)        1       (1.2)        1       (1.2)  30112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57        (0.0)        1       (1.2)        1       (1.2)  40000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 132       (0.0)        1       (1.2)        1       (1.2)  40113</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62        (4.7)        8       (9.5)       10      (11.9)  50000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         (0.0)        1       (1.2)        1       (1.2)  50001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46        (3.5)        3       (3.6)        2       (2.4)  50043</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48        (1.2)        1       (1.2)        0       (0.0)  50045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63        (1.2)        0       (0.0)        0       (0.0)  50057</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 87        (0.0)        3       (3.6)        3       (3.6)  50076</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 110       (0.0)        0       (0.0)        3       (3.6)  50093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 120       (0.0)        0       (0.0)        1       (1.2)  50102</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 133       (0.0)        2       (2.4)        3       (3.6)  50114</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64       (20.9)       43      (51.2)       35      (41.7)  60000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         (0.0)        1       (1.2)        0       (0.0)  60004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6         (5.8)        9      (10.7)        7       (8.3)  60005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7         (0.0)        1       (1.2)        0       (0.0)  60006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8         (0.0)        0       (0.0)        1       (1.2)  60007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9         (0.0)        1       (1.2)        0       (0.0)  60008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10        (3.5)       12      (14.3)       15      (17.9)  60009</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11        (1.2)        0       (0.0)        0       (0.0)  60010</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12        (3.5)        9      (10.7)        9      (10.7)  60011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13        (0.0)        0       (0.0)        2       (2.4)  60012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14        (0.0)        0       (0.0)        2       (2.4)  60013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15        (7.0)       22      (26.2)       22      (26.2)  60014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16        (1.2)        0       (0.0)        1       (1.2)  60015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17        (0.0)        1       (1.2)        2       (2.4)  60016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18        (0.0)        2       (2.4)        1       (1.2)  60017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19        (1.2)        4       (4.8)        6       (7.1)  60018</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20        (0.0)        1       (1.2)        0       (0.0)  60019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21        (1.2)        0       (0.0)        0       (0.0)  60020</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35        (0.0)        0       (0.0)        1       (1.2)  60033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36        (1.2)        1       (1.2)        0       (0.0)  60034</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59        (1.2)        2       (2.4)        4       (4.8)  60054</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60        (0.0)        0       (0.0)        1       (1.2)  60055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81        (0.0)        1       (1.2)        1       (1.2)  60072</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 89        (0.0)        2       (2.4)        0       (0.0)  60077</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 90        (0.0)        0       (0.0)        1       (1.2)  60078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 92        (0.0)        1       (1.2)        1       (1.2)  60080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74        (0.0)        2       (2.4)        1       (1.2)  70000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56        (0.0)        0       (0.0)        1       (1.2)  70052</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58        (0.0)        1       (1.2)        0       (0.0)  70053</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 117       (0.0)        1       (1.2)        0       (0.0)  70099</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 135       (0.0)        1       (1.2)        0       (0.0)  70116</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 76        (4.7)        2       (2.4)        1       (1.2)  80000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28        (1.2)        0       (0.0)        0       (0.0)  80027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29        (0.0)        1       (1.2)        0       (0.0)  80028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51        (1.2)        1       (1.2)        0       (0.0)  80047</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52        (0.0)        0       (0.0)        1       (1.2)  80048</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67        (1.2)        0       (0.0)        0       (0.0)  80060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68        (1.2)        0       (0.0)        0       (0.0)  80061</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 82        (3.5)        0       (0.0)        1       (1.2)  90000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42        (1.2)        0       (0.0)        1       (1.2)  90039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61        (1.2)        0       (0.0)        0       (0.0)  90056</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73        (1.2)        0       (0.0)        0       (0.0)  90066</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 84        (1.2)        0       (0.0)        1       (1.2) 100000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 85        (0.0)        0       (0.0)        1       (1.2) 100074</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 111       (1.2)        0       (0.0)        0       (0.0) 100094</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 88        (5.8)       12      (14.3)       15      (17.9) 110000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26        (0.0)        1       (1.2)        0       (0.0) 110025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32        (0.0)        0       (0.0)        2       (2.4) 110031</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38        (0.0)        1       (1.2)        0       (0.0) 110036</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41        (0.0)        1       (1.2)        0       (0.0) 110038</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47        (2.3)        6       (7.1)        6       (7.1) 110044</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66        (2.3)        1       (1.2)        1       (1.2) 110059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70        (0.0)        0       (0.0)        1       (1.2) 110063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 78        (0.0)        1       (1.2)        1       (1.2) 110069</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 94        (0.0)        1       (1.2)        0       (0.0) 110082</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95        (0.0)        0       (0.0)        1       (1.2) 110083</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 119       (1.2)        0       (0.0)        0       (0.0) 110101</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 121       (0.0)        1       (1.2)        0       (0.0) 110103</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 123       (0.0)        4       (4.8)        3       (3.6) 110105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 124       (0.0)        0       (0.0)        1       (1.2) 110106</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 126       (0.0)        1       (1.2)        0       (0.0) 110108</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100       (2.3)        9      (10.7)        5       (6.0) 120000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         (0.0)        2       (2.4)        0       (0.0) 120002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         (0.0)        3       (3.6)        0       (0.0) 120003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39        (1.2)        2       (2.4)        0       (0.0) 120037</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43        (0.0)        0       (0.0)        1       (1.2) 120040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44        (0.0)        1       (1.2)        0       (0.0) 120041</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65        (0.0)        0       (0.0)        1       (1.2) 120058</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75        (0.0)        0       (0.0)        2       (2.4) 120067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 77        (1.2)        1       (1.2)        0       (0.0) 120068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 79        (0.0)        0       (0.0)        1       (1.2) 120070</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80        (0.0)        0       (0.0)        1       (1.2) 120071</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 109       (0.0)        1       (1.2)        0       (0.0) 120092</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 106       (0.0)        1       (1.2)        1       (1.2) 130000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54        (0.0)        1       (1.2)        0       (0.0) 130050</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 83        (0.0)        0       (0.0)        1       (1.2) 130073</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 107       (1.2)        0       (0.0)        0       (0.0) 140000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97        (1.2)        0       (0.0)        0       (0.0) 140084</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 108       (2.3)        0       (0.0)        0       (0.0) 150000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49        (1.2)        0       (0.0)        0       (0.0) 150046</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53        (1.2)        0       (0.0)        0       (0.0) 150049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 114      (19.8)       39      (46.4)       39      (46.4) 160000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27        (0.0)        5       (6.0)        1       (1.2) 160026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37        (1.2)        0       (0.0)        0       (0.0) 160035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45        (0.0)        1       (1.2)        0       (0.0) 160042</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55       (10.5)       13      (15.5)       14      (16.7) 160051</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69        (1.2)        4       (4.8)        8       (9.5) 160062</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98        (8.1)       21      (25.0)       26      (31.0) 160085</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99        (0.0)        1       (1.2)        1       (1.2) 160086</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 101       (3.5)       11      (13.1)        7       (8.3) 160087</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 102       (0.0)        2       (2.4)        0       (0.0) 160088</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 103       (0.0)        0       (0.0)        1       (1.2) 160089</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 104       (0.0)        0       (0.0)        1       (1.2) 160090</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 105       (0.0)        1       (1.2)        2       (2.4) 160091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 115       (0.0)        1       (1.2)        0       (0.0) 160097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 116       (2.3)        6       (7.1)        5       (6.0) 160098</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 118       (1.2)        0       (0.0)        0       (0.0) 160100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 127       (0.0)        1       (1.2)        1       (1.2) 160109</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 128       (1.2)        2       (2.4)        1       (1.2) 170000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71        (0.0)        1       (1.2)        0       (0.0) 170064</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72        (1.2)        1       (1.2)        0       (0.0) 170065</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 91        (1.2)        0       (0.0)        0       (0.0) 170079</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 136       (0.0)        0       (0.0)        1       (1.2) 170117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                        Application site discolouration    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                              Application site erythema    5  (10.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                           Application site induration    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                           Application site irritation    6  (12.0)    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                             Application site pruritus   12  (24.0)    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                             Application site reaction    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                             Application site swelling    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                            Application site urticaria    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                             Application site vesicles    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                               Application site warmth    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                                              Asthenia    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                                                Chills    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51                                               Fatigue    1   (2.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67                                               Malaise    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73                                                Oedema    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75                                                  Pain    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63        Injury, poisoning and procedural complications    2   (4.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50                                                  Fall    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96                                       Skin laceration    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112                                                Wound    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64                                        Investigations    2   (4.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25                Blood creatine phosphokinase increased    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26                            Body temperature increased    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45               Electrocardiogram st segment depression    1   (2.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57                                  Heart rate increased    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58                                  Heart rate irregular    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68                    Metabolism and nutrition disorders    0   (0.0)    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37                                    Decreased appetite    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52                                          Food craving    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62                                    Increased appetite    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69       Musculoskeletal and connective tissue disorders    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90                                         Shoulder pain    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72                              Nervous system disorders    8  (16.0)    3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23                                      Balance disorder    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33                              Complex partial seizures    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36                                 Coordination abnormal    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41                                             Dizziness    3   (6.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56                                              Headache    0   (0.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66                                              Lethargy    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77                                     Paraesthesia oral    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98                                            Somnolence    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99                                                Stupor    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101                                              Syncope    4   (8.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103                           Transient ischaemic attack    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82                                 Psychiatric disorders    6  (12.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                              Agitation    2   (4.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                Anxiety    3   (6.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34                                     Confusional state    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38                                        Depressed mood    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65                                          Irritability    1   (2.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89                                          Restlessness    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86                           Renal and urinary disorders    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47                                              Enuresis    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87              Reproductive system and breast disorders    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79                                           Pelvic pain    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88       Respiratory, thoracic and mediastinal disorders    0   (0.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43                                              Dyspnoea    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46                                             Emphysema    0   (0.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93                Skin and subcutaneous tissue disorders   21  (42.0)   12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24                                               Blister    2   (4.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32                                            Cold sweat    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39                                    Dermatitis contact    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48                                              Erythema    7  (14.0)    6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59                                         Hyperhidrosis    1   (2.0)    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80                                              Pruritus   12  (24.0)    6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81                                  Pruritus generalised    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83                                                  Rash    6  (12.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84                                     Rash erythematous    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85                                         Rash pruritic    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94                                      Skin exfoliation    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95                                       Skin irritation    5  (10.0)    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97                                            Skin ulcer    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104                                            Urticaria    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105                                   Vascular disorders    2   (4.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60                                          Hypertension    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61                                           Hypotension    1   (2.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74                               Orthostatic hypotension    0   (0.0)    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Fprop_2 Mn_1 Mprop_1 Mn_2 Mprop_2 Totaln_1 Totalprop_1 Totaln_2 Totalprop_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78     &lt;NA&gt;   34    &lt;NA&gt;   33    &lt;NA&gt;       84        &lt;NA&gt;       86        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  (52.8)   32  (94.1)   16  (48.5)       73      (86.9)       44      (51.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  (47.2)    2   (5.9)   17  (51.5)       11      (13.1)       42      (48.8)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      &lt;NA&gt;   NA    &lt;NA&gt;   NA    &lt;NA&gt;       NA        &lt;NA&gt;       NA        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29    (7.5)    3   (8.8)    2   (6.1)        7       (8.3)        6       (7.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70    (3.8)    0   (0.0)    0   (0.0)        1       (1.2)        2       (2.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92    (3.8)    1   (2.9)    0   (0.0)        2       (2.4)        2       (2.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100   (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106   (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111   (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107   (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44    (0.0)    0   (0.0)    0   (0.0)        2       (2.4)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102   (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108   (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109   (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53    (1.9)    2   (5.9)    3   (9.1)        8       (9.5)        4       (4.7)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    (0.0)    0   (0.0)    3   (9.1)        3       (3.6)        3       (3.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42    (1.9)    1   (2.9)    0   (0.0)        1       (1.2)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71    (0.0)    1   (2.9)    0   (0.0)        3       (3.6)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110   (0.0)    0   (0.0)    0   (0.0)        2       (2.4)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   (20.8)   20  (58.8)    7  (21.2)       43      (51.2)       18      (20.9)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     (3.8)    4  (11.8)    3   (9.1)        9      (10.7)        5       (5.8)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     (3.8)    7  (20.6)    1   (3.0)       12      (14.3)        3       (3.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    (5.7)    3   (8.8)    0   (0.0)        9      (10.7)        3       (3.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    (7.5)   10  (29.4)    2   (6.1)       22      (26.2)        6       (7.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    (0.0)    2   (5.9)    0   (0.0)        2       (2.4)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16    (0.0)    3   (8.8)    1   (3.0)        4       (4.8)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31    (0.0)    1   (2.9)    1   (3.0)        1       (1.2)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51    (1.9)    1   (2.9)    0   (0.0)        2       (2.4)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73    (0.0)    1   (2.9)    0   (0.0)        2       (2.4)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63    (0.0)    0   (0.0)    0   (0.0)        2       (2.4)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112   (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64    (3.8)    0   (0.0)    2   (6.1)        2       (2.4)        4       (4.7)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45    (1.9)    0   (0.0)    0   (0.0)        1       (1.2)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68    (5.7)    0   (0.0)    0   (0.0)        0       (0.0)        3       (3.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72    (5.7)    4  (11.8)    2   (6.1)       12      (14.3)        5       (5.8)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41    (1.9)    3   (8.8)    1   (3.0)        6       (7.1)        2       (2.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56    (3.8)    1   (2.9)    0   (0.0)        1       (1.2)        2       (2.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101   (0.0)    0   (0.0)    0   (0.0)        4       (4.8)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103   (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82    (1.9)    3   (8.8)    1   (3.0)        9      (10.7)        2       (2.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     (0.0)    0   (0.0)    0   (0.0)        2       (2.4)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     (0.0)    0   (0.0)    0   (0.0)        3       (3.6)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34    (0.0)    1   (2.9)    1   (3.0)        2       (2.4)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65    (1.9)    0   (0.0)    0   (0.0)        1       (1.2)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88    (3.8)    0   (0.0)    0   (0.0)        0       (0.0)        2       (2.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46    (1.9)    0   (0.0)    0   (0.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   (22.6)   18  (52.9)    5  (15.2)       39      (46.4)       17      (19.8)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24    (0.0)    3   (8.8)    0   (0.0)        5       (6.0)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   (11.3)    6  (17.6)    3   (9.1)       13      (15.5)        9      (10.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59    (1.9)    3   (8.8)    0   (0.0)        4       (4.8)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   (11.3)    9  (26.5)    1   (3.0)       21      (25.0)        7       (8.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81    (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83    (3.8)    5  (14.7)    1   (3.0)       11      (13.1)        3       (3.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84    (0.0)    1   (2.9)    0   (0.0)        2       (2.4)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95    (3.8)    1   (2.9)    0   (0.0)        6       (7.1)        2       (2.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104   (0.0)    1   (2.9)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105   (0.0)    0   (0.0)    1   (3.0)        2       (2.4)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60    (0.0)    0   (0.0)    0   (0.0)        1       (1.2)        0       (0.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61    (0.0)    0   (0.0)    1   (3.0)        1       (1.2)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74    (0.0)    0   (0.0)    1   (3.0)        0       (0.0)        1       (1.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     order</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114   100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113   200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     900</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   1018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   1019</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   1020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   1021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   1026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   1027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   1028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   1059</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   1064</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   1074</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   1075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  1082</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  1087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111  1092</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   2000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  2088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   3000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  3084</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  3089</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   4000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  4090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   5000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    5001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   5037</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   5039</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   5048</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   5060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  5091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   6000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    6004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    6006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    6007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    6008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   6009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   6010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   6011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   6012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   6013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   6014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   6015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   6016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   6017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   6029</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   6046</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   6058</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   6061</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   6063</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   7000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   7045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   7078</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  7093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   8000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   8024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   8025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   8041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   8050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   8051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   9000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   9034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   9047</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   9055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69  10000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90  10073</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72  11000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23  11022</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33  11031</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36  11033</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41  11038</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56  11049</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66  11057</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77  11065</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  11080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  11081</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101 11083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103 11085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82  12000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   12002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   12003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34  12032</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38  12035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65  12056</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89  12072</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86  13000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47  13043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87  14000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79  14066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88  15000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43  15040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46  15042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93  16000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24  16023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32  16030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39  16036</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48  16044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59  16052</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80  16067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81  16068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83  16069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84  16070</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85  16071</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94  16076</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95  16077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97  16079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104 16086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105 17000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60  17053</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61  17054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74  17062</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $display</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "n"    "prop"</span>

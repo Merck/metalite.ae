@@ -45,7 +45,64 @@ website](https://merck.github.io/metalite/articles/metalite.html).
 
 ``` r
 
-meta <- meta_ae_example()
+# Define metadata
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_specific",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_specific",
+    title = "Patients with Drug-Related Adverse Events"
+  ) |>
+  metalite::meta_build()
 ```
 
 Click to show the output
@@ -54,43 +111,37 @@ Click to show the output
 
 meta
 #> ADaM metadata: 
-#>    .$data_population     Population data with 254 subjects 
-#>    .$data_observation    Observation data with 1191 records 
-#>    .$plan    Analysis plan with 20 plans 
+#>    .$data_population     Population data with 170 subjects 
+#>    .$data_observation    Observation data with 736 records 
+#>    .$plan    Analysis plan with 1 plans 
 #> 
 #> 
 #>   Analysis population type:
-#>     name        id  group var       subset                         label
-#> 1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'
+#>     name        id    group
+#> 1 'apat' 'USUBJID' 'TRT01A'
+#>                                                      var       subset
+#> 1 USUBJID, SAFFL, TRT01A, TRTDUR, SITEID, SEX, RACE, AGE SAFFL == 'Y'
+#>                           label
+#> 1 'All Participants as Treated'
 #> 
 #> 
 #>   Analysis observation type:
-#>     name        id  group var          subset           label
-#> 1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'
-#> 2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'
+#>     name        id  group
+#> 1 'wk12' 'USUBJID' 'TRTA'
+#>                                                                                         var
+#> 1 USUBJID, SAFFL, TRTA, AEDECOD, AEBODSYS, AEREL, AESER, AEOUT, AEACN, AESDTH, ASTDT, AENDT
+#>         subset           label
+#> 1 SAFFL == 'Y' 'Weeks 0 to 12'
 #> 
 #> 
 #>   Analysis parameter type:
-#>        name                                         label
-#> 1     'rel'                 'drug-related adverse events'
-#> 2   'aeosi'          'adverse events of special interest'
-#> 3 'dtc0rel' 'drug-related adverse events result in death'
-#> 4     'any'                          'any adverse events'
-#> 5     'ser'                      'serious adverse events'
-#>                                 subset
-#> 1 AEREL %in% c('POSSIBLE', 'PROBABLE')
-#> 2                         AEOSI == 'Y'
-#> 3         AESDTH == 'Y' & AEREL == 'Y'
-#> 4                                     
-#> 5                         AESER == 'Y'
+#>    name              label                               subset
+#> 1 'rel' 'Drug-related AEs' AEREL %in% c('POSSIBLE', 'PROBABLE')
 #> 
 #> 
 #>   Analysis function:
-#>            name                             label
-#> 1  'ae_summary'    'Table: adverse event summary'
-#> 2  'ae_listing'          'Listing: adverse event'
-#> 3  'ae_exp_adj' 'Exposure Adjusted Incident Rate'
-#> 4 'ae_specific'   'Table: specific adverse event'
+#>            name                           label
+#> 1 'ae_specific' 'Table: specific adverse event'
 ```
 
 ### Analysis preparation
@@ -121,15 +172,15 @@ outdata
 #>  $ population     : chr "apat"
 #>  $ observation    : chr "wk12"
 #>  $ parameter      : chr "rel"
-#>  $ n              :'data.frame': 138 obs. of  4 variables:
-#>  $ order          : num [1:138] 1 100 200 900 10000 ...
-#>  $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"
-#>  $ reference_group: num 1
-#>  $ prop           :'data.frame': 138 obs. of  4 variables:
-#>  $ diff           :'data.frame': 138 obs. of  2 variables:
-#>  $ n_pop          :'data.frame': 1 obs. of  4 variables:
-#>  $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...
-#>  $ soc_name       : chr [1:138] NA NA NA NA ...
+#>  $ n              :'data.frame': 114 obs. of  3 variables:
+#>  $ order          : num [1:114] 1 100 200 900 1000 ...
+#>  $ group          : chr [1:3] "Low Dose" "Placebo" "Total"
+#>  $ reference_group: num 2
+#>  $ prop           :'data.frame': 114 obs. of  3 variables:
+#>  $ diff           :'data.frame': 114 obs. of  1 variable:
+#>  $ n_pop          :'data.frame': 1 obs. of  3 variables:
+#>  $ name           : chr [1:114] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...
+#>  $ soc_name       : chr [1:114] NA NA NA NA ...
 #>  $ components     : chr [1:2] "soc" "par"
 #>  $ prepare_call   : language prepare_ae_specific(meta = meta, population = "apat", observation = "wk12",      parameter = "rel")
 ```
@@ -140,7 +191,7 @@ variables indexed according to the order specified in `outdata$group`.
 ``` r
 
 outdata$group
-#> [1] "Placebo"   "Low Dose"  "High Dose" "Total"
+#> [1] "Low Dose" "Placebo"  "Total"
 ```
 
 The row is indexed according to the order of `outdata$name`.
@@ -153,8 +204,8 @@ head(data.frame(outdata$order, outdata$name))
 #> 2           100 with one or more drug-related adverse events
 #> 3           200          with no drug-related adverse events
 #> 4           900                                             
-#> 5         10000                            Cardiac disorders
-#> 6         10021                          Atrial fibrillation
+#> 5          1000                            Cardiac disorders
+#> 6          1018                          Atrial fibrillation
 ```
 
 - `n_pop`: number of participants in population.
@@ -162,8 +213,8 @@ head(data.frame(outdata$order, outdata$name))
 ``` r
 
 outdata$n_pop
-#>   n_1 n_2 n_3 n_4
-#> 1  86  84  84 254
+#>   n_1 n_2 n_3
+#> 1  84  86 170
 ```
 
 - `n`: number of subjects with AE.
@@ -171,13 +222,13 @@ outdata$n_pop
 ``` r
 
 head(outdata$n)
-#>     n_1 n_2 n_3 n_4
-#> 1    86  84  84 254
-#> 2    44  73  70 187
-#> 3    42  11  14  67
-#> 4    NA  NA  NA  NA
-#> 122   6   7   4  17
-#> 25    1   0   2   3
+#>    n_1 n_2 n_3
+#> 1   84  86 170
+#> 2   73  44 117
+#> 3   11  42  53
+#> 4   NA  NA  NA
+#> 98   7   6  13
+#> 22   0   1   1
 ```
 
 - `prop`: proportion of subjects with AE.
@@ -185,13 +236,13 @@ head(outdata$n)
 ``` r
 
 head(outdata$prop)
-#>        prop_1    prop_2    prop_3    prop_4
-#> 1          NA        NA        NA        NA
-#> 2   51.162791 86.904762 83.333333 73.622047
-#> 3   48.837209 13.095238 16.666667 26.377953
-#> 4          NA        NA        NA        NA
-#> 122  6.976744  8.333333  4.761905  6.692913
-#> 25   1.162791  0.000000  2.380952  1.181102
+#>       prop_1    prop_2     prop_3
+#> 1         NA        NA         NA
+#> 2  86.904762 51.162791 68.8235294
+#> 3  13.095238 48.837209 31.1764706
+#> 4         NA        NA         NA
+#> 98  8.333333  6.976744  7.6470588
+#> 22  0.000000  1.162791  0.5882353
 ```
 
 - `diff`: risk difference compared with the `reference_group`.
@@ -199,13 +250,13 @@ head(outdata$prop)
 ``` r
 
 head(outdata$diff)
-#>         diff_2     diff_3
-#> 1           NA         NA
-#> 2    35.741971  32.170543
-#> 3   -35.741971 -32.170543
-#> 4           NA         NA
-#> 122   1.356589  -2.214839
-#> 25   -1.162791   1.218162
+#>        diff_1
+#> 1          NA
+#> 2   35.741971
+#> 3  -35.741971
+#> 4          NA
+#> 98   1.356589
+#> 22  -1.162791
 ```
 
 ## Format output
@@ -219,20 +270,20 @@ compatibility with production-ready RTF tables.
 
 tbl <- outdata |> format_ae_specific()
 head(tbl$tbl)
-#>                                             name n_1 prop_1 n_2 prop_2 n_3
-#> 1                     Participants in population  86   <NA>  84   <NA>  84
-#> 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70
-#> 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14
-#> 4                                                 NA   <NA>  NA   <NA>  NA
-#> 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4
-#> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2
-#>     prop_3 n_4 prop_4
-#> 1     <NA> 254   <NA>
-#> 2   (83.3) 187 (73.6)
-#> 3   (16.7)  67 (26.4)
-#> 4     <NA>  NA   <NA>
-#> 122  (4.8)  17  (6.7)
-#> 25   (2.4)   3  (1.2)
+#>                                            name n_1 prop_1 n_2 prop_2 n_3
+#> 1                    Participants in population  84   <NA>  86   <NA> 170
+#> 2  with one or more drug-related adverse events  73 (86.9)  44 (51.2) 117
+#> 3           with no drug-related adverse events  11 (13.1)  42 (48.8)  53
+#> 4                                                NA   <NA>  NA   <NA>  NA
+#> 98                            Cardiac disorders   7  (8.3)   6  (7.0)  13
+#> 22                          Atrial fibrillation   0  (0.0)   1  (1.2)   1
+#>    prop_3
+#> 1    <NA>
+#> 2  (68.8)
+#> 3  (31.2)
+#> 4    <NA>
+#> 98  (7.6)
+#> 22  (0.6)
 ```
 
 ### Additional statistics
@@ -245,20 +296,20 @@ difference.
 
 tbl <- outdata |> format_ae_specific(display = c("n", "prop", "diff"))
 head(tbl$tbl)
-#>                                             name n_1 prop_1 n_2 prop_2 n_3
-#> 1                     Participants in population  86   <NA>  84   <NA>  84
-#> 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70
-#> 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14
-#> 4                                                 NA   <NA>  NA   <NA>  NA
-#> 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4
-#> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2
-#>     prop_3 diff_2 diff_3
-#> 1     <NA>   <NA>   <NA>
-#> 2   (83.3)   35.7   32.2
-#> 3   (16.7)  -35.7  -32.2
-#> 4     <NA>   <NA>   <NA>
-#> 122  (4.8)    1.4   -2.2
-#> 25   (2.4)   -1.2    1.2
+#>                                            name n_1 prop_1 n_2 prop_2
+#> 1                    Participants in population  84   <NA>  86   <NA>
+#> 2  with one or more drug-related adverse events  73 (86.9)  44 (51.2)
+#> 3           with no drug-related adverse events  11 (13.1)  42 (48.8)
+#> 4                                                NA   <NA>  NA   <NA>
+#> 98                            Cardiac disorders   7  (8.3)   6  (7.0)
+#> 22                          Atrial fibrillation   0  (0.0)   1  (1.2)
+#>    between_tbl
+#> 1         <NA>
+#> 2         35.7
+#> 3        -35.7
+#> 4         <NA>
+#> 98         1.4
+#> 22        -1.2
 ```
 
 To perform advanced analysis, the
@@ -274,20 +325,20 @@ tbl <- outdata |>
   extend_ae_specific_inference() |>
   format_ae_specific(display = c("n", "prop", "diff", "diff_ci"))
 head(tbl$tbl)
-#>                                             name n_1 prop_1 n_2 prop_2 n_3
-#> 1                     Participants in population  86   <NA>  84   <NA>  84
-#> 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70
-#> 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14
-#> 4                                                 NA   <NA>  NA   <NA>  NA
-#> 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4
-#> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2
-#>     prop_3 diff_2           ci_2 diff_3           ci_3
-#> 1     <NA>   <NA>   (-4.4,  4.3)   <NA>   (-4.4,  4.3)
-#> 2   (83.3)   35.7   (22.4, 48.0)   32.2   (18.4, 44.8)
-#> 3   (16.7)  -35.7 (-48.0, -22.4)  -32.2 (-44.8, -18.4)
-#> 4     <NA>   <NA>           <NA>   <NA>           <NA>
-#> 122  (4.8)    1.4   (-7.3, 10.2)   -2.2  (-10.3,  5.6)
-#> 25   (2.4)   -1.2   (-6.3,  3.3)    1.2   (-4.2,  7.3)
+#>                                            name n_1 prop_1 n_2 prop_2 diff_1
+#> 1                    Participants in population  84   <NA>  86   <NA>   <NA>
+#> 2  with one or more drug-related adverse events  73 (86.9)  44 (51.2)   35.7
+#> 3           with no drug-related adverse events  11 (13.1)  42 (48.8)  -35.7
+#> 4                                                NA   <NA>  NA   <NA>   <NA>
+#> 98                            Cardiac disorders   7  (8.3)   6  (7.0)    1.4
+#> 22                          Atrial fibrillation   0  (0.0)   1  (1.2)   -1.2
+#>              ci_1
+#> 1    (-4.4,  4.3)
+#> 2    (22.4, 48.0)
+#> 3  (-48.0, -22.4)
+#> 4            <NA>
+#> 98   (-7.3, 10.2)
+#> 22   (-6.3,  3.3)
 ```
 
 We can use
@@ -301,20 +352,20 @@ tbl <- outdata |>
   format_ae_specific(display = c("n", "prop", "dur"))
 
 head(tbl$tbl)
-#>                                             name n_1 prop_1        dur_1 n_2
-#> 1                     Participants in population  86   <NA>         <NA>  84
-#> 2   with one or more drug-related adverse events  44 (51.2)  29.0 ( 3.5)  73
-#> 3            with no drug-related adverse events  42 (48.8)         <NA>  11
-#> 4                                                 NA   <NA>         <NA>  NA
-#> 122                            Cardiac disorders   6  (7.0)  27.1 ( 5.9)   7
-#> 25                           Atrial fibrillation   1  (1.2)          6.0   0
-#>     prop_2        dur_2 n_3 prop_3        dur_3
-#> 1     <NA>         <NA>  84   <NA>         <NA>
-#> 2   (86.9)  27.2 ( 3.2)  70 (83.3)  30.6 ( 2.2)
-#> 3   (13.1)         <NA>  14 (16.7)         <NA>
-#> 4     <NA>         <NA>  NA   <NA>         <NA>
-#> 122  (8.3)  16.1 ( 3.5)   4  (4.8)   1.5 ( 0.4)
-#> 25   (0.0)         <NA>   2  (2.4)   1.7 ( 0.7)
+#>                                            name n_1 prop_1        dur_1 n_2
+#> 1                    Participants in population  84   <NA>         <NA>  86
+#> 2  with one or more drug-related adverse events  73 (86.9)  27.2 ( 3.2)  44
+#> 3           with no drug-related adverse events  11 (13.1)         <NA>  42
+#> 4                                                NA   <NA>         <NA>  NA
+#> 98                            Cardiac disorders   7  (8.3)  16.1 ( 3.5)   6
+#> 22                          Atrial fibrillation   0  (0.0)         <NA>   1
+#>    prop_2        dur_2
+#> 1    <NA>         <NA>
+#> 2  (51.2)  29.0 ( 3.5)
+#> 3  (48.8)         <NA>
+#> 4    <NA>         <NA>
+#> 98  (7.0)  27.1 ( 5.9)
+#> 22  (1.2)          6.0
 ```
 
 We can use
@@ -328,27 +379,20 @@ tbl <- outdata |>
   format_ae_specific(display = c("n", "prop", "events_count", "events_avg"))
 
 head(tbl$tbl)
-#>                                             name n_1 prop_1  eventsavg_1
-#> 1                     Participants in population  86   <NA>         <NA>
-#> 2   with one or more drug-related adverse events  44 (51.2)   0.7 ( 0.1)
-#> 3            with no drug-related adverse events  42 (48.8)         <NA>
-#> 4                                                 NA   <NA>         <NA>
-#> 122                            Cardiac disorders   6  (7.0)   2.3 ( 0.6)
-#> 25                           Atrial fibrillation   1  (1.2)          1.0
-#>     eventscount_1 n_2 prop_2  eventsavg_2 eventscount_2 n_3 prop_3  eventsavg_3
-#> 1              NA  84   <NA>         <NA>            NA  84   <NA>         <NA>
-#> 2             133  73 (86.9)   1.6 ( 0.2)           292  70 (83.3)   1.5 ( 0.2)
-#> 3              NA  11 (13.1)         <NA>            NA  14 (16.7)         <NA>
-#> 4              NA  NA   <NA>         <NA>            NA  NA   <NA>         <NA>
-#> 122            14   7  (8.3)   1.9 ( 0.4)            13   4  (4.8)   1.2 ( 0.2)
-#> 25              1   0  (0.0)         <NA>             0   2  (2.4)   1.5 ( 0.5)
-#>     eventscount_3
-#> 1              NA
-#> 2             279
-#> 3              NA
-#> 4              NA
-#> 122             5
-#> 25              3
+#>                                            name n_1 prop_1  eventsavg_1
+#> 1                    Participants in population  84   <NA>         <NA>
+#> 2  with one or more drug-related adverse events  73 (86.9)   2.5 ( 0.3)
+#> 3           with no drug-related adverse events  11 (13.1)         <NA>
+#> 4                                                NA   <NA>         <NA>
+#> 98                            Cardiac disorders   7  (8.3)   1.9 ( 0.4)
+#> 22                          Atrial fibrillation   0  (0.0)         <NA>
+#>    eventscount_1 n_2 prop_2  eventsavg_2 eventscount_2
+#> 1             NA  86   <NA>         <NA>            NA
+#> 2            292  44 (51.2)   1.1 ( 0.2)           133
+#> 3             NA  42 (48.8)         <NA>            NA
+#> 4             NA  NA   <NA>         <NA>            NA
+#> 98            13   6  (7.0)   2.3 ( 0.6)            14
+#> 22             0   1  (1.2)          1.0             1
 ```
 
 We can use `filter_method` and `filter_criteria` parameters to filter
@@ -378,26 +422,19 @@ tbl <- outdata |>
 
 head(tbl$tbl)
 #>                                             name n_1 prop_1  eventsavg_1
-#> 1                     Participants in population  86   <NA>         <NA>
-#> 2   with one or more drug-related adverse events  44 (51.2)   0.7 ( 0.1)
-#> 3            with no drug-related adverse events  42 (48.8)         <NA>
+#> 1                     Participants in population  84   <NA>         <NA>
+#> 2   with one or more drug-related adverse events  73 (86.9)   2.5 ( 0.3)
+#> 3            with no drug-related adverse events  11 (13.1)         <NA>
 #> 4                                                 NA   <NA>         <NA>
-#> 122                            Cardiac disorders   6  (7.0)   2.3 ( 0.6)
-#> 126                   Gastrointestinal disorders   4  (4.7)   1.8 ( 0.5)
-#>     eventscount_1 n_2 prop_2  eventsavg_2 eventscount_2 n_3 prop_3  eventsavg_3
-#> 1              NA  84   <NA>         <NA>            NA  84   <NA>         <NA>
-#> 2             133  73 (86.9)   1.6 ( 0.2)           292  70 (83.3)   1.5 ( 0.2)
-#> 3              NA  11 (13.1)         <NA>            NA  14 (16.7)         <NA>
-#> 4              NA  NA   <NA>         <NA>            NA  NA   <NA>         <NA>
-#> 122            14   7  (8.3)   1.9 ( 0.4)            13   4  (4.8)   1.2 ( 0.2)
-#> 126             7   8  (9.5)   1.9 ( 0.4)            15  10 (11.9)   2.1 ( 0.5)
-#>     eventscount_3
-#> 1              NA
-#> 2             279
-#> 3              NA
-#> 4              NA
-#> 122             5
-#> 126            21
+#> 98                             Cardiac disorders   7  (8.3)   1.9 ( 0.4)
+#> 102                   Gastrointestinal disorders   8  (9.5)   1.9 ( 0.4)
+#>     eventscount_1 n_2 prop_2  eventsavg_2 eventscount_2
+#> 1              NA  86   <NA>         <NA>            NA
+#> 2             292  44 (51.2)   1.1 ( 0.2)           133
+#> 3              NA  42 (48.8)         <NA>            NA
+#> 4              NA  NA   <NA>         <NA>            NA
+#> 98             13   6  (7.0)   2.3 ( 0.6)            14
+#> 102            15   4  (4.7)   1.8 ( 0.5)             7
 ```
 
 In results above, rows having any one of “prop_x” values are greater
@@ -424,27 +461,20 @@ tbl <- outdata |>
   )
 
 head(tbl$tbl)
-#>                                             name n_1 prop_1  eventsavg_1
-#> 1                     Participants in population  86   <NA>         <NA>
-#> 2   with one or more drug-related adverse events  44 (51.2)   0.7 ( 0.1)
-#> 3            with no drug-related adverse events  42 (48.8)         <NA>
-#> 4                                                 NA   <NA>         <NA>
-#> 122                            Cardiac disorders   6  (7.0)   2.3 ( 0.6)
-#> 79                         Myocardial infarction   2  (2.3)   1.0 ( 0.0)
-#>     eventscount_1 n_2 prop_2  eventsavg_2 eventscount_2 n_3 prop_3  eventsavg_3
-#> 1              NA  84   <NA>         <NA>            NA  84   <NA>         <NA>
-#> 2             133  73 (86.9)   1.6 ( 0.2)           292  70 (83.3)   1.5 ( 0.2)
-#> 3              NA  11 (13.1)         <NA>            NA  14 (16.7)         <NA>
-#> 4              NA  NA   <NA>         <NA>            NA  NA   <NA>         <NA>
-#> 122            14   7  (8.3)   1.9 ( 0.4)            13   4  (4.8)   1.2 ( 0.2)
-#> 79              2   1  (1.2)          2.0             2   1  (1.2)          1.0
-#>     eventscount_3
-#> 1              NA
-#> 2             279
-#> 3              NA
-#> 4              NA
-#> 122             5
-#> 79              1
+#>                                            name n_1 prop_1  eventsavg_1
+#> 1                    Participants in population  84   <NA>         <NA>
+#> 2  with one or more drug-related adverse events  73 (86.9)   2.5 ( 0.3)
+#> 3           with no drug-related adverse events  11 (13.1)         <NA>
+#> 4                                                NA   <NA>         <NA>
+#> 98                            Cardiac disorders   7  (8.3)   1.9 ( 0.4)
+#> 63                        Myocardial infarction   1  (1.2)          2.0
+#>    eventscount_1 n_2 prop_2  eventsavg_2 eventscount_2
+#> 1             NA  86   <NA>         <NA>            NA
+#> 2            292  44 (51.2)   1.1 ( 0.2)           133
+#> 3             NA  42 (48.8)         <NA>            NA
+#> 4             NA  NA   <NA>         <NA>            NA
+#> 98            13   6  (7.0)   2.3 ( 0.6)            14
+#> 63             2   2  (2.3)   1.0 ( 0.0)             2
 ```
 
 ### Mock data preparation
@@ -464,19 +494,19 @@ package or similar solutions.
 tbl <- outdata |> format_ae_specific(mock = TRUE)
 head(tbl$tbl)
 #>                                           name  n_1 prop_1  n_2 prop_2  n_3
-#> 1                   Participants in population   xx   <NA>   xx   <NA>   xx
-#> 2 with one or more drug-related adverse events   xx (xx.x)   xx (xx.x)   xx
+#> 1                   Participants in population   xx   <NA>   xx   <NA>  xxx
+#> 2 with one or more drug-related adverse events   xx (xx.x)   xx (xx.x)  xxx
 #> 3          with no drug-related adverse events   xx (xx.x)   xx (xx.x)   xx
 #> 4                                              <NA>   <NA> <NA>   <NA> <NA>
-#> 5                            Cardiac disorders    x  (x.x)    x  (x.x)    x
+#> 5                            Cardiac disorders    x  (x.x)    x  (x.x)   xx
 #> 6                          Atrial fibrillation    x  (x.x)    x  (x.x)    x
-#>   prop_3  n_4 prop_4
-#> 1   <NA>  xxx   <NA>
-#> 2 (xx.x)  xxx (xx.x)
-#> 3 (xx.x)   xx (xx.x)
-#> 4   <NA> <NA>   <NA>
-#> 5  (x.x)   xx  (x.x)
-#> 6  (x.x)    x  (x.x)
+#>   prop_3
+#> 1   <NA>
+#> 2 (xx.x)
+#> 3 (xx.x)
+#> 4   <NA>
+#> 5  (x.x)
+#> 6  (x.x)
 ```
 
 ## RTF tables
@@ -510,7 +540,7 @@ outdata |>
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
-    col_rel_width = c(6, rep(1, 8)),
+    col_rel_width = c(6, rep(1, 6)),
     text_font_size = 8,
     orientation = "landscape",
     path_outtable = "rtf/ae0specific2.rtf"

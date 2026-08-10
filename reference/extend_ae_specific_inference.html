@@ -67,7 +67,63 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Define metadata</span></span></span>
+<span class="r-in"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adsl.html" class="external-link">forestly_adsl</a></span></span></span>
+<span class="r-in"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adae.html" class="external-link">forestly_adae</a></span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adsl</span><span class="op">$</span><span class="va">TRT01A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adsl</span><span class="op">$</span><span class="va">TRT01A</span>,</span></span>
+<span class="r-in"><span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span>,</span></span>
+<span class="r-in"><span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">analysis_plan</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  analysis <span class="op">=</span> <span class="st">"ae_specific"</span>,</span></span>
+<span class="r-in"><span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
+<span class="r-in"><span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
+<span class="r-in"><span>  parameter <span class="op">=</span> <span class="st">"rel"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_adam.html" class="external-link">meta_adam</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="va">adae</span>, population <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_plan.html" class="external-link">define_plan</a></span><span class="op">(</span><span class="va">analysis_plan</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_population.html" class="external-link">define_population</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRT01A"</span>, <span class="st">"SITEID"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    group <span class="op">=</span> <span class="st">"TRT01A"</span>,</span></span>
+<span class="r-in"><span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"All Participants as Treated"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_observation.html" class="external-link">define_observation</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRTA"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"AEBODSYS"</span>, <span class="st">"AEREL"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"AESER"</span>, <span class="st">"AEOUT"</span>, <span class="st">"AEACN"</span>, <span class="st">"AESDTH"</span>, <span class="st">"ASTDT"</span>, <span class="st">"AENDT"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    group <span class="op">=</span> <span class="st">"TRTA"</span>,</span></span>
+<span class="r-in"><span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Weeks 0 to 12"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"rel"</span>,</span></span>
+<span class="r-in"><span>    term1 <span class="op">=</span> <span class="st">"Drug-Related"</span>,</span></span>
+<span class="r-in"><span>    term2 <span class="op">=</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>    subset <span class="op">=</span> <span class="va">AEREL</span> <span class="op">==</span> <span class="st">"RELATED"</span>,</span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span></span>
+<span class="r-in"><span>    soc <span class="op">=</span> <span class="st">"AEBODSYS"</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Drug-related AEs"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_analysis.html" class="external-link">define_analysis</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"ae_specific"</span>,</span></span>
+<span class="r-in"><span>    title <span class="op">=</span> <span class="st">"Participants With {term1} Adverse Events {term2}"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_build.html" class="external-link">meta_build</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Calculate AE specific analysis and format it</span></span></span>
 <span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_ae_specific.html">prepare_ae_specific</a></span><span class="op">(</span><span class="va">meta</span>,</span></span>
 <span class="r-in"><span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span></span>
 <span class="r-in"><span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span></span>
@@ -76,20 +132,14 @@
 <span class="r-in"><span>  <span class="fu">extend_ae_specific_inference</span><span class="op">(</span>eps <span class="op">=</span> <span class="fl">1e-6</span>, bisection <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="format_ae_specific.html">format_ae_specific</a></span><span class="op">(</span>display <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"diff"</span>, <span class="st">"diff_ci"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             name n_1 prop_1 n_2 prop_2 n_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     Participants in population  86   &lt;NA&gt;  84   &lt;NA&gt;  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   with one or more drug-related adverse events  44 (51.2)  73 (86.9)  70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            with no drug-related adverse events  42 (48.8)  11 (13.1)  14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                 NA   &lt;NA&gt;  NA   &lt;NA&gt;  NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122                            Cardiac disorders   6  (7.0)   7  (8.3)   4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25                           Atrial fibrillation   1  (1.2)   0  (0.0)   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     prop_3 diff_2           ci_2 diff_3           ci_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     &lt;NA&gt;   &lt;NA&gt;   (-4.4,  4.3)   &lt;NA&gt;   (-4.4,  4.3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   (83.3)   35.7   (22.4, 48.0)   32.2   (18.4, 44.8)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   (16.7)  -35.7 (-48.0, -22.4)  -32.2 (-44.8, -18.4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     &lt;NA&gt;   &lt;NA&gt;           &lt;NA&gt;   &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122  (4.8)    1.4   (-7.3, 10.2)   -2.2  (-10.3,  5.6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   (2.4)   -1.2   (-6.3,  3.3)    1.2   (-4.2,  7.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                           name n_1  prop_1 n_2  prop_2 diff_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   Participants in population  84    &lt;NA&gt;  86    &lt;NA&gt;   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 with one or more drug-related adverse events   0   (0.0)   0   (0.0)    0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          with no drug-related adverse events  84 (100.0)  86 (100.0)    0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ci_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 (-4.4,  4.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 (-4.4,  4.3)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -96,49 +96,129 @@ structure remains consistent across all analysis examples within
 metalite.ae. Additional information can be accessed on the <a href="https://merck.github.io/metalite/articles/metalite.html" class="external-link">metalite
 package website</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/meta_ae_example.html">meta_ae_example</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adsl.html" class="external-link">forestly_adsl</a></span></span>
+<span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adae.html" class="external-link">forestly_adae</a></span></span>
+<span></span>
+<span><span class="va">adsl</span><span class="op">$</span><span class="va">TRT01A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
+<span>  <span class="va">adsl</span><span class="op">$</span><span class="va">TRT01A</span>,</span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
+<span>  <span class="va">adae</span><span class="op">$</span><span class="va">TRTA</span>,</span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Xanomeline Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low Dose"</span>, <span class="st">"Placebo"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">analysis_plan</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span></span>
+<span>  analysis <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
+<span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
+<span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
+<span>  parameter <span class="op">=</span> <span class="st">"ser"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_adam.html" class="external-link">meta_adam</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="va">adae</span>, population <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_plan.html" class="external-link">define_plan</a></span><span class="op">(</span><span class="va">analysis_plan</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_population.html" class="external-link">define_population</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"apat"</span>,</span>
+<span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRT01A"</span>, <span class="st">"TRTDUR"</span>,</span>
+<span>      <span class="st">"SITEID"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>, <span class="st">"AGE"</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    group <span class="op">=</span> <span class="st">"TRT01A"</span>,</span>
+<span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"All Participants as Treated"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_observation.html" class="external-link">define_observation</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"wk12"</span>,</span>
+<span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRTA"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"AEBODSYS"</span>, <span class="st">"AEREL"</span>,</span>
+<span>      <span class="st">"AESER"</span>, <span class="st">"AEOUT"</span>, <span class="st">"AEACN"</span>, <span class="st">"AESDTH"</span>, <span class="st">"ASTDT"</span>, <span class="st">"AENDT"</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    group <span class="op">=</span> <span class="st">"TRTA"</span>,</span>
+<span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Weeks 0 to 12"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"any"</span>,</span>
+<span>    term1 <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    term2 <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span>
+<span>    soc <span class="op">=</span> <span class="st">"AEBODSYS"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"All AEs"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"rel"</span>,</span>
+<span>    term1 <span class="op">=</span> <span class="st">"Drug-Related"</span>,</span>
+<span>    term2 <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    subset <span class="op">=</span> <span class="va">AEREL</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span><span class="op">)</span>,</span>
+<span>    var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span>
+<span>    soc <span class="op">=</span> <span class="st">"AEBODSYS"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Drug-related AEs"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"ser"</span>,</span>
+<span>    term1 <span class="op">=</span> <span class="st">"Serious"</span>,</span>
+<span>    term2 <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    subset <span class="op">=</span> <span class="va">AESER</span> <span class="op">==</span> <span class="st">"Y"</span>,</span>
+<span>    var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span>
+<span>    soc <span class="op">=</span> <span class="st">"AEBODSYS"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Serious AEs"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_analysis.html" class="external-link">define_analysis</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
+<span>    var_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"USUBJID"</span>, <span class="st">"ASTDY"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"ADURN"</span>,</span>
+<span>      <span class="st">"AESEV"</span>, <span class="st">"AESER"</span>, <span class="st">"AEREL"</span>, <span class="st">"AEOUT"</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USUBJID"</span>, <span class="st">"ASTDY"</span><span class="op">)</span>,</span>
+<span>    page_by <span class="op">=</span> <span class="st">"TRTA"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_build.html" class="external-link">meta_build</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in</span></span>
+<span><span class="co">#&gt; metalite::define_parameter(metalite::define_observation(metalite::define_population(metalite::define_plan(metalite::meta_adam(observation</span></span>
+<span><span class="co">#&gt; = adae, : any is not in .$plan</span></span>
+<span><span class="co">#&gt; Warning in</span></span>
+<span><span class="co">#&gt; metalite::define_parameter(metalite::define_parameter(metalite::define_observation(metalite::define_population(metalite::define_plan(metalite::meta_adam(observation</span></span>
+<span><span class="co">#&gt; = adae, : rel is not in .$plan</span></span></code></pre></div>
 <details><summary>
 Click to show the output
 </summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta</span></span>
 <span><span class="co">#&gt; ADaM metadata: </span></span>
-<span><span class="co">#&gt;    .$data_population     Population data with 254 subjects </span></span>
-<span><span class="co">#&gt;    .$data_observation    Observation data with 1191 records </span></span>
-<span><span class="co">#&gt;    .$plan    Analysis plan with 20 plans </span></span>
+<span><span class="co">#&gt;    .$data_population     Population data with 170 subjects </span></span>
+<span><span class="co">#&gt;    .$data_observation    Observation data with 736 records </span></span>
+<span><span class="co">#&gt;    .$plan    Analysis plan with 1 plans </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis population type:</span></span>
-<span><span class="co">#&gt;     name        id  group var       subset                         label</span></span>
-<span><span class="co">#&gt; 1 'apat' 'USUBJID' 'TRTA'     SAFFL == 'Y' 'All Participants as Treated'</span></span>
+<span><span class="co">#&gt;     name        id    group</span></span>
+<span><span class="co">#&gt; 1 'apat' 'USUBJID' 'TRT01A'</span></span>
+<span><span class="co">#&gt;                                                      var       subset</span></span>
+<span><span class="co">#&gt; 1 USUBJID, SAFFL, TRT01A, TRTDUR, SITEID, SEX, RACE, AGE SAFFL == 'Y'</span></span>
+<span><span class="co">#&gt;                           label</span></span>
+<span><span class="co">#&gt; 1 'All Participants as Treated'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis observation type:</span></span>
-<span><span class="co">#&gt;     name        id  group var          subset           label</span></span>
-<span><span class="co">#&gt; 1 'wk12' 'USUBJID' 'TRTA'        SAFFL == 'Y' 'Weeks 0 to 12'</span></span>
-<span><span class="co">#&gt; 2 'wk24' 'USUBJID' 'TRTA'     AOCC01FL == 'Y' 'Weeks 0 to 24'</span></span>
+<span><span class="co">#&gt;     name        id  group</span></span>
+<span><span class="co">#&gt; 1 'wk12' 'USUBJID' 'TRTA'</span></span>
+<span><span class="co">#&gt;                                                                                         var</span></span>
+<span><span class="co">#&gt; 1 USUBJID, SAFFL, TRTA, AEDECOD, AEBODSYS, AEREL, AESER, AEOUT, AEACN, AESDTH, ASTDT, AENDT</span></span>
+<span><span class="co">#&gt;         subset           label</span></span>
+<span><span class="co">#&gt; 1 SAFFL == 'Y' 'Weeks 0 to 12'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis parameter type:</span></span>
-<span><span class="co">#&gt;        name                                         label</span></span>
-<span><span class="co">#&gt; 1     'rel'                 'drug-related adverse events'</span></span>
-<span><span class="co">#&gt; 2   'aeosi'          'adverse events of special interest'</span></span>
-<span><span class="co">#&gt; 3 'dtc0rel' 'drug-related adverse events result in death'</span></span>
-<span><span class="co">#&gt; 4     'any'                          'any adverse events'</span></span>
-<span><span class="co">#&gt; 5     'ser'                      'serious adverse events'</span></span>
-<span><span class="co">#&gt;                                 subset</span></span>
-<span><span class="co">#&gt; 1 AEREL %in% c('POSSIBLE', 'PROBABLE')</span></span>
-<span><span class="co">#&gt; 2                         AEOSI == 'Y'</span></span>
-<span><span class="co">#&gt; 3         AESDTH == 'Y' &amp; AEREL == 'Y'</span></span>
-<span><span class="co">#&gt; 4                                     </span></span>
-<span><span class="co">#&gt; 5                         AESER == 'Y'</span></span>
+<span><span class="co">#&gt;    name              label                               subset</span></span>
+<span><span class="co">#&gt; 1 'any'          'All AEs'                                     </span></span>
+<span><span class="co">#&gt; 2 'rel' 'Drug-related AEs' AEREL %in% c('POSSIBLE', 'PROBABLE')</span></span>
+<span><span class="co">#&gt; 3 'ser'      'Serious AEs'                         AESER == 'Y'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Analysis function:</span></span>
-<span><span class="co">#&gt;            name                             label</span></span>
-<span><span class="co">#&gt; 1  'ae_summary'    'Table: adverse event summary'</span></span>
-<span><span class="co">#&gt; 2  'ae_listing'          'Listing: adverse event'</span></span>
-<span><span class="co">#&gt; 3  'ae_exp_adj' 'Exposure Adjusted Incident Rate'</span></span>
-<span><span class="co">#&gt; 4 'ae_specific'   'Table: specific adverse event'</span></span></code></pre></div>
+<span><span class="co">#&gt;           name                    label</span></span>
+<span><span class="co">#&gt; 1 'ae_listing' 'Listing: adverse event'</span></span></code></pre></div>
 </details>
 </div>
 <div class="section level2">
@@ -160,26 +240,18 @@ reporting.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">tbl</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          USUBJID ASTDY                                        AEDECOD duration</span></span>
-<span><span class="co">#&gt; 689  01-709-1424     5                                        SYNCOPE    1 Day</span></span>
-<span><span class="co">#&gt; 1131 01-718-1170    27                                        SYNCOPE    2 Day</span></span>
-<span><span class="co">#&gt; 1173 01-718-1371    38 PARTIAL SEIZURES WITH SECONDARY GENERALISATION    4 Day</span></span>
-<span><span class="co">#&gt;         AESEV AESER  related action_taken  outcome      TRTA</span></span>
-<span><span class="co">#&gt; 689  MODERATE     Y Possible         None Resolved High Dose</span></span>
-<span><span class="co">#&gt; 1131   SEVERE     Y Probable         None Resolved  Low Dose</span></span>
-<span><span class="co">#&gt; 1173   SEVERE     Y     None  Interrupted Resolved High Dose</span></span>
-<span><span class="co">#&gt;                                                                                  subline</span></span>
-<span><span class="co">#&gt; 689  Subject ID = 01-709-1424, Gender = M, Race = WHITE, AGE = 77 Years, TRT = High Dose</span></span>
-<span><span class="co">#&gt; 1131  Subject ID = 01-718-1170, Gender = F, Race = WHITE, AGE = 80 Years, TRT = Low Dose</span></span>
-<span><span class="co">#&gt; 1173 Subject ID = 01-718-1371, Gender = F, Race = WHITE, AGE = 69 Years, TRT = High Dose</span></span></code></pre></div>
+<span><span class="co">#&gt;          USUBJID ASTDY AEDECOD ADURN  AESEV AESER    AEREL              AEOUT</span></span>
+<span><span class="co">#&gt; 1131 01-718-1170    27 SYNCOPE     2 SEVERE     Y PROBABLE RECOVERED/RESOLVED</span></span>
+<span><span class="co">#&gt;          TRTA</span></span>
+<span><span class="co">#&gt; 1131 Low Dose</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">$</span><span class="va">col_name</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                       USUBJID                         ASTDY </span></span>
 <span><span class="co">#&gt;   "Unique Subject Identifier" "Analysis Start Relative Day" </span></span>
-<span><span class="co">#&gt;                       AEDECOD                      duration </span></span>
-<span><span class="co">#&gt;               "Adverse Event"                    "Duration" </span></span>
+<span><span class="co">#&gt;                       AEDECOD                         ADURN </span></span>
+<span><span class="co">#&gt;     "Dictionary-Derived Term"             "AE Duration (N)" </span></span>
 <span><span class="co">#&gt;                         AESEV                         AESER </span></span>
-<span><span class="co">#&gt;                   "Intensity"                     "Serious"</span></span></code></pre></div>
+<span><span class="co">#&gt;          "Severity/Intensity"               "Serious Event"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="rtf-tables">RTF tables<a class="anchor" aria-label="anchor" href="#rtf-tables"></a>

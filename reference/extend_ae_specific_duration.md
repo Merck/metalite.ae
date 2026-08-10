@@ -30,7 +30,7 @@ A list of analysis raw datasets.
 ## Examples
 
 ``` r
-meta <- meta_ae_example()
+meta <- metalite::meta_example()
 tbl <- prepare_ae_specific(meta,
   population = "apat",
   observation = "wk12",

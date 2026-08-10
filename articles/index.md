@@ -9,8 +9,6 @@
 
 - [AE
   Specification](https://merck.github.io/metalite.ae/articles/ae-specific.md):
-- [Add Term1 and Term2
-  Example](https://merck.github.io/metalite.ae/articles/add-term1-term2-example.md):
 - [AE
   Summary](https://merck.github.io/metalite.ae/articles/ae-summary.md):
 - [AE
