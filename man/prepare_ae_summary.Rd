@@ -21,7 +21,17 @@ The term name is used as key to link information.}
 \item{...}{Additional arguments passed to \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 }
 \value{
-A list of analysis datasets needed for AE summary.
+An \code{outdata} object containing analysis datasets needed for AE
+summary. Key values include:
+\itemize{
+\item \code{group}: Treatment groups used to index the statistic columns.
+\item \code{order}: Numeric values defining the row order.
+\item \code{name}: Descriptive row labels corresponding to \code{order}.
+\item \code{n_pop}: Number of participants in the population.
+\item \code{n}: Number of participants with an adverse event.
+\item \code{prop}: Proportion of participants with an adverse event.
+\item \code{diff}: Risk difference compared with the \code{reference_group}.
+}
 }
 \description{
 Prepare datasets for AE summary

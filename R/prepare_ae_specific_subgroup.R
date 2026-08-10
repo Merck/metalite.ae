@@ -27,7 +27,23 @@
 #' @param display_subgroup_total Logical. Display total column for
 #'   subgroup analysis or not.
 #'
-#' @return A list of analysis datasets needed for AE specific subgroup analysis.
+#' @return An `outdata` object containing analysis datasets needed for AE
+#'   specific subgroup analysis. The subgroup structure is defined by
+#'   `subgroup_var`, `subgroup_header`, and `display_subgroup_total`. Key values
+#'   include:
+#'
+#'   - `group`: Treatment groups used to index the statistic columns.
+#'   - `subgroup`: Subgroup levels corresponding to the datasets in `out_all`.
+#'   - `display_subgroup_total`: Whether the subgroup total is displayed.
+#'   - `out_all`: A named list containing an AE-specific analysis result for
+#'     each subgroup level and a `Total` result. Within each result, rows are
+#'     indexed by `order` and `name`, and the commonly used statistics are:
+#'     - `n_pop`: Number of participants in the population within the subgroup.
+#'     - `n`: Number of participants with an adverse event within the subgroup.
+#'     - `prop`: Proportion of participants with an adverse event within the
+#'       subgroup.
+#'     - `diff`: Risk difference compared with the `reference_group` within the
+#'       subgroup.
 #'
 #' @export
 #'
