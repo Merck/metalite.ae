@@ -156,17 +156,17 @@ x <- meta |> # Example AE data created using metalite
     population = "apat", # Select population by keywords
     observation = "wk12", # Select observation by keywords
     parameter = "any;rel;ser" # Select AE terms by keywords
-  ) 
+  )
 ```
 
 ### Step 3: Format outdata using `format_*()` functions
 ```{r, eval=FALSE}
-x <- x |> format_ae_summary() 
+x <- x |> format_ae_summary()
 ```
 
 ### Step 4: Create TLFs using `tlf_*()` functions.
 ```{r, eval=FALSE}
-x |> 
+x |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]", # Define data source
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis

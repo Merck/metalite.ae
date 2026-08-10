@@ -144,7 +144,7 @@ prepare_ae_summary(
   population = "apat",
   observation = "wk12",
   parameter = "any;rel;ser"
-) |> 
+) |>
   format_ae_summary() |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",

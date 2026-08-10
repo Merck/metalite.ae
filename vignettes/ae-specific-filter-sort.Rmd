@@ -110,7 +110,7 @@ prepare_ae_specific(
   population = "apat",
   observation = "wk12",
   parameter = "rel"
-  ) |>
+) |>
   format_ae_specific(
     filter_method = "percent",
     filter_criteria = 6
@@ -120,7 +120,7 @@ prepare_ae_specific(
     analysis = "ae_specific",
     meddra_version = "24.0",
     path_outtable = "rtf/ae0specific4.rtf"
- )
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
@@ -149,7 +149,7 @@ prepare_ae_specific(
   population = "apat",
   observation = "wk12",
   parameter = "rel"
-  ) |>
+) |>
   format_ae_specific(
     sort_order = "count_des",
     sort_column = "Placebo"
@@ -159,7 +159,7 @@ prepare_ae_specific(
     analysis = "ae_specific",
     meddra_version = "24.0",
     path_outtable = "rtf/ae0specific5.rtf"
- )
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
@@ -177,7 +177,7 @@ prepare_ae_specific(
   population = "apat",
   observation = "wk12",
   parameter = "rel"
-  ) |> 
+) |>
   format_ae_specific(
     filter_method = "percent",
     filter_criteria = 6,
@@ -189,7 +189,7 @@ prepare_ae_specific(
     analysis = "ae_specific",
     meddra_version = "24.0",
     path_outtable = "rtf/ae0specific6.rtf"
- )
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}

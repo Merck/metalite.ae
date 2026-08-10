@@ -127,7 +127,7 @@ prepare_ae_summary(
   observation = "wk12",
   parameter = "any;rel;ser"
 ) |>
-  format_ae_summary(mock = TRUE)|>
+  format_ae_summary(mock = TRUE) |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis

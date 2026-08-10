@@ -125,7 +125,7 @@ prepare_ae_specific(
   population = "apat",
   observation = "wk12",
   parameter = "rel"
-  ) |>
+) |>
   extend_ae_specific_inference() |>
   format_ae_specific(
     display = c("n", "prop", "diff", "diff_ci", "diff_p")
@@ -135,7 +135,7 @@ prepare_ae_specific(
     analysis = "ae_specific",
     meddra_version = "24.0",
     path_outtable = "rtf/ae0specific2a.rtf"
- )
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
@@ -162,7 +162,7 @@ prepare_ae_specific(
     analysis = "ae_specific",
     meddra_version = "24.0",
     path_outtable = "rtf/ae0specific2b.rtf"
- )
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
@@ -180,17 +180,17 @@ prepare_ae_specific(
   population = "apat",
   observation = "wk12",
   parameter = "rel"
-  ) |>
+) |>
   extend_ae_specific_events() |>
   format_ae_specific(
     display = c("n", "prop", "events_count", "events_avg")
-  )|>
+  ) |>
   tlf_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
     path_outtable = "rtf/ae0specific2c.rtf"
- )
+  )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
