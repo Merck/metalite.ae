@@ -78,17 +78,30 @@ reference:
   contents:
     - metalite_ae_adex
     - metalite_ae_adexsum
+
 articles:
-- title: Get started
+- title: Get Started
   contents:
     - metalite-ae
-- title: Tutorial
+
+- title: AE Summary Table (Static)
+  contents:
+    - ae-summary
+    - ae-summary-custom-columns
+    - ae-summary-mock
+
+- title: AE Specific Table (Static)
   contents:
     - ae-specific
-    - ae-summary
+    - ae-specific-custom-columns
+    - ae-specific-filter-sort
+    - ae-specific-sugroup
+
+- title: AE Listing Table (Static)
+  contents:
     - ae-listing
-    - ae-specific-subgroup
-- title: Specification
+
+- title: Others
   contents:
     - rate-compare
     - exposure-adjusted-event-rate
