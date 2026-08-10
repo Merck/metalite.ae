@@ -95,7 +95,7 @@ articles:
     - ae-specific
     - ae-specific-custom-columns
     - ae-specific-filter-sort
-    - ae-specific-sugroup
+    - ae-specific-subgroup
 
 - title: AE Listing Table (Static)
   contents:
