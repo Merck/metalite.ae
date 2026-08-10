@@ -1,0 +1,198 @@
+---
+title: "Customize Columns in an AE Specific Table"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Customize Columns in an AE Specific Table}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  out.width = "100%",
+  dpi = 150
+)
+```
+
+```{r}
+library(metalite.ae)
+```
+
+## Overview
+
+The `display` argument of `format_ae_specific()` controls which statistics
+appear in an AE specific table. This vignette demonstrates how to add risk
+difference inference, adverse event duration, and event frequency statistics.
+
+## Define metadata
+
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package. The metadata follows the
+same approach used in the [AE Specific](ae-specific.html) vignette.
+
+```{r}
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_specific",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_specific",
+    title = "Participants with Drug-Related Adverse Events"
+  ) |>
+  metalite::meta_build()
+```
+
+## Select columns
+
+Use `display` to select statistics and set their order. Available options are:
+
+- `"n"`: number of participants with an adverse event.
+- `"prop"`: proportion of participants with an adverse event.
+- `"total"`: total columns.
+- `"diff"`: risk difference.
+- `"diff_ci"`: 95% confidence interval for the risk difference using the
+  Miettinen and Nurminen method.
+- `"diff_p"`: p-value for the risk difference using the Miettinen and
+  Nurminen method.
+- `"dur"`: average adverse event duration.
+- `"events_avg"`: average number of adverse events per participant.
+- `"events_count"`: number of adverse events per participant.
+
+The `"diff_ci"` and `"diff_p"` values require
+`extend_ae_specific_inference()`. The `"dur"` value requires
+`extend_ae_specific_duration()`, and the event statistics require
+`extend_ae_specific_events()`.
+
+### Add a column for risk difference inference
+
+The following example adds a 95% confidence interval and p-value based on the
+Miettinen and Nurminen method. See the
+[rate comparison vignette](rate-compare.html) for methodological details.
+
+```{r}
+prepare_ae_specific(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+  ) |>
+  extend_ae_specific_inference() |>
+  format_ae_specific(
+    display = c("n", "prop", "diff", "diff_ci", "diff_p")
+  ) |>
+  tlf_ae_specific(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
+    meddra_version = "24.0",
+    path_outtable = "rtf/ae0specific2a.rtf"
+ )
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("pdf/ae0specific2a.pdf")
+```
+
+### Add a column for average event duration
+
+Use `extend_ae_specific_duration()` to calculate the average duration of
+adverse events. The `duration_var` argument identifies the analysis variable
+that contains event duration.
+
+```{r}
+prepare_ae_specific(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  extend_ae_specific_duration(duration_var = "ADURN") |>
+  format_ae_specific(display = c("n", "prop", "dur")) |>
+  tlf_ae_specific(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
+    meddra_version = "24.0",
+    path_outtable = "rtf/ae0specific2b.rtf"
+ )
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("pdf/ae0specific2b.pdf")
+```
+
+### Add a column for event frequency
+
+Use `extend_ae_specific_events()` to add the event count and the average number
+of events per participant.
+
+```{r}
+prepare_ae_specific(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+  ) |>
+  extend_ae_specific_events() |>
+  format_ae_specific(
+    display = c("n", "prop", "events_count", "events_avg")
+  )|>
+  tlf_ae_specific(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
+    meddra_version = "24.0",
+    path_outtable = "rtf/ae0specific2c.rtf"
+ )
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("pdf/ae0specific2c.pdf")
+```

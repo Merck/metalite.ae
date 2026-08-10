@@ -1,8 +1,8 @@
 ---
-title: "AE Specification"
+title: "Generate a Static AE Specific Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AE Specification}
+  %\VignetteIndexEntry{Generate a Static AE Specific Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,39 +22,30 @@ library(metalite.ae)
 
 ## Overview
 
-The objective of this tutorial is to generate a production-ready AE specification analyses.
-It extends examples shown in the
-[specific AE chapter](https://r4csr.org/tlf-ae-specific.html)
-of the _R for Clinical Study Reports and Submission_ book.
+This vignette demonstrates how to generate a static AE specific table.
 
-The AE specification analysis entails the creation of tables that summarize
-details of different types of adverse events.
-To accomplish this using metalite.ae, three essential functions are required:
+The workflow uses three functions from
+[metalite.ae](https://merck.github.io/metalite.ae/):
 
-- `prepare_ae_specific()`: prepare analysis raw datasets.
-- `format_ae_specific()`: prepare analysis (mock) outdata with proper format.
-- `tlf_ae_specific()`: transfer (mock) output dataset to RTF table.
+- `prepare_ae_specific()` prepares the analysis datasets.
+- `format_ae_specific()` formats the results for reporting.
+- `tlf_ae_specific()` creates the RTF table.
 
-There are three optional functions to extend AE specification analysis.
+Additional vignettes demonstrate how to extend the displayed statistics,
+filter and sort rows, customize the RTF layout, and create mock output.
 
-- `extend_ae_specific_inference()`: add risk difference inference results based on M&N method.
-- `extend_ae_specific_duration()`: add average duration of AE.
-- `extend_ae_specific_events()`: add average number of AE events.
-
-An example output:
+An example output is shown below.
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
 knitr::include_graphics("pdf/ae0specific1.pdf")
 ```
 
-## Example data
+## Procedure to generate an AE specific table
 
-Within metalite.ae, we utilized the ADSL and ADAE datasets from the metalite
-package to create an illustrative dataset.
-The metadata structure remains consistent across all analysis examples
-within metalite.ae.
-Additional information can be accessed on the
-[metalite package website](https://merck.github.io/metalite/articles/metalite.html).
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package.
+
+### Step 1: Define metadata
 
 ```{r}
 # Define metadata

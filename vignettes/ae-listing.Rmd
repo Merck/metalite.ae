@@ -22,7 +22,7 @@ library(metalite.ae)
 
 ## Overview
 
-The objective of this tutorial is to generate a production-ready adverse events (AE) listing.
+The objective of this vignette is to generate a static adverse events (AE) listing table with serious AE.
 
 The AE listing offers comprehensive information on the desired adverse events.
 There are two essential functions for constructing AE listing tables with metalite.ae:
@@ -30,20 +30,11 @@ There are two essential functions for constructing AE listing tables with metali
 - `prepare_ae_listing()`: prepare AE listing datasets.
 - `tlf_ae_listing()`: transfer output datasets to RTF files.
 
-An example output:
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
-```
+## Step 1: Define metadata
 
-## Example data
-
-Within metalite.ae, we utilized the ADSL and ADAE datasets from the metalite
-package to create an illustrative dataset.
-The metadata structure remains consistent across all analysis examples
-within metalite.ae.
-Additional information can be accessed on the
-[metalite package website](https://merck.github.io/metalite/articles/metalite.html).
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package.
 
 ```{r}
 adsl <- forestly::forestly_adsl
@@ -90,23 +81,6 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     label = "Weeks 0 to 12"
   ) |>
   metalite::define_parameter(
-    name = "any",
-    term1 = "",
-    term2 = "",
-    var = "AEDECOD",
-    soc = "AEBODSYS",
-    label = "All AEs"
-  ) |>
-  metalite::define_parameter(
-    name = "rel",
-    term1 = "Drug-Related",
-    term2 = "",
-    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
-    var = "AEDECOD",
-    soc = "AEBODSYS",
-    label = "Drug-related AEs"
-  ) |>
-  metalite::define_parameter(
     name = "ser",
     term1 = "Serious",
     term2 = "",
@@ -127,41 +101,11 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::meta_build()
 ```
 
-<details>
-<summary>Click to show the output</summary>
-```{r}
-meta
-```
-</details>
-
-## Analysis preparation
+## Step 2: Generate the AE listing table
 
 The function `prepare_ae_listing()` is used to create a dataset for
 AE listing by utilizing predefined keywords specified
 in the example data `meta`.
-
-The resulting output of the function is an `outdata` object, which comprises
-a collection of raw datasets for analysis and reporting.
-
-```{r}
-tbl <- prepare_ae_listing(
-  meta,
-  analysis = "ae_listing",
-  population = "apat",
-  observation = "wk12",
-  parameter = "ser"
-)
-```
-
-```{r}
-head(tbl$tbl)
-```
-
-```{r}
-head(tbl$col_name)
-```
-
-## RTF tables
 
 The last step is to prepare the RTF table using `tlf_ae_listing()`.
 
@@ -172,19 +116,22 @@ footnote <- c(
   "Outcome: Resolved = RECOVERED/RESOLVED, Resolving = RECOVERING/RESOLVING, Sequelae = RECOVERED/RESOLVED WITH SEQUELAE, Not resolved = NOT RECOVERED/NOT RESOLVED.",
   "Adverse event terms are from MedDRA Version 25.0."
 )
-```
 
-```{r}
-tbl |> tlf_ae_listing(
-  footnotes = footnote,
-  orientation = "portrait",
-  source = "Source:  [CDISCpilot: adam-adsl; adae]",
-  analysis = "ae_listing", # Provide analysis type defined in meta$analysis
-  path_outtable = "rtf/ae0listing0ser0wk12.rtf",
-  path_outdata = NULL
-)
+prepare_ae_listing(
+  meta,
+  analysis = "ae_listing",
+  population = "apat",
+  observation = "wk12",
+  parameter = "ser"
+  ) |>
+  tlf_ae_listing(
+    footnotes = footnote,
+    orientation = "portrait",
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_listing", # Provide analysis type defined in meta$analysis
+    path_outtable = "./vignettes/rtf/ae0listing1.rtf")
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0listing0ser0wk12.pdf")
+knitr::include_graphics("pdf/ae0listing1.pdf")
 ```

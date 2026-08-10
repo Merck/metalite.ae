@@ -1,8 +1,8 @@
 ---
-title: "Generate a Static AE Summary Table"
+title: "Create a AE Summary Mock-up Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Generate a Static AE Summary Table}
+  %\VignetteIndexEntry{Create a AE Summary Mock-up Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,28 +22,22 @@ library(metalite.ae)
 
 ## Overview
 
-The objective of this vignette is to generate a static AE summary table.
+Mock tables help reviewers evaluate a proposed table structure before final
+results are available. The `mock` argument of `format_ae_summary()` replaces
+the analysis values with placeholder values while preserving the AE summary
+layout.
 
-The AE summary analysis entails the creation of tables that summarize adverse events information.
-To accomplish this using [metalite.ae](https://merck.github.io/metalite.ae/), three essential functions are required:
+The mock output is intended as a convenient starting point that resembles the
+planned table. It is not an all-encompassing mock table template, so additional
+customization may be needed for study-specific requirements.
 
-- `prepare_ae_summary()`: prepare analysis raw datasets.
-- `format_ae_summary()`: prepare analysis (mock) outdata with proper format.
-- `tlf_ae_summary()`: transfer (mock) output dataset to RTF files.
+## Define metadata
 
-There is one optional function to extend AE summary analysis:
+This example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package. The metadata follows the
+same approach used in the [AE Summary](ae-summary.html) vignette.
 
-- `extend_ae_specific_inference()`: add risk difference inference results based on M&N method.
-
-
-## Procedure to Generate AE Summary Table
-
-Within metalite.ae, we utilized the ADSL and ADAE datasets from the [forestly](https://merck.github.io/forestly/)
-package to create an illustrative dataset.
-
-### Step 1: Define metadata
 ```{r}
-# Define metadata
 adsl <- forestly::forestly_adsl
 adae <- forestly::forestly_adae
 
@@ -69,10 +63,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::define_plan(analysis_plan) |>
   metalite::define_population(
     name = "apat",
-    var = c(
-      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
-      "SITEID", "SEX", "RACE", "AGE"
-    ),
+    var = c("USUBJID", "SAFFL", "TRT01A"),
     group = "TRT01A",
     subset = SAFFL == "Y",
     label = "All Participants as Treated"
@@ -81,7 +72,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     name = "wk12",
     var = c(
       "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
-      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+      "AESER"
     ),
     group = "TRTA",
     subset = SAFFL == "Y",
@@ -120,39 +111,30 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::meta_build()
 ```
 
-<details>
-<summary>Click to show the output</summary>
+## Prepare a mock table
+
+First, prepare the AE summary analysis. Passing `mock = TRUE` to
+`format_ae_summary()` then creates placeholder values for the formatted table.
+
+The mock table retains the row labels and treatment-group structure derived
+from the metadata. This allows the layout to be reviewed without presenting
+the calculated analysis values as final results.
+
 ```{r}
-meta
-```
-</details>
-
-### Step 2: Generate Static AE Summary Table in RTF format
-
-The function  `prepare_ae_summary()` is used to create a dataset for
-AE summary analysis by utilizing predefined keywords specified
-in the example data `meta`.
-
-Once the raw analysis results are obtained,
-the `format_ae_summary()` function can be employed to prepare the outdata,
-ensuring its compatibility with production-ready RTF tables.
-
-The last step is to prepare the RTF table using `tlf_ae_summary()`.
-```{r, message=FALSE}
 prepare_ae_summary(
   meta,
   population = "apat",
   observation = "wk12",
   parameter = "any;rel;ser"
-) |> 
-  format_ae_summary() |>
+) |>
+  format_ae_summary(mock = TRUE)|>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
-    path_outtable = "rtf/ae0summary1.rtf"
+    path_outtable = "rtf/ae0summary3.rtf"
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0summary1.pdf")
+knitr::include_graphics("pdf/ae0summary3.pdf")
 ```

@@ -1,0 +1,163 @@
+---
+title: "Customize Columns in an AE Summary Table"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Customize Columns to be Displayed in an AE Summary Table}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  out.width = "100%",
+  dpi = 150
+)
+```
+
+```{r}
+library(metalite.ae)
+```
+
+## Overview
+
+The `display` argument of `format_ae_summary()` controls which statistics
+appear in an AE summary table. This vignette demonstrates how to add a risk
+difference column to the participant count and percentage columns.
+
+## Define metadata
+
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package.
+
+We define the metadata following the same approach used in the
+[AE Summary](ae-summary.html) vignette.
+
+```{r}
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_summary",
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c("USUBJID", "SAFFL", "TRT01A"),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "any",
+    term1 = "",
+    term2 = "",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "All AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "ser",
+    term1 = "Serious",
+    term2 = "",
+    subset = AESER == "Y",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Serious AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_summary",
+    title = "Adverse Event Summary"
+  ) |>
+  metalite::meta_build()
+```
+
+## Select columns
+
+To perform advanced analysis, the `extend_ae_specific_inference()`
+function is utilized.
+For instance, we can incorporate a 95% confidence interval based on the
+Miettinen and Nurminen (M&N) method.
+Further information regarding the M&N method can be found in the
+[rate compare vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html).
+
+After the usage of `extend_ae_specific_inference()`, 
+use `display = ...` in the `format_ae_summary()` function to choose specific
+statistics and set their order in the table. Available options are:
+
+- `"n"`: number of participants with an adverse event.
+- `"prop"`: proportion of participants with an adverse event.
+- `"total"`: total columns.
+- `"diff"`: risk difference.
+- `"diff_ci"`: 95% confidence interval for the risk difference using the
+  Miettinen and Nurminen method.
+- `"diff_p"`: p-value for the risk difference using the Miettinen and
+  Nurminen method.
+- `"dur"`: average adverse event duration.
+- `"events_avg"`: average number of adverse events per participant.
+- `"events_count"`: number of adverse events per participant.
+
+The `"diff_ci"` and `"diff_p"` statistics are added by
+`extend_ae_specific_inference()`, `"dur"` is added by
+`extend_ae_specific_duration()`, and the event statistics are added by
+`extend_ae_specific_events()`.
+
+For example, include `"diff"` in addition to the number and proportion of
+participants with an adverse event:
+
+```{r}
+prepare_ae_summary(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+) |>
+  extend_ae_specific_inference() |>
+  format_ae_summary(display = c("n", "prop", "diff", "diff_ci")) |>
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_summary", # Provide analysis type defined in meta$analysis
+    col_rel_width = c(3, rep(1, 6)),
+    path_outtable = "./vignettes/rtf/ae0summary2.rtf"
+  )
+```
+
+```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
+knitr::include_graphics("pdf/ae0summary2.pdf")
+```
