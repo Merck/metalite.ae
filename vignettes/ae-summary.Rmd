@@ -149,7 +149,7 @@ prepare_ae_summary(
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
-    path_outtable = "rtf/ae0summary1.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 

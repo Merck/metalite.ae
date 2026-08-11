@@ -119,7 +119,7 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = "rtf/ae0specific4.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 
@@ -158,7 +158,7 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = "rtf/ae0specific5.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 
@@ -188,7 +188,7 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = "rtf/ae0specific6.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 

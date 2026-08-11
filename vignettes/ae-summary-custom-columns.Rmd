@@ -2,7 +2,7 @@
 title: "Customize Columns in an AE Summary Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Customize Columns to be Displayed in an AE Summary Table}
+  %\VignetteIndexEntry{Customize Columns in an AE Summary Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -154,7 +154,7 @@ prepare_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     col_rel_width = c(3, rep(1, 6)),
-    path_outtable = "rtf/ae0summary2.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 

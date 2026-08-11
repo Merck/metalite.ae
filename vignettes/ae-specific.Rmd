@@ -304,7 +304,7 @@ outdata |>
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
-    path_outtable = "rtf/ae0specific1.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 
@@ -325,7 +325,7 @@ outdata |>
     col_rel_width = c(6, rep(1, 6)),
     text_font_size = 8,
     orientation = "landscape",
-    path_outtable = "rtf/ae0specific2.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 
@@ -342,7 +342,7 @@ outdata |>
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
-    path_outtable = "rtf/mock_ae0specific1.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 
