@@ -1,8 +1,8 @@
 ---
-title: "Generate a Static AE Specific Table"
+title: "Generate a Static AE-Specific Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Generate a Static AE Specific Table}
+  %\VignetteIndexEntry{Generate a Static AE-Specific Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,7 +22,8 @@ library(metalite.ae)
 
 ## Overview
 
-This vignette demonstrates how to generate a static AE specific table.
+This vignette demonstrates how to generate a static AE-specific table 
+reporting patients with **drug-related adverse events** by treatment group.
 
 The workflow uses three functions from
 [metalite.ae](https://merck.github.io/metalite.ae/):
@@ -31,8 +32,10 @@ The workflow uses three functions from
 - `format_ae_specific()` formats the results for reporting.
 - `tlf_ae_specific()` creates the RTF table.
 
-Additional vignettes demonstrate how to extend the displayed statistics,
-filter and sort rows, customize the RTF layout, and create mock output.
+Related vignettes explain how to
+[customize displayed columns](ae-specific-custom-columns.html) and
+[filter or sort rows](ae-specific-filter-sort.html). This guide also covers
+basic RTF customization and mock output.
 
 An example output is shown below.
 
@@ -40,7 +43,7 @@ An example output is shown below.
 knitr::include_graphics("pdf/ae0specific1.pdf")
 ```
 
-## Procedure to generate an AE specific table
+## Generate an AE-specific table
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package.
@@ -103,7 +106,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   ) |>
   metalite::define_analysis(
     name = "ae_specific",
-    title = "Patients with Drug-Related Adverse Events"
+    title = "Participants with Drug-Related Adverse Events"
   ) |>
   metalite::meta_build()
 ```
@@ -117,12 +120,9 @@ meta
 
 ### Analysis preparation
 
-The function  `prepare_ae_specific()` is used to create a dataset for
-AE summary analysis by utilizing predefined keywords specified
-in the example data `meta`.
-
-The resulting output of the function is an `outdata` object, which comprises
-a collection of raw datasets for analysis and reporting.
+`prepare_ae_specific()` uses the population, observation, and parameter
+definitions in `meta` to calculate the AE-specific analysis results. It returns
+an `outdata` object for formatting and reporting.
 
 ```{r, message = FALSE}
 outdata <- prepare_ae_specific(
@@ -137,32 +137,31 @@ outdata <- prepare_ae_specific(
 outdata
 ```
 
-The resulting dataset contains frequently used statistics,
-with variables indexed according to the order specified in `outdata$group`.
+The statistic columns follow the treatment-group order in `outdata$group`.
 
 ```{r}
 outdata$group
 ```
 
-The row is indexed according to the order of `outdata$name`.
+Rows follow the order defined by `outdata$order` and `outdata$name`.
 
 ```{r}
 head(data.frame(outdata$order, outdata$name))
 ```
 
-- `n_pop`: number of participants in population.
+- `n_pop`: number of participants in the analysis population.
 
 ```{r}
 outdata$n_pop
 ```
 
-- `n`: number of subjects with AE.
+- `n`: number of participants with an AE.
 
 ```{r}
 head(outdata$n)
 ```
 
-- `prop`: proportion of subjects with AE.
+- `prop`: proportion of participants with an AE.
 
 ```{r}
 head(outdata$prop)
@@ -176,9 +175,8 @@ head(outdata$diff)
 
 ## Format output
 
-Once the raw analysis results are obtained,
-the `format_ae_specific()` function can be employed to prepare the outdata,
-ensuring its compatibility with production-ready RTF tables.
+`format_ae_specific()` converts the analysis results into a
+production-ready table dataset.
 
 ```{r}
 tbl <- outdata |> format_ae_specific()
@@ -187,20 +185,17 @@ head(tbl$tbl)
 
 ### Additional statistics
 
-By using the `display` argument,
-we can choose specific statistics to include.
-For instance, we have the option to incorporate the risk difference.
+Use `display` to select and order statistics. For example, include `"diff"`
+to show the risk difference.
 
 ```{r}
 tbl <- outdata |> format_ae_specific(display = c("n", "prop", "diff"))
 head(tbl$tbl)
 ```
 
-To perform advanced analysis, the `extend_ae_specific_inference()` function
-is utilized.
-For instance, we can incorporate a 95% confidence interval based on the
-Miettinen and Nurminen (M&N) method.
-Further information regarding the M&N method can be found in the
+Use `extend_ae_specific_inference()` to add confidence intervals and p-values
+for the risk difference based on the Miettinen and Nurminen (M&N) method. For
+details, see the
 [rate compare vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html).
 
 ```{r}
@@ -210,7 +205,7 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-We can use `extend_ae_specific_duration()` to add average duration of AE.
+Use `extend_ae_specific_duration()` to add the mean AE duration.
 
 ```{r}
 tbl <- outdata |>
@@ -220,7 +215,8 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-We can use `extend_ae_specific_events()` to add number of AE and/or average of it per subject.
+Use `extend_ae_specific_events()` to add the AE count and the mean number of
+events per participant.
 
 ```{r}
 tbl <- outdata |>
@@ -230,16 +226,13 @@ tbl <- outdata |>
 head(tbl$tbl)
 ```
 
-We can use `filter_method` and `filter_criteria` parameters to filter information based on the specified criteria:
+Use `filter_method` and `filter_criteria` to retain rows that meet a minimum
+incidence threshold in at least one treatment group:
 
-- `filter_method`: A character value to specify how to filter rows (by `count` or `percent`).
-    - `count`: Filter based on participant count.
-    - `percent`: Filter based on percent incidence.
-- `filter_criteria`: A numeric value to display rows where at least one therapy group has:
-    - a percent incidence or participant count greater than or equal to the specified value.
-    - If `filter_method` is `percent`, the value should be between 0 and 100.
-    - If `filter_method` is `count`, the value should be greater than 0.
-
+- `filter_method = "count"` applies the threshold to participant counts.
+- `filter_method = "percent"` applies the threshold to incidence percentages
+  from 0 to 100.
+- `filter_criteria` sets the minimum count or percentage to retain.
 
 ```{r}
 tbl <- outdata |>
@@ -252,16 +245,15 @@ tbl <- outdata |>
 
 head(tbl$tbl)
 ```
-In results above, rows having any one of "prop_x" values are greater than 6 get kept in the output.
+The example retains rows with an incidence of at least 6% in any treatment
+group.
 
+Use `sort_order` and `sort_column` to control row order:
 
-We can use `sort_order` and `sort_column` parameters to sort results based on the specified criteria:
-
-- `sort_order` A character value to specify sorting order:
-    - `alphabetical`: Sort by alphabetical order.
-    - `count_des`: Sort by count in descending order.
-    - `count_asc`: Sort by count in ascending order.
-- `sort_column A` character value of `group` in `outdata` used to sort a table with.
+- `sort_order = "alphabetical"` sorts rows by label.
+- `sort_order = "count_des"` sorts counts in descending order.
+- `sort_order = "count_asc"` sorts counts in ascending order.
+- `sort_column` selects the treatment group whose counts determine the order.
 
 ```{r}
 tbl <- outdata |>
@@ -277,16 +269,9 @@ head(tbl$tbl)
 
 ### Mock data preparation
 
-The `mock` argument facilitates the creation of a mock table with ease.
-
-Please note that the intention of the `mock` argument is not to provide
-an all-encompassing mock table template.
-Instead, it serves as a convenient method to assist users in generating
-a mock table that closely resembles the desired output layout.
-To develop a more versatile mock table generation tool, further efforts
-are necessary.
-This could potentially involve the creation of a dedicated mock table
-generation package or similar solutions.
+Set `mock = TRUE` to create placeholder values while preserving the planned
+table structure. The result is a starting point and may require customization
+for study-specific requirements.
 
 ```{r}
 tbl <- outdata |> format_ae_specific(mock = TRUE)
@@ -295,7 +280,7 @@ head(tbl$tbl)
 
 ## RTF tables
 
-The last step is to prepare the RTF table using `tlf_ae_summary()`.
+Pass the formatted output to `tlf_ae_specific()` to create the RTF table.
 
 ```{r}
 outdata |>
@@ -312,8 +297,8 @@ outdata |>
 knitr::include_graphics("pdf/ae0specific1.pdf")
 ```
 
-The `tlf_ae_specific()` function also provides some commonly used arguments
-to customize the table.
+Use arguments such as `col_rel_width`, `text_font_size`, and `orientation` to
+customize the table layout.
 
 ```{r}
 outdata |>
@@ -333,7 +318,7 @@ outdata |>
 knitr::include_graphics("pdf/ae0specific2.pdf")
 ```
 
-The mock table can also be generated.
+Mock output can be written to RTF in the same way.
 
 ```{r}
 outdata |>

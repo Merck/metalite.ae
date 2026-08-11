@@ -22,16 +22,16 @@ library(metalite.ae)
 
 ## Overview
 
-The `display` argument of `format_ae_summary()` controls which statistics
-appear in an AE summary table. This vignette demonstrates how to add a risk
-difference column to the participant count and percentage columns.
+The `display` argument of `format_ae_summary()` selects and orders the
+statistics in an AE summary table. This vignette demonstrates how to include
+risk-difference estimates and inference results.
 
 ## Define metadata
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package.
 
-We define the metadata following the same approach used in the
+The metadata follows the same approach used in the
 [AE Summary](ae-summary.html) vignette.
 
 ```{r}
@@ -110,16 +110,12 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
 
 ## Select columns
 
-To perform advanced analysis, the `extend_ae_specific_inference()`
-function is utilized.
-For instance, we can incorporate a 95% confidence interval based on the
-Miettinen and Nurminen (M&N) method.
-Further information regarding the M&N method can be found in the
+Use `extend_ae_specific_inference()` to add confidence intervals and p-values
+based on the Miettinen and Nurminen (M&N) method. For details, see the
 [rate compare vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html).
 
-After the usage of `extend_ae_specific_inference()`, 
-use `display = ...` in the `format_ae_summary()` function to choose specific
-statistics and set their order in the table. Available options are:
+After extending the analysis, use `display` in `format_ae_summary()` to select
+statistics and set their order. Available options are:
 
 - `"n"`: number of participants with an adverse event.
 - `"prop"`: proportion of participants with an adverse event.

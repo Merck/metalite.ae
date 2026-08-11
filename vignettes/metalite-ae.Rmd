@@ -27,17 +27,16 @@ library(metalite.ae)
 
 ## Overview
 
-metalite.ae is an R package designed for the analysis of adverse events (AE)
-in clinical trials.
-It operates on ADaM datasets and adheres to the metalite structure.
-The package encompasses the following components:
+metalite.ae supports adverse event (AE) analyses for clinical trials. It uses
+ADaM datasets organized through the `metalite` metadata structure and produces
+summary tables, specific AE tables, and listings.
 
 <details>
 <summary>AE summary.</summary>
 <img src="https://merck.github.io/metalite.ae/articles/fig/ae0summary.png" width="100%">
 </details>
 <details>
-<summary>AE specific.</summary>
+<summary>AE-specific table.</summary>
 <img src="https://merck.github.io/metalite.ae/articles/fig/ae0specific.png" width="100%">
 </details>
 <details>
@@ -45,33 +44,33 @@ The package encompasses the following components:
 <img src="https://merck.github.io/metalite.ae/articles/fig/ae0listing.png" width="100%">
 </details>
 
-This R package offers a comprehensive software development lifecycle (SDLC)
-solution, encompassing activities such as definition, development,
-validation, and finalization of the analysis.
+The shared metadata and consistent function interfaces support analysis
+definition, development, validation, and final reporting.
 
 ## Highlighted features
 
-- Avoid duplicated input by using metadata structure.
-  - For example, define analysis population once to use
-    in all adverse events analysis.
-- Consistent input and output in standard functions.
-- Streamlines mock table generation.
+- Reuse metadata definitions, such as the analysis population, across AE
+  analyses.
+- Use consistent inputs and outputs across preparation, extension, formatting,
+  and reporting functions.
+- Create mock tables from the planned output structure.
 
 ## Workflow
 
 The overall workflow includes the following steps:
 
-1. Define metadata information using the [metalite](https://merck.github.io/metalite/) R package. For detailed instructions and an example metadata object, please consult the
-[metalite tutorial](https://merck.github.io/metalite/articles/metalite.html).
-1. Prepare outdata using `prepare_*()` functions.
-1. (Optional)Extend outdata using `extend_*()` functions.
-1. Format outdata using `format_*()` functions.
-1. Create TLFs using `tlf_*()` functions.
+1. Define metadata with the [metalite](https://merck.github.io/metalite/) R
+  package. See the
+  [metalite tutorial](https://merck.github.io/metalite/articles/metalite.html)
+  for a complete example.
+1. Prepare analysis data with a `prepare_*()` function.
+1. Optionally add statistics with an `extend_*()` function.
+1. Format the results with a `format_*()` function.
+1. Create a table, listing, or figure (TLF) with a `tlf_*()` function.
 
-For instance, we can illustrate the creation of a straightforward
-AE summary table as shown below.
+The following example outlines the creation of an AE summary table.
 
-### Stpe 1: Define metadata
+### Step 1: Define metadata
 ```{r, eval = FALSE}
 adsl <- forestly::forestly_adsl
 adae <- forestly::forestly_adae
@@ -149,7 +148,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::meta_build()
 ```
 
-### Step 2: Prepare outdata using `prepare_*()` functions
+### Step 2: Prepare the analysis data
 ```{r, eval = FALSE}
 x <- meta |> # Example AE data created using metalite
   prepare_ae_summary(
@@ -159,18 +158,18 @@ x <- meta |> # Example AE data created using metalite
   )
 ```
 
-### Step 3: Format outdata using `format_*()` functions
+### Step 3: Format the results
 ```{r, eval=FALSE}
 x <- x |> format_ae_summary()
 ```
 
-### Step 4: Create TLFs using `tlf_*()` functions.
+### Step 4: Create the table
 ```{r, eval=FALSE}
 x |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]", # Define data source
-    analysis = "ae_specific", # Provide analysis type defined in meta$analysis
-    path_outtable = "ae0summary.rtf" # Define output
+    analysis = "ae_summary", # Provide analysis type defined in meta$analysis
+    path_outtable = tempfile(fileext = ".rtf") # Define output
   )
 ```
 
@@ -178,8 +177,7 @@ x |>
 knitr::include_graphics("pdf/ae0summary1.pdf")
 ```
 
-Additional examples and tutorials can be found on the
-[package website](https://merck.github.io/metalite.ae/articles/),
-offering further guidance and illustrations.
+See the [package articles](https://merck.github.io/metalite.ae/articles/) for
+complete workflows and additional examples.
 
 

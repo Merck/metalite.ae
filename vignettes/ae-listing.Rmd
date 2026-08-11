@@ -22,14 +22,14 @@ library(metalite.ae)
 
 ## Overview
 
-The objective of this vignette is to generate a static adverse events (AE) listing table with serious AE.
+This vignette demonstrates how to generate a static adverse event (AE) listing
+focused on serious AEs.
 
-The AE listing offers comprehensive information on the desired adverse events.
-There are two essential functions for constructing AE listing tables with metalite.ae:
+The listing presents participant-level details for adverse events of interest.
+Two functions support the workflow:
 
-- `prepare_ae_listing()`: prepare AE listing datasets.
-- `tlf_ae_listing()`: transfer output datasets to RTF files.
-
+- `prepare_ae_listing()` prepares the listing dataset.
+- `tlf_ae_listing()` creates the RTF table.
 
 ## Step 1: Define metadata
 
@@ -103,11 +103,9 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
 
 ## Step 2: Generate the AE listing table
 
-The function `prepare_ae_listing()` is used to create a dataset for
-AE listing by utilizing predefined keywords specified
-in the example data `meta`.
-
-The last step is to prepare the RTF table using `tlf_ae_listing()`.
+`prepare_ae_listing()` uses the population, observation, parameter, and
+analysis definitions in `meta` to prepare the listing dataset. The result is
+passed directly to `tlf_ae_listing()` to create the RTF table.
 
 ```{r}
 footnote <- c(

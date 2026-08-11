@@ -22,24 +22,29 @@ library(metalite.ae)
 
 ## Overview
 
-The objective of this vignette is to generate a static AE summary table.
-
-The AE summary analysis entails the creation of tables that summarize adverse events information.
-To accomplish this using [metalite.ae](https://merck.github.io/metalite.ae/), three essential functions are required:
-
-- `prepare_ae_summary()`: prepare analysis raw datasets.
-- `format_ae_summary()`: prepare analysis (mock) outdata with proper format.
-- `tlf_ae_summary()`: transfer (mock) output dataset to RTF files.
-
-There is one optional function to extend AE summary analysis:
-
-- `extend_ae_specific_inference()`: add risk difference inference results based on M&N method.
+This vignette demonstrates how to generate a static AE summary table reporting
+- The number and percentage of participants with **any AEs** by treatment group;
+- The number and percentage of participants with **drug-related AEs** by treatment group;
+- The number and percentage of participants with **serious AEs** by treatment group.
 
 
-## Procedure to Generate AE Summary Table
+The workflow uses three functions from
+[metalite.ae](https://merck.github.io/metalite.ae/):
 
-Within metalite.ae, we utilized the ADSL and ADAE datasets from the [forestly](https://merck.github.io/forestly/)
-package to create an illustrative dataset.
+- `prepare_ae_summary()` prepares the analysis datasets.
+- `format_ae_summary()` formats the results or creates mock output.
+- `tlf_ae_summary()` creates the RTF table.
+
+An optional extension adds risk-difference inference:
+
+- `extend_ae_specific_inference()` adds confidence intervals and p-values based
+  on the Miettinen and Nurminen method.
+
+
+## Generate an AE summary table
+
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package.
 
 ### Step 1: Define metadata
 ```{r}
@@ -127,17 +132,11 @@ meta
 ```
 </details>
 
-### Step 2: Generate Static AE Summary Table in RTF format
+### Step 2: Generate the RTF table
 
-The function  `prepare_ae_summary()` is used to create a dataset for
-AE summary analysis by utilizing predefined keywords specified
-in the example data `meta`.
-
-Once the raw analysis results are obtained,
-the `format_ae_summary()` function can be employed to prepare the outdata,
-ensuring its compatibility with production-ready RTF tables.
-
-The last step is to prepare the RTF table using `tlf_ae_summary()`.
+`prepare_ae_summary()` uses the definitions in `meta` to calculate the summary
+results. `format_ae_summary()` formats those results, and `tlf_ae_summary()`
+creates the RTF table.
 ```{r, message=FALSE}
 prepare_ae_summary(
   meta,

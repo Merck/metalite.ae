@@ -21,6 +21,8 @@ library(metalite.ae)
 ```
 
 ## Overview
+This vignette demonstrates how to generate a static AE-specific table 
+reporting patients with **drug-related adverse events** by treatment group.
 
 AE specific tables can contain many system organ classes and preferred terms.
 The filtering and sorting arguments of `format_ae_specific()` help focus the
@@ -30,7 +32,7 @@ output on clinically relevant rows and present them in a useful order.
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package. The metadata follows the
-same approach used in the [AE Specific](ae-specific.html) vignette.
+same approach used in the [AE Specific Table](ae-specific.html) vignette.
 
 ```{r}
 adsl <- forestly::forestly_adsl

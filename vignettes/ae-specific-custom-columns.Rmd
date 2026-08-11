@@ -22,6 +22,9 @@ library(metalite.ae)
 
 ## Overview
 
+This vignette demonstrates how to generate a static AE-specific table 
+reporting patients with **drug-related adverse events** by treatment group.
+
 The `display` argument of `format_ae_specific()` controls which statistics
 appear in an AE specific table. This vignette demonstrates how to add risk
 difference inference, adverse event duration, and event frequency statistics.
@@ -30,7 +33,7 @@ difference inference, adverse event duration, and event frequency statistics.
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package. The metadata follows the
-same approach used in the [AE Specific](ae-specific.html) vignette.
+same approach used in the [AE Specific Table](ae-specific.html) vignette.
 
 ```{r}
 adsl <- forestly::forestly_adsl

@@ -20,6 +20,12 @@ knitr::opts_chunk$set(
 library(metalite.ae)
 ```
 
+This vignette demonstrates how to generate a static AE summary table reporting
+- The number and percentage of participants with **any AEs** by treatment group;
+- The number and percentage of participants with **drug-related AEs** by treatment group;
+- The number and percentage of participants with **serious AEs** by treatment group.
+
+
 ## Overview
 
 Mock tables help reviewers evaluate a proposed table structure before final

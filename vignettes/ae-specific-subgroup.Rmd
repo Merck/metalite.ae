@@ -22,13 +22,12 @@ library(metalite.ae)
 
 ## Overview
 
-The AE specific subgroup analysis aims to provide tables to summarize details of
-adverse events by subgroup.
-The development of AE specific subgroup analysis involves exported functions:
+This vignette demonstrates how to summarize patients with drug-related AEs by subgroup. The
+workflow uses three functions:
 
-- `prepare_ae_specific_subgroup()`: prepare analysis raw datasets.
-- `format_ae_specific_subgroup()`: prepare analysis (mock) outdata with proper format.
-- `tlf_ae_specific_subgroup()`: transfer (mock) output dataset to RTF table.
+- `prepare_ae_specific_subgroup()` prepares the subgroup analysis datasets.
+- `format_ae_specific_subgroup()` formats the results or creates mock output.
+- `tlf_ae_specific_subgroup()` creates the RTF table.
 
 ## Build metadata
 
@@ -88,18 +87,16 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   ) |>
   metalite::define_analysis(
     name = "ae_specific",
-    title = "Patients with Drug-Related Adverse Events"
+    title = "Participants with Drug-Related Adverse Events"
   ) |>
   metalite::meta_build()
 ```
 
-## Generate the AE subgroup specific table
+## Generate an AE specific subgroup table
 
-The `prepare_ae_specific_subgroup()` function is designed to be used for multiple purposes.
-The input of the function is a `meta` object created by the metalite package.
-
-After we have the raw analysis results, we can use `format_ae_specific_subgroup()`
-to prepare the outdata to create RTF tables.
+`prepare_ae_specific_subgroup()` uses the definitions in `meta` to calculate
+results for each subgroup. `format_ae_specific_subgroup()` formats those
+results, and `tlf_ae_specific_subgroup()` creates the RTF table.
 
 ```{r}
 prepare_ae_specific_subgroup(
