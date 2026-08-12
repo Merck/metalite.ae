@@ -116,7 +116,7 @@ prepare_ae_specific(
     meddra_version = "24.0",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpfS0uKg/file1d6b46f82971.rtf
+#> The output is saved in/tmp/Rtmp2jfTiR/file1e002709106d.rtf
 ```
 
 ## Sort rows
@@ -152,7 +152,7 @@ prepare_ae_specific(
     meddra_version = "24.0",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpfS0uKg/file1d6b785842e.rtf
+#> The output is saved in/tmp/Rtmp2jfTiR/file1e002e6f52d0.rtf
 ```
 
 ## Filter and sort rows
@@ -181,5 +181,5 @@ prepare_ae_specific(
     meddra_version = "24.0",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpfS0uKg/file1d6b22dce9a9.rtf
+#> The output is saved in/tmp/Rtmp2jfTiR/file1e003900e38d.rtf
 ```

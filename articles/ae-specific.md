@@ -497,7 +497,7 @@ outdata |>
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpEJLHDu/file1ddc39ca6016.rtf
+#> The output is saved in/tmp/RtmpYlRLzI/file1e7167825d85.rtf
 ```
 
 Use arguments such as `col_rel_width`, `text_font_size`, and
@@ -516,7 +516,7 @@ outdata |>
     orientation = "landscape",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpEJLHDu/file1ddc5ef35f52.rtf
+#> The output is saved in/tmp/RtmpYlRLzI/file1e71169846db.rtf
 ```
 
 Mock output can be written to RTF in the same way.
@@ -531,5 +531,5 @@ outdata |>
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpEJLHDu/file1ddc76c5cca.rtf
+#> The output is saved in/tmp/RtmpYlRLzI/file1e71e8026c7.rtf
 ```

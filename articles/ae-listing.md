@@ -120,5 +120,5 @@ prepare_ae_listing(
     analysis = "ae_listing", # Provide analysis type defined in meta$analysis
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpBIby9K/file1cfa1ba48962.rtf
+#> The output is saved in/tmp/RtmpSiBoKa/file1d8f3955cf83.rtf
 ```

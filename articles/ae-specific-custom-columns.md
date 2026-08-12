@@ -135,7 +135,7 @@ prepare_ae_specific(
     meddra_version = "24.0",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/Rtmp0HJ64s/file1d3231caf3a1.rtf
+#> The output is saved in/tmp/RtmpnXwlMp/file1dc7263544c2.rtf
 ```
 
 ### Add a column for average event duration
@@ -161,7 +161,7 @@ prepare_ae_specific(
     meddra_version = "24.0",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/Rtmp0HJ64s/file1d32b0b8375.rtf
+#> The output is saved in/tmp/RtmpnXwlMp/file1dc7f938069.rtf
 ```
 
 ### Add a column for event frequency
@@ -188,5 +188,5 @@ prepare_ae_specific(
     meddra_version = "24.0",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/Rtmp0HJ64s/file1d3212473612.rtf
+#> The output is saved in/tmp/RtmpnXwlMp/file1dc75498bbc3.rtf
 ```
