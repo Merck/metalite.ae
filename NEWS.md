@@ -2,6 +2,8 @@
 
 ## New features
 
+- The new `gt_ae_specific()` function is developed to output AE specific tables in
+   gt format (#235, thanks to @LittleBeannie).
 - The new `gt_ae_summary()` function renders formatted adverse event summaries
     as gt tables, including titles, treatment-group spanners, footnotes, and
     source notes (#215, thanks to @ginnaram13).
