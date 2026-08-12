@@ -116,7 +116,3 @@ prepare_ae_specific_subgroup(
     path_outtable = tempfile(fileext = ".rtf")
   )
 ```
-
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific0sub0gender1.pdf")
-```

@@ -156,7 +156,3 @@ cat(
   "Download the generated RTF table</a></p>"
 )
 ```
-
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific1.pdf")
-```
