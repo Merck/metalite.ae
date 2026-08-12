@@ -93,7 +93,8 @@ articles:
 
 - title: AE Specific Table (Static)
   contents:
-    - ae-specific
+    - ae-specific-rtf
+    - ae-specific-gt
     - ae-specific-custom-columns
     - ae-specific-filter-sort
     - ae-specific-subgroup
