@@ -1,8 +1,51 @@
+# metalite.ae 0.1.4
+
+## New features
+
+- The new `gt_ae_summary()` function renders formatted adverse event summaries
+    as gt tables, including titles, treatment-group spanners, footnotes, and
+    source notes (#215, thanks to @ginnaram13).
+- `rate_compare()` and `rate_compare_sum()` now accept a `bisection` argument to
+    control the number of sections used by the bisection method (#221, thanks to
+    @lm3388).
+- The `analysis` argument is now required by all `tlf_*()` functions so that
+    table titles are generated from the selected analysis metadata (#207, thanks
+    to @lm3388).
+- `meta_ae_example()` is no longer exported. Package examples now construct
+    metadata directly from the example datasets in forestly (#229, thanks to
+    @LittleBeannie).
+
+## Bug fixes
+
+- `format_ae_summary()` now uses parameter labels when custom parameters do not
+    define `summ_row`, preventing row-name and summary-data length mismatches
+    (#224, thanks to @LittleBeannie).
+- `gt_ae_summary()` now supports missing source notes and footnotes without
+    passing `NULL` to `gt::md()` (#226, thanks to @LittleBeannie).
+- `prepare_ae_specific()` now preserves SOC and preferred-term row ordering
+    when the data exceed the previous fixed ordering placeholder (#214, thanks to
+    @ginnaram13).
+
+## Improvements
+
+- The `metalite_ae_adexsum` example dataset has been expanded for adverse event
+    forest plot workflows (#220, thanks to @lm3388).
+- Unused arguments and R CMD check warnings in `gt_ae_summary()` and
+    `prepare_ae_specific()` have been removed (#232, thanks to @fukuhiro2023).
+- Package examples now use direct, reproducible metadata definitions based on
+    forestly example data (#229, thanks to @LittleBeannie and @fukuhiro2023).
+
+## Documentation
+
+- The adverse event vignettes and pkgdown site have been reorganized, with new
+    articles for custom columns, filtering and sorting, and mock tables (#204,
+    #231, thanks to @lm3388 and @LittleBeannie).
+
 # metalite.ae 0.1.3
 
 ## New features
 
--   `format_ae_specific()` now has new arguments `filter_method` and `filter_criteria` to control displayed rows in a table, `sort_order` and `sort_column` to sort an output table, and `hide_soc_stats` to control display of statistics for SOC rows (#191, #192, #203).
+-   `format_ae_specific()` now has new arguments `filter_method` and `filter_criteria` to control displayed rows in a table, `sort_order` and `sort_column` to sort an output table, and `hide_soc_stats` to control display of statistics for SOC rows (#191, #192, #203thanks to @fukuhiro2023).
 -   Add `data/metalite_ae_adesxum.rda` (#189).
 -   Add event counts to `avg_count()` and `extend_ae_specific_events()` (#194).
 -   Add `empty_table()` to return an empty table object when data has no population (#200).
