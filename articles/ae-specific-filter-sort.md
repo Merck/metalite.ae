@@ -1,0 +1,185 @@
+# Filter and Sort an AE Specific Table
+
+``` r
+
+library(metalite.ae)
+```
+
+## Overview
+
+This vignette demonstrates how to generate a static AE-specific table
+reporting patients with **drug-related adverse events** by treatment
+group.
+
+AE specific tables can contain many system organ classes and preferred
+terms. The filtering and sorting arguments of
+[`format_ae_specific()`](https://merck.github.io/metalite.ae/reference/format_ae_specific.md)
+help focus the output on clinically relevant rows and present them in a
+useful order.
+
+## Define metadata
+
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package. The metadata
+follows the same approach used in the [AE Specific
+Table](https://merck.github.io/metalite.ae/articles/ae-specific.md)
+vignette.
+
+``` r
+
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_specific",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_specific",
+    title = "Participants with Drug-Related Adverse Events"
+  ) |>
+  metalite::meta_build()
+```
+
+## Filter rows
+
+Set `filter_method` to `"percent"` or `"count"`, then use
+`filter_criteria` to define the minimum incidence required in at least
+one treatment group. Percentage criteria must be between 0 and 100;
+count criteria must be greater than 0.
+
+The following example retains rows where at least one treatment group
+has an incidence of 6% or greater. To filter by participant count
+instead, set `filter_method = "count"` and pass the minimum count to
+`filter_criteria`.
+
+``` r
+
+prepare_ae_specific(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  format_ae_specific(
+    filter_method = "percent",
+    filter_criteria = 6
+  ) |>
+  tlf_ae_specific(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
+    meddra_version = "24.0",
+    path_outtable = tempfile(fileext = ".rtf")
+  )
+#> The output is saved in/tmp/RtmpfS0uKg/file1d6b46f82971.rtf
+```
+
+## Sort rows
+
+The `sort_order` argument accepts:
+
+- `"alphabetical"`: sort preferred terms alphabetically.
+- `"count_des"`: sort participant counts in descending order.
+- `"count_asc"`: sort participant counts in ascending order.
+
+For count-based sorting, `sort_column` identifies the treatment group
+whose counts determine the order. Its value must match an entry in
+`outdata$group`.
+
+The following example sorts rows by the Placebo participant count in
+descending order:
+
+``` r
+
+prepare_ae_specific(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  format_ae_specific(
+    sort_order = "count_des",
+    sort_column = "Placebo"
+  ) |>
+  tlf_ae_specific(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
+    meddra_version = "24.0",
+    path_outtable = tempfile(fileext = ".rtf")
+  )
+#> The output is saved in/tmp/RtmpfS0uKg/file1d6b785842e.rtf
+```
+
+## Filter and sort rows
+
+Filtering and sorting can be combined in one call. Filtering is applied
+first, and the retained rows are then sorted using the requested
+treatment group.
+
+``` r
+
+prepare_ae_specific(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  format_ae_specific(
+    filter_method = "percent",
+    filter_criteria = 6,
+    sort_order = "count_des",
+    sort_column = "Placebo"
+  ) |>
+  tlf_ae_specific(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_specific",
+    meddra_version = "24.0",
+    path_outtable = tempfile(fileext = ".rtf")
+  )
+#> The output is saved in/tmp/RtmpfS0uKg/file1d6b22dce9a9.rtf
+```

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>AE Listing • metalite.ae</title>
+<title>Create a AE Summary Mock-up Table • metalite.ae</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="AE Listing">
+<meta property="og:title" content="Create a AE Summary Mock-up Table">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -58,35 +58,40 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>AE Listing</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Create a AE Summary Mock-up Table</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Merck/metalite.ae/blob/main/vignettes/ae-listing.Rmd" class="external-link"><code>vignettes/ae-listing.Rmd</code></a></small>
-      <div class="d-none name"><code>ae-listing.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/Merck/metalite.ae/blob/main/vignettes/ae-summary-mock.Rmd" class="external-link"><code>vignettes/ae-summary-mock.Rmd</code></a></small>
+      <div class="d-none name"><code>ae-summary-mock.Rmd</code></div>
     </div>
 
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite.ae/">metalite.ae</a></span><span class="op">)</span></span></code></pre></div>
+<p>This vignette demonstrates how to generate a static AE summary table
+reporting - The number and percentage of participants with <strong>any
+AEs</strong> by treatment group; - The number and percentage of
+participants with <strong>drug-related AEs</strong> by treatment group;
+- The number and percentage of participants with <strong>serious
+AEs</strong> by treatment group.</p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>This vignette demonstrates how to generate a static adverse event
-(AE) listing focused on serious AEs.</p>
-<p>The listing presents participant-level details for adverse events of
-interest. Two functions support the workflow:</p>
-<ul>
-<li>
-<code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> prepares the listing dataset.</li>
-<li>
-<code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code> creates the RTF table.</li>
-</ul>
+<p>Mock tables help reviewers evaluate a proposed table structure before
+final results are available. The <code>mock</code> argument of
+<code><a href="../reference/format_ae_summary.html">format_ae_summary()</a></code> replaces the analysis values with
+placeholder values while preserving the AE summary layout.</p>
+<p>The mock output is intended as a convenient starting point that
+resembles the planned table. It is not an all-encompassing mock table
+template, so additional customization may be needed for study-specific
+requirements.</p>
 </div>
 <div class="section level2">
-<h2 id="step-1-define-metadata">Step 1: Define metadata<a class="anchor" aria-label="anchor" href="#step-1-define-metadata"></a>
+<h2 id="define-metadata">Define metadata<a class="anchor" aria-label="anchor" href="#define-metadata"></a>
 </h2>
-<p>The example uses ADSL and ADAE data from the <a href="https://merck.github.io/forestly/" class="external-link">forestly</a> package.</p>
+<p>This example uses ADSL and ADAE data from the <a href="https://merck.github.io/forestly/" class="external-link">forestly</a> package. The
+metadata follows the same approach used in the <a href="ae-summary.html">AE Summary</a> vignette.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adsl.html" class="external-link">forestly_adsl</a></span></span>
 <span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adae.html" class="external-link">forestly_adae</a></span></span>
@@ -103,20 +108,17 @@ interest. Two functions support the workflow:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">analysis_plan</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span></span>
-<span>  analysis <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
+<span>  analysis <span class="op">=</span> <span class="st">"ae_summary"</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
 <span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
-<span>  parameter <span class="op">=</span> <span class="st">"ser"</span></span>
+<span>  parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_adam.html" class="external-link">meta_adam</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="va">adae</span>, population <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_plan.html" class="external-link">define_plan</a></span><span class="op">(</span><span class="va">analysis_plan</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_population.html" class="external-link">define_population</a></span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="st">"apat"</span>,</span>
-<span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      <span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRT01A"</span>, <span class="st">"TRTDUR"</span>,</span>
-<span>      <span class="st">"SITEID"</span>, <span class="st">"SEX"</span>, <span class="st">"RACE"</span>, <span class="st">"AGE"</span></span>
-<span>    <span class="op">)</span>,</span>
+<span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRT01A"</span><span class="op">)</span>,</span>
 <span>    group <span class="op">=</span> <span class="st">"TRT01A"</span>,</span>
 <span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"All Participants as Treated"</span></span>
@@ -125,11 +127,28 @@ interest. Two functions support the workflow:</p>
 <span>    name <span class="op">=</span> <span class="st">"wk12"</span>,</span>
 <span>    var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>      <span class="st">"USUBJID"</span>, <span class="st">"SAFFL"</span>, <span class="st">"TRTA"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"AEBODSYS"</span>, <span class="st">"AEREL"</span>,</span>
-<span>      <span class="st">"AESER"</span>, <span class="st">"AEOUT"</span>, <span class="st">"AEACN"</span>, <span class="st">"AESDTH"</span>, <span class="st">"ASTDT"</span>, <span class="st">"AENDT"</span></span>
+<span>      <span class="st">"AESER"</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    group <span class="op">=</span> <span class="st">"TRTA"</span>,</span>
 <span>    subset <span class="op">=</span> <span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Weeks 0 to 12"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"any"</span>,</span>
+<span>    term1 <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    term2 <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span>
+<span>    soc <span class="op">=</span> <span class="st">"AEBODSYS"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"All AEs"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
+<span>    name <span class="op">=</span> <span class="st">"rel"</span>,</span>
+<span>    term1 <span class="op">=</span> <span class="st">"Drug-Related"</span>,</span>
+<span>    term2 <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    subset <span class="op">=</span> <span class="va">AEREL</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POSSIBLE"</span>, <span class="st">"PROBABLE"</span><span class="op">)</span>,</span>
+<span>    var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span>
+<span>    soc <span class="op">=</span> <span class="st">"AEBODSYS"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Drug-related AEs"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_parameter.html" class="external-link">define_parameter</a></span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="st">"ser"</span>,</span>
@@ -141,47 +160,38 @@ interest. Two functions support the workflow:</p>
 <span>    label <span class="op">=</span> <span class="st">"Serious AEs"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/define_analysis.html" class="external-link">define_analysis</a></span><span class="op">(</span></span>
-<span>    name <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
-<span>    var_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      <span class="st">"USUBJID"</span>, <span class="st">"ASTDY"</span>, <span class="st">"AEDECOD"</span>, <span class="st">"ADURN"</span>,</span>
-<span>      <span class="st">"AESEV"</span>, <span class="st">"AESER"</span>, <span class="st">"AEREL"</span>, <span class="st">"AEOUT"</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USUBJID"</span>, <span class="st">"ASTDY"</span><span class="op">)</span>,</span>
-<span>    page_by <span class="op">=</span> <span class="st">"TRTA"</span></span>
+<span>    name <span class="op">=</span> <span class="st">"ae_summary"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Adverse Event Summary"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">metalite</span><span class="fu">::</span><span class="fu"><a href="https://merck.github.io/metalite/reference/meta_build.html" class="external-link">meta_build</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="step-2-generate-the-ae-listing-table">Step 2: Generate the AE listing table<a class="anchor" aria-label="anchor" href="#step-2-generate-the-ae-listing-table"></a>
+<h2 id="prepare-a-mock-table">Prepare a mock table<a class="anchor" aria-label="anchor" href="#prepare-a-mock-table"></a>
 </h2>
-<p><code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> uses the population, observation,
-parameter, and analysis definitions in <code>meta</code> to prepare the
-listing dataset. The result is passed directly to
-<code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code> to create the RTF table.</p>
+<p>First, prepare the AE summary analysis. Passing
+<code>mock = TRUE</code> to <code><a href="../reference/format_ae_summary.html">format_ae_summary()</a></code> then
+creates placeholder values for the formatted table.</p>
+<p>The mock table retains the row labels and treatment-group structure
+derived from the metadata. This allows the layout to be reviewed without
+presenting the calculated analysis values as final results.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">footnote</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED"</span>,</span>
-<span>  <span class="st">"Action Taken: Discontinued = DRUG WITHDRAWN, Interrupted = DRUG INTERRUPTED, Reduced = DOSE REDUCED, Increased = DOSE INCREASED, None = DOSE NOT CHANGED, N/A = NOT APPLICABLE."</span>,</span>
-<span>  <span class="st">"Outcome: Resolved = RECOVERED/RESOLVED, Resolving = RECOVERING/RESOLVING, Sequelae = RECOVERED/RESOLVED WITH SEQUELAE, Not resolved = NOT RECOVERED/NOT RESOLVED."</span>,</span>
-<span>  <span class="st">"Adverse event terms are from MedDRA Version 25.0."</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/prepare_ae_listing.html">prepare_ae_listing</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span></span>
 <span>  <span class="va">meta</span>,</span>
-<span>  analysis <span class="op">=</span> <span class="st">"ae_listing"</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
 <span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
-<span>  parameter <span class="op">=</span> <span class="st">"ser"</span></span>
+<span>  parameter <span class="op">=</span> <span class="st">"any;rel;ser"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/tlf_ae_listing.html">tlf_ae_listing</a></span><span class="op">(</span></span>
-<span>    footnotes <span class="op">=</span> <span class="va">footnote</span>,</span>
-<span>    orientation <span class="op">=</span> <span class="st">"portrait"</span>,</span>
+<span>  <span class="fu"><a href="../reference/format_ae_summary.html">format_ae_summary</a></span><span class="op">(</span>mock <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/tlf_ae_summary.html">tlf_ae_summary</a></span><span class="op">(</span></span>
 <span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,</span>
-<span>    analysis <span class="op">=</span> <span class="st">"ae_listing"</span>, <span class="co"># Provide analysis type defined in meta$analysis</span></span>
+<span>    analysis <span class="op">=</span> <span class="st">"ae_summary"</span>, <span class="co"># Provide analysis type defined in meta$analysis</span></span>
 <span>    path_outtable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".rtf"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; The output is saved in/tmp/RtmpBIby9K/file1cfa1ba48962.rtf</span></span></code></pre></div>
-<embed src="pdf/ae0listing1.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
+<span><span class="co">#&gt; any</span></span>
+<span><span class="co">#&gt; rel</span></span>
+<span><span class="co">#&gt; ser</span></span>
+<span><span class="co">#&gt; The output is saved in/tmp/Rtmp2OUxyy/file1e4f3a591a8e.rtf</span></span></code></pre></div>
+<embed src="pdf/ae0summary3.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

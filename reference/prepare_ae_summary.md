@@ -36,7 +36,22 @@ prepare_ae_summary(meta, population, observation, parameter, ...)
 
 ## Value
 
-A list of analysis datasets needed for AE summary.
+An `outdata` object containing analysis datasets needed for AE summary.
+Key values include:
+
+- `group`: Treatment groups used to index the statistic columns.
+
+- `order`: Numeric values defining the row order.
+
+- `name`: Descriptive row labels corresponding to `order`.
+
+- `n_pop`: Number of participants in the population.
+
+- `n`: Number of participants with an adverse event.
+
+- `prop`: Proportion of participants with an adverse event.
+
+- `diff`: Risk difference compared with the `reference_group`.
 
 ## Examples
 

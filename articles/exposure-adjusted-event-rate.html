@@ -67,11 +67,9 @@
 
     
     
-<p>This is a supplementary document for the file “Exposure-Adjusted
-Adverse Event Summary (Updated)”. We first provide an explanation for
-the calculation of the exposure adjusted event rate (EAER) of adverse
-events, and then briefly summarize the programming steps of this
-calculation.</p>
+<p>This vignette explains how to calculate exposure-adjusted event rates
+(EAERs) and demonstrates the corresponding workflow in
+<code>metalite.ae</code>.</p>
 <div class="section level2">
 <h2 id="eaer-formula-explanation">EAER formula explanation<a class="anchor" aria-label="anchor" href="#eaer-formula-explanation"></a>
 </h2>
@@ -85,9 +83,8 @@ EAER_j (\text{EAER for } Trt_j)
 &amp;= \frac{\text{total number of events for } Trt_j \times \text{exp factor}}{\text{total person-days for } Trt_j}
 \end{aligned}
 </annotation></semantics></math></p>
-<p>The exposure factor (exp factor) will be adjusted depending on the
-adjustment unit defined by users. For instance, when the adjustment unit
-is ‘100 person-month’, EAER will be computed as follows:</p>
+<p>The exposure factor depends on the requested adjustment unit. For
+example, an adjustment unit of 100 person-months gives:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>E</mi><mi>A</mi><mi>E</mi><msub><mi>R</mi><mi>j</mi></msub><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">100 person-months</mtext><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><mrow><mtext mathvariant="normal">total number of events for </mtext><mspace width="0.333em"></mspace></mrow><mi>T</mi><mi>r</mi><msub><mi>t</mi><mi>j</mi></msub><mo>×</mo><mtext mathvariant="normal">exp factor</mtext><mo stretchy="false" form="prefix">(</mo><mo>=</mo><mn>100</mn><mo>×</mo><mn>30.4367</mn><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mrow><mtext mathvariant="normal">total person-days for </mtext><mspace width="0.333em"></mspace></mrow><mi>T</mi><mi>r</mi><msub><mi>t</mi><mi>j</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><mrow><mtext mathvariant="normal">total number of events for </mtext><mspace width="0.333em"></mspace></mrow><mi>T</mi><mi>r</mi><msub><mi>t</mi><mi>j</mi></msub><mo>×</mo><mn>3043.67</mn></mrow><mrow><mrow><mtext mathvariant="normal">total person-days for </mtext><mspace width="0.333em"></mspace></mrow><mi>T</mi><mi>r</mi><msub><mi>t</mi><mi>j</mi></msub></mrow></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
 EAER_j (\text{100 person-months})
@@ -99,10 +96,10 @@ EAER_j (\text{100 person-months})
 <div class="section level3">
 <h3 id="eaer-for-different-types-of-aes">EAER for different types of AEs<a class="anchor" aria-label="anchor" href="#eaer-for-different-types-of-aes"></a>
 </h3>
-<p>As an example, below are the EAER definitions for three types of AEs
-using three treatment groups (PBO, Low Dose, High Dose).</p>
+<p>The following examples define EAERs for three AE categories and three
+treatment groups: placebo (PBO), low dose (LD), and high dose (HD).</p>
 <div class="section level4">
-<h4 id="any-ae-adj-rate">ANY AE adj rate<a class="anchor" aria-label="anchor" href="#any-ae-adj-rate"></a>
+<h4 id="any-ae">Any AE<a class="anchor" aria-label="anchor" href="#any-ae"></a>
 </h4>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>A</mi><mi>E</mi><msub><mi>R</mi><mrow><mi>P</mi><mi>B</mi><mi>O</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">100 person-months</mtext><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mtext mathvariant="normal">total number of AEs for PBO</mtext><mo>×</mo><mn>3043.67</mn></mrow><mtext mathvariant="normal">total person-days for PBO</mtext></mfrac></mrow><annotation encoding="application/x-tex">
 EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
@@ -115,7 +112,7 @@ EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of AEs for High D
 </annotation></semantics></math></p>
 </div>
 <div class="section level4">
-<h4 id="serious-ae-adj-rate">Serious AE adj rate<a class="anchor" aria-label="anchor" href="#serious-ae-adj-rate"></a>
+<h4 id="serious-aes">Serious AEs<a class="anchor" aria-label="anchor" href="#serious-aes"></a>
 </h4>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>A</mi><mi>E</mi><msub><mi>R</mi><mrow><mi>P</mi><mi>B</mi><mi>O</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">100 person-months</mtext><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mtext mathvariant="normal">total number of SAEs for PBO</mtext><mo>×</mo><mn>3043.67</mn></mrow><mtext mathvariant="normal">total person-days for PBO</mtext></mfrac></mrow><annotation encoding="application/x-tex">
 EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of SAEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
@@ -128,7 +125,7 @@ EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of SAEs for High 
 </annotation></semantics></math></p>
 </div>
 <div class="section level4">
-<h4 id="rel-ae-adj-rate">REL AE adj rate<a class="anchor" aria-label="anchor" href="#rel-ae-adj-rate"></a>
+<h4 id="drug-related-aes">Drug-related AEs<a class="anchor" aria-label="anchor" href="#drug-related-aes"></a>
 </h4>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>A</mi><mi>E</mi><msub><mi>R</mi><mrow><mi>P</mi><mi>B</mi><mi>O</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">100 person-months</mtext><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mtext mathvariant="normal">total number of Drug-Related AEs for PBO</mtext><mo>×</mo><mn>3043.67</mn></mrow><mtext mathvariant="normal">total person-days for PBO</mtext></mfrac></mrow><annotation encoding="application/x-tex">
 EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of Drug-Related AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
@@ -143,18 +140,14 @@ EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of Drug-Related A
 </div>
 </div>
 <div class="section level2">
-<h2 id="programming-steps-of-eaer">Programming steps of EAER<a class="anchor" aria-label="anchor" href="#programming-steps-of-eaer"></a>
+<h2 id="calculate-eaers">Calculate EAERs<a class="anchor" aria-label="anchor" href="#calculate-eaers"></a>
 </h2>
-<ul>
-<li>Data preprocessing: At the end of this step, <code>adae</code> is
-created.</li>
-<li>Build a metadata object: At the end of this step, <code>meta</code>
-is created.</li>
-<li>Call the function <code><a href="../reference/prepare_ae_summary.html">prepare_ae_summary()</a></code> and
-<code><a href="../reference/extend_ae_summary_eaer.html">extend_ae_summary_eaer()</a></code>. This extend function has the
-following arguments: <code>outdata</code>, <code>duration_var</code>,
-and <code>adj_unit</code>. The output will be a list:</li>
-</ul>
+<p>The following workflow prepares the analysis data and metadata,
+calculates the AE summary results with
+<code><a href="../reference/prepare_ae_summary.html">prepare_ae_summary()</a></code>, and adds EAERs with
+<code><a href="../reference/extend_ae_summary_eaer.html">extend_ae_summary_eaer()</a></code>. Specify the treatment-duration
+variable with <code>duration_var</code> and the exposure unit with
+<code>adj_unit</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://merck.github.io/metalite.ae/">metalite.ae</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -263,7 +256,7 @@ and <code>adj_unit</code>. The output will be a list:</li>
 <span><span class="co">##  $ event_num      :'data.frame': 3 obs. of  3 variables:</span></span>
 <span><span class="co">##  $ eaer           :'data.frame': 3 obs. of  3 variables:</span></span>
 <span><span class="co">##  $ adj_unit       : chr "month"</span></span></code></pre>
-<p>Run <code>x$eaer</code> to get the EAER:</p>
+<p>The calculated rates are stored in <code>x$eaer</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">eaer</span></span></code></pre></div>
 <pre><code><span><span class="co">##      Low Dose  Placebo       Total</span></span>

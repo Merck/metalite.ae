@@ -3,13 +3,17 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   ae-listing: ae-listing.html
+  ae-specific-custom-columns: ae-specific-custom-columns.html
+  ae-specific-filter-sort: ae-specific-filter-sort.html
   ae-specific-subgroup: ae-specific-subgroup.html
   ae-specific: ae-specific.html
+  ae-summary-custom-columns: ae-summary-custom-columns.html
+  ae-summary-mock: ae-summary-mock.html
   ae-summary: ae-summary.html
   exposure-adjusted-event-rate: exposure-adjusted-event-rate.html
   metalite-ae: metalite-ae.html
   rate-compare: rate-compare.html
-last_built: 2026-08-10T14:30Z
+last_built: 2026-08-12T13:48Z
 urls:
   reference: https://merck.github.io/metalite.ae/reference
   article: https://merck.github.io/metalite.ae/articles

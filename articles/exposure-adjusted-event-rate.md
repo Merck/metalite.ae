@@ -1,10 +1,7 @@
 # Exposure Adjusted Event Rate
 
-This is a supplementary document for the file “Exposure-Adjusted Adverse
-Event Summary (Updated)”. We first provide an explanation for the
-calculation of the exposure adjusted event rate (EAER) of adverse
-events, and then briefly summarize the programming steps of this
-calculation.
+This vignette explains how to calculate exposure-adjusted event rates
+(EAERs) and demonstrates the corresponding workflow in `metalite.ae`.
 
 ## EAER formula explanation
 
@@ -18,9 +15,8 @@ EAER_j (\text{EAER for } Trt_j)
 \end{aligned}
 ```
 
-The exposure factor (exp factor) will be adjusted depending on the
-adjustment unit defined by users. For instance, when the adjustment unit
-is ‘100 person-month’, EAER will be computed as follows:
+The exposure factor depends on the requested adjustment unit. For
+example, an adjustment unit of 100 person-months gives:
 
 ``` math
 \begin{aligned}
@@ -32,10 +28,10 @@ EAER_j (\text{100 person-months})
 
 ### EAER for different types of AEs
 
-As an example, below are the EAER definitions for three types of AEs
-using three treatment groups (PBO, Low Dose, High Dose).
+The following examples define EAERs for three AE categories and three
+treatment groups: placebo (PBO), low dose (LD), and high dose (HD).
 
-#### ANY AE adj rate
+#### Any AE
 
 ``` math
 EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
@@ -49,7 +45,7 @@ EAER_{LD} (\text{100 person-months}) =\frac{\text{total number of AEs for Low Do
 EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of AEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}
 ```
 
-#### Serious AE adj rate
+#### Serious AEs
 
 ``` math
 EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of SAEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
@@ -63,7 +59,7 @@ EAER_{LD} (\text{100 person-months}) =\frac{\text{total number of SAEs for Low D
 EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of SAEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}
 ```
 
-#### REL AE adj rate
+#### Drug-related AEs
 
 ``` math
 EAER_{PBO} (\text{100 person-months}) =\frac{\text{total number of Drug-Related AEs for PBO} \times 3043.67}{\text{total person-days for PBO}}
@@ -77,16 +73,15 @@ EAER_{LD} (\text{100 person-months}) =\frac{\text{total number of Drug-Related A
 EAER_{HD} (\text{100 person-months}) =\frac{\text{total number of Drug-Related AEs for High Dose} \times 3043.67}{\text{total person-days for High Dose}}
 ```
 
-## Programming steps of EAER
+## Calculate EAERs
 
-- Data preprocessing: At the end of this step, `adae` is created.
-- Build a metadata object: At the end of this step, `meta` is created.
-- Call the function
-  [`prepare_ae_summary()`](https://merck.github.io/metalite.ae/reference/prepare_ae_summary.md)
-  and
-  [`extend_ae_summary_eaer()`](https://merck.github.io/metalite.ae/reference/extend_ae_summary_eaer.md).
-  This extend function has the following arguments: `outdata`,
-  `duration_var`, and `adj_unit`. The output will be a list:
+The following workflow prepares the analysis data and metadata,
+calculates the AE summary results with
+[`prepare_ae_summary()`](https://merck.github.io/metalite.ae/reference/prepare_ae_summary.md),
+and adds EAERs with
+[`extend_ae_summary_eaer()`](https://merck.github.io/metalite.ae/reference/extend_ae_summary_eaer.md).
+Specify the treatment-duration variable with `duration_var` and the
+exposure unit with `adj_unit`.
 
 ``` r
 
@@ -203,7 +198,7 @@ x
     ##  $ eaer           :'data.frame': 3 obs. of  3 variables:
     ##  $ adj_unit       : chr "month"
 
-Run `x$eaer` to get the EAER:
+The calculated rates are stored in `x$eaer`:
 
 ``` r
 

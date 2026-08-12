@@ -1,4 +1,4 @@
-# AE Specification
+# Generate a Static AE-Specific Table
 
 ``` r
 
@@ -7,41 +7,34 @@ library(metalite.ae)
 
 ## Overview
 
-The objective of this tutorial is to generate a production-ready AE
-specification analyses. It extends examples shown in the [specific AE
-chapter](https://r4csr.org/tlf-ae-specific.html) of the *R for Clinical
-Study Reports and Submission* book.
+This vignette demonstrates how to generate a static AE-specific table
+reporting patients with **drug-related adverse events** by treatment
+group.
 
-The AE specification analysis entails the creation of tables that
-summarize details of different types of adverse events. To accomplish
-this using metalite.ae, three essential functions are required:
+The workflow uses three functions from
+[metalite.ae](https://merck.github.io/metalite.ae/):
 
-- [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md):
-  prepare analysis raw datasets.
-- [`format_ae_specific()`](https://merck.github.io/metalite.ae/reference/format_ae_specific.md):
-  prepare analysis (mock) outdata with proper format.
-- [`tlf_ae_specific()`](https://merck.github.io/metalite.ae/reference/tlf_ae_specific.md):
-  transfer (mock) output dataset to RTF table.
+- [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
+  prepares the analysis datasets.
+- [`format_ae_specific()`](https://merck.github.io/metalite.ae/reference/format_ae_specific.md)
+  formats the results for reporting.
+- [`tlf_ae_specific()`](https://merck.github.io/metalite.ae/reference/tlf_ae_specific.md)
+  creates the RTF table.
 
-There are three optional functions to extend AE specification analysis.
+Related vignettes explain how to [customize displayed
+columns](https://merck.github.io/metalite.ae/articles/ae-specific-custom-columns.md)
+and [filter or sort
+rows](https://merck.github.io/metalite.ae/articles/ae-specific-filter-sort.md).
+This guide also covers basic RTF customization and mock output.
 
-- [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md):
-  add risk difference inference results based on M&N method.
-- [`extend_ae_specific_duration()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_duration.md):
-  add average duration of AE.
-- [`extend_ae_specific_events()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_events.md):
-  add average number of AE events.
+An example output is shown below.
 
-An example output:
+## Generate an AE-specific table
 
-## Example data
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package.
 
-Within metalite.ae, we utilized the ADSL and ADAE datasets from the
-metalite package to create an illustrative dataset. The metadata
-structure remains consistent across all analysis examples within
-metalite.ae. Additional information can be accessed on the [metalite
-package
-website](https://merck.github.io/metalite/articles/metalite.html).
+### Step 1: Define metadata
 
 ``` r
 
@@ -100,7 +93,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   ) |>
   metalite::define_analysis(
     name = "ae_specific",
-    title = "Patients with Drug-Related Adverse Events"
+    title = "Participants with Drug-Related Adverse Events"
   ) |>
   metalite::meta_build()
 ```
@@ -146,13 +139,10 @@ meta
 
 ### Analysis preparation
 
-The function
 [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
-is used to create a dataset for AE summary analysis by utilizing
-predefined keywords specified in the example data `meta`.
-
-The resulting output of the function is an `outdata` object, which
-comprises a collection of raw datasets for analysis and reporting.
+uses the population, observation, and parameter definitions in `meta` to
+calculate the AE-specific analysis results. It returns an `outdata`
+object for formatting and reporting.
 
 ``` r
 
@@ -185,8 +175,8 @@ outdata
 #>  $ prepare_call   : language prepare_ae_specific(meta = meta, population = "apat", observation = "wk12",      parameter = "rel")
 ```
 
-The resulting dataset contains frequently used statistics, with
-variables indexed according to the order specified in `outdata$group`.
+The statistic columns follow the treatment-group order in
+`outdata$group`.
 
 ``` r
 
@@ -194,7 +184,7 @@ outdata$group
 #> [1] "Low Dose" "Placebo"  "Total"
 ```
 
-The row is indexed according to the order of `outdata$name`.
+Rows follow the order defined by `outdata$order` and `outdata$name`.
 
 ``` r
 
@@ -208,7 +198,7 @@ head(data.frame(outdata$order, outdata$name))
 #> 6          1018                          Atrial fibrillation
 ```
 
-- `n_pop`: number of participants in population.
+- `n_pop`: number of participants in the analysis population.
 
 ``` r
 
@@ -217,7 +207,7 @@ outdata$n_pop
 #> 1  84  86 170
 ```
 
-- `n`: number of subjects with AE.
+- `n`: number of participants with an AE.
 
 ``` r
 
@@ -231,7 +221,7 @@ head(outdata$n)
 #> 22   0   1   1
 ```
 
-- `prop`: proportion of subjects with AE.
+- `prop`: proportion of participants with an AE.
 
 ``` r
 
@@ -261,10 +251,8 @@ head(outdata$diff)
 
 ## Format output
 
-Once the raw analysis results are obtained, the
 [`format_ae_specific()`](https://merck.github.io/metalite.ae/reference/format_ae_specific.md)
-function can be employed to prepare the outdata, ensuring its
-compatibility with production-ready RTF tables.
+converts the analysis results into a production-ready table dataset.
 
 ``` r
 
@@ -288,9 +276,8 @@ head(tbl$tbl)
 
 ### Additional statistics
 
-By using the `display` argument, we can choose specific statistics to
-include. For instance, we have the option to incorporate the risk
-difference.
+Use `display` to select and order statistics. For example, include
+`"diff"` to show the risk difference.
 
 ``` r
 
@@ -312,11 +299,11 @@ head(tbl$tbl)
 #> 22        -1.2
 ```
 
-To perform advanced analysis, the
+Use
 [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md)
-function is utilized. For instance, we can incorporate a 95% confidence
-interval based on the Miettinen and Nurminen (M&N) method. Further
-information regarding the M&N method can be found in the [rate compare
+to add confidence intervals and p-values for the risk difference based
+on the Miettinen and Nurminen (M&N) method. For details, see the [rate
+compare
 vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html).
 
 ``` r
@@ -341,9 +328,9 @@ head(tbl$tbl)
 #> 22   (-6.3,  3.3)
 ```
 
-We can use
+Use
 [`extend_ae_specific_duration()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_duration.md)
-to add average duration of AE.
+to add the mean AE duration.
 
 ``` r
 
@@ -368,9 +355,9 @@ head(tbl$tbl)
 #> 22  (1.2)          6.0
 ```
 
-We can use
+Use
 [`extend_ae_specific_events()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_events.md)
-to add number of AE and/or average of it per subject.
+to add the AE count and the mean number of events per participant.
 
 ``` r
 
@@ -395,20 +382,13 @@ head(tbl$tbl)
 #> 22             0   1  (1.2)          1.0             1
 ```
 
-We can use `filter_method` and `filter_criteria` parameters to filter
-information based on the specified criteria:
+Use `filter_method` and `filter_criteria` to retain rows that meet a
+minimum incidence threshold in at least one treatment group:
 
-- `filter_method`: A character value to specify how to filter rows (by
-  `count` or `percent`).
-  - `count`: Filter based on participant count.
-  - `percent`: Filter based on percent incidence.
-- `filter_criteria`: A numeric value to display rows where at least one
-  therapy group has:
-  - a percent incidence or participant count greater than or equal to
-    the specified value.
-  - If `filter_method` is `percent`, the value should be between 0 and
-    100.
-  - If `filter_method` is `count`, the value should be greater than 0.
+- `filter_method = "count"` applies the threshold to participant counts.
+- `filter_method = "percent"` applies the threshold to incidence
+  percentages from 0 to 100.
+- `filter_criteria` sets the minimum count or percentage to retain.
 
 ``` r
 
@@ -437,18 +417,16 @@ head(tbl$tbl)
 #> 102            15   4  (4.7)   1.8 ( 0.5)             7
 ```
 
-In results above, rows having any one of “prop_x” values are greater
-than 6 get kept in the output.
+The example retains rows with an incidence of at least 6% in any
+treatment group.
 
-We can use `sort_order` and `sort_column` parameters to sort results
-based on the specified criteria:
+Use `sort_order` and `sort_column` to control row order:
 
-- `sort_order` A character value to specify sorting order:
-  - `alphabetical`: Sort by alphabetical order.
-  - `count_des`: Sort by count in descending order.
-  - `count_asc`: Sort by count in ascending order.
-- `sort_column A` character value of `group` in `outdata` used to sort a
-  table with.
+- `sort_order = "alphabetical"` sorts rows by label.
+- `sort_order = "count_des"` sorts counts in descending order.
+- `sort_order = "count_asc"` sorts counts in ascending order.
+- `sort_column` selects the treatment group whose counts determine the
+  order.
 
 ``` r
 
@@ -479,15 +457,9 @@ head(tbl$tbl)
 
 ### Mock data preparation
 
-The `mock` argument facilitates the creation of a mock table with ease.
-
-Please note that the intention of the `mock` argument is not to provide
-an all-encompassing mock table template. Instead, it serves as a
-convenient method to assist users in generating a mock table that
-closely resembles the desired output layout. To develop a more versatile
-mock table generation tool, further efforts are necessary. This could
-potentially involve the creation of a dedicated mock table generation
-package or similar solutions.
+Set `mock = TRUE` to create placeholder values while preserving the
+planned table structure. The result is a starting point and may require
+customization for study-specific requirements.
 
 ``` r
 
@@ -511,8 +483,9 @@ head(tbl$tbl)
 
 ## RTF tables
 
-The last step is to prepare the RTF table using
-[`tlf_ae_summary()`](https://merck.github.io/metalite.ae/reference/tlf_ae_summary.md).
+Pass the formatted output to
+[`tlf_ae_specific()`](https://merck.github.io/metalite.ae/reference/tlf_ae_specific.md)
+to create the RTF table.
 
 ``` r
 
@@ -522,15 +495,13 @@ outdata |>
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
-    path_outtable = "rtf/ae0specific1.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific1.rtf
+#> The output is saved in/tmp/RtmpEJLHDu/file1ddc39ca6016.rtf
 ```
 
-The
-[`tlf_ae_specific()`](https://merck.github.io/metalite.ae/reference/tlf_ae_specific.md)
-function also provides some commonly used arguments to customize the
-table.
+Use arguments such as `col_rel_width`, `text_font_size`, and
+`orientation` to customize the table layout.
 
 ``` r
 
@@ -543,12 +514,12 @@ outdata |>
     col_rel_width = c(6, rep(1, 6)),
     text_font_size = 8,
     orientation = "landscape",
-    path_outtable = "rtf/ae0specific2.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2.rtf
+#> The output is saved in/tmp/RtmpEJLHDu/file1ddc5ef35f52.rtf
 ```
 
-The mock table can also be generated.
+Mock output can be written to RTF in the same way.
 
 ``` r
 
@@ -558,7 +529,7 @@ outdata |>
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
-    path_outtable = "rtf/mock_ae0specific1.rtf"
+    path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/mock_ae0specific1.rtf
+#> The output is saved in/tmp/RtmpEJLHDu/file1ddc76c5cca.rtf
 ```

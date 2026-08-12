@@ -73,8 +73,15 @@ The term name is used as key to link information.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of analysis datasets needed for AE summary.</p>
-    </div>
+    <p>An <code>outdata</code> object containing analysis datasets needed for AE
+summary. Key values include:</p><ul><li><p><code>group</code>: Treatment groups used to index the statistic columns.</p></li>
+<li><p><code>order</code>: Numeric values defining the row order.</p></li>
+<li><p><code>name</code>: Descriptive row labels corresponding to <code>order</code>.</p></li>
+<li><p><code>n_pop</code>: Number of participants in the population.</p></li>
+<li><p><code>n</code>: Number of participants with an adverse event.</p></li>
+<li><p><code>prop</code>: Proportion of participants with an adverse event.</p></li>
+<li><p><code>diff</code>: Risk difference compared with the <code>reference_group</code>.</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
