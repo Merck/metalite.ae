@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{Create a AE Summary Mock-up Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0summary3.rtf
 ---
 
 ```{r, include=FALSE}
@@ -128,6 +130,9 @@ from the metadata. This allows the layout to be reviewed without presenting
 the calculated analysis values as final results.
 
 ```{r}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary3.rtf")
+
 prepare_ae_summary(
   meta,
   population = "apat",
@@ -138,8 +143,15 @@ prepare_ae_summary(
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
+```
+
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0summary3.rtf" download="ae0summary3.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}

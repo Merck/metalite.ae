@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{Generate a Static AE-Specific Table in RTF format}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0specific1.rtf
 ---
 
 ```{r, include=FALSE}
@@ -130,6 +132,9 @@ production-ready table dataset.
 Pass the formatted output to `tlf_ae_specific()` to create the RTF table.
 
 ```{r, message = FALSE}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0specific1.rtf")
+
 outdata <- prepare_ae_specific(
   meta,
   population = "apat",
@@ -141,8 +146,15 @@ outdata <- prepare_ae_specific(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific", # Provide analysis type defined in meta$analysis
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
+```
+
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0specific1.rtf" download="ae0specific1.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}

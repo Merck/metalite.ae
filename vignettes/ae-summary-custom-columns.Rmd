@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{Customize Columns in an AE Summary Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0summary2.rtf
 ---
 
 ```{r, include=FALSE}
@@ -138,6 +140,9 @@ For example, include `"diff"` in addition to the number and proportion of
 participants with an adverse event:
 
 ```{r}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary2.rtf")
+
 prepare_ae_summary(
   meta,
   population = "apat",
@@ -150,8 +155,15 @@ prepare_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     col_rel_width = c(3, rep(1, 6)),
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
+```
+
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0summary2.rtf" download="ae0summary2.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}

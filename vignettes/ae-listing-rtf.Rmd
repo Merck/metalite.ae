@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{Generate a Static AE Listing Table in RTF format}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0listing1.rtf
 ---
 
 ```{r, include=FALSE}
@@ -115,7 +117,8 @@ footnote <- c(
   "Adverse event terms are from MedDRA Version 25.0."
 )
 
-rtf_file <- tempfile(fileext = ".rtf")
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0listing1.rtf")
 
 prepare_ae_listing(
   meta,
@@ -133,84 +136,9 @@ prepare_ae_listing(
   )
 ```
 
-```{r convert-rtf-to-pdf, include=FALSE}
-pdf_dir <- if (dir.exists("vignettes/pdf")) "vignettes/pdf" else "pdf"
-pdf_file <- file.path(pdf_dir, "ae0listing1.pdf")
-
-libreoffice <- c(
-  Sys.which(c("libreoffice", "soffice")),
-  "/Applications/LibreOffice.app/Contents/MacOS/soffice"
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0listing1.rtf" download="ae0listing1.rtf">',
+  "Download the generated RTF table</a></p>"
 )
-libreoffice <- unname(libreoffice[file.exists(libreoffice)][1])
-browser <- c(
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
-)
-browser <- browser[file.exists(browser)][1]
-
-if (!is.na(libreoffice)) {
-  conversion_dir <- tempfile("ae-listing-pdf-")
-  dir.create(conversion_dir)
-
-  system2(
-    libreoffice,
-    c(
-      "--headless", "--convert-to", "pdf",
-      "--outdir", shQuote(conversion_dir), shQuote(rtf_file)
-    ),
-    stdout = TRUE,
-    stderr = TRUE
-  )
-
-  converted_pdf <- file.path(
-    conversion_dir,
-    paste0(tools::file_path_sans_ext(basename(rtf_file)), ".pdf")
-  )
-
-  if (file.exists(converted_pdf)) {
-    file.copy(converted_pdf, pdf_file, overwrite = TRUE)
-  } else {
-    warning("LibreOffice did not create the expected PDF; using the committed PDF.")
-  }
-} else if (Sys.info()[["sysname"]] == "Darwin" && !is.na(browser)) {
-  conversion_dir <- tempfile("ae-listing-pdf-")
-  dir.create(conversion_dir)
-  html_file <- file.path(conversion_dir, "ae0listing1.html")
-  browser_profile <- file.path(conversion_dir, "browser-profile")
-
-  system2(
-    "/usr/bin/textutil",
-    c("-convert", "html", "-output", shQuote(html_file), shQuote(rtf_file))
-  )
-  suppressWarnings(
-    system2(
-      browser,
-      c(
-        "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-        paste0("--user-data-dir=", shQuote(browser_profile)),
-        paste0("--print-to-pdf=", shQuote(normalizePath(pdf_file, mustWork = FALSE))),
-        paste0("file://", normalizePath(html_file))
-      ),
-      stdout = FALSE,
-      stderr = FALSE,
-      timeout = 10
-    )
-  )
-
-  if (!file.exists(pdf_file)) {
-    stop("The browser did not create the expected PDF.", call. = FALSE)
-  }
-} else if (!file.exists(pdf_file)) {
-  stop(
-    paste(
-      "No supported RTF-to-PDF converter was found and the PDF does not exist.",
-      "Install LibreOffice, then rerun this chunk."
-    ),
-    call. = FALSE
-  )
-}
-```
-
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics(pdf_file)
 ```

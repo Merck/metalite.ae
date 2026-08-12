@@ -5,6 +5,10 @@ vignette: >
   %\VignetteIndexEntry{Customize Columns in an AE Specific Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0specific2a.rtf
+  - rtf/ae0specific2b.rtf
+  - rtf/ae0specific2c.rtf
 ---
 
 ```{r, include=FALSE}
@@ -123,6 +127,8 @@ Miettinen and Nurminen method. See the
 [rate comparison vignette](rate-compare.html) for methodological details.
 
 ```{r}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+
 prepare_ae_specific(
   meta,
   population = "apat",
@@ -137,8 +143,15 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific2a.rtf")
   )
+```
+
+```{r download-inference-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0specific2a.rtf" download="ae0specific2a.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
@@ -164,8 +177,15 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific2b.rtf")
   )
+```
+
+```{r download-duration-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0specific2b.rtf" download="ae0specific2b.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
@@ -192,8 +212,15 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific2c.rtf")
   )
+```
+
+```{r download-events-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0specific2c.rtf" download="ae0specific2c.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}

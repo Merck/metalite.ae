@@ -55,6 +55,7 @@ reference:
     - extend_ae_specific_subgroup
     - format_ae_specific
     - tlf_ae_specific
+    - gt_ae_specific
 - title: AE listing
   contents:
     - prepare_ae_listing
