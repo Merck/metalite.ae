@@ -160,6 +160,6 @@ prepare_ae_summary(
 ```{r download-rtf, results="asis", echo=FALSE}
 cat(
   '<p><a href="rtf/ae0summary1.rtf" download="ae0summary1.rtf">',
-  'Download the generated RTF table</a></p>'
+  "Download the generated RTF table</a></p>"
 )
 ```

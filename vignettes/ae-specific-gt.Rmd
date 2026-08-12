@@ -130,7 +130,7 @@ prepare_ae_specific(
   population = "apat",
   observation = "wk12",
   parameter = "rel"
-  ) |> 
+) |>
   format_ae_specific() |>
   gt_ae_specific(
     meddra_version = "24.0",
