@@ -213,7 +213,7 @@ prepare_ae_specific <- function(meta,
     overall_max <- NA # or 0, depending on your preference
   } else {
     # Extract the suffix part for grouping
-    groups <- sapply(strsplit(names(counts), " "), function(x) paste(tail(x, length(par_soc)), collapse = " "))
+    groups <- sapply(strsplit(names(counts), " "), function(x) paste(utils::tail(x, length(par_soc)), collapse = " "))
 
     max_per_soc <- tapply(counts, groups, max)
     overall_max <- max(max_per_soc)

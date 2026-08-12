@@ -8,13 +8,8 @@ gt_ae_summary(
   outdata,
   source,
   analysis,
-  col_rel_width = NULL,
-  text_font_size = 9,
-  orientation = "portrait",
   title = c("analysis", "observation", "population"),
-  footnotes = NULL,
-  path_outdata = NULL,
-  path_outtable = NULL
+  footnotes = NULL
 )
 }
 \arguments{
@@ -24,23 +19,10 @@ gt_ae_summary(
 
 \item{analysis}{One of analysis name existing at \code{outdata$meta$analysis}}
 
-\item{col_rel_width}{Column relative width in a vector e.g. c(2,1,1) refers to 2:1:1.
-Default is NULL for equal column width.}
-
-\item{text_font_size}{Text font size.  To vary text font size by column, use
-numeric vector with length of vector equal to number of columns
-displayed e.g. c(9,20,40).}
-
-\item{orientation}{Orientation in 'portrait' or 'landscape'.}
-
 \item{title}{Term "analysis", "observation"and "population") for collecting
 title from metadata or a character vector of table titles.}
 
 \item{footnotes}{A character vector of table footnotes.}
-
-\item{path_outdata}{A character string of the outdata path.}
-
-\item{path_outtable}{A character string of the outtable path.}
 }
 \value{
 RTF file and the source dataset for AE summary table.
