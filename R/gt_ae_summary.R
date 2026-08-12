@@ -118,13 +118,8 @@
 gt_ae_summary <- function(outdata,
                           source,
                           analysis,
-                          col_rel_width = NULL,
-                          text_font_size = 9,
-                          orientation = "portrait",
                           title = c("analysis", "observation", "population"),
-                          footnotes = NULL,
-                          path_outdata = NULL,
-                          path_outtable = NULL) {
+                          footnotes = NULL) {
   tbl <- outdata$tbl
   group <- outdata$group
   num_groups <- length(group)
@@ -162,7 +157,7 @@ gt_ae_summary <- function(outdata,
   # Create spanner functions list
   spanner_funs <- lapply(seq_along(group), function(i) {
     function(gt_tbl) {
-      gt_tbl |> tab_spanner(
+      gt_tbl |> gt::tab_spanner(
         label = group[i],
         columns = c(paste0("n_", i), paste0("prop_", i))
       )
@@ -174,9 +169,9 @@ gt_ae_summary <- function(outdata,
   prop_cols <- paste0("prop_", 1:num_groups)
 
   cols_label_vec <- c(
-    setNames("", name_col),
-    setNames(rep("n", num_groups), n_cols),
-    setNames(rep("(%)", num_groups), prop_cols)
+    stats::setNames("", name_col),
+    stats::setNames(rep("n", num_groups), n_cols),
+    stats::setNames(rep("(%)", num_groups), prop_cols)
   )
 
   # -------------------------
@@ -212,20 +207,20 @@ gt_ae_summary <- function(outdata,
   source <- if (!is.null(source)) gt::md(convert_caret_sup(source)) else source
 
   gt_tbl <- tbl |>
-    gt() |>
-    sub_missing(columns = 1:ncol(tbl), missing_text = "") |>
-    fmt_markdown(columns = 1) |>
-    tab_header(title = gt::md(combined_title_md)) |>
+    gt::gt() |>
+    gt::sub_missing(columns = 1:ncol(tbl), missing_text = "") |>
+    gt::fmt_markdown(columns = 1) |>
+    gt::tab_header(title = gt::md(combined_title_md)) |>
     (\(gt_tbl) Reduce(function(acc, f) f(acc), spanner_funs, init = gt_tbl))() |>
-    cols_label(!!!cols_label_vec)
+    gt::cols_label(!!!cols_label_vec)
 
   # Add footnotes and source (if present). gt::tab_source_note accepts a character vector;
   # we pass the (possibly converted) footnotes and source.
   if (!is.null(footnotes) && length(footnotes) > 0) {
-    gt_tbl <- gt_tbl |> tab_source_note(footnotes)
+    gt_tbl <- gt_tbl |> gt::tab_source_note(footnotes)
   }
   if (!is.null(source) && nzchar(source)) {
-    gt_tbl <- gt_tbl |> tab_source_note(source)
+    gt_tbl <- gt_tbl |> gt::tab_source_note(source)
   }
 
   return(gt_tbl)

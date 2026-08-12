@@ -83,13 +83,8 @@ test_that("gt_ae_summary supports NULL source and footnotes", {
     gt_ae_summary(
       source = NULL,
       analysis = "ae_summary",
-      col_rel_width = NULL,
-      text_font_size = 9,
-      orientation = "portrait",
       title = c("analysis", "observation", "population"),
-      footnotes = NULL,
-      path_outdata = NULL,
-      path_outtable = NULL
+      footnotes = NULL
     )
 
   expect_s3_class(result, "gt_tbl")
