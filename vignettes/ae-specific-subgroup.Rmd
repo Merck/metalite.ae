@@ -5,6 +5,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Subgroup Analysis for Specific AE}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0specific0sub0gender1.rtf
 ---
 
 ```{r, include=FALSE}
@@ -99,6 +101,9 @@ results for each subgroup. `format_ae_specific_subgroup()` formats those
 results, and `tlf_ae_specific_subgroup()` creates the RTF table.
 
 ```{r}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0specific0sub0gender1.rtf")
+
 prepare_ae_specific_subgroup(
   meta,
   population = "apat",
@@ -113,6 +118,16 @@ prepare_ae_specific_subgroup(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
+```
+
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  paste0(
+    '<p><a href="rtf/ae0specific0sub0gender1.rtf" ',
+    'download="ae0specific0sub0gender1.rtf">'
+  ),
+  "Download the generated RTF table</a></p>"
+)
 ```

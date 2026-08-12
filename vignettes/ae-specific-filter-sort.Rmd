@@ -138,12 +138,6 @@ cat(
 )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific4.pdf")
-```
-
-
-
 ## Sort rows
 
 The `sort_order` argument accepts:
@@ -182,10 +176,6 @@ cat(
   '<p><a href="rtf/ae0specific5.rtf" download="ae0specific5.rtf">',
   "Download the generated RTF table</a></p>"
 )
-```
-
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific5.pdf")
 ```
 
 ## Filter and sort rows

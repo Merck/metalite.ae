@@ -154,10 +154,6 @@ cat(
 )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific2a.pdf")
-```
-
 ### Add a column for average event duration
 
 Use `extend_ae_specific_duration()` to calculate the average duration of
@@ -186,10 +182,6 @@ cat(
   '<p><a href="rtf/ae0specific2b.rtf" download="ae0specific2b.rtf">',
   "Download the generated RTF table</a></p>"
 )
-```
-
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific2b.pdf")
 ```
 
 ### Add a column for event frequency

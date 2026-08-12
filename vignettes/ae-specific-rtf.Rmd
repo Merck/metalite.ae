@@ -39,12 +39,6 @@ Related vignettes explain how to
 [filter or sort rows](ae-specific-filter-sort.html). This guide also covers
 basic RTF customization and mock output.
 
-An example output is shown below.
-
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific1.pdf")
-```
-
 ## Generate an AE-specific table
 
 The example uses ADSL and ADAE data from the

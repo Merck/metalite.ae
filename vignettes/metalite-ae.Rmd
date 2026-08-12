@@ -165,17 +165,24 @@ x <- x |> format_ae_summary()
 
 ### Step 4: Create the table
 ```{r, eval=FALSE}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary1.rtf")
+
 x |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]", # Define data source
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
-    path_outtable = tempfile(fileext = ".rtf") # Define output
+    path_outtable = rtf_file # Define output
   )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0summary1.pdf")
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0summary1.rtf" download="ae0summary1.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
+
 
 See the [package articles](https://merck.github.io/metalite.ae/articles/) for
 complete workflows and additional examples.
