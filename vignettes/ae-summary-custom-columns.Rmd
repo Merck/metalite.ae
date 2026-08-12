@@ -1,8 +1,8 @@
 ---
-title: "Generate a Static AE Summary Table"
+title: "Customize Columns in an AE Summary Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Generate a Static AE Summary Table}
+  %\VignetteIndexEntry{Customize Columns in an AE Summary Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,33 +22,19 @@ library(metalite.ae)
 
 ## Overview
 
-This vignette demonstrates how to generate a static AE summary table reporting
-- The number and percentage of participants with **any AEs** by treatment group;
-- The number and percentage of participants with **drug-related AEs** by treatment group;
-- The number and percentage of participants with **serious AEs** by treatment group.
+The `display` argument of `format_ae_summary()` selects and orders the
+statistics in an AE summary table. This vignette demonstrates how to include
+risk-difference estimates and inference results.
 
-
-The workflow uses three functions from
-[metalite.ae](https://merck.github.io/metalite.ae/):
-
-- `prepare_ae_summary()` prepares the analysis datasets.
-- `format_ae_summary()` formats the results or creates mock output.
-- `tlf_ae_summary()` creates the RTF table.
-
-An optional extension adds risk-difference inference:
-
-- `extend_ae_specific_inference()` adds confidence intervals and p-values based
-  on the Miettinen and Nurminen method.
-
-
-## Generate an AE summary table
+## Define metadata
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package.
 
-### Step 1: Define metadata
+The metadata follows the same approach used in the
+[AE Summary](ae-summary.html) vignette.
+
 ```{r}
-# Define metadata
 adsl <- forestly::forestly_adsl
 adae <- forestly::forestly_adae
 
@@ -74,10 +60,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::define_plan(analysis_plan) |>
   metalite::define_population(
     name = "apat",
-    var = c(
-      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
-      "SITEID", "SEX", "RACE", "AGE"
-    ),
+    var = c("USUBJID", "SAFFL", "TRT01A"),
     group = "TRT01A",
     subset = SAFFL == "Y",
     label = "All Participants as Treated"
@@ -86,7 +69,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     name = "wk12",
     var = c(
       "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
-      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+      "AESER"
     ),
     group = "TRTA",
     subset = SAFFL == "Y",
@@ -125,33 +108,52 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::meta_build()
 ```
 
-<details>
-<summary>Click to show the output</summary>
+## Select columns
+
+Use `extend_ae_specific_inference()` to add confidence intervals and p-values
+based on the Miettinen and Nurminen (M&N) method. For details, see the
+[rate compare vignette](https://merck.github.io/metalite.ae/articles/rate-compare.html).
+
+After extending the analysis, use `display` in `format_ae_summary()` to select
+statistics and set their order. Available options are:
+
+- `"n"`: number of participants with an adverse event.
+- `"prop"`: proportion of participants with an adverse event.
+- `"total"`: total columns.
+- `"diff"`: risk difference.
+- `"diff_ci"`: 95% confidence interval for the risk difference using the
+  Miettinen and Nurminen method.
+- `"diff_p"`: p-value for the risk difference using the Miettinen and
+  Nurminen method.
+- `"dur"`: average adverse event duration.
+- `"events_avg"`: average number of adverse events per participant.
+- `"events_count"`: number of adverse events per participant.
+
+The `"diff_ci"` and `"diff_p"` statistics are added by
+`extend_ae_specific_inference()`, `"dur"` is added by
+`extend_ae_specific_duration()`, and the event statistics are added by
+`extend_ae_specific_events()`.
+
+For example, include `"diff"` in addition to the number and proportion of
+participants with an adverse event:
+
 ```{r}
-meta
-```
-</details>
-
-### Step 2: Generate the RTF table
-
-`prepare_ae_summary()` uses the definitions in `meta` to calculate the summary
-results. `format_ae_summary()` formats those results, and `tlf_ae_summary()`
-creates the RTF table.
-```{r, message=FALSE}
 prepare_ae_summary(
   meta,
   population = "apat",
   observation = "wk12",
   parameter = "any;rel;ser"
 ) |>
-  format_ae_summary() |>
+  extend_ae_specific_inference() |>
+  format_ae_summary(display = c("n", "prop", "diff", "diff_ci")) |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
+    col_rel_width = c(3, rep(1, 6)),
     path_outtable = tempfile(fileext = ".rtf")
   )
 ```
 
 ```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0summary1.pdf")
+knitr::include_graphics("pdf/ae0summary2.pdf")
 ```

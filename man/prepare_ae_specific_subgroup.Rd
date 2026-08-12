@@ -40,7 +40,26 @@ will be second level header.}
 subgroup analysis or not.}
 }
 \value{
-A list of analysis datasets needed for AE specific subgroup analysis.
+An \code{outdata} object containing analysis datasets needed for AE
+specific subgroup analysis. The subgroup structure is defined by
+\code{subgroup_var}, \code{subgroup_header}, and \code{display_subgroup_total}. Key values
+include:
+\itemize{
+\item \code{group}: Treatment groups used to index the statistic columns.
+\item \code{subgroup}: Subgroup levels corresponding to the datasets in \code{out_all}.
+\item \code{display_subgroup_total}: Whether the subgroup total is displayed.
+\item \code{out_all}: A named list containing an AE-specific analysis result for
+each subgroup level and a \code{Total} result. Within each result, rows are
+indexed by \code{order} and \code{name}, and the commonly used statistics are:
+\itemize{
+\item \code{n_pop}: Number of participants in the population within the subgroup.
+\item \code{n}: Number of participants with an adverse event within the subgroup.
+\item \code{prop}: Proportion of participants with an adverse event within the
+subgroup.
+\item \code{diff}: Risk difference compared with the \code{reference_group} within the
+subgroup.
+}
+}
 }
 \description{
 Prepare datasets for AE specific subgroup analysis
