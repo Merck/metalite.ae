@@ -86,7 +86,8 @@ articles:
 
 - title: AE Summary Table (Static)
   contents:
-    - ae-summary
+    - ae-summary-rtf
+    - ae-summary-gt
     - ae-summary-custom-columns
     - ae-summary-mock
 
@@ -99,7 +100,7 @@ articles:
 
 - title: AE Listing Table (Static)
   contents:
-    - ae-listing
+    - ae-listing-rtf
 
 - title: Others
   contents:

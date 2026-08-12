@@ -1,0 +1,165 @@
+---
+title: "Generate a Static AE Summary Table in RTF format"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Generate a Static AE Summary Table in RTF format}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0summary1.rtf
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  out.width = "100%",
+  dpi = 150
+)
+```
+
+```{r}
+library(metalite.ae)
+```
+
+## Overview
+
+This vignette demonstrates how to generate a static AE summary table reporting
+- The number and percentage of participants with **any AEs** by treatment group;
+- The number and percentage of participants with **drug-related AEs** by treatment group;
+- The number and percentage of participants with **serious AEs** by treatment group.
+
+
+The workflow uses three functions from
+[metalite.ae](https://merck.github.io/metalite.ae/):
+
+- `prepare_ae_summary()` prepares the analysis datasets.
+- `format_ae_summary()` formats the results or creates mock output.
+- `tlf_ae_summary()` creates the RTF table.
+
+An optional extension adds risk-difference inference:
+
+- `extend_ae_specific_inference()` adds confidence intervals and p-values based
+  on the Miettinen and Nurminen method.
+
+
+## Generate an AE summary table
+
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package.
+
+### Step 1: Define metadata
+```{r}
+# Define metadata
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_summary",
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "any",
+    term1 = "",
+    term2 = "",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "All AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "ser",
+    term1 = "Serious",
+    term2 = "",
+    subset = AESER == "Y",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Serious AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_summary",
+    title = "Adverse Event Summary"
+  ) |>
+  metalite::meta_build()
+```
+
+<details>
+<summary>Click to show the output</summary>
+```{r}
+meta
+```
+</details>
+
+### Step 2: Generate the RTF table
+
+`prepare_ae_summary()` uses the definitions in `meta` to calculate the summary
+results. `format_ae_summary()` formats those results, and `tlf_ae_summary()`
+creates the RTF table.
+```{r, message=FALSE}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary1.rtf")
+
+prepare_ae_summary(
+  meta,
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+) |>
+  format_ae_summary() |>
+  tlf_ae_summary(
+    source = "Source:  [CDISCpilot: adam-adsl; adae]",
+    analysis = "ae_summary", # Provide analysis type defined in meta$analysis
+    path_outtable = rtf_file
+  )
+```
+
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0summary1.rtf" download="ae0summary1.rtf">',
+  'Download the generated RTF table</a></p>'
+)
+```
