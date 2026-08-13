@@ -1,12 +1,12 @@
 ---
-title: "Subgroup Analysis for Specific AE"
+title: "Generate a Static AE-Specific Table in RTF format"
 output: rmarkdown::html_vignette
 vignette: >
+  %\VignetteIndexEntry{Generate a Static AE-Specific Table in RTF format}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Subgroup Analysis for Specific AE}
   %\VignetteEncoding{UTF-8}
 resource_files:
-  - rtf/ae0specific0sub0gender1.rtf
+  - rtf/ae0specific1.rtf
 ---
 
 ```{r, include=FALSE}
@@ -24,21 +24,34 @@ library(metalite.ae)
 
 ## Overview
 
-This vignette demonstrates how to summarize patients with drug-related AEs by subgroup. The
-workflow uses three functions:
+This vignette demonstrates how to generate a static AE-specific table 
+reporting patients with **drug-related adverse events** by treatment group.
 
-- `prepare_ae_specific_subgroup()` prepares the subgroup analysis datasets.
-- `format_ae_specific_subgroup()` formats the results or creates mock output.
-- `tlf_ae_specific_subgroup()` creates the RTF table.
+The workflow uses three functions from
+[metalite.ae](https://merck.github.io/metalite.ae/):
 
-## Build metadata
+- `prepare_ae_specific()` prepares the analysis datasets.
+- `format_ae_specific()` formats the results for reporting.
+- `tlf_ae_specific()` creates the RTF table.
+
+Related vignettes explain how to
+[customize displayed columns](ae-specific-custom-columns.html) and
+[filter or sort rows](ae-specific-filter-sort.html). This guide also covers
+basic RTF customization and mock output.
+
+## Generate an AE-specific table
+
+The example uses ADSL and ADAE data from the
+[forestly](https://merck.github.io/forestly/) package.
+
+### Step 1: Define metadata
 
 ```{r}
 # Define metadata
 adsl <- forestly::forestly_adsl
 adae <- forestly::forestly_adae
 
-adsl$TRTA <- factor(
+adsl$TRT01A <- factor(
   adsl$TRT01A,
   levels = c("Xanomeline Low Dose", "Placebo"),
   labels = c("Low Dose", "Placebo")
@@ -61,17 +74,17 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::define_population(
     name = "apat",
     var = c(
-      "USUBJID", "SAFFL", "TRTA", "TRTDUR",
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
       "SITEID", "SEX", "RACE", "AGE"
     ),
-    group = "TRTA",
+    group = "TRT01A",
     subset = SAFFL == "Y",
     label = "All Participants as Treated"
   ) |>
   metalite::define_observation(
     name = "wk12",
     var = c(
-      "USUBJID", "SAFFL", "TRTA", "SEX", "AEDECOD", "AEBODSYS", "AEREL",
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
       "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
     ),
     group = "TRTA",
@@ -94,40 +107,46 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::meta_build()
 ```
 
-## Generate an AE specific subgroup table
-
-`prepare_ae_specific_subgroup()` uses the definitions in `meta` to calculate
-results for each subgroup. `format_ae_specific_subgroup()` formats those
-results, and `tlf_ae_specific_subgroup()` creates the RTF table.
-
+<details>
+<summary>Click to show the output</summary>
 ```{r}
-rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
-rtf_file <- file.path(rtf_dir, "ae0specific0sub0gender1.rtf")
+meta
+```
+</details>
 
-prepare_ae_specific_subgroup(
+### Step 2: Generate the static AE specific table
+
+`prepare_ae_specific()` uses the population, observation, and parameter
+definitions in `meta` to calculate the AE-specific analysis results. It returns
+an `outdata` object for formatting and reporting.
+
+`format_ae_specific()` converts the analysis results into a
+production-ready table dataset.
+
+Pass the formatted output to `tlf_ae_specific()` to create the RTF table.
+
+```{r, message = FALSE}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0specific1.rtf")
+
+outdata <- prepare_ae_specific(
   meta,
   population = "apat",
   observation = "wk12",
-  parameter = "rel",
-  subgroup_var = "SEX",
-  subgroup_header = c("TRTA", "SEX"),
-  display_subgroup_total = TRUE
+  parameter = "rel"
 ) |>
-  format_ae_specific_subgroup(display = c("n", "prop", "diff")) |>
-  tlf_ae_specific_subgroup(
+  format_ae_specific() |>
+  tlf_ae_specific(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_specific",
+    analysis = "ae_specific", # Provide analysis type defined in meta$analysis
     path_outtable = rtf_file
   )
 ```
 
 ```{r download-rtf, results="asis", echo=FALSE}
 cat(
-  paste0(
-    '<p><a href="rtf/ae0specific0sub0gender1.rtf" ',
-    'download="ae0specific0sub0gender1.rtf">'
-  ),
+  '<p><a href="rtf/ae0specific1.rtf" download="ae0specific1.rtf">',
   "Download the generated RTF table</a></p>"
 )
 ```

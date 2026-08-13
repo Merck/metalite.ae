@@ -1,10 +1,12 @@
 ---
-title: "AE Listing"
+title: "Generate a Static AE Listing Table in RTF format"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AE Listing}
+  %\VignetteIndexEntry{Generate a Static AE Listing Table in RTF format}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0listing1.rtf
 ---
 
 ```{r, include=FALSE}
@@ -23,7 +25,7 @@ library(metalite.ae)
 ## Overview
 
 This vignette demonstrates how to generate a static adverse event (AE) listing
-focused on serious AEs.
+focused on serious AEs in **RTF** format.
 
 The listing presents participant-level details for adverse events of interest.
 Two functions support the workflow:
@@ -115,6 +117,9 @@ footnote <- c(
   "Adverse event terms are from MedDRA Version 25.0."
 )
 
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0listing1.rtf")
+
 prepare_ae_listing(
   meta,
   analysis = "ae_listing",
@@ -127,10 +132,13 @@ prepare_ae_listing(
     orientation = "portrait",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_listing", # Provide analysis type defined in meta$analysis
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0listing1.pdf")
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0listing1.rtf" download="ae0listing1.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```

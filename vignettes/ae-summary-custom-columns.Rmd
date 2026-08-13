@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{Customize Columns in an AE Summary Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0summary2.rtf
 ---
 
 ```{r, include=FALSE}
@@ -32,7 +34,7 @@ The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package.
 
 The metadata follows the same approach used in the
-[AE Summary](ae-summary.html) vignette.
+[AE Summary in RTF format](ae-summary-rtf.html) vignette.
 
 ```{r}
 adsl <- forestly::forestly_adsl
@@ -138,6 +140,9 @@ For example, include `"diff"` in addition to the number and proportion of
 participants with an adverse event:
 
 ```{r}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary2.rtf")
+
 prepare_ae_summary(
   meta,
   population = "apat",
@@ -150,10 +155,13 @@ prepare_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     col_rel_width = c(3, rep(1, 6)),
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0summary2.pdf")
+```{r download-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0summary2.rtf" download="ae0summary2.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```

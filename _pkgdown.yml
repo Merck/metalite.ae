@@ -55,6 +55,7 @@ reference:
     - extend_ae_specific_subgroup
     - format_ae_specific
     - tlf_ae_specific
+    - gt_ae_specific
 - title: AE listing
   contents:
     - prepare_ae_listing
@@ -86,20 +87,22 @@ articles:
 
 - title: AE Summary Table (Static)
   contents:
-    - ae-summary
+    - ae-summary-rtf
+    - ae-summary-gt
     - ae-summary-custom-columns
     - ae-summary-mock
 
 - title: AE Specific Table (Static)
   contents:
-    - ae-specific
+    - ae-specific-rtf
+    - ae-specific-gt
     - ae-specific-custom-columns
     - ae-specific-filter-sort
     - ae-specific-subgroup
 
 - title: AE Listing Table (Static)
   contents:
-    - ae-listing
+    - ae-listing-rtf
 
 - title: Others
   contents:

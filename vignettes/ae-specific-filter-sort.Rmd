@@ -5,6 +5,10 @@ vignette: >
   %\VignetteIndexEntry{Filter and Sort an AE Specific Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - rtf/ae0specific4.rtf
+  - rtf/ae0specific5.rtf
+  - rtf/ae0specific6.rtf
 ---
 
 ```{r, include=FALSE}
@@ -107,6 +111,8 @@ To filter by participant count instead, set `filter_method = "count"` and pass
 the minimum count to `filter_criteria`.
 
 ```{r}
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+
 prepare_ae_specific(
   meta,
   population = "apat",
@@ -121,15 +127,16 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific4.rtf")
   )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific4.pdf")
+```{r download-filtered-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0specific4.rtf" download="ae0specific4.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
-
-
 
 ## Sort rows
 
@@ -160,12 +167,15 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific5.rtf")
   )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific5.pdf")
+```{r download-sorted-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0specific5.rtf" download="ae0specific5.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```
 
 ## Filter and sort rows
@@ -190,10 +200,13 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific6.rtf")
   )
 ```
 
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0specific6.pdf")
+```{r download-filtered-sorted-rtf, results="asis", echo=FALSE}
+cat(
+  '<p><a href="rtf/ae0specific6.rtf" download="ae0specific6.rtf">',
+  "Download the generated RTF table</a></p>"
+)
 ```

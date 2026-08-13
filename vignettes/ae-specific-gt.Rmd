@@ -1,8 +1,8 @@
 ---
-title: "Generate a Static AE Summary Table"
+title: "Generate a Static AE-Specific Table in GT format"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Generate a Static AE Summary Table}
+  %\VignetteIndexEntry{Generate a Static AE-Specific Table in GT format}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,31 +22,28 @@ library(metalite.ae)
 
 ## Overview
 
-This vignette demonstrates how to generate a static AE summary table reporting
-- The number and percentage of participants with **any AEs** by treatment group;
-- The number and percentage of participants with **drug-related AEs** by treatment group;
-- The number and percentage of participants with **serious AEs** by treatment group.
-
+This vignette demonstrates how to generate a static AE-specific table 
+reporting patients with **drug-related adverse events** by treatment group in a **gt** format.
 
 The workflow uses three functions from
 [metalite.ae](https://merck.github.io/metalite.ae/):
 
-- `prepare_ae_summary()` prepares the analysis datasets.
-- `format_ae_summary()` formats the results or creates mock output.
-- `tlf_ae_summary()` creates the RTF table.
+- `prepare_ae_specific()` prepares the analysis datasets.
+- `format_ae_specific()` formats the results for reporting.
+- `gt_ae_specific()` creates the RTF table.
 
-An optional extension adds risk-difference inference:
+Related vignettes explain how to
+[customize displayed columns](ae-specific-custom-columns.html) and
+[filter or sort rows](ae-specific-filter-sort.html). This guide also covers
+basic gt customization and mock output.
 
-- `extend_ae_specific_inference()` adds confidence intervals and p-values based
-  on the Miettinen and Nurminen method.
-
-
-## Generate an AE summary table
+## Procedure to generate an AE specific table in gt format
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package.
 
 ### Step 1: Define metadata
+
 ```{r}
 # Define metadata
 adsl <- forestly::forestly_adsl
@@ -64,10 +61,10 @@ adae$TRTA <- factor(
 )
 
 analysis_plan <- metalite::plan(
-  analysis = "ae_summary",
+  analysis = "ae_specific",
   population = "apat",
   observation = "wk12",
-  parameter = "any;rel;ser"
+  parameter = "rel"
 )
 
 meta <- metalite::meta_adam(observation = adae, population = adsl) |>
@@ -93,14 +90,6 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     label = "Weeks 0 to 12"
   ) |>
   metalite::define_parameter(
-    name = "any",
-    term1 = "",
-    term2 = "",
-    var = "AEDECOD",
-    soc = "AEBODSYS",
-    label = "All AEs"
-  ) |>
-  metalite::define_parameter(
     name = "rel",
     term1 = "Drug-Related",
     term2 = "",
@@ -109,18 +98,9 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     soc = "AEBODSYS",
     label = "Drug-related AEs"
   ) |>
-  metalite::define_parameter(
-    name = "ser",
-    term1 = "Serious",
-    term2 = "",
-    subset = AESER == "Y",
-    var = "AEDECOD",
-    soc = "AEBODSYS",
-    label = "Serious AEs"
-  ) |>
   metalite::define_analysis(
-    name = "ae_summary",
-    title = "Adverse Event Summary"
+    name = "ae_specific",
+    title = "Participants with Drug-Related Adverse Events"
   ) |>
   metalite::meta_build()
 ```
@@ -132,26 +112,23 @@ meta
 ```
 </details>
 
-### Step 2: Generate the RTF table
+### Step 2: Generate the AE specific table
 
-`prepare_ae_summary()` uses the definitions in `meta` to calculate the summary
-results. `format_ae_summary()` formats those results, and `tlf_ae_summary()`
-creates the RTF table.
-```{r, message=FALSE}
-prepare_ae_summary(
+`prepare_ae_specific()` uses the population, observation, and parameter
+definitions in `meta` to calculate the AE-specific analysis results. It returns
+an `outdata` object for formatting and reporting.
+
+```{r, message = FALSE}
+prepare_ae_specific(
   meta,
   population = "apat",
   observation = "wk12",
-  parameter = "any;rel;ser"
+  parameter = "rel"
 ) |>
-  format_ae_summary() |>
-  tlf_ae_summary(
+  format_ae_specific() |>
+  gt_ae_specific(
+    meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_summary", # Provide analysis type defined in meta$analysis
-    path_outtable = tempfile(fileext = ".rtf")
+    analysis = "ae_specific"
   )
-```
-
-```{r, out.width = "100%", out.height = "400px", echo = FALSE, fig.align = "center"}
-knitr::include_graphics("pdf/ae0summary1.pdf")
 ```
