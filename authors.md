@@ -6,6 +6,8 @@
 
 - **Yujie Zhao**. Author, maintainer.
 
+- **Hiroaki Fukuda**. Author.
+
 - **Benjamin Wang**. Author.
 
 - **Nan Xiao**. Author.
@@ -22,8 +24,6 @@
 
 - **Xuan Deng**. Author.
 
-- **Hiroaki Fukuda**. Author.
-
 - **Bing Liu**. Author.
 
 - **Jeetender Chauhan**. Author.
@@ -37,15 +37,15 @@
 Source:
 [`DESCRIPTION`](https://github.com/Merck/metalite.ae/blob/main/DESCRIPTION)
 
-Zhang Y, Zhao Y, Wang B, Xiao N, Nepal S, Ginnaram M, Patel R, Lang B,
-Deng X, Fukuda H, Liu B, Chauhan J (2026). *metalite.ae: Adverse Events
-Analysis Using 'metalite'*. R package version 0.1.3,
+Zhang Y, Zhao Y, Fukuda H, Wang B, Xiao N, Nepal S, Ginnaram M, Patel R,
+Lang B, Deng X, Liu B, Chauhan J (2026). *metalite.ae: Adverse Events
+Analysis Using 'metalite'*. R package version 0.1.4,
 <https://merck.github.io/metalite.ae/>.
 
     @Manual{,
       title = {metalite.ae: Adverse Events Analysis Using 'metalite'},
-      author = {Yilong Zhang and Yujie Zhao and Benjamin Wang and Nan Xiao and Sarad Nepal and Madhusudhan Ginnaram and Ruchitbhai Patel and Brian Lang and Xuan Deng and Hiroaki Fukuda and Bing Liu and Jeetender Chauhan},
+      author = {Yilong Zhang and Yujie Zhao and Hiroaki Fukuda and Benjamin Wang and Nan Xiao and Sarad Nepal and Madhusudhan Ginnaram and Ruchitbhai Patel and Brian Lang and Xuan Deng and Bing Liu and Jeetender Chauhan},
       year = {2026},
-      note = {R package version 0.1.3},
+      note = {R package version 0.1.4},
       url = {https://merck.github.io/metalite.ae/},
     }

@@ -1,5 +1,82 @@
 # Changelog
 
+## metalite.ae 0.1.4
+
+### New features
+
+- The new
+  [`gt_ae_specific()`](https://merck.github.io/metalite.ae/reference/gt_ae_specific.md)
+  function is developed to output AE specific tables in gt format
+  ([\#235](https://github.com/Merck/metalite.ae/issues/235), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+- The new
+  [`gt_ae_summary()`](https://merck.github.io/metalite.ae/reference/gt_ae_summary.md)
+  function renders formatted adverse event summaries as gt tables,
+  including titles, treatment-group spanners, footnotes, and source
+  notes ([\#215](https://github.com/Merck/metalite.ae/issues/215),
+  thanks to [@ginnaram13](https://github.com/ginnaram13)).
+- [`rate_compare()`](https://merck.github.io/metalite.ae/reference/rate_compare.md)
+  and
+  [`rate_compare_sum()`](https://merck.github.io/metalite.ae/reference/rate_compare_sum.md)
+  now accept a `bisection` argument to control the number of sections
+  used by the bisection method
+  ([\#221](https://github.com/Merck/metalite.ae/issues/221), thanks to
+  [@lm3388](https://github.com/lm3388)).
+- The `analysis` argument is now required by all `tlf_*()` functions so
+  that table titles are generated from the selected analysis metadata
+  ([\#207](https://github.com/Merck/metalite.ae/issues/207), thanks to
+  [@lm3388](https://github.com/lm3388)).
+- `meta_ae_example()` is no longer exported. Package examples now
+  construct metadata directly from the example datasets in forestly
+  ([\#229](https://github.com/Merck/metalite.ae/issues/229), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+
+### Bug fixes
+
+- [`format_ae_summary()`](https://merck.github.io/metalite.ae/reference/format_ae_summary.md)
+  now uses parameter labels when custom parameters do not define
+  `summ_row`, preventing row-name and summary-data length mismatches
+  ([\#224](https://github.com/Merck/metalite.ae/issues/224), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+- [`gt_ae_summary()`](https://merck.github.io/metalite.ae/reference/gt_ae_summary.md)
+  now supports missing source notes and footnotes without passing `NULL`
+  to [`gt::md()`](https://gt.rstudio.com/reference/md.html)
+  ([\#226](https://github.com/Merck/metalite.ae/issues/226), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+- [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
+  now preserves SOC and preferred-term row ordering when the data exceed
+  the previous fixed ordering placeholder
+  ([\#214](https://github.com/Merck/metalite.ae/issues/214), thanks to
+  [@ginnaram13](https://github.com/ginnaram13)).
+
+### Improvements
+
+- The `metalite_ae_adexsum` example dataset has been expanded for
+  adverse event forest plot workflows
+  ([\#220](https://github.com/Merck/metalite.ae/issues/220), thanks to
+  [@lm3388](https://github.com/lm3388)).
+- Unused arguments and R CMD check warnings in
+  [`gt_ae_summary()`](https://merck.github.io/metalite.ae/reference/gt_ae_summary.md)
+  and
+  [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
+  have been removed
+  ([\#232](https://github.com/Merck/metalite.ae/issues/232), thanks to
+  [@fukuhiro2023](https://github.com/fukuhiro2023)).
+- Package examples now use direct, reproducible metadata definitions
+  based on forestly example data
+  ([\#229](https://github.com/Merck/metalite.ae/issues/229), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie) and
+  [@fukuhiro2023](https://github.com/fukuhiro2023)).
+
+### Documentation
+
+- The adverse event vignettes and pkgdown site have been reorganized,
+  with new articles for custom columns, filtering and sorting, and mock
+  tables ([\#204](https://github.com/Merck/metalite.ae/issues/204),
+  [\#231](https://github.com/Merck/metalite.ae/issues/231), thanks to
+  [@lm3388](https://github.com/lm3388) and
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+
 ## metalite.ae 0.1.3
 
 CRAN release: 2024-10-23
@@ -13,7 +90,8 @@ CRAN release: 2024-10-23
   for SOC rows
   ([\#191](https://github.com/Merck/metalite.ae/issues/191),
   [\#192](https://github.com/Merck/metalite.ae/issues/192),
-  [\#203](https://github.com/Merck/metalite.ae/issues/203)).
+  [\#203](https://github.com/Merck/metalite.ae/issues/203)thanks to
+  [@fukuhiro2023](https://github.com/fukuhiro2023)).
 - Add `data/metalite_ae_adesxum.rda`
   ([\#189](https://github.com/Merck/metalite.ae/issues/189)).
 - Add event counts to `avg_count()` and

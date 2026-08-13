@@ -24,6 +24,8 @@ Authors:
 
 - Yilong Zhang
 
+- Hiroaki Fukuda
+
 - Benjamin Wang
 
 - Nan Xiao
@@ -37,8 +39,6 @@ Authors:
 - Brian Lang
 
 - Xuan Deng
-
-- Hiroaki Fukuda
 
 - Bing Liu
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">metalite.ae</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,11 +35,43 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.4" id="metaliteae-014">metalite.ae 0.1.4<a class="anchor" aria-label="anchor" href="#metaliteae-014"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-1-4">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-4"></a></h3>
+<ul><li>The new <code><a href="../reference/gt_ae_specific.html">gt_ae_specific()</a></code> function is developed to output AE specific tables in gt format (<a href="https://github.com/Merck/metalite.ae/issues/235" class="external-link">#235</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+<li>The new <code><a href="../reference/gt_ae_summary.html">gt_ae_summary()</a></code> function renders formatted adverse event summaries as gt tables, including titles, treatment-group spanners, footnotes, and source notes (<a href="https://github.com/Merck/metalite.ae/issues/215" class="external-link">#215</a>, thanks to <a href="https://github.com/ginnaram13" class="external-link">@ginnaram13</a>).</li>
+<li>
+<code><a href="../reference/rate_compare.html">rate_compare()</a></code> and <code><a href="../reference/rate_compare_sum.html">rate_compare_sum()</a></code> now accept a <code>bisection</code> argument to control the number of sections used by the bisection method (<a href="https://github.com/Merck/metalite.ae/issues/221" class="external-link">#221</a>, thanks to <a href="https://github.com/lm3388" class="external-link">@lm3388</a>).</li>
+<li>The <code>analysis</code> argument is now required by all <code>tlf_*()</code> functions so that table titles are generated from the selected analysis metadata (<a href="https://github.com/Merck/metalite.ae/issues/207" class="external-link">#207</a>, thanks to <a href="https://github.com/lm3388" class="external-link">@lm3388</a>).</li>
+<li>
+<code>meta_ae_example()</code> is no longer exported. Package examples now construct metadata directly from the example datasets in forestly (<a href="https://github.com/Merck/metalite.ae/issues/229" class="external-link">#229</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-4"></a></h3>
+<ul><li>
+<code><a href="../reference/format_ae_summary.html">format_ae_summary()</a></code> now uses parameter labels when custom parameters do not define <code>summ_row</code>, preventing row-name and summary-data length mismatches (<a href="https://github.com/Merck/metalite.ae/issues/224" class="external-link">#224</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+<li>
+<code><a href="../reference/gt_ae_summary.html">gt_ae_summary()</a></code> now supports missing source notes and footnotes without passing <code>NULL</code> to <code><a href="https://gt.rstudio.com/reference/md.html" class="external-link">gt::md()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/226" class="external-link">#226</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+<li>
+<code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> now preserves SOC and preferred-term row ordering when the data exceed the previous fixed ordering placeholder (<a href="https://github.com/Merck/metalite.ae/issues/214" class="external-link">#214</a>, thanks to <a href="https://github.com/ginnaram13" class="external-link">@ginnaram13</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-0-1-4">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-1-4"></a></h3>
+<ul><li>The <code>metalite_ae_adexsum</code> example dataset has been expanded for adverse event forest plot workflows (<a href="https://github.com/Merck/metalite.ae/issues/220" class="external-link">#220</a>, thanks to <a href="https://github.com/lm3388" class="external-link">@lm3388</a>).</li>
+<li>Unused arguments and R CMD check warnings in <code><a href="../reference/gt_ae_summary.html">gt_ae_summary()</a></code> and <code><a href="../reference/prepare_ae_specific.html">prepare_ae_specific()</a></code> have been removed (<a href="https://github.com/Merck/metalite.ae/issues/232" class="external-link">#232</a>, thanks to <a href="https://github.com/fukuhiro2023" class="external-link">@fukuhiro2023</a>).</li>
+<li>Package examples now use direct, reproducible metadata definitions based on forestly example data (<a href="https://github.com/Merck/metalite.ae/issues/229" class="external-link">#229</a>, thanks to <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a> and <a href="https://github.com/fukuhiro2023" class="external-link">@fukuhiro2023</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-1-4">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-4"></a></h3>
+<ul><li>The adverse event vignettes and pkgdown site have been reorganized, with new articles for custom columns, filtering and sorting, and mock tables (<a href="https://github.com/Merck/metalite.ae/issues/204" class="external-link">#204</a>, <a href="https://github.com/Merck/metalite.ae/issues/231" class="external-link">#231</a>, thanks to <a href="https://github.com/lm3388" class="external-link">@lm3388</a> and <a href="https://github.com/LittleBeannie" class="external-link">@LittleBeannie</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.3" id="metaliteae-013">metalite.ae 0.1.3<a class="anchor" aria-label="anchor" href="#metaliteae-013"></a></h2><p class="text-muted">CRAN release: 2024-10-23</p>
 <div class="section level3">
 <h3 id="new-features-0-1-3">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-3"></a></h3>
 <ul><li>
-<code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> now has new arguments <code>filter_method</code> and <code>filter_criteria</code> to control displayed rows in a table, <code>sort_order</code> and <code>sort_column</code> to sort an output table, and <code>hide_soc_stats</code> to control display of statistics for SOC rows (<a href="https://github.com/Merck/metalite.ae/issues/191" class="external-link">#191</a>, <a href="https://github.com/Merck/metalite.ae/issues/192" class="external-link">#192</a>, <a href="https://github.com/Merck/metalite.ae/issues/203" class="external-link">#203</a>).</li>
+<code><a href="../reference/format_ae_specific.html">format_ae_specific()</a></code> now has new arguments <code>filter_method</code> and <code>filter_criteria</code> to control displayed rows in a table, <code>sort_order</code> and <code>sort_column</code> to sort an output table, and <code>hide_soc_stats</code> to control display of statistics for SOC rows (<a href="https://github.com/Merck/metalite.ae/issues/191" class="external-link">#191</a>, <a href="https://github.com/Merck/metalite.ae/issues/192" class="external-link">#192</a>, <a href="https://github.com/Merck/metalite.ae/issues/203" class="external-link">#203</a>thanks to <a href="https://github.com/fukuhiro2023" class="external-link">@fukuhiro2023</a>).</li>
 <li>Add <code>data/metalite_ae_adesxum.rda</code> (<a href="https://github.com/Merck/metalite.ae/issues/189" class="external-link">#189</a>).</li>
 <li>Add event counts to <code>avg_count()</code> and <code><a href="../reference/extend_ae_specific_events.html">extend_ae_specific_events()</a></code> (<a href="https://github.com/Merck/metalite.ae/issues/194" class="external-link">#194</a>).</li>
 <li>Add <code>empty_table()</code> to return an empty table object when data has no population (<a href="https://github.com/Merck/metalite.ae/issues/200" class="external-link">#200</a>).</li>
@@ -110,7 +142,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Yilong Zhang, Yujie Zhao, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng, Hiroaki Fukuda, Bing Liu, Jeetender Chauhan. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
+  <p>Developed by Yilong Zhang, Yujie Zhao, Hiroaki Fukuda, Benjamin Wang, Nan Xiao, Sarad Nepal, Madhusudhan Ginnaram, Ruchitbhai Patel, Brian Lang, Xuan Deng, Bing Liu, Jeetender Chauhan. Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1. <br>Copyright © 2024 Merck &amp; Co., Inc., Rahway, NJ, USA and its affiliates. All rights reserved.</p>
 </div>
 
 <div class="pkgdown-footer-right">
