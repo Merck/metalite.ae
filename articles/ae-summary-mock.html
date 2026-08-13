@@ -91,7 +91,7 @@ requirements.</p>
 <h2 id="define-metadata">Define metadata<a class="anchor" aria-label="anchor" href="#define-metadata"></a>
 </h2>
 <p>This example uses ADSL and ADAE data from the <a href="https://merck.github.io/forestly/" class="external-link">forestly</a> package. The
-metadata follows the same approach used in the <a href="ae-summary.html">AE Summary</a> vignette.</p>
+metadata follows the same approach used in the <a href="ae-summary-rtf.html">AE Summary in RTF format</a> vignette.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adsl.html" class="external-link">forestly_adsl</a></span></span>
 <span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">forestly</span><span class="fu">::</span><span class="va"><a href="https://merck.github.io/forestly/reference/forestly_adae.html" class="external-link">forestly_adae</a></span></span>
@@ -175,7 +175,10 @@ creates placeholder values for the formatted table.</p>
 derived from the metadata. This allows the layout to be reviewed without
 presenting the calculated analysis values as final results.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">rtf_dir</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="st">"vignettes/rtf"</span><span class="op">)</span><span class="op">)</span> <span class="st">"vignettes/rtf"</span> <span class="kw">else</span> <span class="st">"rtf"</span></span>
+<span><span class="va">rtf_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">rtf_dir</span>, <span class="st">"ae0summary3.rtf"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/prepare_ae_summary.html">prepare_ae_summary</a></span><span class="op">(</span></span>
 <span>  <span class="va">meta</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"apat"</span>,</span>
 <span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
@@ -185,13 +188,16 @@ presenting the calculated analysis values as final results.</p>
 <span>  <span class="fu"><a href="../reference/tlf_ae_summary.html">tlf_ae_summary</a></span><span class="op">(</span></span>
 <span>    source <span class="op">=</span> <span class="st">"Source:  [CDISCpilot: adam-adsl; adae]"</span>,</span>
 <span>    analysis <span class="op">=</span> <span class="st">"ae_summary"</span>, <span class="co"># Provide analysis type defined in meta$analysis</span></span>
-<span>    path_outtable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".rtf"</span><span class="op">)</span></span>
+<span>    path_outtable <span class="op">=</span> <span class="va">rtf_file</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; any</span></span>
 <span><span class="co">#&gt; rel</span></span>
 <span><span class="co">#&gt; ser</span></span>
-<span><span class="co">#&gt; The output is saved in/tmp/Rtmp09OmsV/file1ee2eb9721c.rtf</span></span></code></pre></div>
-<embed src="pdf/ae0summary3.pdf" width="100%" height="400px" style="display: block; margin: auto;" type="application/pdf"></embed>
+<span><span class="co">#&gt; The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0summary3.rtf</span></span></code></pre></div>
+<p>
+<a href="rtf/ae0summary3.rtf" download="ae0summary3.rtf"> Download the
+generated RTF table</a>
+</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

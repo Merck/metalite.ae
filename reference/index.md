@@ -33,6 +33,8 @@
   : Format AE specific analysis
 - [`tlf_ae_specific()`](https://merck.github.io/metalite.ae/reference/tlf_ae_specific.md)
   : Specific adverse events table
+- [`gt_ae_specific()`](https://merck.github.io/metalite.ae/reference/gt_ae_specific.md)
+  : Specific adverse events table in gt format
 
 ## AE listing
 

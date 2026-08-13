@@ -92,6 +92,9 @@ creates the RTF table.
 
 ``` r
 
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0specific0sub0gender1.rtf")
+
 prepare_ae_specific_subgroup(
   meta,
   population = "apat",
@@ -106,7 +109,7 @@ prepare_ae_specific_subgroup(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
 #> Warning in foo(text_justification): The input is not a single value, with
 #> length equal to number of columns or a matrix with same dimension of the table.
@@ -120,5 +123,8 @@ prepare_ae_specific_subgroup(
 #> data length [13] is not a sub-multiple or multiple of the number of rows [114]
 #> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length
 #> [13] is not a sub-multiple or multiple of the number of rows [114]
-#> The output is saved in/tmp/RtmpCOpTsE/file1e399b8b4e1.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific0sub0gender1.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific0sub0gender1.rtf)

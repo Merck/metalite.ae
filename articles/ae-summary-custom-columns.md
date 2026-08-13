@@ -18,8 +18,8 @@ results.
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package.
 
-The metadata follows the same approach used in the [AE
-Summary](https://merck.github.io/metalite.ae/articles/ae-summary.md)
+The metadata follows the same approach used in the [AE Summary in RTF
+format](https://merck.github.io/metalite.ae/articles/ae-summary-rtf.md)
 vignette.
 
 ``` r
@@ -133,6 +133,9 @@ of participants with an adverse event:
 
 ``` r
 
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary2.rtf")
+
 prepare_ae_summary(
   meta,
   population = "apat",
@@ -145,7 +148,7 @@ prepare_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
     col_rel_width = c(3, rep(1, 6)),
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
 #> any
 #> rel
@@ -170,5 +173,8 @@ prepare_ae_summary(
 #> data length [5] is not a sub-multiple or multiple of the number of columns [3]
 #> Warning in matrix(width, nrow = nrow(tbl), ncol = ncol(tbl), byrow = TRUE):
 #> data length [7] is not a sub-multiple or multiple of the number of columns [5]
-#> The output is saved in/tmp/RtmpfAMT2n/file1ea94f00278c.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0summary2.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0summary2.rtf)

@@ -100,6 +100,8 @@ instead, set `filter_method = "count"` and pass the minimum count to
 
 ``` r
 
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+
 prepare_ae_specific(
   meta,
   population = "apat",
@@ -114,10 +116,13 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific4.rtf")
   )
-#> The output is saved in/tmp/Rtmp2jfTiR/file1e002709106d.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific4.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific4.rtf)
 
 ## Sort rows
 
@@ -150,10 +155,13 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific5.rtf")
   )
-#> The output is saved in/tmp/Rtmp2jfTiR/file1e002e6f52d0.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific5.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific5.rtf)
 
 ## Filter and sort rows
 
@@ -179,7 +187,10 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific6.rtf")
   )
-#> The output is saved in/tmp/Rtmp2jfTiR/file1e003900e38d.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific6.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific6.rtf)

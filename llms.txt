@@ -180,6 +180,8 @@ meta |> # Example AE data created using metalite
   : Format AE specific analysis
 - [`tlf_ae_specific()`](https://merck.github.io/metalite.ae/reference/tlf_ae_specific.md)
   : Specific adverse events table
+- [`gt_ae_specific()`](https://merck.github.io/metalite.ae/reference/gt_ae_specific.md)
+  : Specific adverse events table in gt format
 
 ## AE listing
 
@@ -232,8 +234,10 @@ meta |> # Example AE data created using metalite
 
 ### AE Summary Table (Static)
 
-- [Generate a Static AE Summary
-  Table](https://merck.github.io/metalite.ae/articles/ae-summary.md):
+- [Generate a Static AE Summary Table in RTF
+  format](https://merck.github.io/metalite.ae/articles/ae-summary-rtf.md):
+- [Generate a Static AE Summary Table in GT
+  format](https://merck.github.io/metalite.ae/articles/ae-summary-gt.md):
 - [Customize Columns in an AE Summary
   Table](https://merck.github.io/metalite.ae/articles/ae-summary-custom-columns.md):
 - [Create a AE Summary Mock-up
@@ -241,8 +245,10 @@ meta |> # Example AE data created using metalite
 
 ### AE Specific Table (Static)
 
-- [Generate a Static AE-Specific
-  Table](https://merck.github.io/metalite.ae/articles/ae-specific.md):
+- [Generate a Static AE-Specific Table in RTF
+  format](https://merck.github.io/metalite.ae/articles/ae-specific-rtf.md):
+- [Generate a Static AE-Specific Table in GT
+  format](https://merck.github.io/metalite.ae/articles/ae-specific-gt.md):
 - [Customize Columns in an AE Specific
   Table](https://merck.github.io/metalite.ae/articles/ae-specific-custom-columns.md):
 - [Filter and Sort an AE Specific
@@ -252,8 +258,8 @@ meta |> # Example AE data created using metalite
 
 ### AE Listing Table (Static)
 
-- [AE
-  Listing](https://merck.github.io/metalite.ae/articles/ae-listing.md):
+- [Generate a Static AE Listing Table in RTF
+  format](https://merck.github.io/metalite.ae/articles/ae-listing-rtf.md):
 
 ### Others
 

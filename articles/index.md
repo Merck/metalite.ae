@@ -7,8 +7,10 @@
 
 ### AE Summary Table (Static)
 
-- [Generate a Static AE Summary
-  Table](https://merck.github.io/metalite.ae/articles/ae-summary.md):
+- [Generate a Static AE Summary Table in RTF
+  format](https://merck.github.io/metalite.ae/articles/ae-summary-rtf.md):
+- [Generate a Static AE Summary Table in GT
+  format](https://merck.github.io/metalite.ae/articles/ae-summary-gt.md):
 - [Customize Columns in an AE Summary
   Table](https://merck.github.io/metalite.ae/articles/ae-summary-custom-columns.md):
 - [Create a AE Summary Mock-up
@@ -16,8 +18,10 @@
 
 ### AE Specific Table (Static)
 
-- [Generate a Static AE-Specific
-  Table](https://merck.github.io/metalite.ae/articles/ae-specific.md):
+- [Generate a Static AE-Specific Table in RTF
+  format](https://merck.github.io/metalite.ae/articles/ae-specific-rtf.md):
+- [Generate a Static AE-Specific Table in GT
+  format](https://merck.github.io/metalite.ae/articles/ae-specific-gt.md):
 - [Customize Columns in an AE Specific
   Table](https://merck.github.io/metalite.ae/articles/ae-specific-custom-columns.md):
 - [Filter and Sort an AE Specific
@@ -27,8 +31,8 @@
 
 ### AE Listing Table (Static)
 
-- [AE
-  Listing](https://merck.github.io/metalite.ae/articles/ae-listing.md):
+- [Generate a Static AE Listing Table in RTF
+  format](https://merck.github.io/metalite.ae/articles/ae-listing-rtf.md):
 
 ### Others
 

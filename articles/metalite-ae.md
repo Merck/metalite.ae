@@ -148,13 +148,19 @@ x <- x |> format_ae_summary()
 
 ``` r
 
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary1.rtf")
+
 x |>
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]", # Define data source
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
-    path_outtable = tempfile(fileext = ".rtf") # Define output
+    path_outtable = rtf_file # Define output
   )
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0summary1.rtf)
 
 See the [package
 articles](https://merck.github.io/metalite.ae/articles/) for complete

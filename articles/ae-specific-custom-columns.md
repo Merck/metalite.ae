@@ -119,6 +119,8 @@ for methodological details.
 
 ``` r
 
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+
 prepare_ae_specific(
   meta,
   population = "apat",
@@ -133,10 +135,13 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific2a.rtf")
   )
-#> The output is saved in/tmp/RtmpnXwlMp/file1dc7263544c2.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2a.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific2a.rtf)
 
 ### Add a column for average event duration
 
@@ -159,10 +164,13 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific2b.rtf")
   )
-#> The output is saved in/tmp/RtmpnXwlMp/file1dc7f938069.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2b.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific2b.rtf)
 
 ### Add a column for event frequency
 
@@ -186,7 +194,10 @@ prepare_ae_specific(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     meddra_version = "24.0",
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = file.path(rtf_dir, "ae0specific2c.rtf")
   )
-#> The output is saved in/tmp/RtmpnXwlMp/file1dc75498bbc3.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2c.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific2c.rtf)

@@ -1,14 +1,16 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://merck.github.io/metalite.ae/404.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/LICENSE.html</loc></url>
-<url><loc>https://merck.github.io/metalite.ae/articles/ae-listing.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-listing-rtf.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/ae-specific-custom-columns.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/ae-specific-filter-sort.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-specific-gt.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-specific-rtf.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/ae-specific-subgroup.html</loc></url>
-<url><loc>https://merck.github.io/metalite.ae/articles/ae-specific.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/ae-summary-custom-columns.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-summary-gt.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/ae-summary-mock.html</loc></url>
-<url><loc>https://merck.github.io/metalite.ae/articles/ae-summary.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/articles/ae-summary-rtf.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/exposure-adjusted-event-rate.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/index.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/articles/metalite-ae.html</loc></url>
@@ -29,6 +31,7 @@
 <url><loc>https://merck.github.io/metalite.ae/reference/format_ae_specific.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/reference/format_ae_specific_subgroup.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/reference/format_ae_summary.html</loc></url>
+<url><loc>https://merck.github.io/metalite.ae/reference/gt_ae_specific.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/reference/gt_ae_summary.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/reference/index.html</loc></url>
 <url><loc>https://merck.github.io/metalite.ae/reference/metalite.ae-package.html</loc></url>

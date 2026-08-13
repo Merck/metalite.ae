@@ -28,8 +28,8 @@ requirements.
 
 This example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package. The metadata
-follows the same approach used in the [AE
-Summary](https://merck.github.io/metalite.ae/articles/ae-summary.md)
+follows the same approach used in the [AE Summary in RTF
+format](https://merck.github.io/metalite.ae/articles/ae-summary-rtf.md)
 vignette.
 
 ``` r
@@ -119,6 +119,9 @@ presenting the calculated analysis values as final results.
 
 ``` r
 
+rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
+rtf_file <- file.path(rtf_dir, "ae0summary3.rtf")
+
 prepare_ae_summary(
   meta,
   population = "apat",
@@ -129,10 +132,13 @@ prepare_ae_summary(
   tlf_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_summary", # Provide analysis type defined in meta$analysis
-    path_outtable = tempfile(fileext = ".rtf")
+    path_outtable = rtf_file
   )
 #> any
 #> rel
 #> ser
-#> The output is saved in/tmp/Rtmp09OmsV/file1ee2eb9721c.rtf
+#> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0summary3.rtf
 ```
+
+[Download the generated RTF
+table](https://merck.github.io/metalite.ae/articles/rtf/ae0summary3.rtf)
