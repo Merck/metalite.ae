@@ -38,8 +38,71 @@ A \code{reactable} htmlwidget object.
 Interactive AE listing table
 }
 \examples{
-if (requireNamespace("reactable", quietly = TRUE)) {
-  meta <- meta_ae_test()
+if (requireNamespace("reactable", quietly = TRUE) &&
+  requireNamespace("forestly", quietly = TRUE)) {
+  adsl <- forestly::forestly_adsl
+  adae <- forestly::forestly_adae
+
+  adsl$TRT01A <- factor(
+    adsl$TRT01A,
+    levels = c("Xanomeline Low Dose", "Placebo"),
+    labels = c("Low Dose", "Placebo")
+  )
+  adae$TRTA <- factor(
+    adae$TRTA,
+    levels = c("Xanomeline Low Dose", "Placebo"),
+    labels = c("Low Dose", "Placebo")
+  )
+
+  analysis_plan <- metalite::plan(
+    analysis = "ae_listing",
+    population = "apat",
+    observation = "wk12",
+    parameter = "rel"
+  )
+
+  meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+    metalite::define_plan(analysis_plan) |>
+    metalite::define_population(
+      name = "apat",
+      var = c(
+        "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+        "SITEID", "SEX", "RACE", "AGE"
+      ),
+      group = "TRT01A",
+      subset = SAFFL == "Y",
+      label = "All Participants as Treated"
+    ) |>
+    metalite::define_observation(
+      name = "wk12",
+      var = c(
+        "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+        "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+      ),
+      group = "TRTA",
+      subset = SAFFL == "Y",
+      label = "Weeks 0 to 12"
+    ) |>
+    metalite::define_parameter(
+      name = "rel",
+      term1 = "Related",
+      term2 = "",
+      subset = AEREL == "RELATED",
+      var = "AEDECOD",
+      soc = "AEBODSYS",
+      label = "Related AEs"
+    ) |>
+    metalite::define_analysis(
+      name = "ae_listing",
+      var_name = c(
+        "USUBJID", "ASTDY", "AEDECOD", "ADURN",
+        "AESEV", "AESER", "AEREL", "AEOUT"
+      ),
+      group_by = c("USUBJID", "ASTDY"),
+      page_by = "TRTA"
+    ) |>
+    metalite::meta_build()
+
   meta |>
     prepare_ae_listing(
       analysis = "ae_listing",
