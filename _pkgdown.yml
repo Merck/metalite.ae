@@ -60,6 +60,7 @@ reference:
   contents:
     - prepare_ae_listing
     - tlf_ae_listing
+    - react_ae_listing
 - title: AE subgroup analysis
   contents:
     - prepare_ae_specific_subgroup
@@ -103,6 +104,10 @@ articles:
 - title: AE Listing Table (Static)
   contents:
     - ae-listing-rtf
+
+- title: AE Listing Table (Interactive)
+  contents:
+    - ae-listing-reactable
 
 - title: Others
   contents:

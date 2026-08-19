@@ -43,6 +43,7 @@ Suggests:
     dplyr,
     knitr,
     forestly,
+    reactable,
     rmarkdown,
     testthat (>= 3.0.0),
     tibble,
