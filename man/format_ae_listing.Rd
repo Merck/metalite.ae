@@ -19,7 +19,8 @@ include:
 \item \code{population}, \code{observation}, \code{parameter}: selected analysis terms.
 \item \code{col_name}: named vector of display labels for listing columns.
 \item \code{tbl}: formatted listing data frame used by \code{\link[=tlf_ae_listing]{tlf_ae_listing()}}.
-\item \code{prepare_call} and \code{extend_call}: recorded function calls for reproducibility.
+\item \code{prepare_call} and \code{extend_call}: recorded function calls for
+reproducibility.
 }
 }
 \description{
