@@ -133,19 +133,19 @@ prepare_ae_summary <- function(meta,
   })
 
   n_pop <- res[[1]]$n_pop
-  tbl_num <- do.call(rbind, lapply(res, function(x) x$n[x$order == 100, ]))
+  tbl_num <- do.call(rbind, lapply(res, function(x) x$n[x$order == 100, , drop = FALSE]))
 
   pop_prop <- res[[1]]$prop[1, ]
-  tbl_prop <- do.call(rbind, lapply(res, function(x) x$prop[x$order == 100, ]))
+  tbl_prop <- do.call(rbind, lapply(res, function(x) x$prop[x$order == 100, , drop = FALSE]))
 
   pop_diff <- res[[1]]$diff[1, ]
-  tbl_diff <- do.call(rbind, lapply(res, function(x) x$diff[x$order == 100, ]))
+  tbl_diff <- do.call(rbind, lapply(res, function(x) x$diff[x$order == 100, , drop = FALSE]))
 
   pop_ci <- res[[1]]$ci[1, ]
-  tbl_ci <- do.call(rbind, lapply(res, function(x) x$ci[x$order == 100, ]))
+  tbl_ci <- do.call(rbind, lapply(res, function(x) x$ci[x$order == 100, , drop = FALSE]))
 
   pop_p <- res[[1]]$p[1, ]
-  tbl_p <- do.call(rbind, lapply(res, function(x) x$p[x$order == 100, ]))
+  tbl_p <- do.call(rbind, lapply(res, function(x) x$p[x$order == 100, , drop = FALSE]))
 
   pop_name <- res[[1]]$name[1]
   name <- unlist(lapply(parameters, function(x) collect_adam_mapping(meta, x)$summ_row))
