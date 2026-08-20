@@ -74,38 +74,38 @@ This approach makes it easy to orchestrate multiple downstream outputs from one
 metadata object.
 
 ```{r}
-      # 1st analysis plan for AE summary
-      # i.e., overall AE summary including any AEs, drug-related AEs, and serious AEs
+# 1st analysis plan for AE summary
+# i.e., overall AE summary including any AEs, drug-related AEs, and serious AEs
 plan <- plan(
-    analysis = "ae_summary",
-    population = "apat",
-    observation = "apat",
-    parameter = "any;drug-related;serious"  
-  ) |>
-      # 2nd analysis plan for AE specific
-      # i.e., patients with drug-related AEs
+  analysis = "ae_summary",
+  population = "apat",
+  observation = "apat",
+  parameter = "any;drug-related;serious"
+) |>
+  # 2nd analysis plan for AE specific
+  # i.e., patients with drug-related AEs
   add_plan(
     analysis = "ae_specific",
     population = "apat",
     observation = "apat",
     parameter = "drug-related"
   ) |>
-      # 3rd analysis plan for AE listing
-      # i.e., listing of patients with serious AEs
+  # 3rd analysis plan for AE listing
+  # i.e., listing of patients with serious AEs
   add_plan(
     analysis = "ae_listing",
     population = "apat",
     observation = "apat",
     parameter = "serious"
   ) |>
-      # 4th analysis plan for AE forest plot
-      # i.e., interactive forest plot for drug-related and serious AEs
+  # 4th analysis plan for AE forest plot
+  # i.e., interactive forest plot for drug-related and serious AEs
   add_plan(
-    analysis = "ae_forestly", 
+    analysis = "ae_forestly",
     population = "apat",
     observation = "apat",
     parameter = "drug-related;serious"
-    )
+  )
 ```
 
 ## Build metadata once
@@ -160,10 +160,12 @@ Start with the summary output to review high-level AE incidence across
 parameters. 
 
 ```{r}
-meta |> prepare_ae_summary(
-  population = "apat",
-  observation = "apat",
-  parameter = "any;drug-related") |>
+meta |>
+  prepare_ae_summary(
+    population = "apat",
+    observation = "apat",
+    parameter = "any;drug-related"
+  ) |>
   format_ae_summary() |>
   gt_ae_summary(
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
@@ -178,10 +180,12 @@ by system organ class and preferred term, which supports more detailed clinical
 review.
 
 ```{r}
-meta |> prepare_ae_specific(
-  population = "apat",
-  observation = "apat",
-  parameter = "drug-related") |>
+meta |>
+  prepare_ae_specific(
+    population = "apat",
+    observation = "apat",
+    parameter = "drug-related"
+  ) |>
   format_ae_specific() |>
   gt_ae_specific(
     meddra_version = "24.0",
@@ -199,10 +203,12 @@ Compared with a static listing, the interactive output supports on-screen
 inspection with pagination and a compact review experience.
 
 ```{r}
-meta |> prepare_ae_listing(
-  population = "apat",
-  observation = "apat",
-  parameter = "serious") |>
+meta |>
+  prepare_ae_listing(
+    population = "apat",
+    observation = "apat",
+    parameter = "serious"
+  ) |>
   format_ae_listing() |>
   react_ae_listing(
     default_page_size = 15
