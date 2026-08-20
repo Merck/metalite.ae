@@ -51,7 +51,7 @@
     (#239, thanks to @LittleBeannie).
 - Added a new vignette demonstrating how one metadata object can generate
     multiple AE outputs (summary, specific, listing, and forest plot), and
-    updated pkgdown article navigation for this workflow (#243, thanks to
+    updated pkgdown article navigation for this workflow (#239, thanks to
     @LittleBeannie).
 
 # metalite.ae 0.1.3
