@@ -94,7 +94,7 @@ plan <- plan(
     analysis = "ae_listing",
     population = "apat",
     observation = "apat",
-    parameter = "serious"
+    parameter = "drug-related"
   ) |>
   # 4th analysis plan for AE forest plot
   # i.e., interactive forest plot for drug-related and serious AEs
@@ -118,7 +118,10 @@ meta <- meta_adam(population = adsl, observation = adae) |>
   define_plan(plan) |>
   define_analysis(name = "ae_summary", label = "AE Summary Table") |>
   define_analysis(name = "ae_specific", label = "AE Specific Table") |>
-  define_analysis(name = "ae_listing", label = "AE Listing Table") |>
+  define_analysis(name = "ae_listing", label = "AE Listing Table",
+                  var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
+                  group_by = c("USUBJID", "ASTDY"), page_by = "TRTA"
+  ) |>
   define_analysis(name = "ae_forestly", label = "Interactive Forest Plot") |>
   define_population(
     name = "apat", group = "TRTA", id = "USUBJID",
@@ -205,7 +208,8 @@ meta |>
   prepare_ae_listing(
     population = "apat",
     observation = "apat",
-    parameter = "serious"
+    parameter = "drug-related",
+    analysis = "ae_listing" # Provide analysis type defined in meta$analysis
   ) |>
   format_ae_listing() |>
   react_ae_listing(
