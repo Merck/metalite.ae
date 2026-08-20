@@ -59,6 +59,7 @@ reference:
 - title: AE listing
   contents:
     - prepare_ae_listing
+    - format_ae_listing
     - tlf_ae_listing
     - react_ae_listing
 - title: AE subgroup analysis
