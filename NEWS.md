@@ -16,6 +16,10 @@
 - `meta_ae_example()` is no longer exported. Package examples now construct
     metadata directly from the example datasets in forestly (#229, thanks to
     @LittleBeannie).
+- Added interactive AE listing workflow support with new
+    `format_ae_listing()` and `react_ae_listing()` functions for structured
+    listing formatting and reactable-based rendering (#239, thanks to
+    @LittleBeannie).
 
 ## Bug fixes
 
@@ -42,6 +46,9 @@
 - The adverse event vignettes and pkgdown site have been reorganized, with new
     articles for custom columns, filtering and sorting, and mock tables (#204,
     #231, thanks to @lm3388 and @LittleBeannie).
+- Added a new vignette for interactive AE listing tables and updated listing
+    workflow documentation and pkgdown references for the new listing functions
+    (#239, thanks to @LittleBeannie).
 
 # metalite.ae 0.1.3
 
