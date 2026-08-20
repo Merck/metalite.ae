@@ -49,6 +49,10 @@
 - Added a new vignette for interactive AE listing tables and updated listing
     workflow documentation and pkgdown references for the new listing functions
     (#239, thanks to @LittleBeannie).
+- Added a new vignette demonstrating how one metadata object can generate
+    multiple AE outputs (summary, specific, listing, and forest plot), and
+    updated pkgdown article navigation for this workflow (#243, thanks to
+    @LittleBeannie).
 
 # metalite.ae 0.1.3
 
