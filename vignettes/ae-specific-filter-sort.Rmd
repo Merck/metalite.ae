@@ -36,7 +36,7 @@ output on clinically relevant rows and present them in a useful order.
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package. The metadata follows the
-same approach used in the [AE Specific Table](ae-specific.html) vignette.
+same approach used in the [AE Specific Table](ae-specific-rtf.html) vignette.
 
 ```{r}
 adsl <- forestly::forestly_adsl
@@ -133,8 +133,7 @@ prepare_ae_specific(
 
 ```{r download-filtered-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0specific4.rtf" download="ae0specific4.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific4.rtf"
 )
 ```
 
@@ -173,8 +172,7 @@ prepare_ae_specific(
 
 ```{r download-sorted-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0specific5.rtf" download="ae0specific5.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific5.rtf"
 )
 ```
 
@@ -206,7 +204,6 @@ prepare_ae_specific(
 
 ```{r download-filtered-sorted-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0specific6.rtf" download="ae0specific6.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific6.rtf"
 )
 ```

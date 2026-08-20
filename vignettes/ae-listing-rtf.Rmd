@@ -138,7 +138,6 @@ prepare_ae_listing(
 
 ```{r download-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0listing1.rtf" download="ae0listing1.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0listing1.rtf"
 )
 ```

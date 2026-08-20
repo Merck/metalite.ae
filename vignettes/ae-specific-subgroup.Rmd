@@ -124,10 +124,6 @@ prepare_ae_specific_subgroup(
 
 ```{r download-rtf, results="asis", echo=FALSE}
 cat(
-  paste0(
-    '<p><a href="rtf/ae0specific0sub0gender1.rtf" ',
-    'download="ae0specific0sub0gender1.rtf">'
-  ),
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific0sub0gender1.rtf"
 )
 ```
