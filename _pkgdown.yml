@@ -104,6 +104,10 @@ articles:
   contents:
     - ae-listing-rtf
 
+- title: Generate Multiple AE TLFs via 1 Metadata Object
+  contents:
+    - ae-multiple-table-by1metadata
+
 - title: Others
   contents:
     - rate-compare
