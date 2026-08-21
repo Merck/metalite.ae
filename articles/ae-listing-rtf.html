@@ -75,10 +75,12 @@
 <p>This vignette demonstrates how to generate a static adverse event
 (AE) listing focused on serious AEs in <strong>RTF</strong> format.</p>
 <p>The listing presents participant-level details for adverse events of
-interest. Two functions support the workflow:</p>
+interest. Three functions support the workflow:</p>
 <ul>
 <li>
 <code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> prepares the listing dataset.</li>
+<li>
+<code><a href="../reference/format_ae_listing.html">format_ae_listing()</a></code> formats the listing dataset.</li>
 <li>
 <code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code> creates the RTF table.</li>
 </ul>
@@ -156,8 +158,8 @@ interest. Two functions support the workflow:</p>
 </h2>
 <p><code><a href="../reference/prepare_ae_listing.html">prepare_ae_listing()</a></code> uses the population, observation,
 parameter, and analysis definitions in <code>meta</code> to prepare the
-listing dataset. The result is passed directly to
-<code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code> to create the RTF table.</p>
+listing dataset. <code><a href="../reference/format_ae_listing.html">format_ae_listing()</a></code> organizes the prepared
+output, and <code><a href="../reference/tlf_ae_listing.html">tlf_ae_listing()</a></code> creates the RTF table.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">footnote</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED"</span>,</span>
@@ -176,6 +178,7 @@ listing dataset. The result is passed directly to
 <span>  observation <span class="op">=</span> <span class="st">"wk12"</span>,</span>
 <span>  parameter <span class="op">=</span> <span class="st">"ser"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/format_ae_listing.html">format_ae_listing</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tlf_ae_listing.html">tlf_ae_listing</a></span><span class="op">(</span></span>
 <span>    footnotes <span class="op">=</span> <span class="va">footnote</span>,</span>
 <span>    orientation <span class="op">=</span> <span class="st">"portrait"</span>,</span>

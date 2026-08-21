@@ -11,10 +11,12 @@ This vignette demonstrates how to generate a static adverse event (AE)
 listing focused on serious AEs in **RTF** format.
 
 The listing presents participant-level details for adverse events of
-interest. Two functions support the workflow:
+interest. Three functions support the workflow:
 
 - [`prepare_ae_listing()`](https://merck.github.io/metalite.ae/reference/prepare_ae_listing.md)
   prepares the listing dataset.
+- [`format_ae_listing()`](https://merck.github.io/metalite.ae/reference/format_ae_listing.md)
+  formats the listing dataset.
 - [`tlf_ae_listing()`](https://merck.github.io/metalite.ae/reference/tlf_ae_listing.md)
   creates the RTF table.
 
@@ -93,9 +95,11 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
 
 [`prepare_ae_listing()`](https://merck.github.io/metalite.ae/reference/prepare_ae_listing.md)
 uses the population, observation, parameter, and analysis definitions in
-`meta` to prepare the listing dataset. The result is passed directly to
+`meta` to prepare the listing dataset.
+[`format_ae_listing()`](https://merck.github.io/metalite.ae/reference/format_ae_listing.md)
+organizes the prepared output, and
 [`tlf_ae_listing()`](https://merck.github.io/metalite.ae/reference/tlf_ae_listing.md)
-to create the RTF table.
+creates the RTF table.
 
 ``` r
 
@@ -116,6 +120,7 @@ prepare_ae_listing(
   observation = "wk12",
   parameter = "ser"
 ) |>
+  format_ae_listing() |>
   tlf_ae_listing(
     footnotes = footnote,
     orientation = "portrait",

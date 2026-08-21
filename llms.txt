@@ -187,8 +187,12 @@ meta |> # Example AE data created using metalite
 
 - [`prepare_ae_listing()`](https://merck.github.io/metalite.ae/reference/prepare_ae_listing.md)
   : Prepare datasets for AE listing
+- [`format_ae_listing()`](https://merck.github.io/metalite.ae/reference/format_ae_listing.md)
+  : Format AE listing analysis
 - [`tlf_ae_listing()`](https://merck.github.io/metalite.ae/reference/tlf_ae_listing.md)
   : Generate AE listing
+- [`react_ae_listing()`](https://merck.github.io/metalite.ae/reference/react_ae_listing.md)
+  : Interactive AE listing table
 
 ## AE subgroup analysis
 
@@ -260,6 +264,16 @@ meta |> # Example AE data created using metalite
 
 - [Generate a Static AE Listing Table in RTF
   format](https://merck.github.io/metalite.ae/articles/ae-listing-rtf.md):
+
+### AE Listing Table (Interactive)
+
+- [Generate an Interactive AE Listing Table with
+  reactable](https://merck.github.io/metalite.ae/articles/ae-listing-reactable.md):
+
+### Generate Multiple AE TLFs via 1 Single Metadata
+
+- [Generate Multiple AE Tables via 1 Single
+  Metadata](https://merck.github.io/metalite.ae/articles/ae-multiple-table-by1metadata.md):
 
 ### Others
 

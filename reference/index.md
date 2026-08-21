@@ -40,8 +40,12 @@
 
 - [`prepare_ae_listing()`](https://merck.github.io/metalite.ae/reference/prepare_ae_listing.md)
   : Prepare datasets for AE listing
+- [`format_ae_listing()`](https://merck.github.io/metalite.ae/reference/format_ae_listing.md)
+  : Format AE listing analysis
 - [`tlf_ae_listing()`](https://merck.github.io/metalite.ae/reference/tlf_ae_listing.md)
   : Generate AE listing
+- [`react_ae_listing()`](https://merck.github.io/metalite.ae/reference/react_ae_listing.md)
+  : Interactive AE listing table
 
 ## AE subgroup analysis
 

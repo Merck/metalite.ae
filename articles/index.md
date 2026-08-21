@@ -34,6 +34,16 @@
 - [Generate a Static AE Listing Table in RTF
   format](https://merck.github.io/metalite.ae/articles/ae-listing-rtf.md):
 
+### AE Listing Table (Interactive)
+
+- [Generate an Interactive AE Listing Table with
+  reactable](https://merck.github.io/metalite.ae/articles/ae-listing-reactable.md):
+
+### Generate Multiple AE TLFs via 1 Single Metadata
+
+- [Generate Multiple AE Tables via 1 Single
+  Metadata](https://merck.github.io/metalite.ae/articles/ae-multiple-table-by1metadata.md):
+
 ### Others
 
 - [Unstratified and Stratified Miettinen and Nurminen
