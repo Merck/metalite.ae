@@ -59,7 +59,9 @@ reference:
 - title: AE listing
   contents:
     - prepare_ae_listing
+    - format_ae_listing
     - tlf_ae_listing
+    - react_ae_listing
 - title: AE subgroup analysis
   contents:
     - prepare_ae_specific_subgroup
@@ -104,6 +106,14 @@ articles:
   contents:
     - ae-listing-rtf
 
+- title: AE Listing Table (Interactive)
+  contents:
+    - ae-listing-reactable
+
+- title: Generate Multiple AE TLFs via 1 Single Metadata
+  contents:
+    - ae-multiple-table-by1metadata
+    
 - title: Others
   contents:
     - rate-compare

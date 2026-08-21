@@ -1,12 +1,10 @@
 ---
-title: "Generate a Static AE Listing Table in RTF format"
+title: "Generate an Interactive AE Listing Table with reactable"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Generate a Static AE Listing Table in RTF format}
+  %\VignetteIndexEntry{Generate an Interactive AE Listing Table with reactable}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-resource_files:
-  - rtf/ae0listing1.rtf
 ---
 
 ```{r, include=FALSE}
@@ -24,15 +22,18 @@ library(metalite.ae)
 
 ## Overview
 
-This vignette demonstrates how to generate a static adverse event (AE) listing
-focused on serious AEs in **RTF** format.
+This vignette demonstrates how to generate an interactive adverse event (AE)
+listing focused on drug-related AEs using `metalite.ae`.
 
-The listing presents participant-level details for adverse events of interest.
+The listing presents participant-level details for drug-related AEs.
 Three functions support the workflow:
 
 - `prepare_ae_listing()` prepares the listing dataset.
-- `format_ae_listing()` formats the listing dataset.
-- `tlf_ae_listing()` creates the RTF table.
+- `format_ae_listing()` organizes the listing output.
+- `react_ae_listing()` creates an interactive listing table.
+
+In the interactive table, each column has its own filter box so users can
+quickly search for participants or events of interest.
 
 ## Step 1: Define metadata
 
@@ -58,7 +59,7 @@ analysis_plan <- metalite::plan(
   analysis = "ae_listing",
   population = "apat",
   observation = "wk12",
-  parameter = "ser"
+  parameter = "rel"
 )
 
 meta <- metalite::meta_adam(observation = adae, population = adsl) |>
@@ -84,13 +85,13 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     label = "Weeks 0 to 12"
   ) |>
   metalite::define_parameter(
-    name = "ser",
-    term1 = "Serious",
+    name = "rel",
+    term1 = "Related",
     term2 = "",
-    subset = AESER == "Y",
+    subset = AREL == "RELATED",
     var = "AEDECOD",
     soc = "AEBODSYS",
-    label = "Serious AEs"
+    label = "Related AEs"
   ) |>
   metalite::define_analysis(
     name = "ae_listing",
@@ -104,44 +105,47 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
   metalite::meta_build()
 ```
 
-## Step 2: Generate the AE listing table
+## Step 2: Generate an interactive AE listing table
 
 `prepare_ae_listing()` uses the population, observation, parameter, and
 analysis definitions in `meta` to prepare the listing dataset.
-`format_ae_listing()` organizes the prepared output,
-and `tlf_ae_listing()` creates the RTF table.
+`format_ae_listing()` organizes the table,
+and `react_ae_listing()` creates an interactive view.
 
 ```{r}
-footnote <- c(
-  "Related: Investigator-assessed relationship of the adverse event to study medication. Y = RELATED, N = NOT RELATED",
-  "Action Taken: Discontinued = DRUG WITHDRAWN, Interrupted = DRUG INTERRUPTED, Reduced = DOSE REDUCED, Increased = DOSE INCREASED, None = DOSE NOT CHANGED, N/A = NOT APPLICABLE.",
-  "Outcome: Resolved = RECOVERED/RESOLVED, Resolving = RECOVERING/RESOLVING, Sequelae = RECOVERED/RESOLVED WITH SEQUELAE, Not resolved = NOT RECOVERED/NOT RESOLVED.",
-  "Adverse event terms are from MedDRA Version 25.0."
-)
-
-rtf_dir <- if (dir.exists("vignettes/rtf")) "vignettes/rtf" else "rtf"
-rtf_file <- file.path(rtf_dir, "ae0listing1.rtf")
-
 prepare_ae_listing(
   meta,
   analysis = "ae_listing",
   population = "apat",
   observation = "wk12",
-  parameter = "ser"
+  parameter = "rel"
 ) |>
   format_ae_listing() |>
-  tlf_ae_listing(
-    footnotes = footnote,
-    orientation = "portrait",
-    source = "Source:  [CDISCpilot: adam-adsl; adae]",
-    analysis = "ae_listing", # Provide analysis type defined in meta$analysis
-    path_outtable = rtf_file
+  react_ae_listing(
+    default_page_size = 15,
+    patient_folding = FALSE
   )
 ```
 
-```{r download-rtf, results="asis", echo=FALSE}
-cat(
-  '<p><a href="rtf/ae0listing1.rtf" download="ae0listing1.rtf">',
-  "Download the generated RTF table</a></p>"
-)
+Use `patient_folding = TRUE` when reviewers should only see records for a
+specific participant after entering the exact full ID in the first-column
+search box. This mode is useful for privacy-conscious review workflows,
+focused medical review, or meetings where you want to avoid showing all
+participants by default. In this setting, the table starts empty and displays
+records only when a full, valid patient ID is provided.
+
+
+```{r}
+prepare_ae_listing(
+  meta,
+  analysis = "ae_listing",
+  population = "apat",
+  observation = "wk12",
+  parameter = "rel"
+) |>
+  format_ae_listing() |>
+  react_ae_listing(
+    default_page_size = 15,
+    patient_folding = TRUE
+  )
 ```
