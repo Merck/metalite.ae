@@ -22,7 +22,7 @@ duration, and event frequency statistics.
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package. The metadata
 follows the same approach used in the [AE Specific
-Table](https://merck.github.io/metalite.ae/articles/ae-specific.md)
+Table](https://merck.github.io/metalite.ae/articles/ae-specific-rtf.md)
 vignette.
 
 ``` r
@@ -140,8 +140,7 @@ prepare_ae_specific(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2a.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific2a.rtf)
+Generated RTF file: ae0specific2a.rtf
 
 ### Add a column for average event duration
 
@@ -169,8 +168,7 @@ prepare_ae_specific(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2b.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific2b.rtf)
+Generated RTF file: ae0specific2b.rtf
 
 ### Add a column for event frequency
 
@@ -199,5 +197,4 @@ prepare_ae_specific(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific2c.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific2c.rtf)
+Generated RTF file: ae0specific2c.rtf

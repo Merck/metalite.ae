@@ -30,6 +30,13 @@
   construct metadata directly from the example datasets in forestly
   ([\#229](https://github.com/Merck/metalite.ae/issues/229), thanks to
   [@LittleBeannie](https://github.com/LittleBeannie)).
+- Added interactive AE listing workflow support with new
+  [`format_ae_listing()`](https://merck.github.io/metalite.ae/reference/format_ae_listing.md)
+  and
+  [`react_ae_listing()`](https://merck.github.io/metalite.ae/reference/react_ae_listing.md)
+  functions for structured listing formatting and reactable-based
+  rendering ([\#239](https://github.com/Merck/metalite.ae/issues/239),
+  thanks to [@LittleBeannie](https://github.com/LittleBeannie)).
 
 ### Bug fixes
 
@@ -75,6 +82,16 @@
   tables ([\#204](https://github.com/Merck/metalite.ae/issues/204),
   [\#231](https://github.com/Merck/metalite.ae/issues/231), thanks to
   [@lm3388](https://github.com/lm3388) and
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+- Added a new vignette for interactive AE listing tables and updated
+  listing workflow documentation and pkgdown references for the new
+  listing functions
+  ([\#239](https://github.com/Merck/metalite.ae/issues/239), thanks to
+  [@LittleBeannie](https://github.com/LittleBeannie)).
+- Added a new vignette demonstrating how one metadata object can
+  generate multiple AE outputs (summary, specific, listing, and forest
+  plot), and updated pkgdown article navigation for this workflow
+  ([\#239](https://github.com/Merck/metalite.ae/issues/239), thanks to
   [@LittleBeannie](https://github.com/LittleBeannie)).
 
 ## metalite.ae 0.1.3

@@ -169,5 +169,4 @@ outdata <- prepare_ae_specific(
   )
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific1.rtf)
+Generated RTF file: ae0specific1.rtf

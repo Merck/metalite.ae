@@ -126,5 +126,4 @@ prepare_ae_specific_subgroup(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific0sub0gender1.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific0sub0gender1.rtf)
+Generated RTF file: ae0specific0sub0gender1.rtf

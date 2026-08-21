@@ -159,8 +159,7 @@ x |>
   )
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0summary1.rtf)
+Generated RTF file: ae0summary1.rtf
 
 See the [package
 articles](https://merck.github.io/metalite.ae/articles/) for complete

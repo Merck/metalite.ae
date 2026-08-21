@@ -184,5 +184,4 @@ prepare_ae_summary(
   )
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0summary1.rtf)
+Generated RTF file: ae0summary1.rtf

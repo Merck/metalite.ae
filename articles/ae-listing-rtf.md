@@ -131,5 +131,4 @@ prepare_ae_listing(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0listing1.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0listing1.rtf)
+Generated RTF file: ae0listing1.rtf

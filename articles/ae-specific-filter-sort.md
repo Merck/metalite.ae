@@ -22,7 +22,7 @@ useful order.
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package. The metadata
 follows the same approach used in the [AE Specific
-Table](https://merck.github.io/metalite.ae/articles/ae-specific.md)
+Table](https://merck.github.io/metalite.ae/articles/ae-specific-rtf.md)
 vignette.
 
 ``` r
@@ -121,8 +121,7 @@ prepare_ae_specific(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific4.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific4.rtf)
+Generated RTF file: ae0specific4.rtf
 
 ## Sort rows
 
@@ -160,8 +159,7 @@ prepare_ae_specific(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific5.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific5.rtf)
+Generated RTF file: ae0specific5.rtf
 
 ## Filter and sort rows
 
@@ -192,5 +190,4 @@ prepare_ae_specific(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific6.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0specific6.rtf)
+Generated RTF file: ae0specific6.rtf

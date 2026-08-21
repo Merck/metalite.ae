@@ -140,5 +140,4 @@ prepare_ae_summary(
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0summary3.rtf
 ```
 
-[Download the generated RTF
-table](https://merck.github.io/metalite.ae/articles/rtf/ae0summary3.rtf)
+Generated RTF file: ae0summary3.rtf
