@@ -309,7 +309,7 @@ format_ae_specific <- function(outdata,
     # Reorder the comparison columns.
     between_tbl <- between_tbl[, as.vector(matrix(1:(n_group_btw * n_between),
       ncol = n_group_btw, byrow = TRUE
-    ))]
+    )), drop = FALSE]
     data.frame(within_tbl, between_tbl)
   } else {
     within_tbl
@@ -412,6 +412,7 @@ format_ae_specific <- function(outdata,
   }
 
   outdata$tbl <- res
+  outdata$display <- display
   outdata$extend_call <- c(outdata$extend_call, match.call())
   outdata$filter_method <- filter_method
   outdata$filter_criteria <- filter_criteria

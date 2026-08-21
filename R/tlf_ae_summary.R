@@ -127,9 +127,13 @@ tlf_ae_summary <- function(outdata,
                            path_outdata = NULL,
                            path_outtable = NULL) {
   tbl <- outdata$tbl
+  display <- outdata$display
+  display_total <- "total" == display
   group <- outdata$group
   reference_group <- outdata$reference_group
+  group_diff <- group[seq_along(group) != reference_group & group != "Total"]
   n_group <- length(outdata$group)
+  n_group_diff <- length(group_diff)
   n_row <- nrow(tbl)
   n_col <- ncol(tbl)
 
@@ -164,24 +168,102 @@ tlf_ae_summary <- function(outdata,
 
   if (!all(outdata$n_pop == 0)) {
     # Define column header
-    colheader_n <- c(
-      paste0(" | ", paste(group, collapse = " | ")),
-      paste0(" | ", paste(rep("n | (%)", n_group), collapse = " | "))
+    col_tbl_within <- strsplit(names(tbl), "_") |>
+      unlist() |>
+      (\(list) list[list %in% c("n", "prop", "dur", "eventsavg", "eventscount")])() |>
+      unique()
+
+    colhead_within <- paste(
+      vapply(
+        X = col_tbl_within,
+        FUN.VALUE = "character",
+        FUN = switch,
+        "n" = "n",
+        "prop" = "(%)",
+        "dur" = "Mean Duration (SE)",
+        "eventsavg" = "Mean Events per Participant (SE)",
+        "eventscount" = "Number of Events"
+      ),
+      collapse = " | "
     )
 
-    # TODO: add logic for CI and p-value with multipel groups following WMA mock up table.
-    # colheader_ci <- c(paste("Difference in % vs", group[reference_group]),
-    # "Estimate (95% CI)")
+    colheader <- c(
+      paste0(" | ", paste(group, collapse = " | ")),
+      paste0(" | ", paste(rep(colhead_within, n_group), collapse = " | "))
+    )
 
-    # colheader_p <- c("", "p-value")
-    # colheader <- paste(colheader_n, colheader_ci, colheader_p, sep = " | ")
+    rel_width_group <- rep(1, length(col_tbl_within) * n_group)
+    rel_width <- c(3, rel_width_group)
 
-    colheader <- colheader_n
+    colborder_within <- vapply(
+      X = col_tbl_within,
+      FUN.VALUE = "character",
+      FUN = switch,
+      "n" = "single",
+      "prop" = "",
+      "dur" = "single",
+      "eventsavg" = "single",
+      "eventscount" = "",
+      USE.NAMES = FALSE
+    )
+
+    border_left <- c(
+      "single",
+      rep(colborder_within, n_group)
+    )
+
+    # For CI and p-value with multiple groups following WMA mock up table.
+    col_tbl_between <- strsplit(names(tbl), "_") |>
+      unlist() |>
+      (\(list) list[list %in% c("diff", "ci", "p")])() |>
+      unique()
+
+    if (length(col_tbl_between) > 0) {
+      colhead_between <- paste(
+        vapply(
+          X = col_tbl_between,
+          FUN.VALUE = "character",
+          FUN = switch,
+          "diff" = "Estimate",
+          "ci" = paste0("(", outdata$ci_level * 100, "% CI)"),
+          "p" = "p-value",
+        ),
+        collapse = " | "
+      )
+
+      if (n_group_diff == 1) {
+        colheader_ci <- paste("Difference in % vs", group[reference_group])
+      } else {
+        colheader_ci <- paste0(paste("Difference in %", group_diff, "vs", group[reference_group]), collapse = " | ")
+      }
+
+      colheader_ci <- c(
+        colheader_ci,
+        paste(rep(colhead_between, n_group_diff), collapse = " | ")
+      )
+
+      colheader <- paste(colheader, colheader_ci, sep = " | ")
+
+      rel_width_diff <- rep(1, length(col_tbl_between) * (n_group_diff))
+      rel_width <- c(rel_width, rel_width_diff)
+
+      colborder_between <- vapply(
+        X = col_tbl_between,
+        FUN.VALUE = "character",
+        FUN = switch,
+        "diff" = "single",
+        "ci" = "",
+        "p" = "single",
+        USE.NAMES = FALSE
+      )
+      border_left <- c(
+        border_left,
+        rep(colborder_between, n_group_diff)
+      )
+    }
 
     # Relative width
-    if (is.null(col_rel_width)) {
-      rel_width <- c(3, rep(1, 2 * n_group))
-    } else {
+    if (!is.null(col_rel_width)) {
       rel_width <- col_rel_width
     }
 
@@ -189,13 +271,18 @@ tlf_ae_summary <- function(outdata,
 
     rel_width1 <- c(
       rel_width[1],
-      tapply(rel_width[2:(n_group * 2 + 1)], c(rep(1:n_group, each = 2)), sum),
-      rel_width[-(1:(n_group * 2 + 1))]
+      tapply(rel_width[2:(n_group * 2 + 1)], c(rep(1:n_group, each = 2)), sum)
     )
+
+    if (length(col_tbl_between) > 0) {
+      rel_width1 <- c(
+        rel_width1,
+        tapply(rel_width_diff, c(rep(1:n_group_diff, each = length(col_tbl_between))), sum)
+      )
+    }
 
     # Column boarder
     border_top <- c("", rep("single", n_col - 1))
-    border_left <- c("single", rep(c("single", ""), n_group), rep("single", n_col - n_group * 2 - 1))
 
     # Using order number to customize row format
     text_justification <- c("l", rep("c", n_col - 1))
