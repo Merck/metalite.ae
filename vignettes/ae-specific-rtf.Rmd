@@ -146,7 +146,6 @@ outdata <- prepare_ae_specific(
 
 ```{r download-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0specific1.rtf" download="ae0specific1.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific1.rtf"
 )
 ```

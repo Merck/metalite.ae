@@ -37,7 +37,7 @@ difference inference, adverse event duration, and event frequency statistics.
 
 The example uses ADSL and ADAE data from the
 [forestly](https://merck.github.io/forestly/) package. The metadata follows the
-same approach used in the [AE Specific Table](ae-specific.html) vignette.
+same approach used in the [AE Specific Table](ae-specific-rtf.html) vignette.
 
 ```{r}
 adsl <- forestly::forestly_adsl
@@ -149,8 +149,7 @@ prepare_ae_specific(
 
 ```{r download-inference-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0specific2a.rtf" download="ae0specific2a.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific2a.rtf"
 )
 ```
 
@@ -179,8 +178,7 @@ prepare_ae_specific(
 
 ```{r download-duration-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0specific2b.rtf" download="ae0specific2b.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific2b.rtf"
 )
 ```
 
@@ -210,7 +208,6 @@ prepare_ae_specific(
 
 ```{r download-events-rtf, results="asis", echo=FALSE}
 cat(
-  '<p><a href="rtf/ae0specific2c.rtf" download="ae0specific2c.rtf">',
-  "Download the generated RTF table</a></p>"
+  "Generated RTF file: ae0specific2c.rtf"
 )
 ```
