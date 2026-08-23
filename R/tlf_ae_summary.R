@@ -277,9 +277,11 @@ tlf_ae_summary <- function(outdata,
     if (length(col_tbl_between) > 0) {
       rel_width1 <- c(
         rel_width1,
-        tapply(rel_width[(n_group * 2 + 2):n_col],
-               c(rep(1:n_group_diff,each = length(col_tbl_between))),
-               sum)
+        tapply(
+          rel_width[(n_group * 2 + 2):n_col],
+          c(rep(1:n_group_diff, each = length(col_tbl_between))),
+          sum
+        )
       )
     }
 
