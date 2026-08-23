@@ -164,8 +164,6 @@ prepare_ae_summary <- function(meta,
     tbl_num <- rbind1(tbl_num, noevnt_num)
     tbl_prop <- rbind1(tbl_prop, noevnt_prop)
     tbl_diff <- rbind1(tbl_diff, noevnt_diff)
-    # tbl_ci <- rbind1(tbl_ci, noevnt_ci)
-    # tbl_p <- rbind1(tbl_p, noevnt_p)
     name <- append(name, noevnt_name, 1)
 
     names(res) <- NULL
