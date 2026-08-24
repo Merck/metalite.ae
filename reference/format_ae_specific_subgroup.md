@@ -36,7 +36,9 @@ format_ae_specific_subgroup(
 
   - `dur`: Average of adverse event duration.
 
-  - `events`: Average number of adverse event per subject.
+  - `events_avg`: Average number of adverse event per subject.
+
+  - `events_count`: Count number of adverse event per subject.
 
 - digits_prop:
 

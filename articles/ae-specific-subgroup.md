@@ -104,25 +104,13 @@ prepare_ae_specific_subgroup(
   subgroup_header = c("TRTA", "SEX"),
   display_subgroup_total = TRUE
 ) |>
-  format_ae_specific_subgroup(display = c("n", "prop", "diff")) |>
+  format_ae_specific_subgroup(display = c("n", "prop")) |>
   tlf_ae_specific_subgroup(
     meddra_version = "24.0",
     source = "Source:  [CDISCpilot: adam-adsl; adae]",
     analysis = "ae_specific",
     path_outtable = rtf_file
   )
-#> Warning in foo(text_justification): The input is not a single value, with
-#> length equal to number of columns or a matrix with same dimension of the table.
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length
-#> [13] is not a sub-multiple or multiple of the number of rows [114]
-#> Warning in foo(border_left): The input is not a single value, with length equal
-#> to number of columns or a matrix with same dimension of the table.
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length
-#> [13] is not a sub-multiple or multiple of the number of rows [114]
-#> Warning in matrix(width, nrow = nrow(tbl), ncol = ncol(tbl), byrow = TRUE):
-#> data length [13] is not a sub-multiple or multiple of the number of rows [114]
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length
-#> [13] is not a sub-multiple or multiple of the number of rows [114]
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0specific0sub0gender1.rtf
 ```
 
