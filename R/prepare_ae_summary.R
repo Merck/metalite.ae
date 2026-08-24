@@ -133,19 +133,13 @@ prepare_ae_summary <- function(meta,
   })
 
   n_pop <- res[[1]]$n_pop
-  tbl_num <- do.call(rbind, lapply(res, function(x) x$n[x$order == 100, ]))
+  tbl_num <- do.call(rbind, lapply(res, function(x) x$n[x$order == 100, , drop = FALSE]))
 
-  pop_prop <- res[[1]]$prop[1, ]
-  tbl_prop <- do.call(rbind, lapply(res, function(x) x$prop[x$order == 100, ]))
+  pop_prop <- res[[1]]$prop[1, , drop = FALSE]
+  tbl_prop <- do.call(rbind, lapply(res, function(x) x$prop[x$order == 100, , drop = FALSE]))
 
-  pop_diff <- res[[1]]$diff[1, ]
-  tbl_diff <- do.call(rbind, lapply(res, function(x) x$diff[x$order == 100, ]))
-
-  pop_ci <- res[[1]]$ci[1, ]
-  tbl_ci <- do.call(rbind, lapply(res, function(x) x$ci[x$order == 100, ]))
-
-  pop_p <- res[[1]]$p[1, ]
-  tbl_p <- do.call(rbind, lapply(res, function(x) x$p[x$order == 100, ]))
+  pop_diff <- res[[1]]$diff[1, , drop = FALSE]
+  tbl_diff <- do.call(rbind, lapply(res, function(x) x$diff[x$order == 100, , drop = FALSE]))
 
   pop_name <- res[[1]]$name[1]
   name <- unlist(lapply(parameters, function(x) collect_adam_mapping(meta, x)$summ_row))
@@ -155,25 +149,21 @@ prepare_ae_summary <- function(meta,
     names(res) <- parameters
 
     # Extract the values for 'with no ae' row.
-    noevnt_num <- res$any$n[3, ]
-    noevnt_prop <- res$any$prop[3, ]
-    noevnt_diff <- res$any$diff[3, ]
-    noevnt_ci <- res$any$ci[3, ]
-    noevnt_p <- res$any$p[3, ]
+    noevnt_num <- res$any$n[3, , drop = FALSE]
+    noevnt_prop <- res$any$prop[3, , drop = FALSE]
+    noevnt_diff <- res$any$diff[3, , drop = FALSE]
     noevnt_name <- res$any$name[3]
 
     # Combine records with original other parameters and sort df
     rbind1 <- function(df1, df2) {
       df1 <- rbind(df1, df2)
-      df1 <- df1[order(as.numeric(row.names(df1))), ]
+      df1 <- df1[order(as.numeric(row.names(df1))), , drop = FALSE]
       df1
     }
 
     tbl_num <- rbind1(tbl_num, noevnt_num)
     tbl_prop <- rbind1(tbl_prop, noevnt_prop)
-    tbl_diff <- rbind(tbl_diff, noevnt_diff)
-    tbl_ci <- rbind(tbl_ci, noevnt_ci)
-    tbl_p <- rbind(tbl_p, noevnt_p)
+    tbl_diff <- rbind1(tbl_diff, noevnt_diff)
     name <- append(name, noevnt_name, 1)
 
     names(res) <- NULL
