@@ -31,7 +31,8 @@
 #'   - `prop`: Proportion of subjects with adverse event.
 #'   - `total`: Total columns.
 #'   - `dur`: Average of adverse event duration.
-#'   - `events`: Average number of adverse event per subject.
+#'   - `events_avg`: Average number of adverse event per subject.
+#'   - `events_count`: Count number of adverse event per subject.
 #' @param mock Logical. Display mock table or not.
 #'
 #' @return A list of analysis raw datasets for subgroup analysis.

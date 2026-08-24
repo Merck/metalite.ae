@@ -24,7 +24,8 @@ format_ae_specific_subgroup(
 \item \code{prop}: Proportion of subjects with adverse event.
 \item \code{total}: Total columns.
 \item \code{dur}: Average of adverse event duration.
-\item \code{events}: Average number of adverse event per subject.
+\item \code{events_avg}: Average number of adverse event per subject.
+\item \code{events_count}: Count number of adverse event per subject.
 }}
 
 \item{digits_prop}{A numeric value of number of digits for proportion value.}
