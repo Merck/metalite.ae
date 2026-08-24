@@ -151,7 +151,7 @@ prepare_ae_summary(
 #>  $ group          : chr [1:3] "Low Dose" "Placebo" "Total"
 #>  $ reference_group: num 2
 #>  $ prop           :'data.frame': 5 obs. of  3 variables:
-#>  $ diff           : num [1:5, 1] NA 11.43 35.74 1.19 -11.43
+#>  $ diff           :'data.frame': 5 obs. of  1 variable:
 #>  $ n_pop          :'data.frame': 1 obs. of  3 variables:
 #>  $ name           : chr [1:5] "Participants in population" "with one or more adverse events" "with no adverse events" "with drug-related{^a} adverse events" ...
 #>  $ prepare_call   : language prepare_ae_summary(meta = meta, population = "apat", observation = "wk12",      parameter = "any;rel;ser")

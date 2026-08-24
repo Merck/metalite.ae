@@ -153,26 +153,6 @@ prepare_ae_summary(
 #> any
 #> rel
 #> ser
-#> Warning in foo(border_top): The input is not a single value, with length equal
-#> to number of columns or a matrix with same dimension of the table.
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length [7]
-#> is not a sub-multiple or multiple of the number of columns [5]
-#> Warning in foo(border_left): The input is not a single value, with length equal
-#> to number of columns or a matrix with same dimension of the table.
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length [7]
-#> is not a sub-multiple or multiple of the number of columns [5]
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length [5]
-#> is not a sub-multiple or multiple of the number of columns [3]
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length [7]
-#> is not a sub-multiple or multiple of the number of columns [5]
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length [5]
-#> is not a sub-multiple or multiple of the number of columns [3]
-#> Warning in matrix(x, nrow = n_row, ncol = n_col, byrow = TRUE): data length [7]
-#> is not a sub-multiple or multiple of the number of columns [5]
-#> Warning in matrix(width, nrow = nrow(tbl), ncol = ncol(tbl), byrow = TRUE):
-#> data length [5] is not a sub-multiple or multiple of the number of columns [3]
-#> Warning in matrix(width, nrow = nrow(tbl), ncol = ncol(tbl), byrow = TRUE):
-#> data length [7] is not a sub-multiple or multiple of the number of columns [5]
 #> The output is saved in/home/runner/work/metalite.ae/metalite.ae/vignettes/rtf/ae0summary2.rtf
 ```
 
