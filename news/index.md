@@ -2,6 +2,8 @@
 
 ## metalite.ae 0.1.4
 
+CRAN release: 2026-08-29
+
 ### New features
 
 - The new

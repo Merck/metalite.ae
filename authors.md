@@ -35,7 +35,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/Merck/metalite.ae/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/Merck/metalite.ae/blob/v0.1.4/DESCRIPTION)
 
 Zhang Y, Zhao Y, Fukuda H, Wang B, Xiao N, Nepal S, Ginnaram M, Patel R,
 Lang B, Deng X, Liu B, Chauhan J (2026). *metalite.ae: Adverse Events
