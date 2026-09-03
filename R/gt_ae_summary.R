@@ -116,7 +116,7 @@
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]"
 #'   )
 gt_ae_summary <- function(outdata,
-                          source,
+                          source = NULL,
                           analysis,
                           title = c("analysis", "observation", "population"),
                           footnotes = NULL) {
