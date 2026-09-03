@@ -7,8 +7,8 @@ Specific adverse events table in gt format
 ``` r
 gt_ae_specific(
   outdata,
-  meddra_version,
-  source,
+  meddra_version = NULL,
+  source = NULL,
   analysis,
   footnotes = NULL,
   title = c("analysis", "observation", "population")
