@@ -6,7 +6,7 @@
 \usage{
 gt_ae_summary(
   outdata,
-  source,
+  source = NULL,
   analysis,
   title = c("analysis", "observation", "population"),
   footnotes = NULL

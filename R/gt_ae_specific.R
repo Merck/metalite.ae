@@ -96,8 +96,8 @@
 #'     analysis = "ae_specific"
 #'   )
 gt_ae_specific <- function(outdata,
-                           meddra_version,
-                           source,
+                           meddra_version = NULL,
+                           source = NULL,
                            analysis,
                            footnotes = NULL,
                            title = c("analysis", "observation", "population")) {
@@ -108,9 +108,14 @@ gt_ae_specific <- function(outdata,
         "A system organ class or specific adverse event appears on this report only if",
         "its incidence in one or more of the columns meets the incidence",
         "criterion in the report title, after rounding."
-      ),
-      "Adverse event terms are from MedDRA Version {meddra_version}."
+      )
     )
+    if (!is.null(meddra_version)) {
+      footnotes <- c(
+        footnotes,
+        "Adverse event terms are from MedDRA Version {meddra_version}."
+      )
+    }
   }
 
   tbl <- outdata$tbl
@@ -163,9 +168,12 @@ gt_ae_specific <- function(outdata,
     }
   }
 
-  footnotes <- vapply(footnotes, glue::glue_data,
-    .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
-  )
+  if (!is.null(meddra_version)) {
+    footnotes <- vapply(footnotes, glue::glue_data,
+      .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
+    )
+  }
+
   names(footnotes) <- NULL
 
   convert_caret_sup <- function(x) {
