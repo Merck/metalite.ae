@@ -170,7 +170,7 @@ gt_ae_specific <- function(outdata,
 
   if (!is.null(meddra_version)) {
     footnotes <- vapply(footnotes, glue::glue_data,
-                        .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
+      .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
     )
   }
 
