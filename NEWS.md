@@ -17,6 +17,7 @@
 
 -   Update `fmt_est()` to change display of missing values from a character string of "NA" to a blank in an output table (#194).
 -   Update `extend_ae_specific_inference()` to pass additional arguments to `rate_compare_sum()` (#197).
+-   Speed up the bisection confidence-interval search in `rate_compare_sum()` (and therefore `rate_compare()` and `extend_ae_specific_inference()`) by reusing shared interval endpoints and hoisting loop-invariant quantities out of the objective function; results are unchanged up to floating-point tolerance.
 
 # metalite.ae 0.1.2
 

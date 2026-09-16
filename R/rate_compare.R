@@ -271,46 +271,62 @@ rate_compare_sum <- function(
   # `f` is the function for which the root is sought,
   # `a` and `b` are minimum and maximum of the interval,
   # which contains the root from the bisection method.
+  #
+  # The scan walks a grid of `bisection` intervals looking for sign changes.
+  # Adjacent intervals share an endpoint, so the right-edge value of one
+  # interval is the left-edge value of the next: we carry `fb` forward into
+  # `fa` instead of re-evaluating `f` there, roughly halving the number of
+  # `f` calls during the scan.
   biroot <- function(f, a, b) {
     h <- abs(b - a) / bisection
-    i <- 0
     j <- 0
-    a1 <- b1 <- 0
     roots <- c()
 
+    # The right endpoint of interval i is the left endpoint of interval i + 1,
+    # so we carry its function value forward instead of recomputing it.
+    a1 <- a
+    fa <- f(a1)
+
+    i <- 0
     while (i <= bisection) {
-      a1 <- a + i * h
       b1 <- a1 + h
 
       # Evaluate function safely
-      fa <- f(a1)
       fb <- f(b1)
 
       # Skip intervals where fa or fb are NA/NaN/Inf
       if (is.finite(fa) && is.finite(fb) && (fa * fb < 0)) {
+        # Refine within a private copy of the bracket so the carried-forward
+        # scan endpoints (`a1`, `fa`) are not clobbered.
+        lo <- a1
+        hi <- b1
+        flo <- fa
         repeat {
-          if (abs(b1 - a1) < eps) {
+          if (abs(hi - lo) < eps) {
             break
           }
 
-          x <- (a1 + b1) / 2
+          x <- (lo + hi) / 2
           fx <- f(x)
 
           # If fx is NA/NaN/Inf, break and skip this interval
           if (!is.finite(fx)) break
 
-          if (fa * fx < 0) {
-            b1 <- x
-            fb <- fx
+          if (flo * fx < 0) {
+            hi <- x
           } else {
-            a1 <- x
-            fa <- fx
+            lo <- x
+            flo <- fx
           }
         }
 
         j <- j + 1
-        roots[j] <- (a1 + b1) / 2
+        roots[j] <- (lo + hi) / 2
       }
+
+      # Advance the grid, reusing the right endpoint as the next left endpoint.
+      a1 <- b1
+      fa <- fb
 
       i <- i + 1
     }
@@ -326,6 +342,12 @@ rate_compare_sum <- function(
       return(roots)
     }
   }
+
+  # Loop-invariant quantities pulled out of `func_d`, which is called once per
+  # bisection grid point (hundreds of times per CI). The chi-square critical
+  # value and the stratified/unstratified branch do not depend on `d`.
+  chisq_crit <- qchisq(1 - alpha, 1)
+  unstratified <- is.null(strata) || length(unique(strata)) == 1
 
   # Start to calculate the confidence interval
   func_d <- function(d) {
@@ -356,11 +378,10 @@ rate_compare_sum <- function(
     r1t <- r0t + d
     vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
 
-    if (is.null(strata) || length(unique(strata)) == 1) {
+    if (unstratified) {
       r_diff <- (x1 / n1 - x0 / n0)
       chisq_obs <- (r_diff - d)^2 / vart
-    }
-    if (!length(unique(strata)) == 1) {
+    } else {
       # Start to calculate the Chi-square
       r1_w <- r1 * w
       r0_w <- r0 * w
@@ -370,7 +391,7 @@ rate_compare_sum <- function(
       r_diff <- sum(r1_w) - sum(r0_w)
       chisq_obs <- (r_diff - d)^2 / vs
     }
-    return(chisq_obs - qchisq(1 - alpha, 1))
+    return(chisq_obs - chisq_crit)
   }
 
   ci <- biroot(f = func_d, a = -0.999, b = 0.999)
