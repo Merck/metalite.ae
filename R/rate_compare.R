@@ -193,7 +193,7 @@ rate_compare_sum <- function(
   eps = 1e-06,
   alpha = 0.05
 ) {
-  if (any(is.na(c(n0, n1, x0, x1))) || all(c(x0, x1) == 0)) {
+  if (any(is.na(c(n0, n1, x0, x1)))) {
     z <- data.frame(
       est = NA, z_score = NA,
       p = NA, lower = NA, upper = NA
@@ -238,16 +238,17 @@ rate_compare_sum <- function(
 
   # Start to calculate R tilter
   r0t <- 2 * p * cos(a) - l2 / (3 * l3)
+  r0t <- pmax(pmin(r0t, pmin(1, 1 - delta)), pmax(0, -delta))
   r1t <- r0t + delta
   vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
 
   if (is.null(strata) || length(unique(strata)) == 1) {
     r_diff <- (r1 - r0)
-    z_score <- (r_diff - delta) / sqrt(vart)
-    pval <- switch(test,
-      one.sided = ifelse(delta <= 0, 1 - pnorm(z_score), pnorm(z_score)),
-      two.sided = 1 - pchisq(z_score^2, 1)
-    )
+    z_score <- if (isTRUE(r_diff == delta) && isTRUE(vart == 0)) {
+      0
+    } else {
+      (r_diff - delta) / sqrt(vart)
+    }
   }
   if (!length(unique(strata)) == 1) {
     # Start to calculate the Chi-square
@@ -260,8 +261,17 @@ rate_compare_sum <- function(
     r0_w <- r0 * w
     var_w <- w^2 * vart
     r_diff <- (sum(r1_w) - sum(r0_w))
-    z_score <- (r_diff - delta) / sqrt(sum(var_w))
-    pval <- switch(test,
+    z_score <- if (isTRUE(r_diff == delta) && isTRUE(sum(var_w) == 0)) {
+      0
+    } else {
+      (r_diff - delta) / sqrt(sum(var_w))
+    }
+  }
+
+  pval <- if (isTRUE(z_score == 0) && all(c(x0, x1) == 0)) {
+    1
+  } else {
+    switch(test,
       one.sided = ifelse(delta <= 0, 1 - pnorm(z_score), pnorm(z_score)),
       two.sided = 1 - pchisq(z_score^2, 1)
     )
@@ -353,12 +363,17 @@ rate_compare_sum <- function(
     a <- (pi + acos(temp)) / 3
     # Start to calculate R tilter
     r0t <- 2 * p * cos(a) - l2 / (3 * l3)
+    r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
     r1t <- r0t + d
     vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
 
     if (is.null(strata) || length(unique(strata)) == 1) {
       r_diff <- (x1 / n1 - x0 / n0)
-      chisq_obs <- (r_diff - d)^2 / vart
+      chisq_obs <- if (isTRUE(r_diff == d) && isTRUE(vart == 0)) {
+        0
+      } else {
+        (r_diff - d)^2 / vart
+      }
     }
     if (!length(unique(strata)) == 1) {
       # Start to calculate the Chi-square
@@ -368,7 +383,11 @@ rate_compare_sum <- function(
       vs <- sum(var_w)
 
       r_diff <- sum(r1_w) - sum(r0_w)
-      chisq_obs <- (r_diff - d)^2 / vs
+      chisq_obs <- if (isTRUE(r_diff == d) && isTRUE(vs == 0)) {
+        0
+      } else {
+        (r_diff - d)^2 / vs
+      }
     }
     return(chisq_obs - qchisq(1 - alpha, 1))
   }

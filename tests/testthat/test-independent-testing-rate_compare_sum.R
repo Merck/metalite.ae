@@ -98,3 +98,46 @@ test_that("match with rate_compare()", {
   expect_equal(xx_output, yy_output, tolerance = 1e-4)
   expect_equal(colnames(xx), colnames(yy))
 })
+
+test_that("return MN confidence interval when both event counts are zero", {
+  result <- rate_compare_sum(n0 = 105, n1 = 101, x0 = 0, x1 = 0)
+
+  expect_equal(result$est, 0)
+  expect_equal(result$z_score, 0)
+  expect_equal(result$p, 1)
+  expect_true(all(is.finite(c(result$lower, result$upper))))
+  expect_lt(result$lower, 0)
+  expect_gt(result$upper, 0)
+  expect_equal(result$lower, -0.03547636, tolerance = 1e-3)
+  expect_equal(result$upper, 0.03683015, tolerance = 1e-3)
+})
+
+test_that("zero-event confidence interval gets tighter with larger samples", {
+  small <- rate_compare_sum(n0 = 10, n1 = 20, x0 = 0, x1 = 0)
+  large <- rate_compare_sum(n0 = 105, n1 = 101, x0 = 0, x1 = 0)
+
+  expect_true(all(is.finite(c(small$lower, small$upper))))
+  expect_gt(small$upper - small$lower, large$upper - large$lower)
+})
+
+test_that("single-arm zero events still return finite results", {
+  result <- rate_compare_sum(n0 = 105, n1 = 101, x0 = 0, x1 = 1)
+
+  expect_true(all(is.finite(unlist(result))))
+})
+
+test_that("NA inputs still return an NA row", {
+  result <- rate_compare_sum(n0 = NA, n1 = 101, x0 = 0, x1 = 0)
+
+  expect_true(all(is.na(unlist(result))))
+})
+
+test_that("zero-event strata contribute to a stratified analysis", {
+  result <- rate_compare_sum(
+    n0 = c(50, 55), n1 = c(50, 51),
+    x0 = c(0, 4), x1 = c(0, 8),
+    strata = c("a", "b")
+  )
+
+  expect_true(all(is.finite(unlist(result))))
+})
