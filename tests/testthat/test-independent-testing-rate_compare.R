@@ -62,3 +62,28 @@ test_that("rate_compare() matches prop_test_mn for unstratified analysis", {
 
   expect_equal(o1, o2, tolerance = 1e-3)
 })
+
+test_that("rate_compare() passes delta through to rate_compare_sum()", {
+  ana <- data.frame(
+    treatment = c(rep(0, 100), rep(1, 100)),
+    response  = c(rep(0, 80), rep(1, 20), rep(0, 40), rep(1, 60))
+  )
+
+  x0 <- sum(ana$response[1:100])
+  x1 <- sum(ana$response[101:200])
+  n0 <- 100
+  n1 <- 100
+  d <- 0.1
+
+  res_formula <- rate_compare(response ~ treatment, data = ana, delta = d)
+  res_sum <- rate_compare_sum(n0 = n0, n1 = n1, x0 = x0, x1 = x1, delta = d)
+  res_zero <- rate_compare(response ~ treatment, data = ana, delta = 0)
+
+  expect_equal(
+    c(res_formula$est, res_formula$z_score, res_formula$p),
+    c(res_sum$est, res_sum$z_score, res_sum$p),
+    tolerance = 1e-6
+  )
+  expect_false(isTRUE(all.equal(res_formula$z_score, res_zero$z_score)))
+  expect_false(isTRUE(all.equal(res_formula$p, res_zero$p)))
+})

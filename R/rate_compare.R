@@ -117,7 +117,7 @@ rate_compare <- function(
   rate_compare_sum(
     n0, n1, x0, x1,
     strata_re,
-    delta = 0,
+    delta = delta,
     weight = weight,
     test = test,
     bisection = bisection,
