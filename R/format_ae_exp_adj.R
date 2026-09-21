@@ -205,7 +205,7 @@ format_ae_exp_adj <- function(outdata,
 
     eaer <- outdata$eaer[, index_total]
     eaer <- lapply(eaer, function(x, digits) {
-      x1 <- formatC(x, digits = digits, format = "f")
+      x1 <- format_number(x, digits = digits)
       paste0("(", x1, ")")
     }, digits = digits_eaer)
     eaer <- as.data.frame(do.call(cbind, eaer))

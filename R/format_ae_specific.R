@@ -327,7 +327,7 @@ format_ae_specific <- function(outdata,
     if (filter_criteria > 0) {
       if (filter_method == "percent") {
         # Round before filtering
-        filter_index <- round(outdata$prop[, index_total], digits_prop)
+        filter_index <- round_half_away_from_zero(outdata$prop[, index_total], digits_prop)
       } else {
         filter_index <- outdata$n[, index_total]
       }
