@@ -102,6 +102,6 @@ head(tbl$tbl)
 #> 3          with no drug-related adverse events  84 (100.0)  86 (100.0)    0.0
 #>           ci_1
 #> 1 (-4.4,  4.3)
-#> 2         <NA>
+#> 2 (-4.3,  4.4)
 #> 3 (-4.4,  4.3)
 ```
