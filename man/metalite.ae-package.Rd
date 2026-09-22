@@ -25,6 +25,7 @@ Useful links:
 Authors:
 \itemize{
   \item Yilong Zhang
+  \item Hiroaki Fukuda
   \item Benjamin Wang
   \item Nan Xiao
   \item Sarad Nepal
@@ -32,7 +33,6 @@ Authors:
   \item Ruchitbhai Patel
   \item Brian Lang
   \item Xuan Deng
-  \item Hiroaki Fukuda
   \item Bing Liu
   \item Jeetender Chauhan
 }

@@ -27,7 +27,82 @@
 #' @export
 #'
 #' @examples
-#' meta <- meta_ae_example()
+#' # Define metadata
+#' adsl <- forestly::forestly_adsl
+#' adae <- forestly::forestly_adae
+#'
+#' adsl$TRT01A <- factor(
+#'   adsl$TRT01A,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#' adae$TRTA <- factor(
+#'   adae$TRTA,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#'
+#' analysis_plan <- metalite::plan(
+#'   analysis = "ae_summary",
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "any;rel;ser"
+#' )
+#'
+#' meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+#'   metalite::define_plan(analysis_plan) |>
+#'   metalite::define_population(
+#'     name = "apat",
+#'     var = c(
+#'       "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+#'       "SITEID", "SEX", "RACE", "AGE"
+#'     ),
+#'     group = "TRT01A",
+#'     subset = SAFFL == "Y",
+#'     label = "All Participants as Treated"
+#'   ) |>
+#'   metalite::define_observation(
+#'     name = "wk12",
+#'     var = c(
+#'       "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+#'       "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+#'     ),
+#'     group = "TRTA",
+#'     subset = SAFFL == "Y",
+#'     label = "Weeks 0 to 12"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "any",
+#'     term1 = "",
+#'     term2 = "",
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "All AEs"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "rel",
+#'     term1 = "Drug-Related",
+#'     term2 = "",
+#'     subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "Drug-related AEs"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "ser",
+#'     term1 = "Serious",
+#'     term2 = "",
+#'     subset = AESER == "Y",
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "Serious AEs"
+#'   ) |>
+#'   metalite::define_analysis(
+#'     name = "ae_summary",
+#'     title = "Adverse Event Summary"
+#'   ) |>
+#'   metalite::meta_build()
+#'
 #' outdata <- prepare_ae_summary(meta,
 #'   population = "apat",
 #'   observation = "wk12",
@@ -52,9 +127,13 @@ tlf_ae_summary <- function(outdata,
                            path_outdata = NULL,
                            path_outtable = NULL) {
   tbl <- outdata$tbl
+  display <- outdata$display
+  display_total <- "total" == display
   group <- outdata$group
   reference_group <- outdata$reference_group
+  group_diff <- group[seq_along(group) != reference_group & group != "Total"]
   n_group <- length(outdata$group)
+  n_group_diff <- length(group_diff)
   n_row <- nrow(tbl)
   n_col <- ncol(tbl)
 
@@ -89,24 +168,102 @@ tlf_ae_summary <- function(outdata,
 
   if (!all(outdata$n_pop == 0)) {
     # Define column header
-    colheader_n <- c(
-      paste0(" | ", paste(group, collapse = " | ")),
-      paste0(" | ", paste(rep("n | (%)", n_group), collapse = " | "))
+    col_tbl_within <- strsplit(names(tbl), "_") |>
+      unlist() |>
+      (\(list) list[list %in% c("n", "prop", "dur", "eventsavg", "eventscount")])() |>
+      unique()
+
+    colhead_within <- paste(
+      vapply(
+        X = col_tbl_within,
+        FUN.VALUE = "character",
+        FUN = switch,
+        "n" = "n",
+        "prop" = "(%)",
+        "dur" = "Mean Duration (SE)",
+        "eventsavg" = "Mean Events per Participant (SE)",
+        "eventscount" = "Number of Events"
+      ),
+      collapse = " | "
     )
 
-    # TODO: add logic for CI and p-value with multipel groups following WMA mock up table.
-    # colheader_ci <- c(paste("Difference in % vs", group[reference_group]),
-    # "Estimate (95% CI)")
+    colheader <- c(
+      paste0(" | ", paste(group, collapse = " | ")),
+      paste0(" | ", paste(rep(colhead_within, n_group), collapse = " | "))
+    )
 
-    # colheader_p <- c("", "p-value")
-    # colheader <- paste(colheader_n, colheader_ci, colheader_p, sep = " | ")
+    rel_width_group <- rep(1, length(col_tbl_within) * n_group)
+    rel_width <- c(3, rel_width_group)
 
-    colheader <- colheader_n
+    colborder_within <- vapply(
+      X = col_tbl_within,
+      FUN.VALUE = "character",
+      FUN = switch,
+      "n" = "single",
+      "prop" = "",
+      "dur" = "single",
+      "eventsavg" = "single",
+      "eventscount" = "",
+      USE.NAMES = FALSE
+    )
+
+    border_left <- c(
+      "single",
+      rep(colborder_within, n_group)
+    )
+
+    # For CI and p-value with multiple groups following WMA mock up table.
+    col_tbl_between <- strsplit(names(tbl), "_") |>
+      unlist() |>
+      (\(list) list[list %in% c("diff", "ci", "p")])() |>
+      unique()
+
+    if (length(col_tbl_between) > 0) {
+      colhead_between <- paste(
+        vapply(
+          X = col_tbl_between,
+          FUN.VALUE = "character",
+          FUN = switch,
+          "diff" = "Estimate",
+          "ci" = paste0("(", outdata$ci_level * 100, "% CI)"),
+          "p" = "p-value",
+        ),
+        collapse = " | "
+      )
+
+      if (n_group_diff == 1) {
+        colheader_ci <- paste("Difference in % vs", group[reference_group])
+      } else {
+        colheader_ci <- paste0(paste("Difference in %", group_diff, "vs", group[reference_group]), collapse = " | ")
+      }
+
+      colheader_ci <- c(
+        colheader_ci,
+        paste(rep(colhead_between, n_group_diff), collapse = " | ")
+      )
+
+      colheader <- paste(colheader, colheader_ci, sep = " | ")
+
+      rel_width_diff <- rep(1, length(col_tbl_between) * (n_group_diff))
+      rel_width <- c(rel_width, rel_width_diff)
+
+      colborder_between <- vapply(
+        X = col_tbl_between,
+        FUN.VALUE = "character",
+        FUN = switch,
+        "diff" = "single",
+        "ci" = "",
+        "p" = "single",
+        USE.NAMES = FALSE
+      )
+      border_left <- c(
+        border_left,
+        rep(colborder_between, n_group_diff)
+      )
+    }
 
     # Relative width
-    if (is.null(col_rel_width)) {
-      rel_width <- c(3, rep(1, 2 * n_group))
-    } else {
+    if (!is.null(col_rel_width)) {
       rel_width <- col_rel_width
     }
 
@@ -114,13 +271,22 @@ tlf_ae_summary <- function(outdata,
 
     rel_width1 <- c(
       rel_width[1],
-      tapply(rel_width[2:(n_group * 2 + 1)], c(rep(1:n_group, each = 2)), sum),
-      rel_width[-(1:(n_group * 2 + 1))]
+      tapply(rel_width[2:(n_group * 2 + 1)], c(rep(1:n_group, each = 2)), sum)
     )
+
+    if (length(col_tbl_between) > 0) {
+      rel_width1 <- c(
+        rel_width1,
+        tapply(
+          rel_width[(n_group * 2 + 2):n_col],
+          c(rep(1:n_group_diff, each = length(col_tbl_between))),
+          sum
+        )
+      )
+    }
 
     # Column boarder
     border_top <- c("", rep("single", n_col - 1))
-    border_left <- c("single", rep(c("single", ""), n_group), rep("single", n_col - n_group * 2 - 1))
 
     # Using order number to customize row format
     text_justification <- c("l", rep("c", n_col - 1))

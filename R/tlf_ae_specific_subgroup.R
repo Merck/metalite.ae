@@ -27,7 +27,62 @@
 #' @export
 #'
 #' @examples
-#' meta <- meta_ae_example()
+#' # Define metadata
+#' adsl <- forestly::forestly_adsl
+#' adae <- forestly::forestly_adae
+#'
+#' adsl$TRTA <- factor(
+#'   adsl$TRT01A,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#' adae$TRTA <- factor(
+#'   adae$TRTA,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#'
+#' analysis_plan <- metalite::plan(
+#'   analysis = "ae_specific",
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' )
+#'
+#' meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+#'   metalite::define_plan(analysis_plan) |>
+#'   metalite::define_population(
+#'     name = "apat",
+#'     var = c("USUBJID", "SAFFL", "TRTA", "SITEID", "SEX", "RACE", "AGE"),
+#'     group = "TRTA",
+#'     subset = SAFFL == "Y",
+#'     label = "All Participants as Treated"
+#'   ) |>
+#'   metalite::define_observation(
+#'     name = "wk12",
+#'     var = c(
+#'       "USUBJID", "SAFFL", "TRTA", "SEX", "AEDECOD", "AEBODSYS",
+#'       "AEREL", "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+#'     ),
+#'     group = "TRTA",
+#'     subset = SAFFL == "Y",
+#'     label = "Weeks 0 to 12"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "rel",
+#'     term1 = "Drug-Related",
+#'     term2 = "",
+#'     subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "Drug-related AEs"
+#'   ) |>
+#'   metalite::define_analysis(
+#'     name = "ae_specific",
+#'     title = "Participants With Drug-Related Adverse Events"
+#'   ) |>
+#'   metalite::meta_build()
+#'
 #' prepare_ae_specific_subgroup(meta,
 #'   population = "apat",
 #'   observation = "wk12",
@@ -118,7 +173,7 @@ tlf_ae_specific_subgroup <- function(
     col_tbl_within <- outdata$display
 
     col_tbl_within <- col_tbl_within |>
-      (\(list) list[list %in% c("n", "prop", "dur", "events")])() |>
+      (\(list) list[list %in% c("n", "prop", "dur", "events_avg", "events_count")])() |>
       unique()
 
     colhead_within <- paste(
@@ -129,7 +184,8 @@ tlf_ae_specific_subgroup <- function(
         "n" = "n",
         "prop" = "(%)",
         "dur" = "Mean Duration (SE)",
-        "events" = "Mean Events per Participant (SE)"
+        "events_avg" = "Mean Events per Participant (SE)",
+        "events_count" = "Number of Events"
       ),
       collapse = " | "
     )
@@ -145,7 +201,8 @@ tlf_ae_specific_subgroup <- function(
       "n" = "single",
       "prop" = "",
       "dur" = "single",
-      "events" = "single",
+      "events_avg" = "single",
+      "events_count" = "",
       USE.NAMES = FALSE
     )
 
@@ -215,14 +272,13 @@ tlf_ae_specific_subgroup <- function(
 
     # Column border
     border_top2 <- c("", rep("single", n_sgroup * n_tgroup))
-    border_top3 <- c("", rep("single", n_sgroup * n_tgroup * 2))
+    border_top3 <- c("", rep("single", n_sgroup * n_tgroup * length(col_tbl_within)))
 
     border_left2 <- c("single", rep("single", n_sgroup * n_tgroup))
     border_left3 <- c("single", colborder_within)
 
     # Using order number to customize row format
-
-    text_justification <- c("l", rep("c", n_sgroup * n_tgroup * 2))
+    text_justification <- c("l", rep("c", n_sgroup * n_tgroup * length(col_tbl_within)))
 
     if (length(outdata$components) == 2) {
       text_format <- ifelse(tbl$order %% 1000 == 0, "b", "")

@@ -55,10 +55,13 @@ reference:
     - extend_ae_specific_subgroup
     - format_ae_specific
     - tlf_ae_specific
+    - gt_ae_specific
 - title: AE listing
   contents:
     - prepare_ae_listing
+    - format_ae_listing
     - tlf_ae_listing
+    - react_ae_listing
 - title: AE subgroup analysis
   contents:
     - prepare_ae_specific_subgroup
@@ -76,21 +79,42 @@ reference:
     - rate_compare_sum
 - title: Example data
   contents:
-    - meta_ae_example
     - metalite_ae_adex
     - metalite_ae_adexsum
+
 articles:
-- title: Get started
+- title: Get Started
   contents:
     - metalite-ae
-- title: Tutorial
+
+- title: AE Summary Table (Static)
   contents:
-    - ae-specific
-    - add-term1-term2-example
-    - ae-summary
-    - ae-listing
+    - ae-summary-rtf
+    - ae-summary-gt
+    - ae-summary-custom-columns
+    - ae-summary-mock
+
+- title: AE Specific Table (Static)
+  contents:
+    - ae-specific-rtf
+    - ae-specific-gt
+    - ae-specific-custom-columns
+    - ae-specific-filter-sort
     - ae-specific-subgroup
-- title: Specification
+
+- title: AE Listing Table (Static)
+  contents:
+    - ae-listing-rtf
+
+- title: AE Listing Table (Interactive)
+  contents:
+    - ae-listing-reactable
+
+- title: Generate Multiple AE TLFs via 1 Single Metadata
+  contents:
+    - ae-multiple-table-by1metadata
+    
+- title: Others
   contents:
     - rate-compare
     - exposure-adjusted-event-rate

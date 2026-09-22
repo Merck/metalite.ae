@@ -1,5 +1,5 @@
 test_extend_ae_summary_eaer <- function() {
-  meta <- meta_ae_example()
+  meta <- meta_ae_test()
 
   outdata_year <- prepare_ae_summary(meta,
     population = "apat",

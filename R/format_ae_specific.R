@@ -57,7 +57,67 @@
 #' @export
 #'
 #' @examples
-#' meta <- meta_ae_example()
+#' # Define metadata
+#' adsl <- forestly::forestly_adsl
+#' adae <- forestly::forestly_adae
+#'
+#' adsl$TRT01A <- factor(
+#'   adsl$TRT01A,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#' adae$TRTA <- factor(
+#'   adae$TRTA,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#'
+#' analysis_plan <- metalite::plan(
+#'   analysis = "ae_specific",
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' )
+#'
+#' analysis_plan <- metalite::plan(
+#'   analysis = "ae_specific",
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "rel"
+#' )
+#' meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+#'   metalite::define_plan(analysis_plan) |>
+#'   metalite::define_population(
+#'     name = "apat",
+#'     var = c("USUBJID", "SAFFL", "TRT01A", "SITEID", "SEX", "RACE", "AGE"),
+#'     group = "TRT01A",
+#'     subset = SAFFL == "Y",
+#'     label = "All Participants as Treated"
+#'   ) |>
+#'   metalite::define_observation(
+#'     name = "wk12",
+#'     var = c(
+#'       "USUBJID", "SAFFL", "TRTA", "SEX", "AEDECOD", "AEBODSYS",
+#'       "AEREL", "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+#'     ),
+#'     group = "TRTA",
+#'     subset = SAFFL == "Y",
+#'     label = "Weeks 0 to 12"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "rel",
+#'     term1 = "Drug-Related",
+#'     term2 = "",
+#'     subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "Drug-related AEs"
+#'   ) |>
+#'   metalite::define_analysis(
+#'     name = "ae_specific",
+#'     title = "Participants With Drug-Related Adverse Events"
+#'   ) |>
+#'   metalite::meta_build()
 #'
 #' outdata <- prepare_ae_specific(meta,
 #'   population = "apat",
@@ -249,7 +309,7 @@ format_ae_specific <- function(outdata,
     # Reorder the comparison columns.
     between_tbl <- between_tbl[, as.vector(matrix(1:(n_group_btw * n_between),
       ncol = n_group_btw, byrow = TRUE
-    ))]
+    )), drop = FALSE]
     data.frame(within_tbl, between_tbl)
   } else {
     within_tbl
@@ -267,7 +327,7 @@ format_ae_specific <- function(outdata,
     if (filter_criteria > 0) {
       if (filter_method == "percent") {
         # Round before filtering
-        filter_index <- round(outdata$prop[, index_total], digits_prop)
+        filter_index <- round_half_away_from_zero(outdata$prop[, index_total], digits_prop)
       } else {
         filter_index <- outdata$n[, index_total]
       }
@@ -352,6 +412,7 @@ format_ae_specific <- function(outdata,
   }
 
   outdata$tbl <- res
+  outdata$display <- display
   outdata$extend_call <- c(outdata$extend_call, match.call())
   outdata$filter_method <- filter_method
   outdata$filter_criteria <- filter_criteria

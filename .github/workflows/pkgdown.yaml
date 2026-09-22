@@ -30,6 +30,9 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Install LibreOffice Writer
+        run: sudo apt-get update && sudo apt-get install -y libreoffice-writer
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::pkgdown, local::.

@@ -21,13 +21,98 @@ The term name is used as key to link information.}
 \item{...}{Additional arguments passed to \code{\link[=prepare_ae_specific]{prepare_ae_specific()}}.}
 }
 \value{
-A list of analysis datasets needed for AE summary.
+An \code{outdata} object containing analysis datasets needed for AE
+summary. Key values include:
+\itemize{
+\item \code{group}: Treatment groups used to index the statistic columns.
+\item \code{order}: Numeric values defining the row order.
+\item \code{name}: Descriptive row labels corresponding to \code{order}.
+\item \code{n_pop}: Number of participants in the population.
+\item \code{n}: Number of participants with an adverse event.
+\item \code{prop}: Proportion of participants with an adverse event.
+\item \code{diff}: Risk difference compared with the \code{reference_group}.
+}
 }
 \description{
 Prepare datasets for AE summary
 }
 \examples{
-meta <- meta_ae_example()
+# Define metadata
+adsl <- forestly::forestly_adsl
+adae <- forestly::forestly_adae
+
+adsl$TRT01A <- factor(
+  adsl$TRT01A,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+adae$TRTA <- factor(
+  adae$TRTA,
+  levels = c("Xanomeline Low Dose", "Placebo"),
+  labels = c("Low Dose", "Placebo")
+)
+
+analysis_plan <- metalite::plan(
+  analysis = "ae_summary",
+  population = "apat",
+  observation = "wk12",
+  parameter = "any;rel;ser"
+)
+
+meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+  metalite::define_plan(analysis_plan) |>
+  metalite::define_population(
+    name = "apat",
+    var = c(
+      "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+      "SITEID", "SEX", "RACE", "AGE"
+    ),
+    group = "TRT01A",
+    subset = SAFFL == "Y",
+    label = "All Participants as Treated"
+  ) |>
+  metalite::define_observation(
+    name = "wk12",
+    var = c(
+      "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+      "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+    ),
+    group = "TRTA",
+    subset = SAFFL == "Y",
+    label = "Weeks 0 to 12"
+  ) |>
+  metalite::define_parameter(
+    name = "any",
+    term1 = "",
+    term2 = "",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "All AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "rel",
+    term1 = "Drug-Related",
+    term2 = "",
+    subset = AEREL \%in\% c("POSSIBLE", "PROBABLE"),
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Drug-related AEs"
+  ) |>
+  metalite::define_parameter(
+    name = "ser",
+    term1 = "Serious",
+    term2 = "",
+    subset = AESER == "Y",
+    var = "AEDECOD",
+    soc = "AEBODSYS",
+    label = "Serious AEs"
+  ) |>
+  metalite::define_analysis(
+    name = "ae_summary",
+    title = "Adverse Event Summary"
+  ) |>
+  metalite::meta_build()
+
 prepare_ae_summary(
   meta,
   population = "apat",

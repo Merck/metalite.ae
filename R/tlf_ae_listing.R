@@ -35,7 +35,21 @@
 #' library(r2rtf)
 #' library(metalite)
 #'
-#' meta <- meta_ae_example()
+#' meta <- metalite::meta_example()
+#' meta <- meta |>
+#'   metalite::define_plan(
+#'     plan = metalite::add_plan(meta$plan,
+#'       analysis = "ae_listing", population = "apat",
+#'       observation = "wk12", parameter = "ser"
+#'     )
+#'   ) |>
+#'   metalite::define_analysis(
+#'     name = "ae_listing",
+#'     var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
+#'     group_by = c("USUBJID", "ASTDY"),
+#'     page_by = "TRTA"
+#'   ) |>
+#'   metalite::meta_build()
 #' prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
 #'   tlf_ae_listing(
 #'     footnotes = "footnote1",

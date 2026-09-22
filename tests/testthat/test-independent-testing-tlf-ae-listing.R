@@ -1,4 +1,4 @@
-x <- meta_ae_example()
+x <- meta_ae_test()
 
 outdata <- prepare_ae_listing(
   x,

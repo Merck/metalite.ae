@@ -28,7 +28,82 @@
 #'
 #' @examples
 #' library(gt)
-#' meta <- meta_ae_example()
+#' #' # Define metadata
+#' adsl <- forestly::forestly_adsl
+#' adae <- forestly::forestly_adae
+#'
+#' adsl$TRT01A <- factor(
+#'   adsl$TRT01A,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#' adae$TRTA <- factor(
+#'   adae$TRTA,
+#'   levels = c("Xanomeline Low Dose", "Placebo"),
+#'   labels = c("Low Dose", "Placebo")
+#' )
+#'
+#' analysis_plan <- metalite::plan(
+#'   analysis = "ae_summary",
+#'   population = "apat",
+#'   observation = "wk12",
+#'   parameter = "any;rel;ser"
+#' )
+#'
+#' meta <- metalite::meta_adam(observation = adae, population = adsl) |>
+#'   metalite::define_plan(analysis_plan) |>
+#'   metalite::define_population(
+#'     name = "apat",
+#'     var = c(
+#'       "USUBJID", "SAFFL", "TRT01A", "TRTDUR",
+#'       "SITEID", "SEX", "RACE", "AGE"
+#'     ),
+#'     group = "TRT01A",
+#'     subset = SAFFL == "Y",
+#'     label = "All Participants as Treated"
+#'   ) |>
+#'   metalite::define_observation(
+#'     name = "wk12",
+#'     var = c(
+#'       "USUBJID", "SAFFL", "TRTA", "AEDECOD", "AEBODSYS", "AEREL",
+#'       "AESER", "AEOUT", "AEACN", "AESDTH", "ASTDT", "AENDT"
+#'     ),
+#'     group = "TRTA",
+#'     subset = SAFFL == "Y",
+#'     label = "Weeks 0 to 12"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "any",
+#'     term1 = "",
+#'     term2 = "",
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "All AEs"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "rel",
+#'     term1 = "Drug-Related",
+#'     term2 = "",
+#'     subset = AEREL %in% c("POSSIBLE", "PROBABLE"),
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "Drug-related AEs"
+#'   ) |>
+#'   metalite::define_parameter(
+#'     name = "ser",
+#'     term1 = "Serious",
+#'     term2 = "",
+#'     subset = AESER == "Y",
+#'     var = "AEDECOD",
+#'     soc = "AEBODSYS",
+#'     label = "Serious AEs"
+#'   ) |>
+#'   metalite::define_analysis(
+#'     name = "ae_summary",
+#'     title = "Adverse Event Summary"
+#'   ) |>
+#'   metalite::meta_build()
+#'
 #' outdata <- prepare_ae_summary(meta,
 #'   population = "apat",
 #'   observation = "wk12",
@@ -41,15 +116,10 @@
 #'     source = "Source:  [CDISCpilot: adam-adsl; adae]"
 #'   )
 gt_ae_summary <- function(outdata,
-                          source,
+                          source = NULL,
                           analysis,
-                          col_rel_width = NULL,
-                          text_font_size = 9,
-                          orientation = "portrait",
                           title = c("analysis", "observation", "population"),
-                          footnotes = NULL,
-                          path_outdata = NULL,
-                          path_outtable = NULL) {
+                          footnotes = NULL) {
   tbl <- outdata$tbl
   group <- outdata$group
   num_groups <- length(group)
@@ -87,7 +157,7 @@ gt_ae_summary <- function(outdata,
   # Create spanner functions list
   spanner_funs <- lapply(seq_along(group), function(i) {
     function(gt_tbl) {
-      gt_tbl |> tab_spanner(
+      gt_tbl |> gt::tab_spanner(
         label = group[i],
         columns = c(paste0("n_", i), paste0("prop_", i))
       )
@@ -99,9 +169,9 @@ gt_ae_summary <- function(outdata,
   prop_cols <- paste0("prop_", 1:num_groups)
 
   cols_label_vec <- c(
-    setNames("", name_col),
-    setNames(rep("n", num_groups), n_cols),
-    setNames(rep("(%)", num_groups), prop_cols)
+    stats::setNames("", name_col),
+    stats::setNames(rep("n", num_groups), n_cols),
+    stats::setNames(rep("(%)", num_groups), prop_cols)
   )
 
   # -------------------------
@@ -133,24 +203,24 @@ gt_ae_summary <- function(outdata,
   }
 
   # Convert footnotes vector and source string
-  footnotes <- if (!is.null(footnotes)) gt::md(convert_caret_sup(footnotes)) else gt::md(footnotes)
-  source <- if (!is.null(source)) gt::md(convert_caret_sup(source)) else gt::md(source)
+  footnotes <- if (!is.null(footnotes)) gt::md(convert_caret_sup(footnotes)) else footnotes
+  source <- if (!is.null(source)) gt::md(convert_caret_sup(source)) else source
 
   gt_tbl <- tbl |>
-    gt() |>
-    sub_missing(columns = 1:ncol(tbl), missing_text = "") |>
-    fmt_markdown(columns = 1) |>
-    tab_header(title = gt::md(combined_title_md)) |>
+    gt::gt() |>
+    gt::sub_missing(columns = 1:ncol(tbl), missing_text = "") |>
+    gt::fmt_markdown(columns = 1) |>
+    gt::tab_header(title = gt::md(combined_title_md)) |>
     (\(gt_tbl) Reduce(function(acc, f) f(acc), spanner_funs, init = gt_tbl))() |>
-    cols_label(!!!cols_label_vec)
+    gt::cols_label(!!!cols_label_vec)
 
   # Add footnotes and source (if present). gt::tab_source_note accepts a character vector;
   # we pass the (possibly converted) footnotes and source.
   if (!is.null(footnotes) && length(footnotes) > 0) {
-    gt_tbl <- gt_tbl |> tab_source_note(footnotes)
+    gt_tbl <- gt_tbl |> gt::tab_source_note(footnotes)
   }
   if (!is.null(source) && nzchar(source)) {
-    gt_tbl <- gt_tbl |> tab_source_note(source)
+    gt_tbl <- gt_tbl |> gt::tab_source_note(source)
   }
 
   return(gt_tbl)
