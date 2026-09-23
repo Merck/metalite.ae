@@ -29,6 +29,7 @@
 #'   In this mode, records are shown only when the entered value exactly matches
 #'   a full patient ID in the first column.
 #'   If `FALSE`, all rows are displayed and filters are available for all columns.
+#' @param width Table width in pixels or as a CSS value. The default is 1400 pixels.
 #'
 #' @return A `reactable` htmlwidget object.
 #'
@@ -115,7 +116,8 @@ react_ae_listing <- function(outdata,
                              searchable = TRUE,
                              striped = TRUE,
                              highlight = TRUE,
-                             patient_folding = FALSE) {
+                             patient_folding = FALSE,
+                             width = 1400) {
   if (!requireNamespace("reactable", quietly = TRUE)) {
     stop(
       "Package `reactable` is required. Please install it with install.packages('reactable').",
@@ -230,7 +232,8 @@ react_ae_listing <- function(outdata,
     compact = TRUE,
     wrap = FALSE,
     showPageSizeOptions = TRUE,
-    pageSizeOptions = c(10, 15, 25, 50)
+    pageSizeOptions = c(10, 15, 25, 50),
+    width = width
   )
 
   widget
