@@ -14,6 +14,7 @@ test_that("react_ae_listing creates an interactive table", {
 
   expect_s3_class(result, "reactable")
   expect_s3_class(result, "htmlwidget")
+  expect_true(result$x$tag$attribs$resizable)
 })
 
 

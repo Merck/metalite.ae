@@ -218,6 +218,7 @@ react_ae_listing <- function(outdata,
   widget <- reactable::reactable(
     tbl,
     columns = column_defs,
+    resizable = TRUE,
     filterable = TRUE,
     searchable = if (patient_folding) FALSE else searchable,
     striped = striped,
