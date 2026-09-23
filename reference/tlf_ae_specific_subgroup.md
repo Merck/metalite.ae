@@ -148,5 +148,5 @@ prepare_ae_specific_subgroup(meta,
     analysis = "ae_specific",
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The output is saved in/tmp/RtmpGElubQ/file20e574e967a2.rtf
+#> The output is saved in/tmp/RtmpR6SeON/file220627a70f3e.rtf
 ```

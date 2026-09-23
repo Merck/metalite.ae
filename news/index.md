@@ -76,6 +76,16 @@ CRAN release: 2026-08-29
   ([\#229](https://github.com/Merck/metalite.ae/issues/229), thanks to
   [@LittleBeannie](https://github.com/LittleBeannie) and
   [@fukuhiro2023](https://github.com/fukuhiro2023)).
+- Speed up the bisection confidence-interval search in
+  [`rate_compare_sum()`](https://merck.github.io/metalite.ae/reference/rate_compare_sum.md)
+  (and therefore
+  [`rate_compare()`](https://merck.github.io/metalite.ae/reference/rate_compare.md)
+  and
+  [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md))
+  by reusing shared interval endpoints and hoisting loop-invariant
+  quantities out of the objective function; results are unchanged up to
+  floating-point tolerance
+  ([\#253](https://github.com/Merck/metalite.ae/issues/253)).
 
 ### Documentation
 
