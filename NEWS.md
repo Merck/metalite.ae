@@ -40,6 +40,11 @@
     `prepare_ae_specific()` have been removed (#232, thanks to @fukuhiro2023).
 - Package examples now use direct, reproducible metadata definitions based on
     forestly example data (#229, thanks to @LittleBeannie and @fukuhiro2023).
+- Speed up the bisection confidence-interval search in `rate_compare_sum()`
+    (and therefore `rate_compare()` and `extend_ae_specific_inference()`) by
+    reusing shared interval endpoints and hoisting loop-invariant quantities
+    out of the objective function; results are unchanged up to floating-point
+    tolerance (#253).
 
 ## Documentation
 
