@@ -11,7 +11,8 @@ react_ae_listing(
   searchable = TRUE,
   striped = TRUE,
   highlight = TRUE,
-  patient_folding = FALSE
+  patient_folding = FALSE,
+  width = 1400
 )
 ```
 
@@ -46,6 +47,10 @@ react_ae_listing(
   disabled. In this mode, records are shown only when the entered value
   exactly matches a full patient ID in the first column. If `FALSE`, all
   rows are displayed and filters are available for all columns.
+
+- width:
+
+  Table width in pixels or as a CSS value. The default is 1400 pixels.
 
 ## Value
 
@@ -130,5 +135,5 @@ if (requireNamespace("reactable", quietly = TRUE) &&
     react_ae_listing()
 }
 
-{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Unique Subject Identifier":[],"Analysis Start Relative Day":[],"Dictionary-Derived Term":[],"AE Duration (N)":[],"Severity/Intensity":[],"Serious Event":[],"Causality":[],"Outcome of Adverse Event":[],"TRTA":[]},"columns":[{"id":"Unique Subject Identifier","name":"Unique Subject Identifier","type":"character","filterable":true,"minWidth":120},{"id":"Analysis Start Relative Day","name":"Analysis Start Relative Day","type":"numeric","filterable":true,"minWidth":120},{"id":"Dictionary-Derived Term","name":"Dictionary-Derived Term","type":"character","filterable":true,"minWidth":120},{"id":"AE Duration (N)","name":"AE Duration (N)","type":"numeric","filterable":true,"minWidth":120},{"id":"Severity/Intensity","name":"Severity/Intensity","type":"character","filterable":true,"minWidth":120},{"id":"Serious Event","name":"Serious Event","type":"character","filterable":true,"minWidth":120},{"id":"Causality","name":"Causality","type":"character","filterable":true,"minWidth":120},{"id":"Outcome of Adverse Event","name":"Outcome of Adverse Event","type":"character","filterable":true,"minWidth":120},{"id":"TRTA","name":"TRTA","type":"factor","filterable":true,"minWidth":120}],"filterable":true,"searchable":true,"defaultPageSize":15,"showPageSizeOptions":true,"pageSizeOptions":[10,15,25,50],"highlight":true,"bordered":true,"striped":true,"compact":true,"nowrap":true,"dataKey":"3a43ff7184fc278747fa3bc8086833fb"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}
+{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Unique Subject Identifier":[],"Analysis Start Relative Day":[],"Dictionary-Derived Term":[],"AE Duration (N)":[],"Severity/Intensity":[],"Serious Event":[],"Causality":[],"Outcome of Adverse Event":[],"TRTA":[]},"columns":[{"id":"Unique Subject Identifier","name":"Unique Subject Identifier","type":"character","filterable":true,"minWidth":120},{"id":"Analysis Start Relative Day","name":"Analysis Start Relative Day","type":"numeric","filterable":true,"minWidth":120},{"id":"Dictionary-Derived Term","name":"Dictionary-Derived Term","type":"character","filterable":true,"minWidth":120},{"id":"AE Duration (N)","name":"AE Duration (N)","type":"numeric","filterable":true,"minWidth":120},{"id":"Severity/Intensity","name":"Severity/Intensity","type":"character","filterable":true,"minWidth":120},{"id":"Serious Event","name":"Serious Event","type":"character","filterable":true,"minWidth":120},{"id":"Causality","name":"Causality","type":"character","filterable":true,"minWidth":120},{"id":"Outcome of Adverse Event","name":"Outcome of Adverse Event","type":"character","filterable":true,"minWidth":120},{"id":"TRTA","name":"TRTA","type":"factor","filterable":true,"minWidth":120}],"resizable":true,"filterable":true,"searchable":true,"defaultPageSize":15,"showPageSizeOptions":true,"pageSizeOptions":[10,15,25,50],"highlight":true,"bordered":true,"striped":true,"compact":true,"nowrap":true,"width":"1400px","dataKey":"3a43ff7184fc278747fa3bc8086833fb"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}
 ```
