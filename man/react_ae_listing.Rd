@@ -10,7 +10,8 @@ react_ae_listing(
   searchable = TRUE,
   striped = TRUE,
   highlight = TRUE,
-  patient_folding = FALSE
+  patient_folding = FALSE,
+  width = 1400
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ If \code{TRUE}, all rows are hidden by default and only the first column
 In this mode, records are shown only when the entered value exactly matches
 a full patient ID in the first column.
 If \code{FALSE}, all rows are displayed and filters are available for all columns.}
+
+\item{width}{Table width in pixels or as a CSS value. The default is 1400 pixels.}
 }
 \value{
 A \code{reactable} htmlwidget object.

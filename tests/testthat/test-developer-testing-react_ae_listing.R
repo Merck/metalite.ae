@@ -14,6 +14,7 @@ test_that("react_ae_listing creates an interactive table", {
 
   expect_s3_class(result, "reactable")
   expect_s3_class(result, "htmlwidget")
+  expect_true(result$x$tag$attribs$resizable)
 })
 
 
@@ -48,6 +49,24 @@ test_that("react_ae_listing supports non-folding mode", {
 
   result <- react_ae_listing(outdata, patient_folding = FALSE)
   expect_s3_class(result, "reactable")
+})
+
+
+test_that("react_ae_listing supports custom table widths", {
+  skip_if_not_installed("reactable")
+
+  outdata <- meta_ae_test() |>
+    prepare_ae_listing(
+      analysis = "ae_listing",
+      population = "apat",
+      observation = "wk12",
+      parameter = "rel"
+    ) |>
+    format_ae_listing()
+
+  expect_identical(react_ae_listing(outdata)$width, "1400px")
+  expect_identical(react_ae_listing(outdata, width = 700)$width, "700px")
+  expect_identical(react_ae_listing(outdata, width = "75%")$width, "75%")
 })
 
 
