@@ -460,8 +460,12 @@ rate_compare_sum_batch <- function(n0, n1, x0, x1,
   # This mirrors `func_d()` inside `rate_compare_sum()` for the unstratified
   # case, with the `r_diff == d & vart == 0` special case as a vectorized mask.
   func_pts <- function(ti, d) {
-    n_ <- n[ti]; c_ <- cc[ti]; n1_ <- n1[ti]; n0_ <- n0[ti]
-    x0_ <- x0[ti]; rd_ <- r_diff[ti]
+    n_ <- n[ti]
+    c_ <- cc[ti]
+    n1_ <- n1[ti]
+    n0_ <- n0[ti]
+    x0_ <- x0[ti]
+    rd_ <- r_diff[ti]
     l3 <- n_
     l2 <- (n1_ + 2 * n0_) * d - n_ - c_
     l1 <- (n0_ * d - n_ - 2 * x0_) * d + c_
@@ -470,7 +474,8 @@ rate_compare_sum_batch <- function(n0, n1, x0, x1,
     sgn <- ifelse(q > 0, 1, -1)
     p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
     p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
-      ifelse(p >= 0 & p < (1e-20), p + 1e-16, p))
+      ifelse(p >= 0 & p < (1e-20), p + 1e-16, p)
+    )
     temp <- q / (p^3)
     temp <- pmax(pmin(temp, 1), -1)
     aa <- (pi + acos(temp)) / 3
@@ -495,7 +500,8 @@ rate_compare_sum_batch <- function(n0, n1, x0, x1,
   sgn <- ifelse(q > 0, 1, -1)
   p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
   p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
-    ifelse(p >= 0 & p < (1e-20), p + 1e-16, p))
+    ifelse(p >= 0 & p < (1e-20), p + 1e-16, p)
+  )
   temp <- q / (p^3)
   temp <- pmax(pmin(temp, 1), -1)
   aa <- (pi + acos(temp)) / 3
@@ -512,7 +518,8 @@ rate_compare_sum_batch <- function(n0, n1, x0, x1,
   # length-1 condition would truncate the vector result to length one).
   pval <- switch(test,
     one.sided = if (delta <= 0) 1 - pnorm(z_score) else pnorm(z_score),
-    two.sided = 1 - pchisq(z_score^2, 1))
+    two.sided = 1 - pchisq(z_score^2, 1)
+  )
   pval_one <- (z_score == 0) & (x0 == 0) & (x1 == 0)
   pval[pval_one] <- 1
 
@@ -537,7 +544,7 @@ rate_compare_sum_batch <- function(n0, n1, x0, x1,
   lower <- rep(NA_real_, nt)
   upper <- rep(NA_real_, nt)
 
-  bi <- which(bracket, arr.ind = TRUE)  # column 'row' = term, 'col' = interval
+  bi <- which(bracket, arr.ind = TRUE) # column 'row' = term, 'col' = interval
   if (nrow(bi) > 0) {
     # Left to right within each term, matching the scalar scan's root order.
     bi <- bi[order(bi[, 1], bi[, 2]), , drop = FALSE]
