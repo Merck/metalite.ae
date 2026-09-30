@@ -126,6 +126,50 @@ rate_compare <- function(
   )
 }
 
+#' Constrained-MLE variance for the Miettinen-Nurminen test
+#'
+#' Shared helper for [rate_compare_sum()] and [rate_compare_sum_batch()]. Given
+#' aggregate counts and a null risk difference `d`, it returns the constrained
+#' maximum-likelihood variance `vart` used by both the score statistic (at
+#' `d = delta`) and the confidence-interval objective (`d` swept over the
+#' bisection grid). Every operation is elementwise, so callers pass either
+#' scalar term parameters with a vector `d` (the CI grid scan) or equal-length
+#' vectors of both (the across-terms batch); R recycles as needed.
+#'
+#' `adjust_p` nudges the intermediate `p` off the tiny neighborhood of zero.
+#' The CI objective applies it; the original scalar score-statistic path did
+#' not, so it is optional to keep results bit-identical to that path.
+#'
+#' @inheritParams rate_compare_sum
+#' @param n Total sample size, `n0 + n1`.
+#' @param cc Total events, `x0 + x1`.
+#' @param d Null risk difference at which to evaluate the variance.
+#' @param adjust_p Whether to nudge `p` away from zero (see Details).
+#' @return A numeric vector of constrained-MLE variances, one per input element.
+#' @noRd
+mn_vart <- function(n0, n1, x0, n, cc, d, adjust_p = TRUE) {
+  l3 <- n
+  l2 <- (n1 + 2 * n0) * d - n - cc
+  l1 <- (n0 * d - n - 2 * x0) * d + cc
+  l0 <- x0 * d * (1 - d)
+
+  q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
+  sgn <- ifelse(q > 0, 1, -1)
+  p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
+  if (adjust_p) {
+    p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
+      ifelse(p >= 0 & p < (1e-20), p + 1e-16, p)
+    )
+  }
+
+  temp <- pmax(pmin(q / (p^3), 1), -1)
+  a <- (pi + acos(temp)) / 3
+  r0t <- 2 * p * cos(a) - l2 / (3 * l3)
+  r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
+  r1t <- r0t + d
+  (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+}
+
 #' Unstratified and stratified Miettinen and Nurminen test in
 #' aggregate data level
 #'
@@ -220,27 +264,9 @@ rate_compare_sum <- function(
   r1 <- x1 / n1
   r0 <- x0 / n0
 
-  # start the analysis
-  l3 <- n
-  l2 <- (n1 + 2 * n0) * delta - n - c
-  l1 <- (n0 * delta - n - 2 * x0) * delta + c
-  l0 <- x0 * delta * (1 - delta)
-
-  q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
-  sign <- ifelse(q > 0, 1, -1)
-  p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sign
-
-  # Calculate R tilter
-  temp <- q / (p^3)
-  # To limit this temp within (-1, 1)
-  temp <- pmax(pmin(temp, 1), -1)
-  a <- (pi + acos(temp)) / 3
-
-  # Start to calculate R tilter
-  r0t <- 2 * p * cos(a) - l2 / (3 * l3)
-  r0t <- pmax(pmin(r0t, pmin(1, 1 - delta)), pmax(0, -delta))
-  r1t <- r0t + delta
-  vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+  # Constrained-MLE variance at the null difference (no `p` nudge, matching the
+  # original scalar score-statistic path).
+  vart <- mn_vart(n0, n1, x0, n, c, delta, adjust_p = FALSE)
 
   if (is.null(strata) || length(unique(strata)) == 1) {
     r_diff <- (r1 - r0)
@@ -358,33 +384,7 @@ rate_compare_sum <- function(
 
   # Start to calculate the confidence interval
   func_d <- function(d) {
-    l3 <- n
-    l2 <- (n1 + 2 * n0) * d - n - c
-    l1 <- (n0 * d - n - 2 * x0) * d + c
-    l0 <- x0 * d * (1 - d)
-
-    q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
-    sign <- ifelse(q > 0, 1, -1)
-    p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sign
-    # Adust p
-    p <- ifelse(p > (-1e-20) & p < 0,
-      p - 1e-16,
-      ifelse(
-        p >= 0 & p < (1e-20),
-        p + 1e-16,
-        p
-      )
-    )
-    # Calculate R tilter
-    temp <- q / (p^3)
-    # To limit this temp within (-1, 1)
-    temp <- pmax(pmin(temp, 1), -1)
-    a <- (pi + acos(temp)) / 3
-    # Start to calculate R tilter
-    r0t <- 2 * p * cos(a) - l2 / (3 * l3)
-    r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
-    r1t <- r0t + d
-    vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+    vart <- mn_vart(n0, n1, x0, n, c, d)
 
     if (unstratified) {
       r_diff <- (x1 / n1 - x0 / n0)
@@ -460,55 +460,17 @@ rate_compare_sum_batch <- function(n0, n1, x0, x1,
   # This mirrors `func_d()` inside `rate_compare_sum()` for the unstratified
   # case, with the `r_diff == d & vart == 0` special case as a vectorized mask.
   func_pts <- function(ti, d) {
-    n_ <- n[ti]
-    c_ <- cc[ti]
-    n1_ <- n1[ti]
-    n0_ <- n0[ti]
-    x0_ <- x0[ti]
     rd_ <- r_diff[ti]
-    l3 <- n_
-    l2 <- (n1_ + 2 * n0_) * d - n_ - c_
-    l1 <- (n0_ * d - n_ - 2 * x0_) * d + c_
-    l0 <- x0_ * d * (1 - d)
-    q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
-    sgn <- ifelse(q > 0, 1, -1)
-    p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
-    p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
-      ifelse(p >= 0 & p < (1e-20), p + 1e-16, p)
-    )
-    temp <- q / (p^3)
-    temp <- pmax(pmin(temp, 1), -1)
-    aa <- (pi + acos(temp)) / 3
-    r0t <- 2 * p * cos(aa) - l2 / (3 * l3)
-    r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
-    r1t <- r0t + d
-    vart <- (r1t * (1 - r1t) / n1_ + r0t * (1 - r0t) / n0_) * (n_ / (n_ - 1))
+    vart <- mn_vart(n0[ti], n1[ti], x0[ti], n[ti], cc[ti], d)
     chisq_obs <- (rd_ - d)^2 / vart
     zc <- (rd_ == d) & (vart == 0)
     if (any(zc, na.rm = TRUE)) chisq_obs[zc] <- 0
     chisq_obs - chisq_crit
   }
 
-  # Point estimate, z-score and p-value, all evaluated at d = delta. `vart0` is
-  # the variance term at delta (the same algebra `func_pts` uses).
-  d <- delta
-  l3 <- n
-  l2 <- (n1 + 2 * n0) * d - n - cc
-  l1 <- (n0 * d - n - 2 * x0) * d + cc
-  l0 <- x0 * d * (1 - d)
-  q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
-  sgn <- ifelse(q > 0, 1, -1)
-  p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
-  p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
-    ifelse(p >= 0 & p < (1e-20), p + 1e-16, p)
-  )
-  temp <- q / (p^3)
-  temp <- pmax(pmin(temp, 1), -1)
-  aa <- (pi + acos(temp)) / 3
-  r0t <- 2 * p * cos(aa) - l2 / (3 * l3)
-  r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
-  r1t <- r0t + d
-  vart0 <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+  # Score-statistic variance at d = delta. No `p` nudge, matching the scalar
+  # score-statistic path in rate_compare_sum().
+  vart0 <- mn_vart(n0, n1, x0, n, cc, delta, adjust_p = FALSE)
 
   z_score <- (r_diff - delta) / sqrt(vart0)
   zero_z <- (r_diff == delta) & (vart0 == 0)
