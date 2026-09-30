@@ -282,64 +282,61 @@ rate_compare_sum <- function(
   # `a` and `b` are minimum and maximum of the interval,
   # which contains the root from the bisection method.
   #
-  # The scan walks a grid of `bisection` intervals looking for sign changes.
-  # Adjacent intervals share an endpoint, so the right-edge value of one
-  # interval is the left-edge value of the next: we carry `fb` forward into
-  # `fa` instead of re-evaluating `f` there, roughly halving the number of
-  # `f` calls during the scan.
+  # The scan walks a grid of `bisection` intervals looking for sign changes,
+  # then bisects each sign-changing bracket. When `f` is vectorized over its
+  # argument (the unstratified case, see `func_d`), the whole grid is evaluated
+  # in a single call instead of one call per grid point -- collapsing hundreds
+  # of interpreted scalar calls per CI into one vector op. The stratified case,
+  # where `f` reduces over strata with `sum()` and cannot take a vector `d`,
+  # falls back to evaluating the grid point by point.
   biroot <- function(f, a, b) {
     h <- abs(b - a) / bisection
-    j <- 0
+
+    # Grid edges for the `bisection + 1` scan intervals: interval i is
+    # [edges[i], edges[i + 1]]. The scan runs one step past `b` (matching the
+    # historical loop); roots beyond the (a, b) range are dropped by the caller.
+    edges <- a + h * (0:(bisection + 1))
+    if (unstratified) {
+      fe <- f(edges)
+    } else {
+      fe <- vapply(edges, f, numeric(1))
+    }
+
+    fa <- fe[-length(fe)]
+    fb <- fe[-1]
+    # Left index of every interval that brackets a sign change (endpoints finite
+    # and of opposite sign), taken left to right so the lower CI limit is found
+    # before the upper one.
+    brackets <- which(is.finite(fa) & is.finite(fb) & (fa * fb < 0))
+
     roots <- c()
-
-    # The right endpoint of interval i is the left endpoint of interval i + 1,
-    # so we carry its function value forward instead of recomputing it.
-    a1 <- a
-    fa <- f(a1)
-
-    i <- 0
-    while (i <= bisection) {
-      b1 <- a1 + h
-
-      # Evaluate function safely
-      fb <- f(b1)
-
-      # Skip intervals where fa or fb are NA/NaN/Inf
-      if (is.finite(fa) && is.finite(fb) && (fa * fb < 0)) {
-        # Refine within a private copy of the bracket so the carried-forward
-        # scan endpoints (`a1`, `fa`) are not clobbered.
-        lo <- a1
-        hi <- b1
-        flo <- fa
-        repeat {
-          if (abs(hi - lo) < eps) {
-            break
-          }
-
-          x <- (lo + hi) / 2
-          fx <- f(x)
-
-          # If fx is NA/NaN/Inf, break and skip this interval
-          if (!is.finite(fx)) break
-
-          if (flo * fx < 0) {
-            hi <- x
-          } else {
-            lo <- x
-            flo <- fx
-          }
+    for (k in brackets) {
+      # Refine within a private copy of the bracket.
+      lo <- edges[k]
+      hi <- edges[k + 1]
+      flo <- fe[k]
+      repeat {
+        if (abs(hi - lo) < eps) {
+          break
         }
 
-        j <- j + 1
-        roots[j] <- (lo + hi) / 2
+        x <- (lo + hi) / 2
+        fx <- f(x)
+
+        # If fx is NA/NaN/Inf, break and skip this interval
+        if (!is.finite(fx)) break
+
+        if (flo * fx < 0) {
+          hi <- x
+        } else {
+          lo <- x
+          flo <- fx
+        }
       }
 
-      # Advance the grid, reusing the right endpoint as the next left endpoint.
-      a1 <- b1
-      fa <- fb
-
-      i <- i + 1
+      roots <- c(roots, (lo + hi) / 2)
     }
+    j <- length(roots)
 
     if (j == 0) {
       message(
@@ -391,11 +388,12 @@ rate_compare_sum <- function(
 
     if (unstratified) {
       r_diff <- (x1 / n1 - x0 / n0)
-      chisq_obs <- if (isTRUE(r_diff == d) && isTRUE(vart == 0)) {
-        0
-      } else {
-        (r_diff - d)^2 / vart
-      }
+      # Vectorized over `d` (the grid scan passes the whole grid at once). The
+      # `r_diff == d & vart == 0` case is defined as 0 (the 0/0 that would
+      # otherwise be NaN); every other entry is the score statistic.
+      chisq_obs <- (r_diff - d)^2 / vart
+      zero_case <- (r_diff == d) & (vart == 0)
+      if (any(zero_case)) chisq_obs[zero_case] <- 0
     } else {
       # Start to calculate the Chi-square
       r1_w <- r1 * w

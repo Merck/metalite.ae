@@ -45,6 +45,10 @@
     reusing shared interval endpoints and hoisting loop-invariant quantities
     out of the objective function; results are unchanged up to floating-point
     tolerance (#253).
+- Further speed up the bisection confidence-interval search by evaluating the
+    whole scan grid in a single vectorized call to the objective function
+    (unstratified case) and bisecting only the brackets that change sign;
+    results are unchanged up to floating-point tolerance (#257).
 
 ## Documentation
 
