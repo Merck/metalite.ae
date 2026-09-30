@@ -45,10 +45,13 @@
     reusing shared interval endpoints and hoisting loop-invariant quantities
     out of the objective function; results are unchanged up to floating-point
     tolerance (#253).
-- Further speed up the bisection confidence-interval search by evaluating the
-    whole scan grid in a single vectorized call to the objective function
-    (unstratified case) and bisecting only the brackets that change sign;
-    results are unchanged up to floating-point tolerance (#257).
+- Further speed up unstratified confidence intervals in
+    `extend_ae_specific_inference()` by computing every term's interval in one
+    vectorized pass: the bisection grid is evaluated across all terms at once
+    and every sign-change bracket is refined by a single vectorized bisection
+    loop, instead of scanning the grid separately for each term. Stratified
+    inputs still use `rate_compare_sum()` per term. Results are unchanged up to
+    floating-point tolerance (#257).
 
 ## Documentation
 

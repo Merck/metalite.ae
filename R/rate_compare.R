@@ -420,3 +420,174 @@ rate_compare_sum <- function(
   )
   z
 }
+
+#' Batched unstratified Miettinen-Nurminen risk-difference confidence intervals
+#'
+#' A vectorized-across-terms reimplementation of the *unstratified* path of
+#' [rate_compare_sum()]. Given vectors `n0`, `n1`, `x0`, `x1` (one entry per
+#' term), it returns the same `est`, `z_score`, `p`, `lower` and `upper` values
+#' [rate_compare_sum()] would return for each term, but evaluates the whole
+#' bisection grid across all terms in one pass and refines every sign-change
+#' bracket with a single vectorized bisection loop -- turning the per-term
+#' scan (hundreds of interpreted calls each) into a handful of vector ops. It
+#' is intended for [extend_ae_specific_inference()], which computes one CI per
+#' AE term. Stratified inputs must still use [rate_compare_sum()].
+#'
+#' @inheritParams rate_compare_sum
+#' @return A data frame with one row per term and columns `est`, `z_score`,
+#'   `p`, `lower`, `upper`.
+#' @noRd
+rate_compare_sum_batch <- function(n0, n1, x0, x1,
+                                   delta = 0,
+                                   test = c("one.sided", "two.sided"),
+                                   bisection = 100,
+                                   eps = 1e-06,
+                                   alpha = 0.05) {
+  test <- match.arg(test)
+  nt <- length(n0)
+  chisq_crit <- qchisq(1 - alpha, 1)
+
+  na_row <- is.na(n0) | is.na(n1) | is.na(x0) | is.na(x1)
+
+  n <- n0 + n1
+  cc <- x0 + x1
+  r1 <- x1 / n1
+  r0 <- x0 / n0
+  r_diff <- (r1 - r0)
+
+  # Objective `func_d(d) - chisq_crit` evaluated pointwise for a set of
+  # (term index `ti`, delta `d`) pairs; both arguments are equal-length vectors.
+  # This mirrors `func_d()` inside `rate_compare_sum()` for the unstratified
+  # case, with the `r_diff == d & vart == 0` special case as a vectorized mask.
+  func_pts <- function(ti, d) {
+    n_ <- n[ti]; c_ <- cc[ti]; n1_ <- n1[ti]; n0_ <- n0[ti]
+    x0_ <- x0[ti]; rd_ <- r_diff[ti]
+    l3 <- n_
+    l2 <- (n1_ + 2 * n0_) * d - n_ - c_
+    l1 <- (n0_ * d - n_ - 2 * x0_) * d + c_
+    l0 <- x0_ * d * (1 - d)
+    q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
+    sgn <- ifelse(q > 0, 1, -1)
+    p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
+    p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
+      ifelse(p >= 0 & p < (1e-20), p + 1e-16, p))
+    temp <- q / (p^3)
+    temp <- pmax(pmin(temp, 1), -1)
+    aa <- (pi + acos(temp)) / 3
+    r0t <- 2 * p * cos(aa) - l2 / (3 * l3)
+    r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
+    r1t <- r0t + d
+    vart <- (r1t * (1 - r1t) / n1_ + r0t * (1 - r0t) / n0_) * (n_ / (n_ - 1))
+    chisq_obs <- (rd_ - d)^2 / vart
+    zc <- (rd_ == d) & (vart == 0)
+    if (any(zc, na.rm = TRUE)) chisq_obs[zc] <- 0
+    chisq_obs - chisq_crit
+  }
+
+  # Point estimate, z-score and p-value, all evaluated at d = delta. `vart0` is
+  # the variance term at delta (the same algebra `func_pts` uses).
+  d <- delta
+  l3 <- n
+  l2 <- (n1 + 2 * n0) * d - n - cc
+  l1 <- (n0 * d - n - 2 * x0) * d + cc
+  l0 <- x0 * d * (1 - d)
+  q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
+  sgn <- ifelse(q > 0, 1, -1)
+  p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
+  p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
+    ifelse(p >= 0 & p < (1e-20), p + 1e-16, p))
+  temp <- q / (p^3)
+  temp <- pmax(pmin(temp, 1), -1)
+  aa <- (pi + acos(temp)) / 3
+  r0t <- 2 * p * cos(aa) - l2 / (3 * l3)
+  r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
+  r1t <- r0t + d
+  vart0 <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+
+  z_score <- (r_diff - delta) / sqrt(vart0)
+  zero_z <- (r_diff == delta) & (vart0 == 0)
+  z_score[zero_z] <- 0
+
+  # `delta` is a scalar here, so branch on it directly (an `ifelse()` on a
+  # length-1 condition would truncate the vector result to length one).
+  pval <- switch(test,
+    one.sided = if (delta <= 0) 1 - pnorm(z_score) else pnorm(z_score),
+    two.sided = 1 - pchisq(z_score^2, 1))
+  pval_one <- (z_score == 0) & (x0 == 0) & (x1 == 0)
+  pval[pval_one] <- 1
+
+  # Confidence limits: scan the same grid `biroot()` uses, but for every term at
+  # once (a `nt` x E matrix), then bisect each sign-change bracket.
+  a_lim <- -0.999
+  b_lim <- 0.999
+  h <- abs(b_lim - a_lim) / bisection
+  edges <- a_lim + h * (0:(bisection + 1))
+  E <- length(edges)
+
+  ti_all <- seq_len(nt)
+  Fmat <- matrix(
+    func_pts(rep(ti_all, times = E), rep(edges, each = nt)),
+    nrow = nt, ncol = E
+  )
+
+  FA <- Fmat[, 1:(E - 1), drop = FALSE]
+  FB <- Fmat[, 2:E, drop = FALSE]
+  bracket <- is.finite(FA) & is.finite(FB) & (FA * FB < 0)
+
+  lower <- rep(NA_real_, nt)
+  upper <- rep(NA_real_, nt)
+
+  bi <- which(bracket, arr.ind = TRUE)  # column 'row' = term, 'col' = interval
+  if (nrow(bi) > 0) {
+    # Left to right within each term, matching the scalar scan's root order.
+    bi <- bi[order(bi[, 1], bi[, 2]), , drop = FALSE]
+    term <- bi[, 1]
+    k <- bi[, 2]
+    lo <- edges[k]
+    hi <- edges[k + 1]
+    flo <- Fmat[cbind(term, k)]
+    frozen <- logical(length(term))
+    # Enough halvings that a bracket of width <= h shrinks below `eps`.
+    steps <- ceiling(log2(h / eps)) + 1L
+    for (s in seq_len(steps)) {
+      active <- !frozen & (abs(hi - lo) >= eps)
+      if (!any(active)) break
+      idx <- which(active)
+      xm <- (lo[idx] + hi[idx]) / 2
+      fx <- func_pts(term[idx], xm)
+      # Mirror the scalar break on a non-finite midpoint value.
+      bad <- !is.finite(fx)
+      if (any(bad)) frozen[idx[bad]] <- TRUE
+      ok <- idx[!bad]
+      fxok <- fx[!bad]
+      xok <- (lo[ok] + hi[ok]) / 2
+      go_hi <- flo[ok] * fxok < 0
+      hi[ok[go_hi]] <- xok[go_hi]
+      lo[ok[!go_hi]] <- xok[!go_hi]
+      flo[ok[!go_hi]] <- fxok[!go_hi]
+    }
+    root <- (lo + hi) / 2
+    keep <- abs(root) < 1
+    tt <- term[keep]
+    rr <- root[keep]
+    # First in-range root per term is the lower limit, second is the upper.
+    first <- !duplicated(tt)
+    lower[tt[first]] <- rr[first]
+    tt2 <- tt[!first]
+    rr2 <- rr[!first]
+    second <- !duplicated(tt2)
+    upper[tt2[second]] <- rr2[second]
+  }
+
+  est <- r_diff
+  est[na_row] <- NA
+  z_score[na_row] <- NA
+  pval[na_row] <- NA
+  lower[na_row] <- NA
+  upper[na_row] <- NA
+
+  data.frame(
+    est = est, z_score = z_score,
+    p = pval, lower = lower, upper = upper
+  )
+}
