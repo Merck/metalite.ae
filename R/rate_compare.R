@@ -439,11 +439,11 @@ rate_compare_sum <- function(
 #'   `p`, `lower`, `upper`.
 #' @noRd
 rate_compare_sum_unstratified <- function(n0, n1, x0, x1,
-                                   delta = 0,
-                                   test = c("one.sided", "two.sided"),
-                                   bisection = 100,
-                                   eps = 1e-06,
-                                   alpha = 0.05) {
+                                          delta = 0,
+                                          test = c("one.sided", "two.sided"),
+                                          bisection = 100,
+                                          eps = 1e-06,
+                                          alpha = 0.05) {
   test <- match.arg(test)
   nt <- length(n0)
   chisq_crit <- qchisq(1 - alpha, 1)
