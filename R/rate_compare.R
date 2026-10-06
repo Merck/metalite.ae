@@ -126,6 +126,50 @@ rate_compare <- function(
   )
 }
 
+#' Constrained-MLE variance for the Miettinen-Nurminen test
+#'
+#' Shared helper for [rate_compare_sum()] and [rate_compare_sum_unstratified()]. Given
+#' aggregate counts and a null risk difference `d`, it returns the constrained
+#' maximum-likelihood variance `vart` used by both the score statistic (at
+#' `d = delta`) and the confidence-interval objective (`d` swept over the
+#' bisection grid). Every operation is elementwise, so callers pass either
+#' scalar term parameters with a vector `d` (the CI grid scan) or equal-length
+#' vectors of both (the across-terms batch); R recycles as needed.
+#'
+#' `adjust_p` nudges the intermediate `p` off the tiny neighborhood of zero.
+#' The CI objective applies it; the original scalar score-statistic path did
+#' not, so it is optional to keep results bit-identical to that path.
+#'
+#' @inheritParams rate_compare_sum
+#' @param n Total sample size, `n0 + n1`.
+#' @param cc Total events, `x0 + x1`.
+#' @param d Null risk difference at which to evaluate the variance.
+#' @param adjust_p Whether to nudge `p` away from zero (see Details).
+#' @return A numeric vector of constrained-MLE variances, one per input element.
+#' @noRd
+mn_vart <- function(n0, n1, x0, n, cc, d, adjust_p = TRUE) {
+  l3 <- n
+  l2 <- (n1 + 2 * n0) * d - n - cc
+  l1 <- (n0 * d - n - 2 * x0) * d + cc
+  l0 <- x0 * d * (1 - d)
+
+  q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
+  sgn <- ifelse(q > 0, 1, -1)
+  p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
+  if (adjust_p) {
+    p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
+      ifelse(p >= 0 & p < (1e-20), p + 1e-16, p)
+    )
+  }
+
+  temp <- pmax(pmin(q / (p^3), 1), -1)
+  a <- (pi + acos(temp)) / 3
+  r0t <- 2 * p * cos(a) - l2 / (3 * l3)
+  r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
+  r1t <- r0t + d
+  (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+}
+
 #' Unstratified and stratified Miettinen and Nurminen test in
 #' aggregate data level
 #'
@@ -220,27 +264,9 @@ rate_compare_sum <- function(
   r1 <- x1 / n1
   r0 <- x0 / n0
 
-  # start the analysis
-  l3 <- n
-  l2 <- (n1 + 2 * n0) * delta - n - c
-  l1 <- (n0 * delta - n - 2 * x0) * delta + c
-  l0 <- x0 * delta * (1 - delta)
-
-  q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
-  sign <- ifelse(q > 0, 1, -1)
-  p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sign
-
-  # Calculate R tilter
-  temp <- q / (p^3)
-  # To limit this temp within (-1, 1)
-  temp <- pmax(pmin(temp, 1), -1)
-  a <- (pi + acos(temp)) / 3
-
-  # Start to calculate R tilter
-  r0t <- 2 * p * cos(a) - l2 / (3 * l3)
-  r0t <- pmax(pmin(r0t, pmin(1, 1 - delta)), pmax(0, -delta))
-  r1t <- r0t + delta
-  vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+  # Constrained-MLE variance at the null difference (no `p` nudge, matching the
+  # original scalar score-statistic path).
+  vart <- mn_vart(n0, n1, x0, n, c, delta, adjust_p = FALSE)
 
   if (is.null(strata) || length(unique(strata)) == 1) {
     r_diff <- (r1 - r0)
@@ -277,69 +303,73 @@ rate_compare_sum <- function(
     )
   }
 
+  # Loop-invariant quantities pulled out of `func_d`, which is called once per
+  # bisection grid point (hundreds of times per CI). The chi-square critical
+  # value and the stratified/unstratified branch do not depend on `d`. Defined
+  # here, ahead of `biroot()`, so the scan below can read `unstratified`.
+  chisq_crit <- qchisq(1 - alpha, 1)
+  unstratified <- is.null(strata) || length(unique(strata)) == 1
+
   # Bisection function to find the roots:
   # `f` is the function for which the root is sought,
   # `a` and `b` are minimum and maximum of the interval,
   # which contains the root from the bisection method.
   #
-  # The scan walks a grid of `bisection` intervals looking for sign changes.
-  # Adjacent intervals share an endpoint, so the right-edge value of one
-  # interval is the left-edge value of the next: we carry `fb` forward into
-  # `fa` instead of re-evaluating `f` there, roughly halving the number of
-  # `f` calls during the scan.
+  # The scan walks a grid of `bisection` intervals looking for sign changes,
+  # then bisects each sign-changing bracket. When `f` is vectorized over its
+  # argument (the unstratified case, see `func_d`), the whole grid is evaluated
+  # in a single call instead of one call per grid point -- collapsing hundreds
+  # of interpreted scalar calls per CI into one vector op. The stratified case,
+  # where `f` reduces over strata with `sum()` and cannot take a vector `d`,
+  # falls back to evaluating the grid point by point.
   biroot <- function(f, a, b) {
     h <- abs(b - a) / bisection
-    j <- 0
+
+    # Grid edges for the `bisection + 1` scan intervals: interval i is
+    # [edges[i], edges[i + 1]]. The scan runs one step past `b` (matching the
+    # historical loop); roots beyond the (a, b) range are dropped by the caller.
+    edges <- a + h * (0:(bisection + 1))
+    if (unstratified) {
+      fe <- f(edges)
+    } else {
+      fe <- vapply(edges, f, numeric(1))
+    }
+
+    fa <- fe[-length(fe)]
+    fb <- fe[-1]
+    # Left index of every interval that brackets a sign change (endpoints finite
+    # and of opposite sign), taken left to right so the lower CI limit is found
+    # before the upper one.
+    brackets <- which(is.finite(fa) & is.finite(fb) & (fa * fb < 0))
+
     roots <- c()
-
-    # The right endpoint of interval i is the left endpoint of interval i + 1,
-    # so we carry its function value forward instead of recomputing it.
-    a1 <- a
-    fa <- f(a1)
-
-    i <- 0
-    while (i <= bisection) {
-      b1 <- a1 + h
-
-      # Evaluate function safely
-      fb <- f(b1)
-
-      # Skip intervals where fa or fb are NA/NaN/Inf
-      if (is.finite(fa) && is.finite(fb) && (fa * fb < 0)) {
-        # Refine within a private copy of the bracket so the carried-forward
-        # scan endpoints (`a1`, `fa`) are not clobbered.
-        lo <- a1
-        hi <- b1
-        flo <- fa
-        repeat {
-          if (abs(hi - lo) < eps) {
-            break
-          }
-
-          x <- (lo + hi) / 2
-          fx <- f(x)
-
-          # If fx is NA/NaN/Inf, break and skip this interval
-          if (!is.finite(fx)) break
-
-          if (flo * fx < 0) {
-            hi <- x
-          } else {
-            lo <- x
-            flo <- fx
-          }
+    for (k in brackets) {
+      # Refine within a private copy of the bracket.
+      lo <- edges[k]
+      hi <- edges[k + 1]
+      flo <- fe[k]
+      repeat {
+        if (abs(hi - lo) < eps) {
+          break
         }
 
-        j <- j + 1
-        roots[j] <- (lo + hi) / 2
+        x <- (lo + hi) / 2
+        fx <- f(x)
+
+        # If fx is NA/NaN/Inf, break and skip this interval
+        if (!is.finite(fx)) break
+
+        if (flo * fx < 0) {
+          hi <- x
+        } else {
+          lo <- x
+          flo <- fx
+        }
       }
 
-      # Advance the grid, reusing the right endpoint as the next left endpoint.
-      a1 <- b1
-      fa <- fb
-
-      i <- i + 1
+      roots <- c(roots, (lo + hi) / 2)
     }
+    j <- length(roots)
 
     if (j == 0) {
       message(
@@ -353,49 +383,18 @@ rate_compare_sum <- function(
     }
   }
 
-  # Loop-invariant quantities pulled out of `func_d`, which is called once per
-  # bisection grid point (hundreds of times per CI). The chi-square critical
-  # value and the stratified/unstratified branch do not depend on `d`.
-  chisq_crit <- qchisq(1 - alpha, 1)
-  unstratified <- is.null(strata) || length(unique(strata)) == 1
-
   # Start to calculate the confidence interval
   func_d <- function(d) {
-    l3 <- n
-    l2 <- (n1 + 2 * n0) * d - n - c
-    l1 <- (n0 * d - n - 2 * x0) * d + c
-    l0 <- x0 * d * (1 - d)
-
-    q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
-    sign <- ifelse(q > 0, 1, -1)
-    p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sign
-    # Adust p
-    p <- ifelse(p > (-1e-20) & p < 0,
-      p - 1e-16,
-      ifelse(
-        p >= 0 & p < (1e-20),
-        p + 1e-16,
-        p
-      )
-    )
-    # Calculate R tilter
-    temp <- q / (p^3)
-    # To limit this temp within (-1, 1)
-    temp <- pmax(pmin(temp, 1), -1)
-    a <- (pi + acos(temp)) / 3
-    # Start to calculate R tilter
-    r0t <- 2 * p * cos(a) - l2 / (3 * l3)
-    r0t <- pmax(pmin(r0t, pmin(1, 1 - d)), pmax(0, -d))
-    r1t <- r0t + d
-    vart <- (r1t * (1 - r1t) / n1 + r0t * (1 - r0t) / n0) * (n / (n - 1))
+    vart <- mn_vart(n0, n1, x0, n, c, d)
 
     if (unstratified) {
       r_diff <- (x1 / n1 - x0 / n0)
-      chisq_obs <- if (isTRUE(r_diff == d) && isTRUE(vart == 0)) {
-        0
-      } else {
-        (r_diff - d)^2 / vart
-      }
+      # Vectorized over `d` (the grid scan passes the whole grid at once). The
+      # `r_diff == d & vart == 0` case is defined as 0 (the 0/0 that would
+      # otherwise be NaN); every other entry is the score statistic.
+      chisq_obs <- (r_diff - d)^2 / vart
+      zero_case <- (r_diff == d) & (vart == 0)
+      if (any(zero_case)) chisq_obs[zero_case] <- 0
     } else {
       # Start to calculate the Chi-square
       r1_w <- r1 * w
@@ -421,4 +420,144 @@ rate_compare_sum <- function(
     p = pval, lower = ci[1], upper = ci[2]
   )
   z
+}
+
+#' Unstratified Miettinen-Nurminen risk-difference confidence intervals, all terms at once
+#'
+#' A vectorized-across-terms reimplementation of the *unstratified* path of
+#' [rate_compare_sum()]. Given vectors `n0`, `n1`, `x0`, `x1` (one entry per
+#' term), it returns the same `est`, `z_score`, `p`, `lower` and `upper` values
+#' [rate_compare_sum()] would return for each term, but evaluates the whole
+#' bisection grid across all terms in one pass and refines every sign-change
+#' bracket with a single vectorized bisection loop -- turning the per-term
+#' scan (hundreds of interpreted calls each) into a handful of vector ops. It
+#' is intended for [extend_ae_specific_inference()], which computes one CI per
+#' AE term. Stratified inputs must still use [rate_compare_sum()].
+#'
+#' @inheritParams rate_compare_sum
+#' @return A data frame with one row per term and columns `est`, `z_score`,
+#'   `p`, `lower`, `upper`.
+#' @noRd
+rate_compare_sum_unstratified <- function(n0, n1, x0, x1,
+                                          delta = 0,
+                                          test = c("one.sided", "two.sided"),
+                                          bisection = 100,
+                                          eps = 1e-06,
+                                          alpha = 0.05) {
+  test <- match.arg(test)
+  nt <- length(n0)
+  chisq_crit <- qchisq(1 - alpha, 1)
+
+  na_row <- is.na(n0) | is.na(n1) | is.na(x0) | is.na(x1)
+
+  n <- n0 + n1
+  cc <- x0 + x1
+  r1 <- x1 / n1
+  r0 <- x0 / n0
+  r_diff <- (r1 - r0)
+
+  # Objective `func_d(d) - chisq_crit` evaluated pointwise for a set of
+  # (term index `ti`, delta `d`) pairs; both arguments are equal-length vectors.
+  # This mirrors `func_d()` inside `rate_compare_sum()` for the unstratified
+  # case, with the `r_diff == d & vart == 0` special case as a vectorized mask.
+  func_pts <- function(ti, d) {
+    rd_ <- r_diff[ti]
+    vart <- mn_vart(n0[ti], n1[ti], x0[ti], n[ti], cc[ti], d)
+    chisq_obs <- (rd_ - d)^2 / vart
+    zc <- (rd_ == d) & (vart == 0)
+    if (any(zc, na.rm = TRUE)) chisq_obs[zc] <- 0
+    chisq_obs - chisq_crit
+  }
+
+  # Score-statistic variance at d = delta. No `p` nudge, matching the scalar
+  # score-statistic path in rate_compare_sum().
+  vart0 <- mn_vart(n0, n1, x0, n, cc, delta, adjust_p = FALSE)
+
+  z_score <- (r_diff - delta) / sqrt(vart0)
+  zero_z <- (r_diff == delta) & (vart0 == 0)
+  z_score[zero_z] <- 0
+
+  # `delta` is a scalar here, so branch on it directly (an `ifelse()` on a
+  # length-1 condition would truncate the vector result to length one).
+  pval <- switch(test,
+    one.sided = if (delta <= 0) 1 - pnorm(z_score) else pnorm(z_score),
+    two.sided = 1 - pchisq(z_score^2, 1)
+  )
+  pval_one <- (z_score == 0) & (x0 == 0) & (x1 == 0)
+  pval[pval_one] <- 1
+
+  # Confidence limits: scan the same grid `biroot()` uses, but for every term at
+  # once (a `nt` x E matrix), then bisect each sign-change bracket.
+  a_lim <- -0.999
+  b_lim <- 0.999
+  h <- abs(b_lim - a_lim) / bisection
+  edges <- a_lim + h * (0:(bisection + 1))
+  E <- length(edges)
+
+  ti_all <- seq_len(nt)
+  Fmat <- matrix(
+    func_pts(rep(ti_all, times = E), rep(edges, each = nt)),
+    nrow = nt, ncol = E
+  )
+
+  FA <- Fmat[, 1:(E - 1), drop = FALSE]
+  FB <- Fmat[, 2:E, drop = FALSE]
+  bracket <- is.finite(FA) & is.finite(FB) & (FA * FB < 0)
+
+  lower <- rep(NA_real_, nt)
+  upper <- rep(NA_real_, nt)
+
+  bi <- which(bracket, arr.ind = TRUE) # column 'row' = term, 'col' = interval
+  if (nrow(bi) > 0) {
+    # Left to right within each term, matching the scalar scan's root order.
+    bi <- bi[order(bi[, 1], bi[, 2]), , drop = FALSE]
+    term <- bi[, 1]
+    k <- bi[, 2]
+    lo <- edges[k]
+    hi <- edges[k + 1]
+    flo <- Fmat[cbind(term, k)]
+    frozen <- logical(length(term))
+    # Enough halvings that a bracket of width <= h shrinks below `eps`.
+    steps <- ceiling(log2(h / eps)) + 1L
+    for (s in seq_len(steps)) {
+      active <- !frozen & (abs(hi - lo) >= eps)
+      if (!any(active)) break
+      idx <- which(active)
+      xm <- (lo[idx] + hi[idx]) / 2
+      fx <- func_pts(term[idx], xm)
+      # Mirror the scalar break on a non-finite midpoint value.
+      bad <- !is.finite(fx)
+      if (any(bad)) frozen[idx[bad]] <- TRUE
+      ok <- idx[!bad]
+      fxok <- fx[!bad]
+      xok <- (lo[ok] + hi[ok]) / 2
+      go_hi <- flo[ok] * fxok < 0
+      hi[ok[go_hi]] <- xok[go_hi]
+      lo[ok[!go_hi]] <- xok[!go_hi]
+      flo[ok[!go_hi]] <- fxok[!go_hi]
+    }
+    root <- (lo + hi) / 2
+    keep <- abs(root) < 1
+    tt <- term[keep]
+    rr <- root[keep]
+    # First in-range root per term is the lower limit, second is the upper.
+    first <- !duplicated(tt)
+    lower[tt[first]] <- rr[first]
+    tt2 <- tt[!first]
+    rr2 <- rr[!first]
+    second <- !duplicated(tt2)
+    upper[tt2[second]] <- rr2[second]
+  }
+
+  est <- r_diff
+  est[na_row] <- NA
+  z_score[na_row] <- NA
+  pval[na_row] <- NA
+  lower[na_row] <- NA
+  upper[na_row] <- NA
+
+  data.frame(
+    est = est, z_score = z_score,
+    p = pval, lower = lower, upper = upper
+  )
 }

@@ -111,6 +111,13 @@ extend_ae_specific_inference <- function(outdata,
 
   bind_rows2 <- utils::getFromNamespace("bind_rows2", ns = "metalite")
 
+  # When there is no stratification, every term's CI can be computed in one
+  # vectorized pass (see rate_compare_sum_unstratified()); otherwise fall back
+  # to the per-term rate_compare_sum() call, which handles strata.
+  dots <- list(...)
+  use_unstratified <- is.null(dots$strata)
+  dot_arg <- function(name, default) if (is.null(dots[[name]])) default else dots[[name]]
+
   for (iter in seq_along(grp)) {
     index <- grp[iter]
     x0 <- res$n[[ref]]
@@ -119,18 +126,29 @@ extend_ae_specific_inference <- function(outdata,
     n1 <- rep(res$n_pop[[index]], n_row)
 
     # Calculate confidence interval
-    tmp <- list()
-    for (i in seq_along(x0)) {
-      tmp[[i]] <- rate_compare_sum(
-        x0 = x0[i],
-        x1 = x1[i],
-        n0 = n0[i],
-        n1 = n1[i],
-        alpha = 1 - ci,
-        ...
+    if (use_unstratified) {
+      tmp <- rate_compare_sum_unstratified(
+        n0 = n0, n1 = n1, x0 = x0, x1 = x1,
+        delta = dot_arg("delta", 0),
+        test = dot_arg("test", "one.sided"),
+        bisection = dot_arg("bisection", 100),
+        eps = dot_arg("eps", 1e-06),
+        alpha = 1 - ci
       )
+    } else {
+      tmp <- list()
+      for (i in seq_along(x0)) {
+        tmp[[i]] <- rate_compare_sum(
+          x0 = x0[i],
+          x1 = x1[i],
+          n0 = n0[i],
+          n1 = n1[i],
+          alpha = 1 - ci,
+          ...
+        )
+      }
+      tmp <- bind_rows2(tmp)
     }
-    tmp <- bind_rows2(tmp)
     ci_lower[[iter]] <- tmp$lower
     ci_upper[[iter]] <- tmp$upper
     p[[iter]] <- tmp$p
