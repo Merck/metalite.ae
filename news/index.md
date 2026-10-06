@@ -85,7 +85,19 @@ CRAN release: 2026-08-29
   by reusing shared interval endpoints and hoisting loop-invariant
   quantities out of the objective function; results are unchanged up to
   floating-point tolerance
-  ([\#253](https://github.com/Merck/metalite.ae/issues/253)).
+  ([\#253](https://github.com/Merck/metalite.ae/issues/253), thanks to
+  [@yihui](https://github.com/yihui)).
+- Further speed up unstratified confidence intervals in
+  [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md)
+  by computing every term’s interval in one vectorized pass: the
+  bisection grid is evaluated across all terms at once and every
+  sign-change bracket is refined by a single vectorized bisection loop,
+  instead of scanning the grid separately for each term. Stratified
+  inputs still use
+  [`rate_compare_sum()`](https://merck.github.io/metalite.ae/reference/rate_compare_sum.md)
+  per term. Results are unchanged up to floating-point tolerance
+  ([\#257](https://github.com/Merck/metalite.ae/issues/257), thanks to
+  [@yihui](https://github.com/yihui)).
 
 ### Documentation
 
@@ -119,7 +131,7 @@ CRAN release: 2024-10-23
   for SOC rows
   ([\#191](https://github.com/Merck/metalite.ae/issues/191),
   [\#192](https://github.com/Merck/metalite.ae/issues/192),
-  [\#203](https://github.com/Merck/metalite.ae/issues/203)thanks to
+  [\#203](https://github.com/Merck/metalite.ae/issues/203), thanks to
   [@fukuhiro2023](https://github.com/fukuhiro2023)).
 - Add `data/metalite_ae_adesxum.rda`
   ([\#189](https://github.com/Merck/metalite.ae/issues/189)).
