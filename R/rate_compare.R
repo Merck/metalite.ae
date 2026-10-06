@@ -128,7 +128,7 @@ rate_compare <- function(
 
 #' Constrained-MLE variance for the Miettinen-Nurminen test
 #'
-#' Shared helper for [rate_compare_sum()] and [rate_compare_sum_batch()]. Given
+#' Shared helper for [rate_compare_sum()] and [rate_compare_sum_unstratified()]. Given
 #' aggregate counts and a null risk difference `d`, it returns the constrained
 #' maximum-likelihood variance `vart` used by both the score statistic (at
 #' `d = delta`) and the confidence-interval objective (`d` swept over the
@@ -303,6 +303,13 @@ rate_compare_sum <- function(
     )
   }
 
+  # Loop-invariant quantities pulled out of `func_d`, which is called once per
+  # bisection grid point (hundreds of times per CI). The chi-square critical
+  # value and the stratified/unstratified branch do not depend on `d`. Defined
+  # here, ahead of `biroot()`, so the scan below can read `unstratified`.
+  chisq_crit <- qchisq(1 - alpha, 1)
+  unstratified <- is.null(strata) || length(unique(strata)) == 1
+
   # Bisection function to find the roots:
   # `f` is the function for which the root is sought,
   # `a` and `b` are minimum and maximum of the interval,
@@ -376,12 +383,6 @@ rate_compare_sum <- function(
     }
   }
 
-  # Loop-invariant quantities pulled out of `func_d`, which is called once per
-  # bisection grid point (hundreds of times per CI). The chi-square critical
-  # value and the stratified/unstratified branch do not depend on `d`.
-  chisq_crit <- qchisq(1 - alpha, 1)
-  unstratified <- is.null(strata) || length(unique(strata)) == 1
-
   # Start to calculate the confidence interval
   func_d <- function(d) {
     vart <- mn_vart(n0, n1, x0, n, c, d)
@@ -421,7 +422,7 @@ rate_compare_sum <- function(
   z
 }
 
-#' Batched unstratified Miettinen-Nurminen risk-difference confidence intervals
+#' Unstratified Miettinen-Nurminen risk-difference confidence intervals, all terms at once
 #'
 #' A vectorized-across-terms reimplementation of the *unstratified* path of
 #' [rate_compare_sum()]. Given vectors `n0`, `n1`, `x0`, `x1` (one entry per
@@ -437,7 +438,7 @@ rate_compare_sum <- function(
 #' @return A data frame with one row per term and columns `est`, `z_score`,
 #'   `p`, `lower`, `upper`.
 #' @noRd
-rate_compare_sum_batch <- function(n0, n1, x0, x1,
+rate_compare_sum_unstratified <- function(n0, n1, x0, x1,
                                    delta = 0,
                                    test = c("one.sided", "two.sided"),
                                    bisection = 100,

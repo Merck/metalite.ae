@@ -112,10 +112,10 @@ extend_ae_specific_inference <- function(outdata,
   bind_rows2 <- utils::getFromNamespace("bind_rows2", ns = "metalite")
 
   # When there is no stratification, every term's CI can be computed in one
-  # vectorized pass (see rate_compare_sum_batch()); otherwise fall back to the
-  # per-term rate_compare_sum() call, which handles strata.
+  # vectorized pass (see rate_compare_sum_unstratified()); otherwise fall back
+  # to the per-term rate_compare_sum() call, which handles strata.
   dots <- list(...)
-  use_batch <- is.null(dots$strata)
+  use_unstratified <- is.null(dots$strata)
   dot_arg <- function(name, default) if (is.null(dots[[name]])) default else dots[[name]]
 
   for (iter in seq_along(grp)) {
@@ -126,8 +126,8 @@ extend_ae_specific_inference <- function(outdata,
     n1 <- rep(res$n_pop[[index]], n_row)
 
     # Calculate confidence interval
-    if (use_batch) {
-      tmp <- rate_compare_sum_batch(
+    if (use_unstratified) {
+      tmp <- rate_compare_sum_unstratified(
         n0 = n0, n1 = n1, x0 = x0, x1 = x1,
         delta = dot_arg("delta", 0),
         test = dot_arg("test", "one.sided"),
