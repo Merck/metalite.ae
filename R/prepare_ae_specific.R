@@ -238,7 +238,11 @@ prepare_ae_specific <- function(meta,
 
   # Define AE term section
   if ("par" %in% components && nrow(obs) > 0) {
-    u_soc <- unique(obs[order(obs[[par_soc]]), c(par_soc, par_var)])
+    # Distinct SOC/term pairs. No pre-sort: the downstream merge() re-sorts by
+    # key and the `order` column is derived from factor(par_soc) levels, so the
+    # input order of these pairs never reaches the output. Sorting all records
+    # here (potentially hundreds of thousands) was pure overhead.
+    u_soc <- unique(obs[, c(par_soc, par_var)])
 
     par_n <- metalite::n_subject(obs[[obs_id]], obs[[obs_group]], obs[[par_var]],
       na = "NULL"
