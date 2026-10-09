@@ -98,6 +98,17 @@ CRAN release: 2026-08-29
   per term. Results are unchanged up to floating-point tolerance
   ([\#257](https://github.com/Merck/metalite.ae/issues/257), thanks to
   [@yihui](https://github.com/yihui)).
+- Speed up
+  [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
+  by dropping an unused [`order()`](https://rdrr.io/r/base/order.html)
+  pre-sort of the full observation table when collecting the distinct
+  SOC/preferred-term pairs; the downstream
+  [`merge()`](https://rdrr.io/r/base/merge.html) re-sorts by key and the
+  row order is derived from factor levels, so the sort never affected
+  the output. Results are unchanged for valid MedDRA data (one system
+  organ class per preferred term)
+  ([\#259](https://github.com/Merck/metalite.ae/issues/259), thanks to
+  [@yihui](https://github.com/yihui)).
 
 ### Documentation
 
