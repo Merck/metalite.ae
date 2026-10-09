@@ -154,12 +154,17 @@ mn_vart <- function(n0, n1, x0, n, cc, d, adjust_p = TRUE) {
   l0 <- x0 * d * (1 - d)
 
   q <- (l2 / (3 * l3))^3 - l1 * l2 / (6 * l3^2) + l0 / (2 * l3)
-  sgn <- ifelse(q > 0, 1, -1)
+  # `(q > 0) * 2 - 1` is `ifelse(q > 0, 1, -1)` without allocating the two
+  # branch vectors; it preserves NA (NA > 0 is NA). The `adjust_p` nudge is
+  # likewise done by indexed assignment instead of nested ifelse(). These run
+  # over the whole bisection grid x all terms, so the allocations added up.
+  sgn <- (q > 0) * 2 - 1
   p <- sqrt((l2 / (3 * l3))^2 - l1 / (3 * l3)) * sgn
   if (adjust_p) {
-    p <- ifelse(p > (-1e-20) & p < 0, p - 1e-16,
-      ifelse(p >= 0 & p < (1e-20), p + 1e-16, p)
-    )
+    lo <- !is.na(p) & p > -1e-20 & p < 0
+    hi <- !is.na(p) & p >= 0 & p < 1e-20
+    p[lo] <- p[lo] - 1e-16
+    p[hi] <- p[hi] + 1e-16
   }
 
   temp <- pmax(pmin(q / (p^3), 1), -1)

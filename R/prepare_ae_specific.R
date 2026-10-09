@@ -160,12 +160,16 @@ prepare_ae_specific <- function(meta,
     levels(obs[[obs_group]]) <- levels(pop[[pop_group]])
   }
 
-  # Add a total group to display total column
+  # Add a total group to display total column. Reset row names before rbind():
+  # rbind.data.frame make.unique()s the combined row names, which is costly when
+  # `obs` carries non-sequential names from an upstream subset. Automatic (NULL)
+  # names skip that; the row names are not used downstream.
   if (nrow(pop) == 0) {
     levels(pop[[pop_group]]) <- c(levels(pop[[pop_group]]), "Total")
   } else {
     pop_total <- pop
     pop_total[[pop_group]] <- "Total"
+    rownames(pop) <- rownames(pop_total) <- NULL
     pop <- rbind(pop, pop_total)
   }
 
@@ -175,6 +179,7 @@ prepare_ae_specific <- function(meta,
   } else {
     obs_total <- obs
     obs_total[[obs_group]] <- "Total"
+    rownames(obs) <- rownames(obs_total) <- NULL
     obs <- rbind(obs, obs_total)
   }
 
