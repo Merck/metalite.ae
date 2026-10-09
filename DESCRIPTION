@@ -1,6 +1,6 @@
 Package: metalite.ae
 Title: Adverse Events Analysis Using 'metalite'
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: c(
     person("Yilong", "Zhang", role = c("aut")),
     person("Yujie", "Zhao", email = "yujie.zhao@merck.com", role = c("aut", "cre")),
