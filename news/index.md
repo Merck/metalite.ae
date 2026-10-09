@@ -1,5 +1,53 @@
 # Changelog
 
+## metalite.ae 0.1.5
+
+### Improvements
+
+- Speed up the bisection confidence-interval search in
+  [`rate_compare_sum()`](https://merck.github.io/metalite.ae/reference/rate_compare_sum.md)
+  (and therefore
+  [`rate_compare()`](https://merck.github.io/metalite.ae/reference/rate_compare.md)
+  and
+  [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md))
+  by reusing shared interval endpoints and hoisting loop-invariant
+  quantities out of the objective function; results are unchanged up to
+  floating-point tolerance
+  ([\#253](https://github.com/Merck/metalite.ae/issues/253), thanks to
+  [@yihui](https://github.com/yihui)).
+- Further speed up unstratified confidence intervals in
+  [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md)
+  by computing every term’s interval in one vectorized pass: the
+  bisection grid is evaluated across all terms at once and every
+  sign-change bracket is refined by a single vectorized bisection loop,
+  instead of scanning the grid separately for each term. Stratified
+  inputs still use
+  [`rate_compare_sum()`](https://merck.github.io/metalite.ae/reference/rate_compare_sum.md)
+  per term. Results are unchanged up to floating-point tolerance
+  ([\#257](https://github.com/Merck/metalite.ae/issues/257), thanks to
+  [@yihui](https://github.com/yihui)).
+- Speed up
+  [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
+  by dropping an unused [`order()`](https://rdrr.io/r/base/order.html)
+  pre-sort of the full observation table when collecting the distinct
+  SOC/preferred-term pairs; the downstream
+  [`merge()`](https://rdrr.io/r/base/merge.html) re-sorts by key and the
+  row order is derived from factor levels, so the sort never affected
+  the output. Results are unchanged for valid MedDRA data (one system
+  organ class per preferred term)
+  ([\#259](https://github.com/Merck/metalite.ae/issues/259), thanks to
+  [@yihui](https://github.com/yihui)).
+- Trim per-call allocations in the Miettinen-Nurminen variance helper
+  (replacing [`ifelse()`](https://rdrr.io/r/base/ifelse.html) with sign
+  arithmetic and indexed assignment) and reset row names before the
+  Total-group [`rbind()`](https://rdrr.io/r/base/cbind.html) in
+  [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
+  to avoid a costly
+  [`make.unique()`](https://rdrr.io/r/base/make.unique.html). Results
+  are unchanged
+  ([\#260](https://github.com/Merck/metalite.ae/issues/260), thanks to
+  [@yihui](https://github.com/yihui)).
+
 ## metalite.ae 0.1.4
 
 CRAN release: 2026-08-29
@@ -76,39 +124,6 @@ CRAN release: 2026-08-29
   ([\#229](https://github.com/Merck/metalite.ae/issues/229), thanks to
   [@LittleBeannie](https://github.com/LittleBeannie) and
   [@fukuhiro2023](https://github.com/fukuhiro2023)).
-- Speed up the bisection confidence-interval search in
-  [`rate_compare_sum()`](https://merck.github.io/metalite.ae/reference/rate_compare_sum.md)
-  (and therefore
-  [`rate_compare()`](https://merck.github.io/metalite.ae/reference/rate_compare.md)
-  and
-  [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md))
-  by reusing shared interval endpoints and hoisting loop-invariant
-  quantities out of the objective function; results are unchanged up to
-  floating-point tolerance
-  ([\#253](https://github.com/Merck/metalite.ae/issues/253), thanks to
-  [@yihui](https://github.com/yihui)).
-- Further speed up unstratified confidence intervals in
-  [`extend_ae_specific_inference()`](https://merck.github.io/metalite.ae/reference/extend_ae_specific_inference.md)
-  by computing every term’s interval in one vectorized pass: the
-  bisection grid is evaluated across all terms at once and every
-  sign-change bracket is refined by a single vectorized bisection loop,
-  instead of scanning the grid separately for each term. Stratified
-  inputs still use
-  [`rate_compare_sum()`](https://merck.github.io/metalite.ae/reference/rate_compare_sum.md)
-  per term. Results are unchanged up to floating-point tolerance
-  ([\#257](https://github.com/Merck/metalite.ae/issues/257), thanks to
-  [@yihui](https://github.com/yihui)).
-- Speed up
-  [`prepare_ae_specific()`](https://merck.github.io/metalite.ae/reference/prepare_ae_specific.md)
-  by dropping an unused [`order()`](https://rdrr.io/r/base/order.html)
-  pre-sort of the full observation table when collecting the distinct
-  SOC/preferred-term pairs; the downstream
-  [`merge()`](https://rdrr.io/r/base/merge.html) re-sorts by key and the
-  row order is derived from factor levels, so the sort never affected
-  the output. Results are unchanged for valid MedDRA data (one system
-  organ class per preferred term)
-  ([\#259](https://github.com/Merck/metalite.ae/issues/259), thanks to
-  [@yihui](https://github.com/yihui)).
 
 ### Documentation
 

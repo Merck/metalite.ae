@@ -39,13 +39,13 @@ Source:
 
 Zhang Y, Zhao Y, Fukuda H, Wang B, Xiao N, Nepal S, Ginnaram M, Patel R,
 Lang B, Deng X, Liu B, Chauhan J (2026). *metalite.ae: Adverse Events
-Analysis Using 'metalite'*. R package version 0.1.4,
+Analysis Using 'metalite'*. R package version 0.1.5,
 <https://merck.github.io/metalite.ae/>.
 
     @Manual{,
       title = {metalite.ae: Adverse Events Analysis Using 'metalite'},
       author = {Yilong Zhang and Yujie Zhao and Hiroaki Fukuda and Benjamin Wang and Nan Xiao and Sarad Nepal and Madhusudhan Ginnaram and Ruchitbhai Patel and Brian Lang and Xuan Deng and Bing Liu and Jeetender Chauhan},
       year = {2026},
-      note = {R package version 0.1.4},
+      note = {R package version 0.1.5},
       url = {https://merck.github.io/metalite.ae/},
     }
