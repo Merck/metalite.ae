@@ -451,6 +451,39 @@ rate_compare_sum_unstratified <- function(n0, n1, x0, x1,
                                           alpha = 0.05) {
   test <- match.arg(test)
   nt <- length(n0)
+
+  # Each term's result depends only on its (n0, n1, x0, x1) counts, and the
+  # typical caller -- extend_ae_specific_inference() -- passes a constant n0/n1
+  # (the per-arm population totals) with small-integer x0/x1 event counts, so
+  # hundreds of thousands of AE terms collapse to a few hundred distinct count
+  # tuples. Compute each distinct tuple once and expand the result back to the
+  # full term order; the bisection grid (an nt x E matrix pushed through
+  # mn_vart) shrinks with the term count, which is where the time goes. Tuples
+  # are keyed by the same mixed-radix pack metalite's first_distinct() uses
+  # (each count coerced to a factor, NA collapsing to its own 0 code, so NA
+  # counts group together and yield the NA result the body produces anyway),
+  # but the key is kept here so match() can map every term to its tuple.
+  if (nt > 1L) {
+    key <- 0
+    for (v in list(n0, n1, x0, x1)) {
+      f <- factor(v)
+      code <- as.integer(f)
+      code[is.na(code)] <- 0L
+      key <- key * (nlevels(f) + 1L) + code
+    }
+    u <- !duplicated(key)
+    if (sum(u) < nt) {
+      res <- Recall(
+        n0[u], n1[u], x0[u], x1[u],
+        delta = delta, test = test,
+        bisection = bisection, eps = eps, alpha = alpha
+      )
+      res <- res[match(key, key[u]), , drop = FALSE]
+      row.names(res) <- NULL
+      return(res)
+    }
+  }
+
   chisq_crit <- qchisq(1 - alpha, 1)
 
   na_row <- is.na(n0) | is.na(n1) | is.na(x0) | is.na(x1)
