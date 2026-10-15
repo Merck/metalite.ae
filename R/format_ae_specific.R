@@ -193,10 +193,10 @@ format_ae_specific <- function(outdata,
   tbl <- list()
 
   # n
-  tbl[["n"]] <- outdata$n[, index_total]
+  tbl[["n"]] <- outdata$n[, index_total, drop = FALSE]
 
   if ("prop" %in% display) {
-    prop <- outdata$prop[, index_total]
+    prop <- outdata$prop[, index_total, drop = FALSE]
     prop <- apply(prop, 2, fmt_pct, digits = digits_prop, pre = "(", post = ")")
     tbl[["prop"]] <- prop
   }
