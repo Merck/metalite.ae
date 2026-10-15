@@ -22,6 +22,8 @@ Useful links:
 
 Authors:
 
+- Yujie Zhao <yujie.zhao@merck.com>
+
 - Yilong Zhang
 
 - Hiroaki Fukuda

@@ -93,6 +93,6 @@ prepare_ae_listing(meta, "ae_listing", "apat", "wk12", "ser") |>
     path_outdata = tempfile(fileext = ".Rdata"),
     path_outtable = tempfile(fileext = ".rtf")
   )
-#> The outdata is saved in/tmp/RtmpKfLoTc/file20877b36c90b.Rdata
-#> The output is saved in/tmp/RtmpKfLoTc/file208757aac30c.rtf
+#> The outdata is saved in/tmp/Rtmp6UrsqE/file207da2c9434.Rdata
+#> The output is saved in/tmp/Rtmp6UrsqE/file207d6ba3a03f.rtf
 ```
