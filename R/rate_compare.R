@@ -126,6 +126,19 @@ rate_compare <- function(
   )
 }
 
+# Mixed-radix key for combinations of vectors (NA -> 0, its own group).
+# TODO: replace with xfun::radix_id() once that lands on CRAN.
+radix_key <- function(...) {
+  key <- 0
+  for (v in list(...)) {
+    f <- factor(v)
+    code <- as.integer(f)
+    code[is.na(code)] <- 0L
+    key <- key * (nlevels(f) + 1L) + code
+  }
+  key
+}
+
 #' Constrained-MLE variance for the Miettinen-Nurminen test
 #'
 #' Shared helper for [rate_compare_sum()] and [rate_compare_sum_unstratified()]. Given
@@ -564,16 +577,8 @@ mn_ci_batch <- function(n0, n1, x0, x1,
 rate_compare_sum_unstratified <- function(n0, n1, x0, x1, ...) {
   nt <- length(n0)
 
-  # Mixed-radix key over (n0, n1, x0, x1): factor digit per count, NA -> 0.
-  # TODO: replace with xfun::radix_group() once that lands on CRAN.
   if (nt > 1L) {
-    key <- 0
-    for (v in list(n0, n1, x0, x1)) {
-      f <- factor(v)
-      code <- as.integer(f)
-      code[is.na(code)] <- 0L
-      key <- key * (nlevels(f) + 1L) + code
-    }
+    key <- radix_key(n0, n1, x0, x1)
     u <- !duplicated(key)
     if (sum(u) < nt) {
       res <- mn_ci_batch(n0[u], n1[u], x0[u], x1[u], ...)

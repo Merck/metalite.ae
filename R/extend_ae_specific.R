@@ -136,18 +136,13 @@ extend_ae_specific_inference <- function(outdata,
         alpha = 1 - ci
       )
     } else {
-      tmp <- list()
-      for (i in seq_along(x0)) {
-        tmp[[i]] <- rate_compare_sum(
-          x0 = x0[i],
-          x1 = x1[i],
-          n0 = n0[i],
-          n1 = n1[i],
-          alpha = 1 - ci,
-          ...
-        )
-      }
-      tmp <- bind_rows2(tmp)
+      # n0/n1 constant, strata shared: CI depends only on (x0, x1).
+      key <- radix_key(x0, x1)
+      u <- !duplicated(key)
+      cache <- lapply(which(u), function(i)
+        rate_compare_sum(x0 = x0[i], x1 = x1[i], n0 = n0[i], n1 = n1[i], alpha = 1 - ci, ...)
+      )
+      tmp <- bind_rows2(cache[match(key, key[u])])
     }
     ci_lower[[iter]] <- tmp$lower
     ci_upper[[iter]] <- tmp$upper
