@@ -109,8 +109,6 @@ extend_ae_specific_inference <- function(outdata,
   ci_upper <- list()
   p <- list()
 
-  bind_rows2 <- utils::getFromNamespace("bind_rows2", ns = "metalite")
-
   # When there is no stratification, every term's CI can be computed in one
   # vectorized pass (see rate_compare_sum_unstratified()); otherwise fall back
   # to the per-term rate_compare_sum() call, which handles strata.
@@ -136,18 +134,16 @@ extend_ae_specific_inference <- function(outdata,
         alpha = 1 - ci
       )
     } else {
-      tmp <- list()
-      for (i in seq_along(x0)) {
-        tmp[[i]] <- rate_compare_sum(
-          x0 = x0[i],
-          x1 = x1[i],
-          n0 = n0[i],
-          n1 = n1[i],
-          alpha = 1 - ci,
-          ...
-        )
-      }
-      tmp <- bind_rows2(tmp)
+      # n0/n1 constant, strata shared: CI depends only on (x0, x1).
+      key <- radix_key(x0, x1)
+      u <- !duplicated(key)
+      cache <- lapply(which(u), function(i)
+        rate_compare_sum(x0 = x0[i], x1 = x1[i], n0 = n0[i], n1 = n1[i], alpha = 1 - ci, ...)
+      )
+      # Every rate_compare_sum() result is a 1-row data frame with identical
+      # columns, so rbind the distinct rows and expand with row-indexing.
+      uniq <- do.call(rbind, cache)
+      tmp <- uniq[match(key, key[u]), , drop = FALSE]
     }
     ci_lower[[iter]] <- tmp$lower
     ci_upper[[iter]] <- tmp$upper
