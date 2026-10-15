@@ -427,63 +427,27 @@ rate_compare_sum <- function(
   z
 }
 
-#' Unstratified Miettinen-Nurminen risk-difference confidence intervals, all terms at once
+#' Compute unstratified MN risk-difference CIs for a batch of distinct count tuples
 #'
-#' A vectorized-across-terms reimplementation of the *unstratified* path of
-#' [rate_compare_sum()]. Given vectors `n0`, `n1`, `x0`, `x1` (one entry per
-#' term), it returns the same `est`, `z_score`, `p`, `lower` and `upper` values
-#' [rate_compare_sum()] would return for each term, but evaluates the whole
-#' bisection grid across all terms in one pass and refines every sign-change
-#' bracket with a single vectorized bisection loop -- turning the per-term
-#' scan (hundreds of interpreted calls each) into a handful of vector ops. It
-#' is intended for [extend_ae_specific_inference()], which computes one CI per
-#' AE term. Stratified inputs must still use [rate_compare_sum()].
+#' Core vectorized-across-terms computation shared by
+#' [rate_compare_sum_unstratified()]. Inputs are assumed to be **distinct**
+#' `(n0, n1, x0, x1)` tuples -- de-duplication is the caller's responsibility.
+#' Evaluates the whole bisection grid across all terms in one pass and refines
+#' every sign-change bracket with a single vectorized bisection loop.
+#' Stratified inputs must still use [rate_compare_sum()].
 #'
 #' @inheritParams rate_compare_sum
 #' @return A data frame with one row per term and columns `est`, `z_score`,
 #'   `p`, `lower`, `upper`.
 #' @noRd
-rate_compare_sum_unstratified <- function(n0, n1, x0, x1,
-                                          delta = 0,
-                                          test = c("one.sided", "two.sided"),
-                                          bisection = 100,
-                                          eps = 1e-06,
-                                          alpha = 0.05) {
+mn_ci_batch <- function(n0, n1, x0, x1,
+                        delta = 0,
+                        test = c("one.sided", "two.sided"),
+                        bisection = 100,
+                        eps = 1e-06,
+                        alpha = 0.05) {
   test <- match.arg(test)
   nt <- length(n0)
-
-  # Each term's result depends only on its (n0, n1, x0, x1) counts, and the
-  # typical caller -- extend_ae_specific_inference() -- passes a constant n0/n1
-  # (the per-arm population totals) with small-integer x0/x1 event counts, so
-  # hundreds of thousands of AE terms collapse to a few hundred distinct count
-  # tuples. Compute each distinct tuple once and expand the result back to the
-  # full term order; the bisection grid (an nt x E matrix pushed through
-  # mn_vart) shrinks with the term count, which is where the time goes. Tuples
-  # are keyed by the same mixed-radix pack metalite's first_distinct() uses
-  # (each count coerced to a factor, NA collapsing to its own 0 code, so NA
-  # counts group together and yield the NA result the body produces anyway),
-  # but the key is kept here so match() can map every term to its tuple.
-  if (nt > 1L) {
-    key <- 0
-    for (v in list(n0, n1, x0, x1)) {
-      f <- factor(v)
-      code <- as.integer(f)
-      code[is.na(code)] <- 0L
-      key <- key * (nlevels(f) + 1L) + code
-    }
-    u <- !duplicated(key)
-    if (sum(u) < nt) {
-      res <- Recall(
-        n0[u], n1[u], x0[u], x1[u],
-        delta = delta, test = test,
-        bisection = bisection, eps = eps, alpha = alpha
-      )
-      res <- res[match(key, key[u]), , drop = FALSE]
-      row.names(res) <- NULL
-      return(res)
-    }
-  }
-
   chisq_crit <- qchisq(1 - alpha, 1)
 
   na_row <- is.na(n0) | is.na(n1) | is.na(x0) | is.na(x1)
@@ -597,5 +561,65 @@ rate_compare_sum_unstratified <- function(n0, n1, x0, x1,
   data.frame(
     est = est, z_score = z_score,
     p = pval, lower = lower, upper = upper
+  )
+}
+
+#' Unstratified MN risk-difference CIs for all AE terms at once
+#'
+#' A vectorized-across-terms wrapper around [mn_ci_batch()]. Given vectors
+#' `n0`, `n1`, `x0`, `x1` (one entry per term), it returns the same `est`,
+#' `z_score`, `p`, `lower`, and `upper` values [rate_compare_sum()] would
+#' return for each term, but de-duplicates on distinct `(n0, n1, x0, x1)`
+#' count tuples first: each unique tuple is solved once by [mn_ci_batch()]
+#' and the result is expanded back to the full term order. The bisection grid
+#' (an `nt x E` matrix through `mn_vart`) therefore scales with the number
+#' of distinct tuples, not the total term count. Stratified inputs must still
+#' use [rate_compare_sum()].
+#'
+#' @inheritParams rate_compare_sum
+#' @return A data frame with one row per term and columns `est`, `z_score`,
+#'   `p`, `lower`, `upper`.
+#' @noRd
+rate_compare_sum_unstratified <- function(n0, n1, x0, x1,
+                                          delta = 0,
+                                          test = c("one.sided", "two.sided"),
+                                          bisection = 100,
+                                          eps = 1e-06,
+                                          alpha = 0.05) {
+  test <- match.arg(test)
+  nt <- length(n0)
+
+  # De-duplicate on (n0, n1, x0, x1): a term's CI depends only on its counts,
+  # and the typical caller -- extend_ae_specific_inference() -- passes constant
+  # per-arm totals n0/n1 with small-integer event counts x0/x1, so hundreds of
+  # thousands of AE terms collapse to a few hundred distinct tuples. Mixed-radix
+  # key: each count becomes a factor digit in base nlevels+1, NA collapses to 0
+  # (its own group, yielding the NA result mn_ci_batch() produces anyway). The
+  # key is a double so products stay exact for large nt.
+  if (nt > 1L) {
+    key <- 0
+    for (v in list(n0, n1, x0, x1)) {
+      f <- factor(v)
+      code <- as.integer(f)
+      code[is.na(code)] <- 0L
+      key <- key * (nlevels(f) + 1L) + code
+    }
+    u <- !duplicated(key)
+    if (sum(u) < nt) {
+      res <- mn_ci_batch(
+        n0[u], n1[u], x0[u], x1[u],
+        delta = delta, test = test,
+        bisection = bisection, eps = eps, alpha = alpha
+      )
+      res <- res[match(key, key[u]), , drop = FALSE]
+      row.names(res) <- NULL
+      return(res)
+    }
+  }
+
+  mn_ci_batch(
+    n0, n1, x0, x1,
+    delta = delta, test = test,
+    bisection = bisection, eps = eps, alpha = alpha
   )
 }
