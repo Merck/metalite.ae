@@ -6,6 +6,7 @@
 - Further speed up unstratified confidence intervals in `extend_ae_specific_inference()` by computing every term's interval in one vectorized pass: the bisection grid is evaluated across all terms at once and every sign-change bracket is refined by a single vectorized bisection loop, instead of scanning the grid separately for each term. Stratified inputs still use `rate_compare_sum()` per term. Results are unchanged up to floating-point tolerance (#257, thanks to @yihui).
 - Speed up `prepare_ae_specific()` by dropping an unused `order()` pre-sort of the full observation table when collecting the distinct SOC/preferred-term pairs; the downstream `merge()` re-sorts by key and the row order is derived from factor levels, so the sort never affected the output. Results are unchanged for valid MedDRA data (one system organ class per preferred term) (#259, thanks to @yihui).
 - Trim per-call allocations in the Miettinen-Nurminen variance helper (replacing `ifelse()` with sign arithmetic and indexed assignment) and reset row names before the Total-group `rbind()` in `prepare_ae_specific()` to avoid a costly `make.unique()`. Results are unchanged (#260, thanks to @yihui).
+- Drop the `glue` dependency, replacing its four `glue::glue_data()` call sites with base R (`sprintf()` and `gsub()`); output is unchanged (thanks to @yihui).
 
 # metalite.ae 0.1.4
 
