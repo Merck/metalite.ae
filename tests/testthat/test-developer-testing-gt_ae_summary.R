@@ -1,5 +1,3 @@
-library(gt)
-
 test_that("gt_ae_summary supports NULL source and footnotes", {
   adsl <- forestly::forestly_adsl
   adae <- forestly::forestly_adae
@@ -87,5 +85,5 @@ test_that("gt_ae_summary supports NULL source and footnotes", {
       footnotes = NULL
     )
 
-  expect_s3_class(result, "gt_tbl")
+  expect_s3_class(result, "lt_tbl")
 })

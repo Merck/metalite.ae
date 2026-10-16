@@ -33,10 +33,10 @@ VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
     glue,
+    lt,
     metalite,
     r2rtf,
-    stats,
-    gt
+    stats
 Suggests:
     DescTools,
     covr,
@@ -48,6 +48,8 @@ Suggests:
     testthat (>= 3.0.0),
     tibble,
     tidyr
+Remotes:
+    yihui/lt
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0

@@ -22,12 +22,12 @@
 #'
 #' @param analysis One of analysis name existing at `outdata$meta$analysis`
 #'
-#' @return RTF file and the source dataset for AE summary table.
+#' @return An `lt_tbl` object for an AE summary table.
 #'
 #' @export
 #'
 #' @examples
-#' library(gt)
+#' library(lt)
 #' #' # Define metadata
 #' adsl <- forestly::forestly_adsl
 #' adae <- forestly::forestly_adae
@@ -123,10 +123,6 @@ gt_ae_summary <- function(outdata,
   tbl <- outdata$tbl
   group <- outdata$group
   num_groups <- length(group)
-  reference_group <- outdata$reference_group
-  n_group <- length(outdata$group)
-  n_row <- nrow(tbl)
-  n_col <- ncol(tbl)
 
   analysis_name <- names(outdata$meta$analysis)
   if (!(analysis %in% analysis_name)) {
@@ -145,83 +141,42 @@ gt_ae_summary <- function(outdata,
       "any",
       analysis = "ae_summary"
     )
-    print(title)
   }
 
   x <- lapply(parameters, function(x) {
     collect_adam_mapping(outdata$meta, x)$summ_foot
   })
   footnotes <- c(unlist(x), footnotes)
-  combined_title_md <- paste(title, collapse = "  \n")
-
-  # Create spanner functions list
-  spanner_funs <- lapply(seq_along(group), function(i) {
-    function(gt_tbl) {
-      gt_tbl |> gt::tab_spanner(
-        label = group[i],
-        columns = c(paste0("n_", i), paste0("prop_", i))
-      )
-    }
-  })
 
   name_col <- colnames(tbl)[1] # first column, e.g. "name"
-  n_cols <- paste0("n_", 1:num_groups)
-  prop_cols <- paste0("prop_", 1:num_groups)
-
-  cols_label_vec <- c(
+  cols_label <- c(
     stats::setNames("", name_col),
-    stats::setNames(rep("n", num_groups), n_cols),
-    stats::setNames(rep("(%)", num_groups), prop_cols)
+    stats::setNames(rep("n", num_groups), paste0("n_", seq_len(num_groups))),
+    stats::setNames(rep("(%)", num_groups), paste0("prop_", seq_len(num_groups)))
   )
 
-  # -------------------------
-  # Helper: convert {^text} to <sup>text</sup>
-  convert_caret_sup <- function(x) {
-    if (is.null(x)) {
-      return(x)
+  tbl[[name_col]] <- convert_caret_sup(tbl[[name_col]])
+
+  out <- lt::lt(tbl, auto_format = FALSE) |>
+    lt::lt_sub(missing = "") |>
+    lt::lt_html(name_col) |>
+    lt::lt_label(cols_label) |>
+    lt::lt_header(title = I(paste(title, collapse = "<br>")))
+
+  # One spanner per treatment group over its n/(%) column pair.
+  for (i in seq_along(group)) {
+    out <- lt::lt_spanner(out,
+      label = group[i],
+      columns = c(paste0("n_", i), paste0("prop_", i))
+    )
+  }
+
+  # Footnotes and source render as table notes at the bottom.
+  for (note in c(footnotes, source)) {
+    if (!is.null(note) && nzchar(note)) {
+      out <- lt::lt_note(out, I(convert_caret_sup(note)))
     }
-    if (is.factor(x)) x <- as.character(x)
-    # handle vector input (character vector)
-    x_char <- as.character(x)
-    na_idx <- is.na(x_char)
-
-    # Escape existing angle brackets to avoid accidental HTML being interpreted,
-    # then insert <sup> tags for {^...} patterns
-    x_char <- gsub("<", "&lt;", x_char, fixed = TRUE)
-    x_char <- gsub(">", "&gt;", x_char, fixed = TRUE)
-
-    # Replace {^...} with <sup>...</sup>, allow multiple occurrences
-    x_char <- gsub("\\{\\^([^}]+)\\}", "<sup>\\1</sup>", x_char, perl = TRUE)
-
-    x_char[na_idx] <- NA_character_
-    x_char
   }
 
-  # Apply conversion to the name column (first column)
-  if (name_col %in% colnames(tbl)) {
-    tbl[[name_col]] <- convert_caret_sup(tbl[[name_col]])
-  }
-
-  # Convert footnotes vector and source string
-  footnotes <- if (!is.null(footnotes)) gt::md(convert_caret_sup(footnotes)) else footnotes
-  source <- if (!is.null(source)) gt::md(convert_caret_sup(source)) else source
-
-  gt_tbl <- tbl |>
-    gt::gt() |>
-    gt::sub_missing(columns = 1:ncol(tbl), missing_text = "") |>
-    gt::fmt_markdown(columns = 1) |>
-    gt::tab_header(title = gt::md(combined_title_md)) |>
-    (\(gt_tbl) Reduce(function(acc, f) f(acc), spanner_funs, init = gt_tbl))() |>
-    gt::cols_label(!!!cols_label_vec)
-
-  # Add footnotes and source (if present). gt::tab_source_note accepts a character vector;
-  # we pass the (possibly converted) footnotes and source.
-  if (!is.null(footnotes) && length(footnotes) > 0) {
-    gt_tbl <- gt_tbl |> gt::tab_source_note(footnotes)
-  }
-  if (!is.null(source) && nzchar(source)) {
-    gt_tbl <- gt_tbl |> gt::tab_source_note(source)
-  }
-
-  return(gt_tbl)
+  out
 }

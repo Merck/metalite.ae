@@ -2,7 +2,7 @@
 % Please edit documentation in R/gt_ae_specific.R
 \name{gt_ae_specific}
 \alias{gt_ae_specific}
-\title{Specific adverse events table in gt format}
+\title{Specific adverse events table in lt format}
 \usage{
 gt_ae_specific(
   outdata,
@@ -29,13 +29,13 @@ for this dataset.}
 title from metadata or a character vector of table titles.}
 }
 \value{
-A \code{gt_tbl} object for an AE specific table.
+An \code{lt_tbl} object for an AE specific table.
 }
 \description{
-Specific adverse events table in gt format
+Specific adverse events table in lt format
 }
 \examples{
-library(gt)
+library(lt)
 
 # Define metadata
 adsl <- forestly::forestly_adsl
