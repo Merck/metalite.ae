@@ -108,7 +108,7 @@ articles:
 
 - title: AE Listing Table (Interactive)
   contents:
-    - ae-listing-reactable
+    - ae-listing
 
 - title: Generate Multiple AE TLFs via 1 Single Metadata
   contents:

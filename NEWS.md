@@ -2,6 +2,8 @@
 
 ## Improvements
 
+- Rewrite `react_ae_listing()` to render the interactive AE listing with the lightweight `lt` package instead of `reactable`. The function now returns an `lt_tbl` object with per-column filters, global search, pagination, resizable columns, and striped/hover styling. In `patient_folding` mode the patient-ID column is a dropdown of full IDs and the table starts empty until a participant is selected. `reactable` is dropped from Suggests and `lt` is added to Imports.
+
 - Speed up the bisection confidence-interval search in `rate_compare_sum()` (and therefore `rate_compare()` and `extend_ae_specific_inference()`) by reusing shared interval endpoints and hoisting loop-invariant quantities out of the objective function; results are unchanged up to floating-point tolerance (#253, thanks to @yihui).
 - Further speed up unstratified confidence intervals in `extend_ae_specific_inference()` by computing every term's interval in one vectorized pass: the bisection grid is evaluated across all terms at once and every sign-change bracket is refined by a single vectorized bisection loop, instead of scanning the grid separately for each term. Stratified inputs still use `rate_compare_sum()` per term. Results are unchanged up to floating-point tolerance (#257, thanks to @yihui).
 - Speed up `prepare_ae_specific()` by dropping an unused `order()` pre-sort of the full observation table when collecting the distinct SOC/preferred-term pairs; the downstream `merge()` re-sorts by key and the row order is derived from factor levels, so the sort never affected the output. Results are unchanged for valid MedDRA data (one system organ class per preferred term) (#259, thanks to @yihui).

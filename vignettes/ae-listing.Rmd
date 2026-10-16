@@ -1,8 +1,8 @@
 ---
-title: "Generate an Interactive AE Listing Table with reactable"
+title: "Generate an Interactive AE Listing Table"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Generate an Interactive AE Listing Table with reactable}
+  %\VignetteIndexEntry{Generate an Interactive AE Listing Table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -88,7 +88,7 @@ meta <- metalite::meta_adam(observation = adae, population = adsl) |>
     name = "rel",
     term1 = "Related",
     term2 = "",
-    subset = AREL == "RELATED",
+    subset = AEREL == "RELATED",
     var = "AEDECOD",
     soc = "AEBODSYS",
     label = "Related AEs"
@@ -128,11 +128,11 @@ prepare_ae_listing(
 ```
 
 Use `patient_folding = TRUE` when reviewers should only see records for a
-specific participant after entering the exact full ID in the first-column
-search box. This mode is useful for privacy-conscious review workflows,
+specific participant after selecting the full ID from the first-column
+dropdown. This mode is useful for privacy-conscious review workflows,
 focused medical review, or meetings where you want to avoid showing all
 participants by default. In this setting, the table starts empty and displays
-records only when a full, valid patient ID is provided.
+records only when a full patient ID is selected.
 
 
 ```{r}
