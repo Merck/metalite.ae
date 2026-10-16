@@ -24,19 +24,19 @@
 #' @param striped A boolean value to display striped rows. The default is TRUE.
 #' @param highlight A boolean value to highlight row on hover. The default is TRUE.
 #' @param patient_folding A boolean value to control patient-level folding. The default is FALSE.
-#'   If `TRUE`, all rows are hidden by default and only the first column
-#'   (patient ID column) is filterable; other column filters are disabled.
-#'   In this mode, records are shown only when the entered value exactly matches
-#'   a full patient ID in the first column.
+#'   If `TRUE`, the table starts empty and only the first column (patient ID
+#'   column) is filterable, as a dropdown of full patient IDs; other column
+#'   filters and the global search are disabled. Records are shown only after a
+#'   full patient ID is selected (exact match).
 #'   If `FALSE`, all rows are displayed and filters are available for all columns.
 #' @param width Table width in pixels or as a CSS value. The default is 1400 pixels.
 #'
-#' @return A `reactable` htmlwidget object.
+#' @return An `lt_tbl` object (from the \pkg{lt} package).
 #'
 #' @export
 #'
 #' @examples
-#' if (requireNamespace("reactable", quietly = TRUE) &&
+#' if (requireNamespace("lt", quietly = TRUE) &&
 #'   requireNamespace("forestly", quietly = TRUE)) {
 #'   adsl <- forestly::forestly_adsl
 #'   adae <- forestly::forestly_adae
@@ -118,9 +118,9 @@ react_ae_listing <- function(outdata,
                              highlight = TRUE,
                              patient_folding = FALSE,
                              width = 1400) {
-  if (!requireNamespace("reactable", quietly = TRUE)) {
+  if (!requireNamespace("lt", quietly = TRUE)) {
     stop(
-      "Package `reactable` is required. Please install it with install.packages('reactable').",
+      "Package `lt` is required. Please install it with remotes::install_github('yihui/lt').",
       call. = FALSE
     )
   }
@@ -135,106 +135,59 @@ react_ae_listing <- function(outdata,
 
   tbl <- as.data.frame(outdata$tbl, stringsAsFactors = FALSE)
 
-  # Apply display labels while preserving the prepared column order.
+  # Keep the raw column names as data keys and map display labels via lt_label,
+  # preserving the prepared column order.
+  labels <- NULL
   if (!is.null(outdata$col_name)) {
     col_order <- names(outdata$col_name)
     col_order <- col_order[col_order %in% names(tbl)]
     if (length(col_order) > 0) {
       tbl <- tbl[, col_order, drop = FALSE]
-      col_labels <- outdata$col_name[col_order]
-      names(tbl) <- unname(col_labels)
+      labels <- outdata$col_name[col_order]
     }
   }
 
   id_column <- names(tbl)[1]
 
-  column_defs <- lapply(names(tbl), function(column_name) {
-    filterable_col <- if (patient_folding) {
-      identical(column_name, id_column)
-    } else {
-      TRUE
-    }
+  # Offer the requested page size first, then common sizes.
+  pager <- unique(c(default_page_size, 10, 25, 50, 100))
 
-    filter_method_col <- NULL
-    if (patient_folding && identical(column_name, id_column)) {
-      # In folding mode, only an exact full patient ID should return records.
-      filter_method_col <- reactable::JS(
-        "function(rows, columnId, filterValue) {
-          var value = String(filterValue == null ? '' : filterValue).trim();
-          if (value === '') {
-            return [];
-          }
-
-          return rows.filter(function(row) {
-            var cell = row.values[columnId];
-            return String(cell == null ? '' : cell).trim() === value;
-          });
-        }"
-      )
-    }
-
-    reactable::colDef(
-      name = column_name,
-      filterable = filterable_col,
-      filterMethod = filter_method_col,
-      minWidth = 120
-    )
-  })
-  names(column_defs) <- names(tbl)
-
-  row_style <- NULL
   if (patient_folding) {
-    id_column_js <- gsub("'", "\\\\'", id_column)
-    row_style <- reactable::JS(sprintf(
-      "function(rowInfo, state) {
-        if (!rowInfo || !rowInfo.values) {
-          return {};
-        }
-
-        var filters = (state && state.filters) ? state.filters : [];
-        var idFilter = '';
-        for (var i = 0; i < filters.length; i++) {
-          if (filters[i] && filters[i].id === '%s') {
-            idFilter = String(filters[i].value == null ? '' : filters[i].value).trim();
-            break;
-          }
-        }
-
-        if (idFilter === '') {
-          return { display: 'none' };
-        }
-
-        var patientId = String(rowInfo.values['%s'] == null ? '' : rowInfo.values['%s']).trim();
-        if (patientId === idFilter) {
-          return {};
-        }
-
-        return { display: 'none' };
-      }",
-      id_column_js,
-      id_column_js,
-      id_column_js
-    ))
+    # Privacy mode: no global search; only the patient-ID column is filterable,
+    # as a dropdown of full IDs (exact match). Seed with a control-character
+    # sentinel absent from the data so the table starts empty until a
+    # participant is picked.
+    filter <- stats::setNames(
+      list(list(type = "select", box = FALSE, selected = "\u0001")),
+      id_column
+    )
+    search <- FALSE
+  } else {
+    filter <- TRUE
+    search <- isTRUE(searchable)
   }
 
-  widget <- reactable::reactable(
-    tbl,
-    columns = column_defs,
-    resizable = TRUE,
-    filterable = TRUE,
-    searchable = if (patient_folding) FALSE else searchable,
-    striped = striped,
-    highlight = highlight,
-    rowStyle = row_style,
-    defaultPageSize = default_page_size,
-    pagination = TRUE,
-    bordered = TRUE,
-    compact = TRUE,
-    wrap = FALSE,
-    showPageSizeOptions = TRUE,
-    pageSizeOptions = c(10, 15, 25, 50),
-    width = width
+  x <- lt::lt(tbl, auto_format = FALSE, auto_label = is.null(labels))
+  if (!is.null(labels)) {
+    x <- lt::lt_label(x, list(names(labels), unname(labels)))
+  }
+  x <- lt::lt_interactive(
+    x,
+    search = search,
+    filter = filter,
+    pager = pager,
+    resize = TRUE
   )
 
-  widget
+  # Striped rows and hover highlight (lt has no default for either).
+  rules <- list()
+  if (isTRUE(striped)) rules[["tbody tr:nth-child(even)"]] <- "background: #f7f7f7"
+  if (isTRUE(highlight)) rules[["tbody tr:hover"]] <- "background: #f0f0f0"
+  if (length(rules)) x <- do.call(lt::lt_css, c(list(x), rules))
+
+  # Size the table's container (a wider table scrolls inside it).
+  width_css <- if (is.numeric(width)) paste0(width, "px") else width
+  x <- lt::lt_wrap(x, style = paste0("width:", width_css, ";overflow-x:auto"))
+
+  x
 }
