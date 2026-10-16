@@ -122,10 +122,7 @@ tlf_ae_specific_subgroup <- function(
     )
   }
 
-  footnotes <- vapply(
-    footnotes, glue::glue_data,
-    .x = list(meddra_version = meddra_version), FUN.VALUE = character(1)
-  )
+  footnotes <- gsub("{meddra_version}", meddra_version, footnotes, fixed = TRUE)
   names(footnotes) <- NULL
 
   out_all <- outdata$out_all

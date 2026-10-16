@@ -32,7 +32,6 @@ LazyData: true
 VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
-    glue,
     metalite,
     r2rtf,
     stats,

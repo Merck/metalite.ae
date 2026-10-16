@@ -202,11 +202,11 @@ prepare_ae_specific <- function(meta,
   pop_n$order <- 1
 
   # Define Observation section
-  obs_n$name <- c(
-    "with one or more {tolower(term1)} adverse events {tolower(term2)}",
-    "with no {tolower(term1)} adverse events {tolower(term2)}"
+  par_map <- collect_adam_mapping(meta, parameter)
+  obs_n$name <- sprintf(
+    c("with one or more %s adverse events %s", "with no %s adverse events %s"),
+    tolower(par_map$term1), tolower(par_map$term2)
   )
-  obs_n$name <- vapply(obs_n$name, glue::glue_data, .x = collect_adam_mapping(meta, parameter), FUN.VALUE = character(1))
   # Remove duplicate space
   obs_n$name <- gsub("^ *|(?<= ) | *$", "", obs_n$name, perl = TRUE)
 
