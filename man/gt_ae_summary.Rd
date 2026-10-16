@@ -25,13 +25,13 @@ title from metadata or a character vector of table titles.}
 \item{footnotes}{A character vector of table footnotes.}
 }
 \value{
-RTF file and the source dataset for AE summary table.
+An \code{lt_tbl} object for an AE summary table.
 }
 \description{
 AE summary table
 }
 \examples{
-library(gt)
+library(lt)
 #' # Define metadata
 adsl <- forestly::forestly_adsl
 adae <- forestly::forestly_adae
