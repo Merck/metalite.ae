@@ -1,7 +1,7 @@
 # rtf output: n, and prop w/o total
 
     Code
-      tbl
+      print_str(tbl)
     Output
       $components
       [1] "soc" "par"
@@ -68,17 +68,17 @@
       $out_all
       $out_all$F
       List of 15
-       $ meta           :List of 7
+       $ meta           : List of 7
        $ population     : chr "apat"
        $ observation    : chr "wk12"
        $ parameter      : chr "rel"
-       $ n              :'data.frame':	138 obs. of  4 variables:
+       $ n              : 'data.frame':	138 obs. of  4 variables:
        $ order          : num [1:138] 1 100 200 900 1000 ...
        $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"
        $ reference_group: num 1
-       $ prop           :'data.frame':	138 obs. of  4 variables:
-       $ diff           :'data.frame':	138 obs. of  2 variables:
-       $ n_pop          :'data.frame':	1 obs. of  4 variables:
+       $ prop           : 'data.frame':	138 obs. of  4 variables:
+       $ diff           : 'data.frame':	138 obs. of  2 variables:
+       $ n_pop          : 'data.frame':	1 obs. of  4 variables:
        $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...
        $ soc_name       : chr [1:138] NA NA NA NA ...
        $ components     : chr [1:2] "soc" "par"
@@ -86,17 +86,17 @@
       
       $out_all$M
       List of 15
-       $ meta           :List of 7
+       $ meta           : List of 7
        $ population     : chr "apat"
        $ observation    : chr "wk12"
        $ parameter      : chr "rel"
-       $ n              :'data.frame':	138 obs. of  4 variables:
+       $ n              : 'data.frame':	138 obs. of  4 variables:
        $ order          : num [1:138] 1 100 200 900 1000 ...
        $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"
        $ reference_group: num 1
-       $ prop           :'data.frame':	138 obs. of  4 variables:
-       $ diff           :'data.frame':	138 obs. of  2 variables:
-       $ n_pop          :'data.frame':	1 obs. of  4 variables:
+       $ prop           : 'data.frame':	138 obs. of  4 variables:
+       $ diff           : 'data.frame':	138 obs. of  2 variables:
+       $ n_pop          : 'data.frame':	1 obs. of  4 variables:
        $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...
        $ soc_name       : chr [1:138] NA NA NA NA ...
        $ components     : chr [1:2] "soc" "par"
@@ -104,17 +104,17 @@
       
       $out_all$Total
       List of 15
-       $ meta           :List of 7
+       $ meta           : List of 7
        $ population     : chr "apat"
        $ observation    : chr "wk12"
        $ parameter      : chr "rel"
-       $ n              :'data.frame':	138 obs. of  4 variables:
+       $ n              : 'data.frame':	138 obs. of  4 variables:
        $ order          : num [1:138] 1 100 200 900 10000 ...
        $ group          : chr [1:4] "Placebo" "Low Dose" "High Dose" "Total"
        $ reference_group: num 1
-       $ prop           :'data.frame':	138 obs. of  4 variables:
-       $ diff           :'data.frame':	138 obs. of  2 variables:
-       $ n_pop          :'data.frame':	1 obs. of  4 variables:
+       $ prop           : 'data.frame':	138 obs. of  4 variables:
+       $ diff           : 'data.frame':	138 obs. of  2 variables:
+       $ n_pop          : 'data.frame':	1 obs. of  4 variables:
        $ name           : chr [1:138] "Participants in population" "with one or more drug-related adverse events" "with no drug-related adverse events" "" ...
        $ soc_name       : chr [1:138] NA NA NA NA ...
        $ components     : chr [1:2] "soc" "par"
