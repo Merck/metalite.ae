@@ -24,6 +24,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Yujie Zhao \email{yujie.zhao@merck.com}
   \item Yilong Zhang
   \item Hiroaki Fukuda
   \item Benjamin Wang
