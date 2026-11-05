@@ -246,7 +246,7 @@ meta |>
 ```
 
 
-## Approach 2: Batch TLF generation with `meta_run()`
+### Approach 2: Batch TLF generation with `meta_run()`
 
 Instead of running each workflow separately, use `metalite::meta_run()` to
 generate all four TLFs from `meta$plan` in one call. 
