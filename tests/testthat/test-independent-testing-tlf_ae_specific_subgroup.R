@@ -23,5 +23,5 @@ test_that("rtf output: n, and prop w/o total", {
       path_outtable = path_rtf
     )
 
-  testthat::expect_snapshot(tbl)
+  testthat::expect_snapshot(print_str(tbl))
 })
