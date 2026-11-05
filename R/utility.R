@@ -16,6 +16,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' Convert `{^text}` markers to HTML superscripts
+#'
+#' Escapes any literal angle brackets first so only the generated `<sup>` tags
+#' are treated as HTML. Used to render superscripts in `lt` table cells, titles,
+#' and footnotes.
+#'
+#' @param x A character (or factor) vector.
+#'
+#' @noRd
+convert_caret_sup <- function(x) {
+  if (is.null(x)) {
+    return(x)
+  }
+  x <- as.character(x)
+  na_index <- is.na(x)
+  x <- gsub("<", "&lt;", x, fixed = TRUE)
+  x <- gsub(">", "&gt;", x, fixed = TRUE)
+  x <- gsub("\\{\\^([^}]+)\\}", "<sup>\\1</sup>", x, perl = TRUE)
+  x[na_index] <- NA_character_
+  x
+}
+
 #' Create a mock table
 #'
 #' @param df A data frame.

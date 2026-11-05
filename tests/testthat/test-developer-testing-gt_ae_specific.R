@@ -1,4 +1,4 @@
-test_that("gt_ae_specific creates a gt table", {
+test_that("gt_ae_specific creates an lt table", {
   outdata <- meta_ae_test() |>
     prepare_ae_specific(
       population = "apat",
@@ -15,9 +15,9 @@ test_that("gt_ae_specific creates a gt table", {
       analysis = "ae_specific"
     )
 
-  html <- gt::as_raw_html(result)
+  html <- format(result)
 
-  expect_s3_class(result, "gt_tbl")
+  expect_s3_class(result, "lt_tbl")
   expect_match(html, "Placebo", fixed = TRUE)
   expect_match(html, "Difference in % Low Dose vs. Placebo", fixed = TRUE)
   expect_match(html, "MedDRA Version 24.0", fixed = TRUE)

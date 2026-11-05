@@ -33,10 +33,10 @@ VignetteBuilder: knitr
 Depends: R (>= 4.1.0)
 Imports:
     glue,
+    lt (>= 0.5),
     metalite,
     r2rtf,
-    stats,
-    gt
+    stats
 Suggests:
     DescTools,
     covr,

@@ -16,16 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Specific adverse events table in gt format
+#' Specific adverse events table in lt format
 #'
 #' @inheritParams tlf_ae_specific
 #'
-#' @return A `gt_tbl` object for an AE specific table.
+#' @return An `lt_tbl` object for an AE specific table.
 #'
 #' @export
 #'
 #' @examples
-#' library(gt)
+#' library(lt)
 #'
 #' # Define metadata
 #' adsl <- forestly::forestly_adsl
@@ -176,23 +176,8 @@ gt_ae_specific <- function(outdata,
 
   names(footnotes) <- NULL
 
-  convert_caret_sup <- function(x) {
-    if (is.null(x)) {
-      return(x)
-    }
-
-    x_char <- as.character(x)
-    na_index <- is.na(x_char)
-    x_char <- gsub("<", "&lt;", x_char, fixed = TRUE)
-    x_char <- gsub(">", "&gt;", x_char, fixed = TRUE)
-    x_char <- gsub("\\{\\^([^}]+)\\}", "<sup>\\1</sup>", x_char, perl = TRUE)
-    x_char[na_index] <- NA_character_
-    x_char
-  }
-
   name_col <- names(tbl)[1]
   tbl[[name_col]] <- convert_caret_sup(tbl[[name_col]])
-  combined_title_md <- paste(title, collapse = "  \n")
 
   metric_labels <- c(
     n = "n",
@@ -205,7 +190,7 @@ gt_ae_specific <- function(outdata,
     p = "p-value"
   )
   metric <- sub("_[0-9]+$", "", names(tbl)[-1])
-  cols_label_vec <- c(
+  cols_label <- c(
     stats::setNames("", name_col),
     stats::setNames(unname(metric_labels[metric]), names(tbl)[-1])
   )
@@ -231,45 +216,33 @@ gt_ae_specific <- function(outdata,
   spanners <- c(within_spanners, comparison_spanners)
   spanners <- spanners[lengths(lapply(spanners, `[[`, "columns")) > 0]
 
-  gt_tbl <- tbl |>
-    gt::gt() |>
-    gt::sub_missing(columns = seq_len(ncol(tbl)), missing_text = "") |>
-    gt::fmt_markdown(columns = 1) |>
-    gt::tab_header(title = gt::md(combined_title_md)) |>
-    (\(gt_tbl) Reduce(function(result, spanner) {
-      gt::tab_spanner(result,
-        label = spanner$label,
-        columns = spanner$columns
-      )
-    }, spanners, init = gt_tbl))() |>
-    gt::cols_label(!!!cols_label_vec)
+  out <- lt::lt(tbl, auto_format = FALSE) |>
+    lt::lt_sub(missing = "") |>
+    lt::lt_html(name_col) |>
+    lt::lt_label(cols_label) |>
+    lt::lt_header(title = I(paste(title, collapse = "<br>")))
 
+  for (spanner in spanners) {
+    out <- lt::lt_spanner(out, label = spanner$label, columns = spanner$columns)
+  }
+
+  # Bold the system-organ-class rows (order divisible by 1000).
   soc_rows <- which(outdata$order %% 1000 == 0)
   if (length(outdata$components) == 2 && length(soc_rows) > 0) {
-    gt_tbl <- gt_tbl |>
-      gt::tab_style(
-        style = gt::cell_text(weight = "bold"),
-        locations = gt::cells_body(rows = soc_rows)
-      )
+    out <- lt::lt_style(out, rows = soc_rows, bold = TRUE)
   }
 
+  # Indent the specific AE term rows under their system organ class.
   indented_rows <- which(outdata$order %% 1000 != 0 & outdata$order != 1)
   if (length(indented_rows) > 0) {
-    gt_tbl <- gt_tbl |>
-      gt::tab_style(
-        style = gt::cell_text(indent = gt::px(10)),
-        locations = gt::cells_body(columns = 1, rows = indented_rows)
-      )
+    out <- lt::lt_indent(out, rows = indented_rows)
   }
 
-  if (length(footnotes) > 0) {
-    gt_tbl <- gt_tbl |>
-      gt::tab_source_note(gt::md(convert_caret_sup(footnotes)))
-  }
-  if (!is.null(source) && nzchar(source)) {
-    gt_tbl <- gt_tbl |>
-      gt::tab_source_note(gt::md(convert_caret_sup(source)))
+  for (note in c(footnotes, source)) {
+    if (!is.null(note) && nzchar(note)) {
+      out <- lt::lt_note(out, I(convert_caret_sup(note)))
+    }
   }
 
-  gt_tbl
+  out
 }
