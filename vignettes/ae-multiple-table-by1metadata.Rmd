@@ -345,3 +345,11 @@ outputs[[4]]
 
 To run only selected plans, supply their row indices, for example
 `metalite::meta_run(meta, i = c(1, 2))` for the two static tables.
+
+## Summary
+
+This workflow shows that one metadata definition can drive multiple AE report
+types consistently, whether each output is generated individually or in one
+batch with `meta_run()`. In practice, this pattern improves reproducibility and
+makes it easier to evolve analysis specifications without reworking each output
+independently.
