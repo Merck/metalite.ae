@@ -1,4 +1,4 @@
-# metalite.ae 0.1.5
+# metalite.ae 0.2.0
 
 ## Improvements
 
@@ -7,6 +7,7 @@
 - Speed up `prepare_ae_specific()` by dropping an unused `order()` pre-sort of the full observation table when collecting the distinct SOC/preferred-term pairs; the downstream `merge()` re-sorts by key and the row order is derived from factor levels, so the sort never affected the output. Results are unchanged for valid MedDRA data (one system organ class per preferred term) (#259, thanks to @yihui).
 - Trim per-call allocations in the Miettinen-Nurminen variance helper (replacing `ifelse()` with sign arithmetic and indexed assignment) and reset row names before the Total-group `rbind()` in `prepare_ae_specific()` to avoid a costly `make.unique()`. Results are unchanged (#260, thanks to @yihui).
 - Drop the `glue` dependency, replacing its four `glue::glue_data()` call sites with base R (`sprintf()` and `gsub()`); output is unchanged (#265, thanks to @yihui).
+- De-duplicate the Miettinen-Nurminen CI computation in `rate_compare_sum_unstratified()`: identical `(n0, n1, x0, x1)` tuples are solved once and expanded back. The core computation is extracted into a private `mn_ci_batch()`. Halves `prepare_ae_forestly()` time on large inputs (#263, thanks to @yihui).
 
 # metalite.ae 0.1.4
 

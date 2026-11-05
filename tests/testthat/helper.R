@@ -111,3 +111,19 @@ expect_snapshot_rtf <- function(path) {
   # Now use expect_snapshot_file on the normalized file
   testthat::expect_snapshot_file(path, name = basename(path))
 }
+
+#' Print an object with stable `str()` spacing across R versions
+#'
+#' R-devel always puts one space after `$ name:`, `@ slot:` and
+#' `attr(*, "x")=` in `str()` output, which older R sometimes omitted (e.g.,
+#' `$ n :'data.frame'`), so normalize that separator before taking a snapshot.
+#'
+#' @param x Object whose `print()` output contains `str()` lines.
+#' @noRd
+print_str <- function(x) {
+  out <- utils::capture.output(print(x))
+  out <- sub(
+    "^([ .]*([$@] [^:]*:|- attr\\(\\*, \"[^\"]*\"\\)=)) *", "\\1 ", out
+  )
+  cat(out, sep = "\n")
+}

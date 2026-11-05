@@ -21,5 +21,5 @@ tbl <- outdata |>
   )
 
 test_that("rtf output: ae listing", {
-  testthat::expect_snapshot(tbl)
+  testthat::expect_snapshot(print_str(tbl))
 })

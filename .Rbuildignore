@@ -5,6 +5,7 @@
 ^docs$
 ^LICENSE\.md$
 ^LICENSES_THIRD_PARTY$
+^AGENTS\.md$
 ^codecov\.yml$
 ^\.github$
 ^cran-comments\.md$
