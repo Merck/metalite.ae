@@ -26,22 +26,22 @@ react_ae_listing(
 \item{highlight}{A boolean value to highlight row on hover. The default is TRUE.}
 
 \item{patient_folding}{A boolean value to control patient-level folding. The default is FALSE.
-If \code{TRUE}, all rows are hidden by default and only the first column
-(patient ID column) is filterable; other column filters are disabled.
-In this mode, records are shown only when the entered value exactly matches
-a full patient ID in the first column.
+If \code{TRUE}, the table starts empty and only the first column (patient ID
+column) is filterable, as a dropdown of full patient IDs; other column
+filters and the global search are disabled. Records are shown only after a
+full patient ID is selected (exact match).
 If \code{FALSE}, all rows are displayed and filters are available for all columns.}
 
 \item{width}{Table width in pixels or as a CSS value. The default is 1400 pixels.}
 }
 \value{
-A \code{reactable} htmlwidget object.
+An \code{lt_tbl} object (from the \pkg{lt} package).
 }
 \description{
 Interactive AE listing table
 }
 \examples{
-if (requireNamespace("reactable", quietly = TRUE) &&
+if (requireNamespace("lt", quietly = TRUE) &&
   requireNamespace("forestly", quietly = TRUE)) {
   adsl <- forestly::forestly_adsl
   adae <- forestly::forestly_adae
