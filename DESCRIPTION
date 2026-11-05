@@ -36,6 +36,7 @@ Imports:
     metalite,
     r2rtf,
     stats,
+    xfun (>= 0.62),
     gt
 Suggests:
     DescTools,

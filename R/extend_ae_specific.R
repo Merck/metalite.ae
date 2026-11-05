@@ -135,7 +135,7 @@ extend_ae_specific_inference <- function(outdata,
       )
     } else {
       # n0/n1 constant, strata shared: CI depends only on (x0, x1).
-      key <- radix_key(x0, x1)
+      key <- xfun::radix_id(x0, x1)
       u <- !duplicated(key)
       cache <- lapply(which(u), function(i)
         rate_compare_sum(x0 = x0[i], x1 = x1[i], n0 = n0[i], n1 = n1[i], alpha = 1 - ci, ...)
