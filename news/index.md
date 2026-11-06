@@ -1,6 +1,6 @@
 # Changelog
 
-## metalite.ae 0.1.5
+## metalite.ae 0.2.0
 
 ### Improvements
 
@@ -46,6 +46,21 @@
   [`make.unique()`](https://rdrr.io/r/base/make.unique.html). Results
   are unchanged
   ([\#260](https://github.com/Merck/metalite.ae/issues/260), thanks to
+  [@yihui](https://github.com/yihui)).
+- Drop the `glue` dependency, replacing its four
+  [`glue::glue_data()`](https://glue.tidyverse.org/reference/glue.html)
+  call sites with base R
+  ([`sprintf()`](https://rdrr.io/r/base/sprintf.html) and
+  [`gsub()`](https://rdrr.io/r/base/grep.html)); output is unchanged
+  ([\#265](https://github.com/Merck/metalite.ae/issues/265), thanks to
+  [@yihui](https://github.com/yihui)).
+- De-duplicate the Miettinen-Nurminen CI computation in
+  `rate_compare_sum_unstratified()`: identical `(n0, n1, x0, x1)` tuples
+  are solved once and expanded back. The core computation is extracted
+  into a private `mn_ci_batch()`. Halves
+  [`prepare_ae_forestly()`](https://merck.github.io/forestly/reference/prepare_ae_forestly.html)
+  time on large inputs
+  ([\#263](https://github.com/Merck/metalite.ae/issues/263), thanks to
   [@yihui](https://github.com/yihui)).
 
 ## metalite.ae 0.1.4
