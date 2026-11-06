@@ -99,7 +99,7 @@ plan <- plan(
   # 4th analysis plan for AE forest plot
   # i.e., interactive forest plot for drug-related and serious AEs
   add_plan(
-    analysis = "ae_forestly",
+    analysis = "ae_forest_plot",
     population = "apat",
     observation = "apat",
     parameter = "drug-related;serious"
@@ -123,7 +123,7 @@ meta <- meta_adam(population = adsl, observation = adae) |>
     var_name = c("USUBJID", "ASTDY", "AEDECOD", "ADURN", "AESEV", "AESER", "AEREL", "AEOUT"),
     group_by = c("USUBJID", "ASTDY"), page_by = "TRTA"
   ) |>
-  define_analysis(name = "ae_forestly", label = "Interactive Forest Plot") |>
+  define_analysis(name = "ae_forest_plot", label = "Interactive Forest Plot") |>
   define_population(
     name = "apat", group = "TRTA", id = "USUBJID",
     subset = SAFFL == "Y", label = "All Patient as Treated"
@@ -156,7 +156,21 @@ meta <- meta_adam(population = adsl, observation = adae) |>
   meta_build()
 ```
 
-## AE output 1: Static AE summary table
+
+## TLF generation
+
+### Approach 1: Individual TLF generation
+
+Individual TLF generation creates each TLF through
+a separate pipeline. Each pipeline reuses the same `meta` object, but explicitly
+selects its population, observation, and parameters before preparing,
+formatting, and rendering the output.
+
+This approach is useful when developing or reviewing one output at a time.
+It also allows you to adjust formatting and display options for each output
+without running the other analysis plans.
+
+#### AE output 1: Static AE summary table
 
 Start with the summary output to review high-level AE incidence across
 parameters. 
@@ -175,7 +189,7 @@ meta |>
   )
 ```
 
-## AE output 2: Static AE-specific table
+#### AE output 2: Static AE-specific table
 
 Next, generate a term-level AE-specific table. This output breaks results down
 by system organ class and preferred term, which supports more detailed clinical
@@ -196,7 +210,7 @@ meta |>
   )
 ```
 
-## AE output 3: Interactive AE listing table
+#### AE output 3: Interactive AE listing table
 
 The listing workflow uses `prepare_ae_listing()` followed by
 `format_ae_listing()` and `react_ae_listing()`.
@@ -218,7 +232,7 @@ meta |>
   )
 ```
 
-## AE output 4: Interactive AE forest plot
+#### AE output 4: Interactive AE forest plot
 
 Finally, create an interactive AE forest plot from the same metadata object.
 This visualization helps compare treatment effects across terms and complements
@@ -231,9 +245,111 @@ meta |>
   ae_forestly()
 ```
 
+
+### Approach 2: Batch TLF generation with `meta_run()`
+
+Instead of running each workflow separately, use `metalite::meta_run()` to
+generate all four TLFs from `meta$plan` in one call. 
+For each row of the plan, `meta_run()` calls a function whose name matches
+the `analysis` value, passing `meta` and the population, observation, and
+parameter values from that row.
+
+Define these functions by wrapping the workflows above. Each wrapper returns
+the finished output, while the analysis plan supplies its input selections.
+
+```{r}
+ae_summary <- function(meta, population, observation, parameter) {
+  meta |>
+    prepare_ae_summary(
+      population = population,
+      observation = observation,
+      parameter = parameter
+    ) |>
+    format_ae_summary() |>
+    gt_ae_summary(
+      source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_summary"
+    )
+}
+
+ae_specific <- function(meta, population, observation, parameter) {
+  meta |>
+    prepare_ae_specific(
+      population = population,
+      observation = observation,
+      parameter = parameter
+    ) |>
+    format_ae_specific() |>
+    gt_ae_specific(
+      meddra_version = "24.0",
+      source = "Source:  [CDISCpilot: adam-adsl; adae]",
+      analysis = "ae_specific"
+    )
+}
+
+ae_listing <- function(meta, population, observation, parameter) {
+  meta |>
+    prepare_ae_listing(
+      population = population,
+      observation = observation,
+      parameter = parameter,
+      analysis = "ae_listing"
+    ) |>
+    format_ae_listing() |>
+    react_ae_listing(default_page_size = 15)
+}
+
+ae_forest_plot <- function(meta, population, observation, parameter) {
+  meta |>
+    prepare_ae_forestly(
+      population = population,
+      observation = observation,
+      parameter = parameter
+    ) |>
+    format_ae_forestly() |>
+    forestly::ae_forestly()
+}
+```
+
+```{r}
+outputs <- metalite::meta_run(meta)
+```
+
+`outputs` is a list in analysis-plan order: the AE summary table, AE-specific
+table, interactive listing, and interactive forest plot. Each output uses the
+parameters defined in its plan. For example, the batch summary includes
+`any;drug-related;serious`, rather than the two parameters selected in the
+individual summary example above.
+
+Display each result using its list position:
+
+#### AE output 1: AE summary table
+```{r}
+outputs[[1]]
+```
+
+#### AE output 2: AE-specific table
+```{r}
+outputs[[2]]
+```
+
+#### AE output 3: Interactive AE listing table
+```{r}
+outputs[[3]]
+```
+
+#### AE output 4: Interactive AE forest plot
+```{r}
+outputs[[4]]
+```
+
+To run only selected plans, supply their row indices, for example
+`metalite::meta_run(meta, i = c(1, 2))` for the two static tables.
+
 ## Summary
 
 This workflow shows that one metadata definition can drive multiple AE report
-types consistently. In practice, this pattern improves reproducibility and makes
-it easier to evolve analysis specifications without reworking each output
+types consistently, whether each output is generated individually or in one
+batch with `meta_run()`. In practice, this pattern improves reproducibility and
+makes it easier to evolve analysis specifications without reworking each output
 independently.
