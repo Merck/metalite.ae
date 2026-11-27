@@ -280,11 +280,10 @@ rate_compare_sum <- function(
     } else {
       (r_diff - delta) / sqrt(vart)
     }
-  }
-  if (!length(unique(strata)) == 1) {
+  } else {
     # Start to calculate the Chi-square
     w <- switch(weight,
-      equal = rep(1, length(strata)),
+      equal = rep(1 / length(strata), length(strata)),
       ss = n / sum(n),
       cmh = (n0 * n1 / n) / sum(n0 * n1 / n)
     )

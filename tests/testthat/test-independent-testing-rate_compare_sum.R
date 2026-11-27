@@ -141,3 +141,45 @@ test_that("zero-event strata contribute to a stratified analysis", {
 
   expect_true(all(is.finite(unlist(result))))
 })
+
+test_that("stratified equal weights normalize to sum to 1", {
+  # With identical stratum sample sizes, equal, ss, and cmh weights are identical.
+  n0 <- c(50, 50, 50)
+  n1 <- c(50, 50, 50)
+  x0 <- c(10, 15, 20)
+  x1 <- c(20, 25, 30)
+  strata <- c("a", "b", "c")
+
+  res_ss <- rate_compare_sum(n0, n1, x0, x1, strata, weight = "ss")
+  res_eq <- rate_compare_sum(n0, n1, x0, x1, strata, weight = "equal")
+  expect_equal(res_eq, res_ss, tolerance = 1e-10)
+
+  res_ss_d <- rate_compare_sum(n0, n1, x0, x1, strata, delta = 0.1, weight = "ss")
+  res_eq_d <- rate_compare_sum(n0, n1, x0, x1, strata, delta = 0.1, weight = "equal")
+  expect_equal(res_eq_d, res_ss_d, tolerance = 1e-10)
+
+  # Unbalanced strata from the vignette example should produce a valid RD and CI.
+  ana <- data.frame(
+    treatment = c(rep(0, 100), rep(1, 100)),
+    response = c(rep(0, 80), rep(1, 20), rep(0, 40), rep(1, 60)),
+    stratum = c(rep(1:4, 12), 1, 3, 3, 1, rep(1:4, 12), rep(1:4, 25))
+  )
+  res_vig <- rate_compare(
+    response ~ treatment,
+    strata = stratum, data = ana, weight = "equal"
+  )
+  n0_v <- tapply(ana$treatment == 0, ana$stratum, sum)
+  n1_v <- tapply(ana$treatment == 1, ana$stratum, sum)
+  x0_v <- tapply(ana$response[ana$treatment == 0], ana$stratum[ana$treatment == 0], sum)
+  x1_v <- tapply(ana$response[ana$treatment == 1], ana$stratum[ana$treatment == 1], sum)
+  expect_equal(res_vig$est, mean(x1_v / n1_v - x0_v / n0_v), tolerance = 1e-10)
+  expect_true(all(is.finite(unlist(res_vig))))
+  expect_lt(res_vig$lower, res_vig$est)
+  expect_gt(res_vig$upper, res_vig$est)
+})
+
+test_that("unstratified rate_compare_sum() ignores weight when strata is NULL", {
+  res_ss <- rate_compare_sum(n0 = 119, n1 = 116, x0 = 70, x1 = 46, weight = "ss")
+  res_eq <- rate_compare_sum(n0 = 119, n1 = 116, x0 = 70, x1 = 46, weight = "equal")
+  expect_equal(res_eq, res_ss, tolerance = 1e-10)
+})
